@@ -1,0 +1,89 @@
+\documentclass{article}
+\input{macros.tex}
+\title{Extension of SIBM to multiple communities}
+\author{Feng Zhao}
+\begin{document}
+\maketitle
+Define $\dist_+(\sigma,X):=|\{i\in[n]:X_1=1, \sigma=-1\}|$ and $\dist_-(\sigma,X):=|\{i\in[n]:X_1=-1, \sigma=1\}|$. Clearly, $\dist(\sigma,X)=\dist_+(\sigma,X)+\dist_-(\sigma,X)$.
+
+\begin{lemma} \label{lm:bq}
+For $0<\theta<1$,
+\begin{align}
+& P_{\SIBM}(\sigma_i=-X_i
+\big| \dist(\sigma,X) \le n^\theta) \le 2 n^{1-\theta}
+\quad \text{for all~} i\in[n] , \label{eq:l1}\\
+& P_{\SIBM}(\sigma_i=-X_i \text{~for all~}  i\in\tilde{\cI}
+~\big| \dist(\sigma,X) \le n^\theta) \le \Big(\frac{n^\theta}{n/2-|\tilde{\cI}|}
+\Big)^{|\tilde{\cI}|}
+\quad \text{for all~} \tilde{\cI}\subseteq [n] .   \label{eq:l2}
+\end{align}
+\end{lemma}
+\begin{proof}
+Define $\dist_+(\sigma,X):=|\{i\in[n]:X_1=1, \sigma=-1\}|$ and $\dist_-(\sigma,X):=|\{i\in[n]:X_1=-1, \sigma=1\}|$. Clearly, $\dist(\sigma,X)=\dist_+(\sigma,X)+\dist_-(\sigma,X)$. Inequality \eqref{eq:l1} follows immediately from the following equality:
+$$
+P_{\SIBM}(\sigma_i=-X_i|
+\dist_+(\sigma,X)=u_+,
+\dist_-(\sigma,X)=u_-) 
+=\left\{
+\begin{array}{cc}
+  2u_+/n   & \mbox{if~} X_i=1 \\
+  2u_-/n   & \mbox{if~} X_i=-1
+\end{array}
+\right.
+$$
+Without loss of generality,
+we only prove the case of $X_i=1$, and
+we need the following definition for the proof of this equality:
+For $\cI\subseteq[n]$, define $\cI_+:=\{i\in\cI:X_i=+1\}$ and $\cI_-:=\{i\in\cI:X_i=-1\}$.
+Then
+\begin{align*}
+& P_{\SIBM}(\sigma_i=-X_i|
+\dist_+(\sigma,X)=u_+,
+\dist_-(\sigma,X)=u_-)  \\
+= & \frac{P_{\SIBM}(\sigma_i=-X_i ,
+\dist_+(\sigma,X)=u_+,
+\dist_-(\sigma,X)=u_-)}{P_{\SIBM}(
+\dist_+(\sigma,X)=u_+,
+\dist_-(\sigma,X)=u_-)} \\
+= & \frac{\sum_{\cI:i\in\cI_+,|\cI_+|=u_+,|\cI_-|=u_-}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }
+{\sum_{\cI:|\cI_+|=u_+,|\cI_-|=u_-}P_{\SIBM}(\sigma=X^{(\sim\cI)}) } \\
+\overset{(a)}{=} & \frac{\binom{n/2-1}{u_+ -1} \binom{n/2}{u_-}}
+{\binom{n/2}{u_+} \binom{n/2}{u_-}}
+= 2u_+/n ,
+\end{align*}
+where equality (a) follows from Lemma~\ref{lm:cc} below.
+Similarly, inequality \eqref{eq:l2} follows from the following inequality:
+For $u_+\ge |\tilde{\cI}_+|$ and $u_-\ge |\tilde{\cI}_-|$,
+\begin{align*}
+& P_{\SIBM}(\sigma_i=-X_i \text{~for all~}  i\in\tilde{\cI} ~ \big|
+\dist_+(\sigma,X)=u_+,
+\dist_-(\sigma,X)=u_-)  \\
+= & \frac{P_{\SIBM}(\sigma_i=-X_i \text{~for all~}  i\in\tilde{\cI} ,
+\dist_+(\sigma,X)=u_+,
+\dist_-(\sigma,X)=u_-)}{P_{\SIBM}(
+\dist_+(\sigma,X)=u_+,
+\dist_-(\sigma,X)=u_-)} \\
+= & \frac{\sum_{\cI:\tilde{\cI}_+\subseteq\cI_+,
+\tilde{\cI}_-\subseteq\cI_-,
+|\cI_+|=u_+,|\cI_-|=u_-}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }
+{\sum_{\cI:|\cI_+|=u_+,|\cI_-|=u_-}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }  \\
+\overset{(a)}{=} & \frac{\binom{n/2-|\tilde{\cI}_+|}{u_+ -|\tilde{\cI}_+|} \binom{n/2 - |\tilde{\cI}_-|}{u_- - |\tilde{\cI}_-|}}
+{\binom{n/2}{u_+} \binom{n/2}{u_-}}
+< \Big(\frac{u_+}{n/2- |\tilde{\cI}_+|} \Big)^{|\tilde{\cI}_+|}
+\Big(\frac{u_-}{n/2- |\tilde{\cI}_-|} \Big)^{|\tilde{\cI}_-|} \\
+< & \Big(\frac{u_+ + u_-}{n/2- |\tilde{\cI}|} \Big)^{|\tilde{\cI}|}  ,
+\end{align*}
+where equality (a) again follows from Lemma~\ref{lm:cc} below.
+\end{proof}
+
+
+
+
+
+
+
+\begin{lemma} \label{lm:cc}
+Let $\cI,\cI'\subseteq[n]\setminus\{i\}$ be two subsets such that $|\cI_+|=|\cI_+'|$ and $|\cI_-|=|\cI_-'|$. 
+Then $P_{\SIBM}(\sigma=X^{(\sim\cI)}) = P_{\SIBM}(\sigma=X^{(\sim\cI')})$.
+\end{lemma}
+\end{document}
