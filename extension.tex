@@ -98,15 +98,17 @@ As mentioned above, we consider the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$,
 \vspace*{.1in}
 \noindent{\bf Main Problem:} \emph{For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?}
 
+Notation convention: $\dist(\sigma, X) := |\{ i \in [n]: \sigma_i \neq X_i\}|$.
+For $\cI \subseteq [n]$, we denote the event $\sigma = X^{(\sim \cI)}$ as $\sigma_i \neq X_i$ for all $i \in \cI$ and $\sigma_i = X_i$ for all $i \not\in \cI$.
+
 \appendix
 \section{Auxiliary lemmas used in Section}
-Define $\dist_+(\sigma,X):=|\{i\in[n]:X_1=1, \sigma=-1\}|$ and $\dist_-(\sigma,X):=|\{i\in[n]:X_1=-1, \sigma=1\}|$. Clearly, $\dist(\sigma,X)=\dist_+(\sigma,X)+\dist_-(\sigma,X)$.
 
 \begin{lemma} \label{lm:bq}
 For $0<\theta<1$,
 \begin{align}
 & P_{\SIBM}(\sigma_i=-X_i
-\big| \dist(\sigma,X) \le n^\theta) \le 2 n^{1-\theta}
+\big| \dist(\sigma,X) \le n^\theta) \le k n^{\theta-1}
 \quad \text{for all~} i\in[n] , \label{eq:l1}\\
 & P_{\SIBM}(\sigma_i=-X_i \text{~for all~}  i\in\tilde{\cI}
 ~\big| \dist(\sigma,X) \le n^\theta) \le \Big(\frac{n^\theta}{n/2-|\tilde{\cI}|}
@@ -115,37 +117,31 @@ For $0<\theta<1$,
 \end{align}
 \end{lemma}
 \begin{proof}
-Define $\dist_+(\sigma,X):=|\{i\in[n]:X_1=1, \sigma=-1\}|$ and $\dist_-(\sigma,X):=|\{i\in[n]:X_1=-1, \sigma=1\}|$. Clearly, $\dist(\sigma,X)=\dist_+(\sigma,X)+\dist_-(\sigma,X)$. Inequality \eqref{eq:l1} follows immediately from the following equality:
+Define $\dist_j(\sigma,X):=|\{i\in[n]:X_i=\omega^j, \sigma_i \neq X_i\}|$ for $j \in \{0, \dots, k-1\}$. Clearly, $\dist(\sigma,X)=\sum_{j=0}^{k-1} \dist_j(\sigma,X)$.
+
+Inequality \eqref{eq:l1} follows immediately from the following equality:
 $$
-P_{\SIBM}(\sigma_i=-X_i|
-\dist_+(\sigma,X)=u_+,
-\dist_-(\sigma,X)=u_-) 
-=\left\{
-\begin{array}{cc}
-  2u_+/n   & \mbox{if~} X_i=1 \\
-  2u_-/n   & \mbox{if~} X_i=-1
-\end{array}
-\right.
+P_{\SIBM}(\sigma_i \neq X_i |
+\dist_j(\sigma,X)=u_j,
+j=0,\dots,k-1) 
+= k u_r / n \textrm{ where } X_i = \omega^r
 $$
 Without loss of generality,
-we only prove the case of $X_i=1$, and
+we only prove the case of $X_i=1 (r=0)$, and
 we need the following definition for the proof of this equality:
-For $\cI\subseteq[n]$, define $\cI_+:=\{i\in\cI:X_i=+1\}$ and $\cI_-:=\{i\in\cI:X_i=-1\}$.
-Then
+For $\cI\subseteq[n]$, define $\cI_j:=\{i\in\cI:X_i=\omega^j\}$ Then
 \begin{align*}
-& P_{\SIBM}(\sigma_i=-X_i|
-\dist_+(\sigma,X)=u_+,
-\dist_-(\sigma,X)=u_-)  \\
-= & \frac{P_{\SIBM}(\sigma_i=-X_i ,
-\dist_+(\sigma,X)=u_+,
-\dist_-(\sigma,X)=u_-)}{P_{\SIBM}(
-\dist_+(\sigma,X)=u_+,
-\dist_-(\sigma,X)=u_-)} \\
-= & \frac{\sum_{\cI:i\in\cI_+,|\cI_+|=u_+,|\cI_-|=u_-}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }
-{\sum_{\cI:|\cI_+|=u_+,|\cI_-|=u_-}P_{\SIBM}(\sigma=X^{(\sim\cI)}) } \\
-\overset{(a)}{=} & \frac{\binom{n/2-1}{u_+ -1} \binom{n/2}{u_-}}
-{\binom{n/2}{u_+} \binom{n/2}{u_-}}
-= 2u_+/n ,
+& P_{\SIBM}(\sigma_i \neq X_i |
+\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)  \\
+= & \frac{P_{\SIBM}(\sigma_i \neq X_i ,
+\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)}
+{P_{\SIBM}(
+\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)} \\
+= & \frac{\sum_{\cI:i\in\cI_0,|\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }
+{\sum_{\cI: |\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) } \\
+\overset{(a)}{=} & \frac{\binom{n/k-1}{u_0 -1}}
+{\binom{n/k}{u_0} }
+= ku_0/n ,
 \end{align*}
 where equality (a) follows from Lemma~\ref{lm:cc} below.
 Similarly, inequality \eqref{eq:l2} follows from the following inequality:
@@ -179,7 +175,7 @@ where equality (a) again follows from Lemma~\ref{lm:cc} below.
 
 
 \begin{lemma} \label{lm:cc}
-Let $\cI,\cI'\subseteq[n]\setminus\{i\}$ be two subsets such that $|\cI_+|=|\cI_+'|$ and $|\cI_-|=|\cI_-'|$. 
+Let $\cI,\cI'\subseteq[n]\setminus\{i\}$ be two subsets such that $|\cI_j|=|\cI_j'|$ for $j=0,\dots,k-1$. 
 Then $P_{\SIBM}(\sigma=X^{(\sim\cI)}) = P_{\SIBM}(\sigma=X^{(\sim\cI')})$.
 \end{lemma}
 
