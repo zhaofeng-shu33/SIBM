@@ -107,11 +107,11 @@ For $\cI \subseteq [n]$, we denote the event $\sigma = X^{(\sim \cI)}$ as $\sigm
 \begin{lemma} \label{lm:bq}
 For $0<\theta<1$,
 \begin{align}
-& P_{\SIBM}(\sigma_i=-X_i
+& P_{\SIBM}(\sigma_i \neq X_i
 \big| \dist(\sigma,X) \le n^\theta) \le k n^{\theta-1}
 \quad \text{for all~} i\in[n] , \label{eq:l1}\\
-& P_{\SIBM}(\sigma_i=-X_i \text{~for all~}  i\in\tilde{\cI}
-~\big| \dist(\sigma,X) \le n^\theta) \le \Big(\frac{n^\theta}{n/2-|\tilde{\cI}|}
+& P_{\SIBM}(\sigma_i \neq X_i \text{~for all~}  i\in\tilde{\cI}
+~\big| \dist(\sigma,X) \le n^\theta) \le \Big(\frac{n^\theta}{n/k - |\tilde{\cI}|}
 \Big)^{|\tilde{\cI}|}
 \quad \text{for all~} \tilde{\cI}\subseteq [n] .   \label{eq:l2}
 \end{align}
@@ -144,26 +144,23 @@ For $\cI\subseteq[n]$, define $\cI_j:=\{i\in\cI:X_i=\omega^j\}$ Then
 = ku_0/n ,
 \end{align*}
 where equality (a) follows from Lemma~\ref{lm:cc} below.
+
 Similarly, inequality \eqref{eq:l2} follows from the following inequality:
-For $u_+\ge |\tilde{\cI}_+|$ and $u_-\ge |\tilde{\cI}_-|$,
+For $u_j\geq |\tilde{\cI}_j|, j=0, \dots, k-1$,
 \begin{align*}
-& P_{\SIBM}(\sigma_i=-X_i \text{~for all~}  i\in\tilde{\cI} ~ \big|
-\dist_+(\sigma,X)=u_+,
-\dist_-(\sigma,X)=u_-)  \\
-= & \frac{P_{\SIBM}(\sigma_i=-X_i \text{~for all~}  i\in\tilde{\cI} ,
-\dist_+(\sigma,X)=u_+,
-\dist_-(\sigma,X)=u_-)}{P_{\SIBM}(
-\dist_+(\sigma,X)=u_+,
-\dist_-(\sigma,X)=u_-)} \\
-= & \frac{\sum_{\cI:\tilde{\cI}_+\subseteq\cI_+,
-\tilde{\cI}_-\subseteq\cI_-,
-|\cI_+|=u_+,|\cI_-|=u_-}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }
-{\sum_{\cI:|\cI_+|=u_+,|\cI_-|=u_-}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }  \\
-\overset{(a)}{=} & \frac{\binom{n/2-|\tilde{\cI}_+|}{u_+ -|\tilde{\cI}_+|} \binom{n/2 - |\tilde{\cI}_-|}{u_- - |\tilde{\cI}_-|}}
-{\binom{n/2}{u_+} \binom{n/2}{u_-}}
-< \Big(\frac{u_+}{n/2- |\tilde{\cI}_+|} \Big)^{|\tilde{\cI}_+|}
-\Big(\frac{u_-}{n/2- |\tilde{\cI}_-|} \Big)^{|\tilde{\cI}_-|} \\
-< & \Big(\frac{u_+ + u_-}{n/2- |\tilde{\cI}|} \Big)^{|\tilde{\cI}|}  ,
+& P_{\SIBM}(\sigma_i \neq X_i \text{~for all~}  i\in\tilde{\cI} ~ \big|
+\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)  \\
+= & \frac{P_{\SIBM}(\sigma_i \neq X_i \text{~for all~}  i\in\tilde{\cI} ,
+\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)}{P_{\SIBM}(
+\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)} \\
+= & \frac{\sum_{\cI:\tilde{\cI}_j\subseteq\cI_j,
+|\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }
+{\sum_{\cI:|\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }  \\
+\overset{(a)}{=} & \prod_{j=0}^{k-1} \frac{\binom{n/k-|\tilde{\cI}_j|}{u_j -|\tilde{\cI}_j|} }
+{\binom{n/k}{u_j} }
+< \prod_{j=0}^{k-1}\Big(\frac{u_j}{n/k- |\tilde{\cI}_j|} \Big)^{|\tilde{\cI}_j|}
+\\
+< & \Big(\frac{\sum_{j=0}^{k-1} u_j}{n/k- |\tilde{\cI}|} \Big)^{|\tilde{\cI}|}  ,
 \end{align*}
 where equality (a) again follows from Lemma~\ref{lm:cc} below.
 \end{proof}
