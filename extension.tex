@@ -101,6 +101,54 @@ As mentioned above, we consider the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$,
 Notation convention: $\dist(\sigma, X) := |\{ i \in [n]: \sigma_i \neq X_i\}|$.
 For $\cI \subseteq [n]$, we denote the event $\sigma = X^{(\sim \cI)}$ as $\sigma_i \neq X_i$ for all $i \in \cI$ and $\sigma_i = X_i$ for all $i \not\in \cI$.
 
+\section{Sketch of the proof}
+\label{sect:sketch}
+
+In this section, we illustrate the main ideas and explain the important steps in the proof of the main results. The complete proofs are given in Section~\ref{sect:aln}--\ref{sect:converse}.
+As the first step, we prove that for $a>b>0$, if $\alpha>b\beta$, then all the samples are centered in $\Gamma$ with probability $1-o(1)$; if $\alpha<b\beta$, then all the samples are centered in $\Theta := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k\}$ where $\mathbf{1}_n$ is the all one vector with dimension $n$.
+
+We use the concentration results for adjacency matrices of random graphs with independent edges to prove this. Let $A=A(G)$ be the adjacency matrix of the graph $G$. Then \eqref{eq:isingma} can be written as
+\begin{align*}
+ P_{\sigma|G}(\sigma=\bar{\sigma})  
+=  \frac{1}{Z_G(\alpha,\beta)}
+\exp\Big( \frac{1}{2} \sum_{i,j}\Big( \big(\beta+\frac{\alpha\log(n)}{n} \big) A
+-\frac{\alpha\log(n)}{n} (J_n-I_n) \Big)_{ij} I(\bar{\sigma}_i,\bar{\sigma}_j) 
+\Big)  ,
+\end{align*}
+where $J_n$ is the all one matrix and $I_n$ is the identity matrix, both of size $n\times n$.
+Define a matrix
+$
+M:= \big(\beta+\frac{\alpha\log(n)}{n} \big) E[A|X]
+-\frac{\alpha\log(n)}{n} (J_n-I_n).
+$
+Then we can further write \eqref{eq:isingma}
+as
+$$
+P_{\sigma|G}(\sigma=\bar{\sigma})
+= \frac{1}{Z_G(\alpha,\beta)}
+\exp\Big( \frac{1}{2} \sum_{i,j} M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j) + \frac{1}{2} \sum_{i,j}\big(\beta+\frac{\alpha\log(n)}{n} \big)  (A-E[A|X])_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j) 
+  \bar{\sigma}^T 
+\Big)  .
+$$
+One can show that if $\alpha>b\beta$, then the maximizers of $\sum_{i,j} M I(\bar{\sigma}_i, \bar{\sigma}_j)$ consist of set $\Gamma$, and if $\alpha<b\beta$, then the maximizer set is $\Theta$.
+Moreover, \cite{Hajek16} proved the concentration of $A$ around its expectation $E[A|X]$ in the sense that
+$\|A-E[A|X]\| = O(\sqrt{\log(n)})$ with probability $1-o(1)$, we can further show that the error term above is bounded by
+$$
+\left|\frac{1}{2} \big(\beta+\frac{\alpha\log(n)}{n} \big)\sum_{i,j} (A-E[A|X])
+ I( \bar{\sigma}_i, \bar{\sigma}_j) \right| = O \big( n \sqrt{\log(n)} \big)
+  \text{~~for all~} \bar{\sigma}\in\{\pm 1\}^n  .
+$$
+This allows us to prove that in both cases (no matter $\alpha>b\beta$ or $\alpha<b\beta$), the Hamming distance between the samples and the maximizers of $\sum_{i,j}  M_{ij}I(\bar{\sigma}_i, \bar{\sigma}_j)$ is upper bounded by $kn/\log^{1/3}(n)=o(n)$.
+More precisely, if $\alpha>b\beta$, then $\dist(\sigma^{(i)},\Gamma )< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$; if $\alpha<b\beta$, then $\dist(\sigma^{(i)}, \Theta)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$; see Proposition~\ref{prop:1} for a rigorous proof.
+In the latter case, each sample only take $\sum_{j=0}^{2n/\log^{1/3}(n)}\binom{n}{j}$ values, so each sample contains at most $\log_2(\sum_{j=0}^{2n/\log^{1/3}(n)}\binom{n}{j})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\binom{n}{n/2}$ vectors, so one needs at least $\log_2\binom{n}{n/2}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples; see Proposition~\ref{prop:ab} for a rigorous proof.
+
+For the rest of this section, we will focus on the case $\alpha>b\beta$ and establish the sharp threshold on the sample complexity. We first analyze the typical behavior of one sample and explain how to prove Theorem~\ref{thm:wt3}. Then we use the method developed for the one sample case to analyze the distribution of multiple samples, which allows us to prove Theorem~\ref{thm:wt2}. Note that Theorem~\ref{thm:wt1} follows directly from Theorem~\ref{thm:wt2}.
+
+\section{Samples are concentrated around $\pm X$ or $\pm \mathbf{1}_n$} \label{sect:aln}
+
+\section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}
+\label{sect:converse}
+
 \appendix
 \section{Auxiliary lemmas used in Section}
 
