@@ -144,7 +144,101 @@ In the latter case, each sample only take $\sum_{j=0}^{2n/\log^{1/3}(n)}\binom{n
 
 For the rest of this section, we will focus on the case $\alpha>b\beta$ and establish the sharp threshold on the sample complexity. We first analyze the typical behavior of one sample and explain how to prove Theorem~\ref{thm:wt3}. Then we use the method developed for the one sample case to analyze the distribution of multiple samples, which allows us to prove Theorem~\ref{thm:wt2}. Note that Theorem~\ref{thm:wt1} follows directly from Theorem~\ref{thm:wt2}.
 
-\section{Samples are concentrated around $\pm X$ or $\pm \mathbf{1}_n$} \label{sect:aln}
+\section{Samples are concentrated around $\Gamma$ or $\Theta$} \label{sect:aln}
+In this section, we show that for $a>b$, if $\alpha>b\beta$, then all the samples produced by $\SIBM(n, \linebreak[4]
+a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ are very close to one element from $\Gamma$. More precisely, they differ from the ground truth $\Theta$ in at most $kn/\log^{1/3}(n)$ coordinates.
+On the other hand, if $\alpha<b\beta$, then the samples differ from  $\pm \Theta$ in at most $kn/\log^{1/3}(n)$ coordinates.
+For the latter case, we prove that the number of samples needed for exact recovery of $X$ is at least $\Omega(\log^{1/4}(n))$.
+
+Let $A=A(G)$ be the adjacency matrix of $G$. Then \eqref{eq:isingma} can be written as
+\begin{align*}
+& P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
+\exp\Big(\frac{\beta}{2} \sum_{i,j} A_{ij} I(\bar{\sigma}_i,\bar{\sigma}_j)
+-\frac{\alpha\log(n)}{2n} \sum_{i,j} (J_n-I_n-A)_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j)
+\Big)  \\
+= & \frac{1}{Z_G(\alpha,\beta)}
+\exp\Big( \frac{1}{2} \sum_{i,j} \Big( \big(\beta+\frac{\alpha\log(n)}{n} \big) A
+-\frac{\alpha\log(n)}{n} (J_n-I_n) \Big)_{ij} I(\bar{\sigma}_i,\bar{\sigma}_j)
+\Big),
+\end{align*}
+where $J_n$ is the all one matrix and $I_n$ is the identity matrix, both of size $n\times n$.
+Conditioned on the ground truth $X$,
+$A-E[A|X]$ is a symmetric matrix whose upper triangular part consists of independent entries. According to Theorem~5 in \cite{Hajek16}, the spectral norm of $A-E[A|X]$ is upper bounded by $O(\sqrt{\log(n)})$.
+\begin{theorem}[Theorem~5 in \cite{Hajek16}] \label{thm:a2}
+For any $r>0$, there exists $c>0$ such that the spectral norm of $A-E[A|X]$ satisfies
+$$
+P\big(\|A-E[A|X]\| \le c\sqrt{\log(n)} \big)\ge 1-n^{-r} .
+$$
+\end{theorem}
+Define a matrix
+$$
+M:= \big(\beta+\frac{\alpha\log(n)}{n} \big) E[A|X]
+-\frac{\alpha\log(n)}{n} (J_n-I_n).
+$$
+Then we can further write \eqref{eq:isingma}
+as
+\begin{equation} \label{eq:M}
+P_{\sigma|G}(\sigma=\bar{\sigma})
+= \frac{1}{Z_G(\alpha,\beta)}
+\exp\Big( \frac{1}{2} \sum_{i,j}M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j) + \frac{1}{2}\big(\beta+\frac{\alpha\log(n)}{n} \big)  \sum_{i,j}  (A-E[A|X])_{ij}
+ I(\bar{\sigma}_i, \bar{\sigma}_j)  
+\Big)  .
+\end{equation}
+
+
+By definition, all the diagonal entries of $M$ are $0$.
+For $i\neq j$, 
+$$
+M_{ij}=\left\{ 
+\begin{array}{cc}
+ \big(a\beta-\alpha+\frac{a\alpha\log(n)}{n} \big) \frac{\log(n)}{n}
+   & \text{~if~} X_i=X_j \\
+  \big(b\beta-\alpha+\frac{b\alpha\log(n)}{n} \big) \frac{\log(n)}{n}
+   & \text{~if~} X_i\neq X_j
+\end{array}
+\right. .
+$$
+Given $\bar{\sigma}\in\{1, \omega, \dots, \omega^{k-1}\}^n$, define a $k\times k$ matrix $\Xi$ with 
+$\Xi_{ij} = |\{k \in [n]: X_k = \omega^{i-1}, \sigma_k = \omega^{j-1}\}|$. It can be seen that each row of $\Xi$ sums to $\frac{n}{k}$. Define $Q_{ij} = \sum_{r,s=1, r<s}^k (\Xi_{ir} - \Xi_{is})(\Xi_{jr} - \Xi_{js})$
+Therefore,
+\begin{equation} \label{eq:sMs}
+\begin{aligned}
+ \frac{1}{2} \bar{\sigma} M \bar{\sigma}^T  
+= & \frac{1}{2}\Big(\big(\frac{n}{2}-2u\big)^2 +\big(\frac{n}{2}-2v\big)^2 \Big) \frac{(a\beta-\alpha)\log(n)}{n} \\
+& -\big(\frac{n}{2}-2u\big) \big(\frac{n}{2}-2v\big)
+\frac{(b\beta-\alpha)\log(n)}{n} 
++O(\log^2(n))  \\
+ = & \frac{1}{2}\Big(\big(\frac{n}{2}-2u\big)^2 +\big(\frac{n}{2}-2v\big)^2 \Big) \frac{(a\beta-b\beta)\log(n)}{n} \\
+& +\frac{1}{2} (2u-2v)^2
+\frac{(b\beta-\alpha)\log(n)}{n}
++O(\log^2(n))  .
+\end{aligned}
+\end{equation}
+Notice that $u$ and $v$ take values between $0$ and $n/2$.
+According to \eqref{eq:M}, the configuration $\bar{\sigma}$ that maximizes $\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T$ is (roughly) the most likely output of the Ising model.
+Since we assume $a>b$, the term $\frac{1}{2}\Big(\big(\frac{n}{2}-2u\big)^2 +\big(\frac{n}{2}-2v\big)^2 \Big) \frac{(a\beta-b\beta)\log(n)}{n}$ takes maximum at four points $u,v\in\{0,n/2\}$. If $b\beta<\alpha$, then the second term $\frac{1}{2} (2u-2v)^2
+\frac{(b\beta-\alpha)\log(n)}{n}$ takes maximum whenever $u=v$, and if $b\beta>\alpha$, then the second term takes maximum when $|u-v|=n/2$.
+To summarize, if $b\beta<\alpha$, then $\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T$ takes maximum at $u=v=0$ and $u=v=n/2$, i.e., the two maximizers are $\bar{\sigma}=\pm X$. If $b\beta>\alpha$, then $\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T$ takes maximum at $(u=0,v=n/2)$ and $(u=n/2,v=0)$, i.e., the two maximizers are $\bar{\sigma}=\pm \mathbf{1}_n$.
+Taking into account the effect of the error term $\frac{1}{2} \big(\beta+\frac{\alpha\log(n)}{n} \big) \bar{\sigma}  (A-E[A|X])
+  \bar{\sigma}^T$ in \eqref{eq:M}, we have the following proposition:
+
+\begin{proposition} \label{prop:1}
+Let $a>b>0$ and $\alpha,\beta>0$ be constants. Let $m$ be a positive integer that is upper bounded by some polynomial of $n$.
+Let 
+$$
+(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+$$
+If $b\beta <\alpha$, then for any (arbitrarily large) $r>0$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
+$$
+P_{\SIBM} \Big(\dist(\sigma^{(i)},\pm X)< 2n/\log^{1/3}(n)
+\text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
+$$
+If $b\beta >\alpha$, then for any (arbitrarily large) $r>0$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
+$$
+P_{\SIBM} \Big(\dist(\sigma^{(i)},\pm \mathbf{1}_n)< 2n/\log^{1/3}(n)
+\text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
+$$
+\end{proposition}
 
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}
 \label{sect:converse}
