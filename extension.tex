@@ -191,23 +191,22 @@ For $i\neq j$,
 $$
 M_{ij}=\left\{ 
 \begin{array}{cc}
- \big(a\beta-\alpha+\frac{a\alpha\log(n)}{n} \big) \frac{\log(n)}{n}
+ \big(a\beta-\alpha+\frac{a\alpha\log(n)}{n} \big) \frac{\log(n)}{n} = a' + O(\frac{\log^2 n}{n^2})
    & \text{~if~} X_i=X_j \\
-  \big(b\beta-\alpha+\frac{b\alpha\log(n)}{n} \big) \frac{\log(n)}{n}
+  \big(b\beta-\alpha+\frac{b\alpha\log(n)}{n} \big) \frac{\log(n)}{n} = b' + O(\frac{\log^2 n}{n^2})
    & \text{~if~} X_i\neq X_j
 \end{array}
 \right. .
 $$
+where $a' =(a\beta - \alpha) \frac{\log n }{n}, b'=(b\beta - \alpha) \frac{\log n}{n}$.
 Given $\bar{\sigma}\in\{1, \omega, \dots, \omega^{k-1}\}^n$, define a $k\times k$ matrix $\Xi$ with 
 $\Xi_{ij} = |\{k \in [n]: X_k = \omega^{i-1}, \sigma_k = \omega^{j-1}\}|$. It can be seen that each row of $\Xi$ sums to $\frac{n}{k}$. Define $Q_{ij} = \sum_{r,s=1, r<s}^k (\Xi_{ir} - \Xi_{is})(\Xi_{jr} - \Xi_{js})$
 Therefore,
 \begin{equation} \label{eq:sMs}
 \begin{aligned}
- \frac{1}{2} \bar{\sigma} M \bar{\sigma}^T  
-= & \frac{1}{2}\Big(\big(\frac{n}{2}-2u\big)^2 +\big(\frac{n}{2}-2v\big)^2 \Big) \frac{(a\beta-\alpha)\log(n)}{n} \\
-& -\big(\frac{n}{2}-2u\big) \big(\frac{n}{2}-2v\big)
-\frac{(b\beta-\alpha)\log(n)}{n} 
-+O(\log^2(n))  \\
+ \sum_{i,j}M_{ij}I(\bar{\sigma}_i, \bar{\sigma}_j)
+= & a'\sum_{i=1}^k \big( (k-1)(\sum_{r=1}^k \Xi_{ir}^2) - \sum_{r,s=1,r \neq s}^k \Xi_{ir}\Xi_{is} \big)+ b'\sum_{i,j=1, i\neq j}^k  \big( (k-1)  (\Xi_{ir} \Xi_{jr}) - \sum_{r,s=1,r \neq s}^k \Xi_{ir}\Xi_{js}  \big)\\
+= & a' \sum_{i=1}^k Q_{ii} + b' \sum_{i,j=1,i\neq j}^k Q_{ij} + O(\log^2 n ) \\
  = & \frac{1}{2}\Big(\big(\frac{n}{2}-2u\big)^2 +\big(\frac{n}{2}-2v\big)^2 \Big) \frac{(a\beta-b\beta)\log(n)}{n} \\
 & +\frac{1}{2} (2u-2v)^2
 \frac{(b\beta-\alpha)\log(n)}{n}
