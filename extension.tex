@@ -246,7 +246,131 @@ P_{\SIBM} \Big(\dist(\sigma^{(i)},\pm \mathbf{1}_n)< kn/\log^{1/3}(n)
 \text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
 $$
 \end{proposition}
+\begin{proof}
+We only prove the case of $b\beta <\alpha$ as the proof of the other case is virtually identical.
+Define
+$$
+\gamma^{r,s}_i = \begin{cases}
+1 & \sigma_i = \omega^r \\
+-1 & \sigma_i = \omega^s \\
+0 & \textrm{ otherwise}
+\end{cases}
+$$
+Then we can show that
+$$
+\sum_{i,j} I(\sigma_i, \sigma_j) (A-\mathbb{E}[A|X]) = \sum_{r,s} (\gamma^{r,s})^T (A-\mathbb{E}[A|X])\gamma^{r,s}
+$$
+Since $A-E[A|X]$ is a symmetric matrix,
+$$
+|\bar{\gamma}  (A-E[A|X]) \bar{\gamma}^T|\le
+\|A-E[A|X]\| \bar{\gamma} \bar{\gamma}^T=n \|A-E[A|X]\|
+$$
+for every $\bar{\gamma}\in\{\pm 1\}^n$.
+Therefore, by Theorem~\ref{thm:a2}, for any $r>0$, there is $c>0$ such that
+\begin{equation} \label{eq:cnA}
+\left|\frac{1}{2} \big(\beta+\frac{\alpha\log(n)}{n} \big)\sum_{i,j} I(\sigma_i, \sigma_j) (A-\mathbb{E}[A|X]) 
+\right| \le c\binom{k}{2} n \sqrt{\log(n)}
+  \text{~~for all~} \bar{\sigma}\in W^n
+\end{equation}
+with probability at least $1-n^{-2r}$.
 
+Define a small neighborhood of $\Xi^*$ as
+$$
+N(\Xi^*) := \{\Xi |\, |\Xi_{i,j} - \Xi_{i,j}| \leq \frac{n}{\log^{1/3} n}, 1\leq i,j\leq 3\}
+$$
+We use the $L_{\infty}$ norm for the matrix.
+ When there is only one non-zero term $\frac{n}{k}$ on each row of the matrix $\Xi$, we call this matrix a ''Corner Matrix''.
+ We use $\Gamma'$ to denote all corner matrices, then $|\Gamma'|=k^k$ and $\Gamma \subset \Gamma'$. The neighborhood of all corner matrice is denoted by $N(\Gamma')$. Similary we can define $N(\Gamma)$. 
+
+$N(\Gamma)$ consists of $\bar{\sigma}$'s that differ from $\Gamma$ in at most $kn/\log^{1/3}(n)$ coordinates.
+Given a graph $G$ whose adjacency matrix satisfies \eqref{eq:cnA}, we will show that $P_{\sigma|G}(\sigma\notin N(\Gamma))< e^{-n}$. Since $P_{\sigma|G}(\sigma=X)<1$, it suffices to prove that
+$\frac{P_{\sigma|G}(\sigma\notin N(\Gamma))}{P_{\sigma|G}(\sigma=X)}<e^{-n}$. 
+
+Since  $N(\Gamma)^c=N(\Gamma')^c\cup N(\Gamma' \backslash \Gamma)$.
+Next we prove that for every $G$ satisfying \eqref{eq:cnA} and every
+$\bar{\sigma}\in N(\Gamma')^c\cup N(\Gamma' \backslash \Gamma)$, 
+\begin{equation} \label{eq:xmb}
+\frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)}<k^{-n}e^{-n} .
+\end{equation}
+Together with the trivial upper bound $|N(\Gamma')^c\cup N(\Gamma' \backslash \Gamma)|<k^n$, this implies that $\frac{P_{\sigma|G}(\sigma\notin N(\Gamma))}{P_{\sigma|G}(\sigma=X)}<e^{-n}$.
+
+We first prove \eqref{eq:xmb} for $\bar{\sigma}\in N(\Gamma')^c$.
+Observe that $\sigma=X$ corresponds to $\Xi=\frac{n}{k} I_k$. By \eqref{eq:sMs}, we have
+\begin{equation} \label{eq:X}
+\begin{aligned}
+P_{\sigma|G}(\sigma=X) & =\frac{1}{Z_G(\alpha,\beta)}
+\exp\Big(\frac{1}{2} X M X^T + O(n\sqrt{\log(n)}) \Big)  \\
+& =\frac{1}{Z_G(\alpha,\beta)}
+\exp\Big(\frac{(a-b)\beta(k-1)}{2k}n\log(n) + O(n\sqrt{\log(n)}) \Big) .
+\end{aligned}
+\end{equation}
+On the other hand, if $\bar{\sigma}\in N(\Gamma')^c$, using the definition of $\Xi$ we can find an 1-1 correspondence
+between $\bar{\sigma}$ and $\bar{\Xi}$. For $\bar{\Xi}$ we can find one place where $|\bar{\Xi}_{ij}| > \frac{n}{\log^{1/3} n}$
+or $ |\bar{\Xi}_{ij} - \frac{n}{k}| > \frac{n}{\log^{1/3} n}$. Then $Q_{ii} < \frac{
+
+$$
+(\frac{n}{2}-2u(\bar{\sigma}))^2\le (\frac{n}{2}-2n/\log^{1/3}(n))^2
+=\frac{n^2}{4}-2n^2/\log^{1/3}(n)
++O(n^2/\log^{2/3}(n)).
+$$
+Since $b\beta-\alpha<0$ and $(\frac{n}{2}-2v)^2\le \frac{n^2}{4}$ for all $0\le v\le n/2$, by \eqref{eq:sMs} we have
+$$
+\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T  
+\le \frac{a\beta-b\beta}{4}n\log(n)
+-(a\beta-b\beta)n\log^{2/3}(n)
++O(n\log^{1/3}(n)) ,
+$$
+and so
+\begin{align*}
+P_{\sigma|G}(\sigma=\bar{\sigma}) \le \frac{1}{Z_G(\alpha,\beta)}
+\exp\Big(\frac{a\beta-b\beta}{4}n\log(n) 
+-(a\beta-b\beta)n\log^{2/3}(n)
++ O(n\sqrt{\log(n)}) \Big) .
+\end{align*}
+Combining this with \eqref{eq:X}, we have
+$$
+\frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)}
+\le \exp\Big(-(a\beta-b\beta)n\log^{2/3}(n)
++ O(n\sqrt{\log(n)}) \Big)
+<2^{-n} e^{-n}
+$$
+for all $\bar{\sigma}\in\Gamma_1$ and all $G$ satisfying \eqref{eq:cnA}. 
+
+For $\bar{\sigma}\in\Gamma_3$, we have 
+$$
+|u(\bar{\sigma})-v(\bar{\sigma})| > n/4
+$$
+for large $n$. Since $b\beta-\alpha<0$, this implies that
+$$
+\frac{1}{2} (2u(\bar{\sigma})-2v(\bar{\sigma}))^2
+\frac{(b\beta-\alpha)\log(n)}{n}
+< - \frac{\alpha-b\beta}{8} n\log(n) ,
+$$
+so
+$$
+\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T  
+\le \frac{a\beta-b\beta}{4}n\log(n)
+- \frac{\alpha-b\beta}{8} n\log(n) .
+$$
+Therefore,
+\begin{align*}
+P_{\sigma|G}(\sigma=\bar{\sigma}) \le \frac{1}{Z_G(\alpha,\beta)}
+\exp\Big(\frac{a\beta-b\beta}{4}n\log(n) 
+-\frac{\alpha-b\beta}{8} n\log(n)
++ O(n\sqrt{\log(n)}) \Big) .
+\end{align*}
+Combining this with \eqref{eq:X}, we have
+$$
+\frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)}
+\le \exp\Big(-\frac{\alpha-b\beta}{8} n\log(n)
++ O(n\sqrt{\log(n)}) \Big)
+<2^{-n} e^{-n}
+$$
+for all $\bar{\sigma}\in\Gamma_3$ and all $G$ satisfying \eqref{eq:cnA}.
+
+Now we have shown that for a single sample $\sigma$ produced by the SIBM, $P_{\sigma|G}(\sigma\in\Gamma)\ge 1- e^{-n}$ provided that $G$ satisfies \eqref{eq:cnA}. By the union bound, for $m$ independent samples $\sigma^{(1)},\dots,\sigma^{(m)}$ produced by the SIBM, $P_{\sigma|G}(\sigma^{(1)},\dots,\sigma^{(m)}\in\Gamma)\ge 1- m e^{-n}$ provided that $G$ satisfies \eqref{eq:cnA}.
+We also know that $G$ satisfies \eqref{eq:cnA} with probability at least $1-n^{-2r}$, and by assumption $m$ is upper bounded by some polynomial of $n$. Therefore, the overall probability of $\sigma^{(1)},\dots,\sigma^{(m)}\in\Gamma$ is at least $1-n^{-r}$ when $n$ is large enough. This completes the proof of the proposition.
+\end{proof}
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}
 \label{sect:converse}
 
