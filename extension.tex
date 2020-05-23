@@ -6,9 +6,9 @@
 \maketitle
 
 \section{Problem setup and main results} \label{s:Preliminaries}
-We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $k$ communities and the definition of Ising model with $k$ state.
+We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $k$ communities and the definition of Ising model with $k$ state (See Definition 4 in \cite{Abbe17}).
 \begin{definition}[SSBM with $k$ communities] \label{def:SSBM}
-Let $n$ be a positive even integer, $W= \{1, \omega, \dots, \omega^{k-1}\}$ is a cyclic group with order $k$ and let $p,q\in[0,1]$ be two real numbers. Let $X=(X_1,\dots,X_n)\in W^n$, and let $G=([n],E(G))$ be a undirected graph with vertex set $[n]$ and edge set $E(G)$. The pair $(X,G)$ is drawn under $\SSBM(n,p,q)$ if 
+Let $n$ be a positive even integer, $W= \{1, \omega, \dots, \omega^{k-1}\}$ is a cyclic group with order $k$ and let $p,q\in[0,1]$ be two real numbers. Let $X=(X_1,\dots,X_n)\in W^n$, and let $G=([n],E(G))$ be a undirected graph with vertex set $[n]$ and edge set $E(G)$. The pair $(X,G)$ is drawn under $\SSBM(n,k,p,q)$ if 
 
 \noindent
 (i) $X$ is drawn uniformly with the constraint that $|\{v \in [n] : X_v = \omega^i\}| = \frac{n}{k}$;
@@ -64,10 +64,10 @@ is the normalizing constant.
 
 
 
-By definition we always have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$ in the Ising model. Next we present our new model, the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
+By definition we always have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$ in the Ising model. Next we present our new model, the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,k, p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
 
 \begin{definition}[Stochastic Ising Block Model]
-Let $n$ and $m$ be positive integers such that $n$ is even. Let $p,q\in[0,1]$ be two real numbers and let $\alpha,\beta>0$. The triple $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ is drawn under $\SIBM(n,p,q,\alpha,\beta,m)$ if
+Let $n$ and $m$ be positive integers such that $n$ is even. Let $p,q\in[0,1]$ be two real numbers and let $\alpha,\beta>0$. The triple $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ is drawn under $\SIBM(n,k, p,q,\alpha,\beta,m)$ if
 
 \noindent
 (i) the pair $(X,G)$ is drawn under $\SSBM(n,p,q)$;
@@ -83,7 +83,7 @@ By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\
 represent all vectors with permutations on $X$.
 
 \begin{definition}[Exact recovery in SIBM]
-Let $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,p,q,\alpha,\beta,m)$.
+Let $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k, p,q,\alpha,\beta,m)$.
 We say that exact recovery is solvable for $\SIBM(n,p,q,\alpha,\beta,m)$ if there is an algorithm that takes $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ as inputs and outputs $\hat{X}=\hat{X}(\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ such that
 $$
 P_{\SIBM}(\hat{X} \in \Gamma) \to 1
@@ -205,17 +205,19 @@ Therefore,
 \begin{equation} \label{eq:sMs}
 \begin{aligned}
  \sum_{i,j}M_{ij}I(\bar{\sigma}_i, \bar{\sigma}_j)
-= & a'\sum_{i=1}^k \big( (k-1)(\sum_{r=1}^k \Xi_{ir}^2) - \sum_{r,s=1,r \neq s}^k \Xi_{ir}\Xi_{is} \big)+ b'\sum_{i,j=1, i\neq j}^k  \big( (k-1)  (\Xi_{ir} \Xi_{jr}) - \sum_{r,s=1,r \neq s}^k \Xi_{ir}\Xi_{js}  \big)\\
+= & a'\sum_{i=1}^k \big( (k-1)(\sum_{r=1}^k \Xi_{ir}^2) - \sum_{r,s=1,r \neq s}^k \Xi_{ir}\Xi_{is} \big) \\
++ & b'\sum_{i,j=1, i\neq j}^k  \big( (k-1)  (\Xi_{ir} \Xi_{jr}) - \sum_{r,s=1,r \neq s}^k \Xi_{ir}\Xi_{js}  \big) + O(\log^2 n)\\
 = & a' \sum_{i=1}^k Q_{ii} + b' \sum_{i,j=1,i\neq j}^k Q_{ij} + O(\log^2 n ) \\
- = & \frac{1}{2}\Big(\big(\frac{n}{2}-2u\big)^2 +\big(\frac{n}{2}-2v\big)^2 \Big) \frac{(a\beta-b\beta)\log(n)}{n} \\
-& +\frac{1}{2} (2u-2v)^2
-\frac{(b\beta-\alpha)\log(n)}{n}
-+O(\log^2(n))  .
+ = & ( a' - b') \sum_{i=1}^k Q_{ii} + b' \sum_{i,j=1}^k Q_{ij} + O(\log^2 n ) 
 \end{aligned}
 \end{equation}
-Notice that $u$ and $v$ take values between $0$ and $n/2$.
-According to \eqref{eq:M}, the configuration $\bar{\sigma}$ that maximizes $\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T$ is (roughly) the most likely output of the Ising model.
-Since we assume $a>b$, the term $\frac{1}{2}\Big(\big(\frac{n}{2}-2u\big)^2 +\big(\frac{n}{2}-2v\big)^2 \Big) \frac{(a\beta-b\beta)\log(n)}{n}$ takes maximum at four points $u,v\in\{0,n/2\}$. If $b\beta<\alpha$, then the second term $\frac{1}{2} (2u-2v)^2
+Further we have:
+$$
+\sum_{i,j=1}^k Q_{ij} = \sum_{r,s=1, r<s}^k (\sum_{i=1}^k \Xi_{ir} - \sum_{i=1}^k \Xi_{is})^2
+$$
+Therefore, both the coefficients of $(a'-b')$ and $b'$ are non-negative.
+According to \eqref{eq:M}, the configuration $\bar{\sigma}$ that maximizes $\frac{1}{2}\sum_{i,j} M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j)$ is (roughly) the most likely output of the Ising model.
+Since we assume $a>b$, the term $\sum_{i=1}^k Q_{ii}$ takes maximum at four points $u,v\in\{0,n/2\}$. If $b\beta<\alpha$, then the second term $\frac{1}{2} (2u-2v)^2
 \frac{(b\beta-\alpha)\log(n)}{n}$ takes maximum whenever $u=v$, and if $b\beta>\alpha$, then the second term takes maximum when $|u-v|=n/2$.
 To summarize, if $b\beta<\alpha$, then $\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T$ takes maximum at $u=v=0$ and $u=v=n/2$, i.e., the two maximizers are $\bar{\sigma}=\pm X$. If $b\beta>\alpha$, then $\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T$ takes maximum at $(u=0,v=n/2)$ and $(u=n/2,v=0)$, i.e., the two maximizers are $\bar{\sigma}=\pm \mathbf{1}_n$.
 Taking into account the effect of the error term $\frac{1}{2} \big(\beta+\frac{\alpha\log(n)}{n} \big) \bar{\sigma}  (A-E[A|X])
@@ -225,16 +227,16 @@ Taking into account the effect of the error term $\frac{1}{2} \big(\beta+\frac{\
 Let $a>b>0$ and $\alpha,\beta>0$ be constants. Let $m$ be a positive integer that is upper bounded by some polynomial of $n$.
 Let 
 $$
-(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,a\log(n)/n, b\log(n)/n,k, \alpha,\beta, m) .
 $$
 If $b\beta <\alpha$, then for any (arbitrarily large) $r>0$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
 $$
-P_{\SIBM} \Big(\dist(\sigma^{(i)},\pm X)< 2n/\log^{1/3}(n)
+P_{\SIBM} \Big(\dist(\sigma^{(i)},\pm X)< kn/\log^{1/3}(n)
 \text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
 $$
 If $b\beta >\alpha$, then for any (arbitrarily large) $r>0$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
 $$
-P_{\SIBM} \Big(\dist(\sigma^{(i)},\pm \mathbf{1}_n)< 2n/\log^{1/3}(n)
+P_{\SIBM} \Big(\dist(\sigma^{(i)},\pm \mathbf{1}_n)< kn/\log^{1/3}(n)
 \text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
 $$
 \end{proposition}
