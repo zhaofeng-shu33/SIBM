@@ -216,7 +216,7 @@ $$
 \sum_{i,j=1}^k Q_{ij} = \sum_{r,s=1, r<s}^k (\sum_{i=1}^k \Xi_{ir} - \sum_{i=1}^k \Xi_{is})^2
 $$
 Therefore, both the coefficients of $(a'-b')$ and $b'$ are non-negative.
-According to \eqref{eq:M}, the configuration $\bar{\sigma}$ that maximizes $\frac{1}{2}\sum_{i,j} M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j)$ is (roughly) the most likely output of the Ising model.
+According to \eqref{eq:M}, the configuration $\bar{\sigma}$ that maximizes $\sum_{i,j} M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j)$ is (roughly) the most likely output of the Ising model.
 Since we assume $a>b$, $a'-b' = (a-b) \beta > 0$ and its coefficient term $\sum_{i=1}^k Q_{ii}$ takes maximum when there is only one non-zero term $\frac{n}{k}$ on each row of the matrix $\Xi$. Below we discuss the sign of $b'$.
 
 If $b\beta<\alpha$, then $b' < 0$ and we should let $\sum_{i,j=1}^k Q_{ij} = 0$ to make the whole expression larger. This is equivalent to say the summation of each column of the matrix $\Xi$ are all the same. Combining the two conditions together we can see the maximum value is
@@ -224,15 +224,16 @@ the representation of $S_k$ in $k\times k$ matrix form multiplied by a coefficie
 
 If $b\beta>\alpha$, then $b' > 0$ and we should take the maximum value of $\sum_{i,j=1}^k Q_{ij}$ to make the whole expression larger. We can show that in this case, the maximizer is taken when one column of $\Xi$ is $\frac{n}{k}  \mathbf{1}_k$ and other columns are all zero. And it is further equivalent to the statement $\sigma \in \Theta$.
 
-To summarize, if $b\beta<\alpha$, then $\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T$ takes maximum at $u=v=0$ and $u=v=n/2$, i.e., the two maximizers are $\bar{\sigma}=\pm X$. If $b\beta>\alpha$, then $\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T$ takes maximum at $(u=0,v=n/2)$ and $(u=n/2,v=0)$, i.e., the two maximizers are $\bar{\sigma}=\pm \mathbf{1}_n$.
-Taking into account the effect of the error term $\frac{1}{2} \big(\beta+\frac{\alpha\log(n)}{n} \big) \bar{\sigma}  (A-E[A|X])
-  \bar{\sigma}^T$ in \eqref{eq:M}, we have the following proposition:
+To summarize, if $b\beta<\alpha$, then $\sum_{i,j} M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j)$ takes maximum at $\sigma \in \Gamma$.
+If $b\beta>\alpha$, then the maximum is at$\sigma \in \Theta$.
+Taking into account the effect of the error term $ \sum_{i,j}  (A-E[A|X])_{ij}
+ I(\bar{\sigma}_i, \bar{\sigma}_j)  $ in \eqref{eq:M}, we have the following proposition:
 
 \begin{proposition} \label{prop:1}
 Let $a>b>0$ and $\alpha,\beta>0$ be constants. Let $m$ be a positive integer that is upper bounded by some polynomial of $n$.
 Let 
 $$
-(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,a\log(n)/n, b\log(n)/n,k, \alpha,\beta, m) .
+(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n, \alpha,\beta, m) .
 $$
 If $b\beta <\alpha$, then for any (arbitrarily large) $r>0$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
 $$
