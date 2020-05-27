@@ -687,46 +687,46 @@ The existence of $\cG$ is guaranteed by the following proposition:
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\beta>\beta^\ast$ and $\alpha>b\beta$. 
 Let 
 $
-(X,G,\sigma) \sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
+(X,G,\sigma) \sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
 $
-There is an integer $n_0$ such that for every even integer $n>n_0$ and  every integer $1\le k\le 2n/\log^{1/3}(n)$, there is a set $\cG^{(k)}$ for which
+There is an integer $n_0$ such that for every even integer $n>n_0$ and  every integer $1\le r\le kn/\log^{1/3}(n)$, there is a set $\cG^{(r)}$ for which
 
 \noindent (i)
-$P(G\in\cG^{(k)}) \ge 1- 2 n^{k\tilde{g}(\beta)/8}$ ,
+$P(G\in\cG^{(r)}) \ge 1- k n^{r\tilde{g}(\beta)/8}$ ,
 
-\noindent (ii) For every $G\in\cG^{(k)}$,
+\noindent (ii) For every $G\in\cG^{(r)}$,
 $$
-\sum_{\cI\subseteq[n],|\cI|=k}
+\sum_{\cI\subseteq[n],|\cI|=r}
 \frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
 {P_{\sigma|G}(\sigma=X)} <
-n^{k \tilde{g}(\beta) /2} .
+n^{r \tilde{g}(\beta) /2} .
 $$
 \end{proposition}
-With the $\cG^{(k)}$'s given by Proposition~\ref{prop:big}, we
+With the $\cG^{(r)}$'s given by Proposition~\ref{prop:big}, we
 define 
 $$
-\cG:=\bigcap_{k=1}^{2n/\log^{1/3}(n)} \cG^{(k)} .
+\cG:=\bigcap_{r=1}^{kn/\log^{1/3}(n)} \cG^{(r)} .
 $$
 By the union bound,
 $$
-P(G\in\cG)\ge 1-2 \sum_{k=1}^{2n/\log^{1/3}(n)} n^{k\tilde{g}(\beta)/8}
+P(G\in\cG)\ge 1-2 \sum_{r=1}^{kn/\log^{1/3}(n)} n^{k\tilde{g}(\beta)/8}
 > 1- \frac{2 n^{\tilde{g}(\beta)/8}}{1-n^{\tilde{g}(\beta)/8}}
 =1-o(1),
 $$
 where the last equality follows from $\tilde{g}(\beta)<0$. Moreover, for every $G\in\cG$,
 \begin{align*}
-& \sum_{\cI\subseteq[n],1\le |\cI|\le 2n/\log^{1/3}(n)}
+& \sum_{\cI\subseteq[n],1\le |\cI|\le kn/\log^{1/3}(n)}
 \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} =
-\sum_{k=1}^{2n/\log^{1/3}(n)}
+\sum_{r=1}^{kn/\log^{1/3}(n)}
 \hspace*{0.05in}
-\sum_{\cI\subseteq[n],|\cI|=k}
+\sum_{\cI\subseteq[n],|\cI|=r}
 \frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
 {P_{\sigma|G}(\sigma=X)}  \\
-& < \sum_{k=1}^{2n/\log^{1/3}(n)}
-n^{k \tilde{g}(\beta) /2}
+& < \sum_{r=1}^{kn/\log^{1/3}(n)}
+n^{r \tilde{g}(\beta) /2}
 < \frac{n^{\tilde{g}(\beta)/2}}{1-n^{\tilde{g}(\beta)/2}} =o(1) .
 \end{align*}
-Thus we have shown that Proposition~\ref{prop:tt} is implied by Proposition~\ref{prop:big}. In the rest of this section, we will prove the latter proposition. In Section~\ref{sect:k=1}, we will prove Proposition~\ref{prop:big} for the special case of $k=1$ to illustrate the basic idea of the proof. Then we prove Proposition~\ref{prop:big} for general $k$ in Section~\ref{sect:gen}.
+Thus we have shown that Proposition~\ref{prop:tt} is implied by Proposition~\ref{prop:big}. In the rest of this section, we will prove the latter proposition. In Section~\ref{sect:k=1}, we will prove Proposition~\ref{prop:big} for the special case of $r=1$ to illustrate the basic idea of the proof. Then we prove Proposition~\ref{prop:big} for general $k$ in Section~\ref{sect:gen}.
 
 
 \subsection{Proof of Proposition~\ref{prop:big} for $r=1$} \label{sect:k=1}
@@ -777,35 +777,35 @@ $h'(s)=-ae^{-s}+be^s-kt$ and
 $f''(s)=ae^{-s}+be^s>0$, $f(s)$ is a convex function and takes global minimum at $s^\ast$ such that $h'(s^\ast)=0$. Next we show that $s^\ast>0$ for all $t>\frac{1}{k}(b-a)$, so $\min_{s>0}h(s)=h(s^\ast)$. Indeed, this follows directly from the facts that $h'(0)=b-a-kt<0=h'(s^\ast)$ and that $h'(s)$ is an increasing function. Taking $s^\ast=\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b)$ into \eqref{eq:mmd}, we obtain \eqref{eq:upba} for all $t\in(\frac{1}{2}(b-a), 0]$ and large enough $n$.
 \end{proof}
 
-Note that $A_i$ and $B_i$ are functions of the underlying graph $G$.
+Note that $A^r_i$ are functions of the underlying graph $G$.
 Given a graph $G$, define 
 $$
-\tilde{D}(G):=|\{i\in[n]:B_i- A_i\ge 0\}|
+\tilde{D}(G):=|\{i\in[n]:A^1_i- A^0_i\ge 0\}|
 \text{~~and~~}
-\tilde{D}_i(G):=\mathbbm{1}[B_i-A_i\ge 0] ,
+\tilde{D}_i(G):=\mathbbm{1}[A^1_i- A^0_i\ge 0] ,
 $$
 where $\mathbbm{1}[\cdot]$ is the indicator function. Then
 $\tilde{D}(G)=\sum_{i=1}^n \tilde{D}_i(G)$ and
 $$
 E[\tilde{D}(G)]=\sum_{i=1}^n E[\tilde{D}_i(G)]
-=\sum_{i=1}^n P(B_i- A_i\ge 0).
+=\sum_{i=1}^n P( A^1_i- A^0_i\ge 0).
 $$
 Taking $t=0$ into \eqref{eq:upba}, we have
-$P(B_i- A_i\ge 0)\le \exp\big(\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{2} +o(1)) \big)$. Therefore,
+$P(B_i- A_i\ge 0)\le \exp\big(\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)) \big)$. Therefore,
 $$
-E[\tilde{D}(G)]\le n \exp\Big(\log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{2} +o(1) \big) \Big)
-= n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{2} +o(1)}.
+E[\tilde{D}(G)]\le n \exp\Big(\log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1) \big) \Big)
+= n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)}.
 $$
 By Markov inequality,
 \begin{equation} \label{eq:tD}
 P\big(\tilde{D}(G)=0 \big) = 1-
 P\big(\tilde{D}(G)\ge 1\big) \ge 1- E[\tilde{D}(G)]
-\ge 1- n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{2} +o(1)} .
+\ge 1- n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)} .
 \end{equation}
-Since $\sqrt{a}-\sqrt{b} > \sqrt{2}$, we have
+Since $\sqrt{a}-\sqrt{b} > \sqrt{k}$, we have
 $P\big(\tilde{D}(G)=0 \big)= 1-o(1)$.
 
-Let $X^{(\sim i)}$ be the vector obtained by flipping the $i$th coordinate of $X$ while keeping all the other coordinates to be the same, i.e., $X_i^{(\sim i)}=-X_i$ and $X_j^{(\sim i)}=X_j$ for all $j\neq i$.
+
 Next we calculate the ratio
 $$
 \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
