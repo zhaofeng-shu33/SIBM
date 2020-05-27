@@ -98,6 +98,21 @@ As mentioned above, we consider the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$,
 \vspace*{.1in}
 \noindent{\bf Main Problem:} \emph{For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?}
 
+\vspace*{.1in}  It is this optimal sample size problem that we address---and resolve---in this paper. 
+Our main results read as follows.
+
+\begin{theorem} \label{thm:wt1}
+For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, let
+\begin{equation} \label{eq:defstar}
+\beta^\ast := \frac{1}{k}
+\log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b} \text{~~and~~}
+m^\ast := 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 .
+\end{equation}
+{\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
+If $\beta^\ast/\beta$ is not an integer and $m<m^\ast$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m<m^\ast-2$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
+\end{theorem}
+
 Notation convention:
 For $\cI \subseteq [n]$, we denote the event $\sigma = X^{(\sim \cI)}$ as $\sigma_i \neq X_i$ for all $i \in \cI$ and $\sigma_i = X_i$ for all $i \not\in \cI$.
 When $\cI$ only contains one element, e.g., $\cI=\{i\}$, we write the event $\sigma = X^{(\sim i)}$ instead of $\sigma = X^{(\sim\{i\})}$.
@@ -242,7 +257,52 @@ whenever $\beta>\frac{1}{2k}\log\frac{a}{b}$.
 Below we divide the proof into three cases: (i) $\beta\in(0,\beta^\ast]$, (ii) $\beta\in(\beta^\ast,\frac{1}{2k}\log\frac{a}{b}]$, and (iii) $\beta\in(\frac{1}{2k}\log\frac{a}{b},+\infty)$.
 Case (ii) is the simplest case, and its proof is essentially an application of Markov inequality, so we start with this case.
 
+\subsection{Proof for $\beta\in(\beta^\ast,\frac{1}{2k}\log\frac{a}{b}]$: An application of Markov inequality}
+\label{sect:simreg}
 
+We know that $g(\beta)<0$ for $\beta\in(\beta^\ast,\frac{1}{2k}\log\frac{a}{b}]$. By \eqref{eq:mew} and Markov inequality, for almost all\footnote{By almost all $G$, we mean there is a set $\cG$ such that $P(G\in\cG)=1-o(1)$ and for every $G\in\cG$ certain property holds. The probability $P(G\in\cG)$ is calculated according to SSBM defined in Definition~\ref{def:SSBM}.} $G$, we have $\frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)}=o(1)$. This proves that $\frac{P_{\SIBM} ( \dist(\sigma, X) = 1 )}{P_{\SIBM}(\sigma= X)}=o(1)$ in this interval. With a bit more extra effort, let us also prove that $\frac{P_{\SIBM} ( 1\le \dist(\sigma, X)< kn/\log^{1/3}(n) )}{P_{\SIBM}(\sigma= X)}=o(1)$.
+
+For each $I$, we introduce a vector $v$ with $\mathrm{dim}(v) = |I|=r$. Each element of $v$ takes from $\{\omega, \omega^2, \omega^{k-1}\}$.
+$X^{(\sim I, v)}$ is defined as flipping $i \in I$ as : $X_i \to v_{\mathrm{index}(i)}\cdot X_i$.
+For example, if $I = {1,3}, n=3, v=(\omega^2, \omega)$ then $X^{(\sim I,v)} = (\omega^2 \cdot X_1, X_2, \omega \cdot X_3)$.
+Then $P_{\sigma|G}(\sigma = X^{(\sim I)})=\sum_{v}P_{\sigma|G}(\sigma = X^{(\sim I,v)})$
+
+By definition,
+$$
+\frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)}
+=\sum_{\cI\subseteq[n],|\cI|=r} \frac{P_{\sigma|G} ( \sigma= X^{(\sim \cI)} )} {P_{\sigma|G}(\sigma= X)} .
+$$
+Similarly to $A_i$ and $A^r_i$, for a set $\cI\subseteq[n]$, we define
+define
+$A_{\cI}=A_{\cI}(G):=|\{\{i,j\}\in E(G):  i\in\cI, j\in[n]\setminus\cI, X_j=X_i\}|$ and  
+$B_{\cI,v}=B_{\cI,v}(G):=|\{\{i,j\}\in E(G): i\in\cI, j\in[n]\setminus\cI, X_j= v_{\mathrm{index}(i)} \cdot X_i\}|$.
+Then by \eqref{eq:isingma} one can show that
+$$
+ \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} 
+\le \sum_{v}\exp\Big( k\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI,v}-A_{\cI})
+\Big) = \sum_{v}\exp ( k (\beta + o(1)) (B_{\cI,v}-A_{\cI})
+ ) .
+$$
+Since we are only interested in the case $|\cI|<kn/\log^{1/3}(n)=o(n)$,
+by definition we have $A_{\cI}\sim\Binom((\frac{n}{k}-o(n))|\cI|,\frac{a\log(n)}{n})$ and $B_{\cI}\sim\Binom((\frac{n}{k}-o(n))|\cI|,\frac{b\log(n)}{n})$, and they are independent. Therefore,
+\begin{align*}
+E_G[\exp ( k (\beta +o(1)) (B_{\cI,v}-A_{\cI}) ) ] = &
+\exp\Big(\frac{|\cI|\log(n)}{k} ( a e^{-k\beta}+b e^{k\beta} -a-b +o(1) )
+ \Big) \\
+ = & n^{|\cI|(g(\beta)-1+o(1))} .
+\end{align*}
+As a consequence,
+\begin{equation} \label{eq:nn}
+E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r)}{P_{\sigma|G}(\sigma= X)} \Big]
+\le \sum_{\cI\subseteq[n],|\cI|=r} 
+n^{k (g(\beta)-1+o(1))}
+= \binom{n}{r} (k-1)^r n^{r (g(\beta)-1+o(1))}
+< (k-1)^rn^{r (g(\beta)+o(1))} .
+\end{equation}
+Then by Markov inequality, there is a set $\cG^{(r)}$ such that $P(G\in\cG^{(r)})=1-(k-1)^rn^{r g(\beta)/4}$ and for every $G\in\cG^{(r)}$, $\frac{P_{\sigma|G} ( \dist(\sigma, X) = k )}{P_{\sigma|G}(\sigma= X)} \le (k-1)^rn^{r g(\beta)/2}$.
+Let $\cG=\cap_{r=1}^{kn/\log^{1/3}(n)} \cG^{(r)}$. By union bound, we have $P(G\in\cG)>1-\sum_{r=1}^\infty (k-1)^rn^{r g(\beta)/4} = 1-o(1)$. Moreover, for every $G\in\cG$,
+$\frac{P_{\sigma|G} ( 1\le \dist(\sigma, X)< kn/\log^{1/3}(n) )}{P_{\sigma|G}(\sigma= X)} < \sum_{r=1}^\infty (k-1)^rn^{r g(\beta)/2} = o(1)$.
+This proves that $\frac{P_{\SIBM} ( 1\le \dist(\sigma, X)< kn/\log^{1/3}(n) )}{P_{\SIBM}(\sigma= X)}=o(1)$, and so $P_{\SIBM}(\sigma \in \Gamma)=1-o(1)$ when $\beta\in(\beta^\ast,\frac{1}{2k}\log\frac{a}{b}]$.
 
 \section{Samples are concentrated around $\Gamma$ or $\Theta$} \label{sect:aln}
 In this section, we show that for $a>b$, if $\alpha>b\beta$, then all the samples produced by $\SIBM(n, k,\linebreak[4]
@@ -512,9 +572,152 @@ $$
 $$
 Taking $s=\log\log(n)$ into this bound, we obtain that $\log_2 T=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$.
 \end{proof}
+\section{$\sigma=\pm X$ with probability $1-o(1)$ when $\beta>\beta^\ast$} \label{sect:equal}
 
-\section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}
+Recall the definition of $\beta^\ast$ in \eqref{eq:defstar}.
+\begin{proposition} \label{prop:tt}
+Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{2}$, $\beta>\beta^\ast$ and $\alpha>b\beta$. 
+Let 
+$
+(X,G,\sigma) \sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
+$
+Then
+$$
+P_{\SIBM}(\sigma=X \text{~or~} \sigma=-X)=1-o(1) .
+$$
+\end{proposition}
+
+We have proved in Proposition~\ref{prop:1} that if $\alpha>b\beta$, then $\dist(\sigma,\pm X) \le 2n/\log^{1/3}(n)$
+ with probability $1-o(1)$.
+For $\cI\subseteq[n]$, define $X^{(\sim\cI)}$ as the vector obtained by flipping the coordinates in $\cI$ while keeping all the other coordinates to be the same as $X$, i.e., $X_i^{(\sim\cI)}=-X_i$ for all $i\in\cI$ and $X_i^{(\sim\cI)}=X_i$ for all $i\notin\cI$. 
+Then Proposition~\ref{prop:1} tells us that
+$$
+\sum_{\cI\subseteq[n],~
+2n/\log^{1/3}(n)<|\cI|<n-2n/\log^{1/3}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)})  = o(1) .
+$$
+By definition, $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=-\bar{\sigma})$ for all $\bar{\sigma}\in\{\pm 1\}^n$. Therefore, 
+$$
+\sum_{\cI\subseteq[n],1\le |\cI|\le 2n/\log^{1/3}(n)} P_{\SIBM}(\sigma=-X^{(\sim\cI)}) =\sum_{\cI\subseteq[n],1\le |\cI|\le 2n/\log^{1/3}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)}).
+$$
+As a consequence, to prove Proposition~\ref{prop:tt}, we only need to show that
+$$
+\sum_{\cI\subseteq[n],1\le |\cI|\le 2n/\log^{1/3}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)}) 
+= o(1) .
+$$
+This is further equivalent to proving that there exists a set $\cG$ such that
+
+\noindent (i)
+$P(G\in\cG)=1-o(1)$, where the probability is calculated according to the $\SSBM(n, a\log(n)/n, \linebreak[4] b\log(n)/n)$.
+
+\noindent (ii)
+For every $G\in\cG$,
+$$
+\sum_{\cI\subseteq[n],1\le |\cI|\le 2n/\log^{1/3}(n)}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} =o(1) .
+$$
+In order to prove the existence of such a set $\cG$, we define two functions
+\begin{equation}  \label{eq:gbt}
+\begin{aligned}
+g(\beta) & := \frac{b e^{2\beta}+a e^{-2\beta}}{2}-\frac{a+b}{2}+1 , \\
+\tilde{g}(\beta) & :=\left\{
+\begin{array}{cc}
+  g(\beta)   & \text{~if~} \beta< \frac{1}{4}\log\frac{a}{b} \\
+  g(\frac{1}{4}\log\frac{a}{b})= \sqrt{ab}-\frac{a+b}{2}+1  & \text{~if~} \beta\ge \frac{1}{4}\log\frac{a}{b}
+\end{array}
+\right. ,
+\end{aligned}
+\end{equation}
+and we will prove in Lemma~\ref{lm:ele} below (see the end of Section~\ref{sect:k=1}) that $\tilde{g}(\beta)<0$ under the conditions of Proposition~\ref{prop:tt} (i.e., $\sqrt{a}-\sqrt{b} > \sqrt{2}$ and $\beta>\beta^\ast$).
+The existence of $\cG$ is guaranteed by the following proposition:
+\begin{proposition} \label{prop:big}
+Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{2}$, $\beta>\beta^\ast$ and $\alpha>b\beta$. 
+Let 
+$
+(X,G,\sigma) \sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
+$
+There is an integer $n_0$ such that for every even integer $n>n_0$ and  every integer $1\le k\le 2n/\log^{1/3}(n)$, there is a set $\cG^{(k)}$ for which
+
+\noindent (i)
+$P(G\in\cG^{(k)}) \ge 1- 2 n^{k\tilde{g}(\beta)/8}$ ,
+
+\noindent (ii) For every $G\in\cG^{(k)}$,
+$$
+\sum_{\cI\subseteq[n],|\cI|=k}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)} <
+n^{k \tilde{g}(\beta) /2} .
+$$
+\end{proposition}
+With the $\cG^{(k)}$'s given by Proposition~\ref{prop:big}, we
+define 
+$$
+\cG:=\bigcap_{k=1}^{2n/\log^{1/3}(n)} \cG^{(k)} .
+$$
+By the union bound,
+$$
+P(G\in\cG)\ge 1-2 \sum_{k=1}^{2n/\log^{1/3}(n)} n^{k\tilde{g}(\beta)/8}
+> 1- \frac{2 n^{\tilde{g}(\beta)/8}}{1-n^{\tilde{g}(\beta)/8}}
+=1-o(1),
+$$
+where the last equality follows from $\tilde{g}(\beta)<0$. Moreover, for every $G\in\cG$,
+\begin{align*}
+& \sum_{\cI\subseteq[n],1\le |\cI|\le 2n/\log^{1/3}(n)}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} =
+\sum_{k=1}^{2n/\log^{1/3}(n)}
+\hspace*{0.05in}
+\sum_{\cI\subseteq[n],|\cI|=k}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)}  \\
+& < \sum_{k=1}^{2n/\log^{1/3}(n)}
+n^{k \tilde{g}(\beta) /2}
+< \frac{n^{\tilde{g}(\beta)/2}}{1-n^{\tilde{g}(\beta)/2}} =o(1) .
+\end{align*}
+Thus we have shown that Proposition~\ref{prop:tt} is implied by Proposition~\ref{prop:big}. In the rest of this section, we will prove the latter proposition. In Section~\ref{sect:k=1}, we will prove Proposition~\ref{prop:big} for the special case of $k=1$ to illustrate the basic idea of the proof. Then we prove Proposition~\ref{prop:big} for general $k$ in Section~\ref{sect:gen}.
+
+
+\subsection{Proof of Proposition~\ref{prop:big} for $r=1$} \label{sect:k=1}
+\subsection{Proof of Proposition~\ref{prop:big} for general $r$} \label{sect:gen}
+We want to bound the ratio
+$$
+\sum_{\cI\subseteq[n]:|\cI|=r}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)}
+$$
+for all $r\le kn/\log^{1/3}(n)$.
+To that end,
+for $\cI\subseteq[n]$ and an index vector $v$ of $\cI$,
+define the different parts of $\cI$ as
+$$
+\cI_j:=\{i\in\cI:X_i= \omega^j\}, j=0, 1, \dots, k-1 \text{ and } \cI_{j_1,j_2}:=\{i\in\cI:X_i= \omega^{j_1}, v_{\mathrm{index}(i)} = \omega^{j_2}\}
+$$
+and define 
+$$
+\nabla \cI:=\{\{i,j\}:i\in\cI,j\in[n]\setminus\cI\} .
+$$
+We further define
+$$
+\nabla\cI_+:=\{\{i,j\}\in\nabla\cI:X_i=X_j\}
+\quad \text{and} \quad
+\nabla\cI_v:=\{\{i,j\}\in\nabla\cI:X_j= v_{\mathrm{index}(i)} \cdot X_i\}.
+$$
+Then 
+\begin{equation} \label{eq:partial}
+\begin{aligned}
+& |\nabla\cI_+|=\sum_{j=0}^{k-1}|\cI_j|(\frac{n}{k}-|\cI_j|)
+=\frac{n}{k}|\cI|- \sum_{j=0}^{k-1}|\cI_j|^2 , \\
+& |\nabla\cI_v|=\sum_{j_1,j_2=0}^{k-1}|\cI_{j_1, j_2}|(\frac{n}{k}-|\cI_{j_1+j_2}|) =\frac{n}{k}|\cI|
+-\sum_{j_1,j_2=0}^{k-1} |\cI_{j_1,j_2}||\cI_{j_1+j_2}|.
+\end{aligned}
+\end{equation}
+Given a graph $G$,
+define
+\begin{align*}
+& A_{\cI}=A_{\cI}(G):=|\{\{i,j\}\in\nabla\cI\cap E(G):X_i=X_j\}| ,  \\
+& B_{\cI}=B_{\cI}(G):=|\{\{i,j\}\in\nabla\cI\cap E(G):X_j= v_{\mathrm{index}(i)} \cdot X_i\}| .
+\end{align*}
+we have $|A_{\cI}|=|\nabla \cI_+|, |B_{\cI}|=|\nabla \cI_v|$.
+
 \label{sect:converse}
+\section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}
 
 \appendix
 \section{Auxiliary lemmas used in Section}
