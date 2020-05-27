@@ -335,7 +335,7 @@ D(G,t) \exp (k\beta t \log(n) ) .
 This indicates that there is a ``cut-off" effect at $t>0$, i.e., $D(G,t) \exp (2\beta t \log(n) )=0$ for all positive $t$ with probability $1-o(1)$, although its expectation can be very large, as we will show next.
 Define a function
 $$
-f_{\beta}(t):=\sqrt{t^2+ab} -t\big(\log(\sqrt{t^2+ab}+t)-\log(b) \big) -\frac{a+b}{2} +1 +2\beta t.
+f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big) -\frac{a+b}{k} +1 +k\beta t.
 $$
 Using Chernoff bound, one can show that 
 $$
@@ -343,13 +343,20 @@ E[D(G,t)
 \exp\big(2\beta t \log(n) \big)]
 \le \exp( f_{\beta}(t) \log(n) ) .
 $$
-(Using a more careful analysis, one can show that this bound is tight up to a $\frac{1}{\sqrt{\log(n)}}$ factor; see Appendix~\ref{ap:um}.)
-The function $f_{\beta}(t)$ is a concave function and takes maximum value at $t^\ast=\frac{b e^{2\beta}-a e^{-2\beta}}{2}$, and its maximum value is $f_{\beta}(t^\ast)=\frac{b e^{2\beta}+a e^{-2\beta}}{2}-\frac{a+b}{2}+1
+with probability one (Using a more careful analysis, one can show that this bound is tight up to a $\frac{1}{\sqrt{\log(n)}}$ factor; see Appendix~\ref{ap:um}.)
+The function $f_{\beta}(t)$ is a concave function and takes maximum value at $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}$, and its maximum value is $f_{\beta}(t^\ast)=\frac{b e^{k\beta}+a e^{-k\beta}}{k}-\frac{a+b}{k}+1
 =g(\beta)$.
-Therefore, if we take expectation on both sides of \eqref{eq:gour}, then the sum on the right-hand side is concentrated on a small neighborhood of $t^\ast$. When $\beta>\frac{1}{4}\log\frac{a}{b}$, we have $t^\ast>0$. Due to the ``cut-off" effect at $t>0$, we have $D(G,t)=0$ for all $t$ in the neighborhood of $t^\ast$ with probability $1-o(1)$, so the main contribution to the expectation comes from a rare event $G\notin\cG_1$. This explains why the behavior of a typical graph $G$ deviates from the behavior of the expectation.
-Since $f_{\beta}(t)$ is a concave function, the sum $E[\sum_{t\log(n)=-n/2}^{-1}
-D(G,t) \exp (2\beta t \log(n) )]$ is upper bounded by $O(\log(n))n^{f_{\beta}(0)}$  when $t^\ast>0$. Notice that $f_{\beta}(0)=g(\frac{1}{4}\log\frac{a}{b})=1-\frac{(\sqrt{a}-\sqrt{b})^2}{2}<0$. Now using \eqref{eq:duj} and Markov inequality, we conclude that $\sum_{i=1}^n \exp (2 \beta (B_i-A_i))=o(1)$ for almost all $G$, and so $\frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)} =o(1)$ for almost all $G$. Thus we have shown that $\frac{P_{\SIBM} ( \dist(\sigma, X) = 1 )}{P_{\SIBM}(\sigma= X)}=o(1)$ when $\beta>\frac{1}{4}\log\frac{a}{b}$. The analysis of $\frac{P_{\SIBM} ( \dist(\sigma, X) = k )}{P_{\SIBM}(\sigma= X)}$ for $1\le k<2n/\log^{1/3}(n)$ is similar to the analysis in Section~\ref{sect:simreg}, and we do not repeat it here. By now we have given a sketched proof of
-$P_{\SIBM}(\sigma=\pm X)=1-o(1)$ when $\beta>\beta^\ast$; see Section~\ref{sect:equal} for a rigorous proof. Next we move to the case $\beta\le\beta^\ast$.
+Therefore, if we take expectation on both sides of \eqref{eq:gour}, then the sum on the right-hand side is concentrated on a small neighborhood of $t^\ast$. When $\beta>\frac{1}{2k}\log\frac{a}{b}$, we have $t^\ast>0$. Due to the ``cut-off" effect at $t>0$, we have $D(G,t)=0$ for all $t$ in the neighborhood of $t^\ast$ with probability $1-o(1)$, so the main contribution to the expectation comes from a rare event $G\notin\cG_1$. This explains why the behavior of a typical graph $G$ deviates from the behavior of the expectation.
+Since $f_{\beta}(t)$ is a concave function, the sum $E[\sum_{t\log(n)=-n/k}^{-1}
+D(G,t) \exp (k\beta t \log(n) )]$
+is upper bounded by $O(\log(n))n^{f_{\beta}(0)}$  when $t^\ast>0$.
+Notice that $f_{\beta}(0)=g(\frac{1}{2k}\log\frac{a}{b})=1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}<0$.
+Now using \eqref{eq:duj} and Markov inequality, we conclude that $\sum_{i=1}^n \exp (2 \beta (A^r_i-A^0_i))=o(1)$ for almost all $G$,
+and so $\frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)} =o(1)$ for almost all $G$. Thus we have shown that $\frac{P_{\SIBM} ( \dist(\sigma, X) = 1 )}{P_{\SIBM}(\sigma= X)}=o(1)$ when
+$\beta>\frac{1}{2r}\log\frac{a}{b}$.
+The analysis of $\frac{P_{\SIBM} ( \dist(\sigma, X) = r )}{P_{\SIBM}(\sigma= X)}$ for $1\le r<kn/\log^{1/3}(n)$ is
+similar to the analysis in Section~\ref{sect:simreg}, and we do not repeat it here. By now we have given a sketched proof of
+$P_{\SIBM}(\sigma \in \Gamma)=1-o(1)$ when $\beta>\beta^\ast$; see Section~\ref{sect:equal} for a rigorous proof. Next we move to the case $\beta\le\beta^\ast$.
 
 \section{Samples are concentrated around $\Gamma$ or $\Theta$} \label{sect:aln}
 In this section, we show that for $a>b$, if $\alpha>b\beta$, then all the samples produced by $\SIBM(n, k,\linebreak[4]
@@ -677,7 +684,7 @@ g(\beta) & := \frac{b e^{k\beta}+a e^{-k\beta}}{k}-\frac{a+b}{k}+1 , \\
 and we will prove in Lemma~\ref{lm:ele} below (see the end of Section~\ref{sect:k=1}) that $\tilde{g}(\beta)<0$ under the conditions of Proposition~\ref{prop:tt} (i.e., $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\beta>\beta^\ast$).
 The existence of $\cG$ is guaranteed by the following proposition:
 \begin{proposition} \label{prop:big}
-Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{2}$, $\beta>\beta^\ast$ and $\alpha>b\beta$. 
+Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\beta>\beta^\ast$ and $\alpha>b\beta$. 
 Let 
 $
 (X,G,\sigma) \sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
@@ -723,6 +730,284 @@ Thus we have shown that Proposition~\ref{prop:tt} is implied by Proposition~\ref
 
 
 \subsection{Proof of Proposition~\ref{prop:big} for $r=1$} \label{sect:k=1}
+
+Given the ground truth $X$, a graph $G$ and a vertex $i\in[n]$, define
+\begin{equation} \label{eq:defAB}
+A^r_i=A^r_i(G):=\{j\in[n]\setminus\{i\}:\{i,j\}\in E(G), X_j= \omega^r \cdot X_i\} 
+\end{equation}
+Next we give an upper bound on $P(A^1_i-A^0_i\ge t\log(n))$ for $t\in [\frac{1}{k}(b-a), 0]$. We take the left boundary to be $\frac{1}{k}(b-a)$ because $\frac{E[A^1_i-A^0_i]}{\log(n)}\to\frac{1}{k}(b-a)$ as $n\to\infty$.
+\begin{proposition}  \label{prop:cher}
+For $t\in [\frac{1}{k}(b-a), 0]$,
+\begin{equation} \label{eq:upba}
+\begin{aligned}
+& P(A^1_i-A^0_i\ge t\log(n))  \\
+\le &  \exp\Big(\frac{\log(n)}{k}
+\Big(\sqrt{k^2t^2+4ab} -kt\log\frac{\sqrt{k^2t^2+4ab}+kt}{2b} -a-b + O\big(\frac{\log(n)}{n}\big) \Big)\Big) .
+\end{aligned}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+When $t=\frac{1}{k}(b-a)$, the right-hand side of \eqref{eq:upba} is equal to $1$, so we only need to prove \eqref{eq:upba} for $t\in (\frac{1}{k}(b-a), 0]$.
+By definition,
+$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$ and $A^1_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$, and they are independent.
+The moment generating function of $A^1_i-A^0_i$ is
+\begin{align*}
+E[e^{s(A^1_i-A^0_i)}]
+& =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{n/k}
+\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n/k-1}  \\
+& = 
+\exp\Big(\frac{\log(n)}{k} \Big( b e^s-b +O\big(\frac{\log(n)}{n}\big) \Big)\Big)
+\exp\Big(\frac{\log(n)}{k} \Big( a e^{-s}-a + O\big(\frac{\log(n)}{n}\big) \Big) \Big)
+ \\
+& = 
+\exp\Big(\frac{\log(n)}{k} \Big( a e^{-s}+b e^s-a-b + O\big(\frac{\log(n)}{n}\big) \Big)\Big) ,
+\end{align*}
+where we use the Taylor expansion $\log(1+x)=x+O(x^2)$ to obtain the second equality.
+By Chernoff bound, for any $s>0$, we have
+\begin{equation} \label{eq:mmd}
+\begin{aligned}
+& P(A^1_i-A^0_i\ge t\log(n))\le
+\frac{E[e^{s(A^1_i-A^0_i)}]}{e^{st\log(n)}}  \\
+ \le & \exp\Big(\frac{\log(n)}{k} \Big( a e^{-s}+b e^s -kst -a-b + O\big(\frac{\log(n)}{n}\big) \Big)\Big)  .
+ \end{aligned}
+\end{equation}
+Let $h(s):=a e^{-s}+be^s-kst$. We want to find $\min_{s>0} h(s)$ to plug into the above upper bound. Since 
+$h'(s)=-ae^{-s}+be^s-kt$ and 
+$f''(s)=ae^{-s}+be^s>0$, $f(s)$ is a convex function and takes global minimum at $s^\ast$ such that $h'(s^\ast)=0$. Next we show that $s^\ast>0$ for all $t>\frac{1}{k}(b-a)$, so $\min_{s>0}h(s)=h(s^\ast)$. Indeed, this follows directly from the facts that $h'(0)=b-a-kt<0=h'(s^\ast)$ and that $h'(s)$ is an increasing function. Taking $s^\ast=\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b)$ into \eqref{eq:mmd}, we obtain \eqref{eq:upba} for all $t\in(\frac{1}{2}(b-a), 0]$ and large enough $n$.
+\end{proof}
+
+Note that $A_i$ and $B_i$ are functions of the underlying graph $G$.
+Given a graph $G$, define 
+$$
+\tilde{D}(G):=|\{i\in[n]:B_i- A_i\ge 0\}|
+\text{~~and~~}
+\tilde{D}_i(G):=\mathbbm{1}[B_i-A_i\ge 0] ,
+$$
+where $\mathbbm{1}[\cdot]$ is the indicator function. Then
+$\tilde{D}(G)=\sum_{i=1}^n \tilde{D}_i(G)$ and
+$$
+E[\tilde{D}(G)]=\sum_{i=1}^n E[\tilde{D}_i(G)]
+=\sum_{i=1}^n P(B_i- A_i\ge 0).
+$$
+Taking $t=0$ into \eqref{eq:upba}, we have
+$P(B_i- A_i\ge 0)\le \exp\big(\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{2} +o(1)) \big)$. Therefore,
+$$
+E[\tilde{D}(G)]\le n \exp\Big(\log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{2} +o(1) \big) \Big)
+= n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{2} +o(1)}.
+$$
+By Markov inequality,
+\begin{equation} \label{eq:tD}
+P\big(\tilde{D}(G)=0 \big) = 1-
+P\big(\tilde{D}(G)\ge 1\big) \ge 1- E[\tilde{D}(G)]
+\ge 1- n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{2} +o(1)} .
+\end{equation}
+Since $\sqrt{a}-\sqrt{b} > \sqrt{2}$, we have
+$P\big(\tilde{D}(G)=0 \big)= 1-o(1)$.
+
+Let $X^{(\sim i)}$ be the vector obtained by flipping the $i$th coordinate of $X$ while keeping all the other coordinates to be the same, i.e., $X_i^{(\sim i)}=-X_i$ and $X_j^{(\sim i)}=X_j$ for all $j\neq i$.
+Next we calculate the ratio
+$$
+\frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
+{P_{\sigma|G}(\sigma=X)} .
+$$
+By \eqref{eq:isingma}, we have
+\begin{align*}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim i)} )}
+{P_{\sigma|G}(\sigma=X)}
+& = \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_i-A_i)
+-\frac{2\alpha\log(n)}{n} \Big) \\
+& \le \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_i-A_i) \Big)  .
+\end{align*}
+Since $B_i-A_i$ takes integer value between $-n/2$ and $n/2$,
+we can use indicator functions to write
+\begin{align*}
+& \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_i-A_i) \Big) \\
+= & \sum_{t\log(n)=-n/2}^{n/2}
+\mathbbm{1}[B_i-A_i=t \log(n)] \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big) ,
+\end{align*}
+where the quantity $t\log(n)$ ranges over all integer values from $-n/2$ to $n/2$ in the summation on the second line.
+Define $D(G,t):=|\{i\in[n]:B_i-A_i= t\log(n)\}|$ and notice that $D(G,t)=\sum_{i=1}^n \mathbbm{1}[B_i-A_i=t \log(n)]$.
+Therefore,
+\begin{equation}  \label{eq:fd}
+\begin{aligned}
+ & \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
+{P_{\sigma|G}(\sigma=X)}
+\le \sum_{i=1}^n \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_i-A_i) \Big) \\
+= & \sum_{i=1}^n
+\hspace*{0.05in}
+\sum_{t\log(n)=-n/2}^{n/2}
+\mathbbm{1}[B_i-A_i=t \log(n)] \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big) \\
+= & \sum_{t\log(n)=-n/2}^{n/2}
+D(G,t) \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big)
+\end{aligned}
+\end{equation}
+Define a set 
+$$
+\cG_1:=\{G:\tilde{D}(G)=0\}.
+$$
+By \eqref{eq:tD}, $P(G\in\cG_1)= 1-o(1)$. By definition of $\tilde{D}(G)$, $G\in\cG_1$ implies that $D(G,t)=0$ for all $t\ge 0$. Therefore, for $G\in\cG_1$, we have
+\begin{equation} \label{eq:lq}
+\begin{aligned}
+& \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
+{P_{\sigma|G}(\sigma=X)}
+\le \sum_{t\log(n)=-n/2}^{-1}
+D(G,t) \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big)   \\
+\overset{(a)}{\le} & \sum_{t\log(n)=-n/2}^{-1}
+D(G,t) \exp\big(2\beta t \log(n) \big) \\
+= & \sum_{t\log(n)=-n/2}^{\lfloor\frac{b-a}{2}\log(n) \rfloor} D(G,t)
+\exp\big(2\beta t \log(n) \big)  + \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1} D(G,t)
+\exp\big(2\beta t \log(n) \big) \\
+\le & \sum_{t\log(n)=-n/2}^{\lfloor\frac{b-a}{2}\log(n) \rfloor} D(G,t)
+\exp\big(\beta(b-a)\log(n) \big)  + \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1} D(G,t)
+\exp\big(2\beta t \log(n) \big)  \\
+\overset{(b)}{\le} & n
+\exp\big(\beta(b-a)\log(n) \big)  + \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1} D(G,t)
+\exp\big(2\beta t \log(n) \big) ,
+\end{aligned}
+\end{equation}
+where inequality $(a)$ holds because $t\log(n)$ only takes negative values in the summation, and inequality $(b)$ follows from the trivial upper bound
+$\sum_{t\log(n)=-n/2}^{\lfloor\frac{b-a}{2}\log(n) \rfloor} D(G,t)\le n$.
+Define a function
+\begin{equation} \label{eq:gt}
+f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big) -\frac{a+b}{k} +1 +k\beta t.
+\end{equation}
+Then for $t\in [\frac{1}{2}(b-a), 0]$, we have 
+\begin{align*}
+& E[D(G,t)
+\exp\big(2\beta t \log(n) \big)] \\
+= & \sum_{i=1}^n E[\mathbbm{1}[B_i-A_i=t \log(n)]] \exp\big(2\beta t \log(n) \big) \\
+= & \sum_{i=1}^n P\big(B_i-A_i=t \log(n) \big) \exp\big(2\beta t \log(n) \big) \\
+\le & \sum_{i=1}^n P\big(B_i-A_i \ge t \log(n) \big) \exp\big(2\beta t \log(n) \big) \\
+\le &  \sum_{i=1}^n \exp\Big(\log(n)
+\Big(\sqrt{t^2+ab} -t\big(\log(\sqrt{t^2+ab}+t)-\log(b) \big) -\frac{a+b}{2} +2\beta t +o(1)\Big)\Big) \\
+= &  n^{f_{\beta}(t) +o(1)} ,
+\end{align*}
+where the second inequality follows from \eqref{eq:upba}.
+For $\epsilon>0$, define a set
+$$
+\cG(\epsilon):=\left\{
+\sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1} D(G,t)
+\exp\big(2\beta t \log(n) \big)
+\le \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1}
+ n^{f_{\beta}(t) + \epsilon}
+\right\} .
+$$
+Then by Markov inequality,
+\begin{equation} \label{eq:mk}
+P(G\in \cG(\epsilon))\ge 1-n^{-(\epsilon-o(1))} >
+1-n^{-\epsilon/2}
+\end{equation}
+for large $n$ and positive $\epsilon$.
+Using \eqref{eq:lq}, we obtain that for $G\in\cG_1\cap\cG(\epsilon)$,
+\begin{equation}  \label{eq:zz}
+\begin{aligned}
+\frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
+{P_{\sigma|G}(\sigma=X)} 
+& \le n
+\exp\big(\beta(b-a)\log(n) \big)  + \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \epsilon} \\
+& = n^{f_{\beta}((b-a)/2)} + \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \epsilon} ,
+\end{aligned}
+\end{equation}
+where the equality follows from the fact that $f_{\beta}(\frac{1}{2}(b-a))=\beta(b-a)+1$.
+Recall the definitions of the functions $g(\beta)$ and $\tilde{g}(\beta)$ in \eqref{eq:gbt}.
+By Lemma~\ref{lm:tus} below, we have
+$f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
+Combining this with \eqref{eq:zz}, we obtain that for
+$G\in\cG_1\cap\cG(\epsilon)$,
+\begin{equation} \label{eq:lh}
+\begin{aligned}
+& \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
+{P_{\sigma|G}(\sigma=X)} 
+\le n^{\tilde{g}(\beta)}
++ \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1}  n^{\tilde{g}(\beta) + \epsilon}  \\
+& \le n^{\tilde{g}(\beta) + \epsilon}
+\big(\frac{a-b}{2}\log(n)+1 \big)
+< n^{\tilde{g}(\beta) + 2\epsilon} 
+\end{aligned}
+\end{equation}
+for large $n$ and positive $\epsilon$.
+Let $\epsilon=-\tilde{g}(\beta)/4>0$ and define
+$$
+\cG^{(1)}:=\cG_1\cap\cG(-\tilde{g}(\beta)/4) .
+$$
+By \eqref{eq:lh}, for $G\in\cG^{(1)}$ we have
+$$
+\frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
+{P_{\sigma|G}(\sigma=X)} <
+n^{\tilde{g}(\beta) /2} .
+$$
+By \eqref{eq:tD} and \eqref{eq:mk}, 
+$$
+P(G\in\cG^{(1)})\ge 1-n^{\tilde{g}(\beta)/8}- n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{2}+o(1)}> 1- 2n^{\tilde{g}(\beta)/8},
+$$
+where the last inequality follows from the fact that $1-\frac{(\sqrt{a}-\sqrt{b})^2}{2}\le
+\tilde{g}(\beta)<\tilde{g}(\beta)/8< 0$.
+This completes the proof of Proposition~\ref{prop:big} for the special case of $k=1$. 
+Next we prove the two auxiliary lemmas used above.
+\begin{lemma}[Elementary properties of $\beta^\ast$ defined in \eqref{eq:defstar}] \label{lm:ele}
+Let $g(\beta)$ and $\tilde{g}(\beta)$ be the functions defined in \eqref{eq:gbt}. Assume that $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
+Then,
+
+\begin{enumerate}[label=(\roman*)]
+\item The equation $g(\beta) = 0$ has two roots, and the smaller one of them is $\beta^\ast$.
+
+\item Denote the other root as $\beta'$. Then
+$\beta^\ast< \frac{1}{2k}\log\frac{a}{b} <\beta'$.
+
+\item $g(\beta)<0$ for all $\beta^\ast< \beta \le \frac{1}{2k}\log\frac{a}{b}$.
+
+\item $\tilde{g}(\beta)<0$ for all $\beta>\beta^\ast$.
+
+\item $\tilde{g}(\beta)$ is a decreasing function in $[0,+\infty)$. 
+
+\item $\tilde{g}(\beta)<1$ for all $\beta>0$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+{\bf Proof of (i)}:
+We write $x=e^{k\beta}$. Then $g(\beta)=0$ can be written as $bx^2-(a+b-k)x+a=0$. This quadratic equation has two roots if and only if $(a+b-k)^2-4ab>0$, which is guaranteed by the assumption $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
+The two roots of $bx^2-(a+b-k)x+a=0$ are
+$x^\ast=\frac{a+b-k - \sqrt{(a+b-k)^2-4ab}}{2b}$ and $x'=\frac{a+b-k + \sqrt{(a+b-k)^2-4ab}}{2b}$.
+Therefore, $\beta^\ast=\frac{1}{k}\log(x^\ast)$ and $\beta'=\frac{1}{k}\log(x')$.
+{\bf Proof of (ii)}:
+Since $x^\ast x'=\frac{a}{b}=(\sqrt{\frac{a}{b}})^2$, we have $x^\ast<\sqrt{\frac{a}{b}}<x'$, so $\beta^\ast< \frac{1}{2k}\log\frac{a}{b} <\beta'$.
+{\bf Proof of (iii)}:
+Since $b>0$, $bx^2-(a+b-k)x+a<0$ if and only if $x^\ast<x<x'$. Therefore, $g(\beta)<0$ if and only if $\beta^\ast< \beta <\beta'$. This implies (iii). 
+{\bf Proof of (iv)}: (iv) follows directly from (iii).
+{\bf Proof of (v)}: $g'(\beta)=b e^{k\beta} - a e^{-k\beta}$, so $g'(\beta)<0$ for $0\le \beta<\frac{1}{2k}\log\frac{a}{b}$, and $g(\beta)$ takes minimum value at $\beta=\frac{1}{2k}\log\frac{a}{b}$. This implies (v).
+{\bf Proof of (vi)}: (vi) follows directly from (v) and the fact that $\tilde{g}(0)=1$.
+\end{proof}
+
+
+
+
+
+
+
+
+
+\begin{lemma} \label{lm:tus}
+Let $f_{\beta}(t)$ be the function defined in \eqref{eq:gt}. If $a>b>0$, then $f_{\beta}(t)\le \tilde{g}(\beta)$ for all $t\le 0$.
+If $\sqrt{a}-\sqrt{b}>\sqrt{k}$
+and $\beta>\beta^\ast$, then we further have $f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
+\end{lemma}
+\begin{proof}
+The first and second derivatives are
+$f_{\beta}'(t)=
+-\log(\sqrt{k^2 t^2+4ab}+kt)+\log(2b) +k\beta$ and $f_{\beta}''(t)=-\frac{k}{\sqrt{k^2 t^2+4ab}}<0$.
+Therefore $f_{\beta}(t)$ is a concave function and takes global maximum at $t^\ast$ such that $f_{\beta}'(t^\ast)=0$.
+Simple calculation shows that 
+$$
+t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k} \quad \text{~and~} \quad
+f_{\beta}(t^\ast)=\frac{b e^{k\beta}+a e^{-k\beta}}{k}-\frac{a+b}{k}+1
+=g(\beta) .
+$$
+We divide the proof into two cases. {\bf Case 1}: If $\beta\ge \frac{1}{2k}\log\frac{a}{b}$, then $t^\ast\ge 0$. Since $f_{\beta}(t)$ is an increasing function for $t\le t^\ast$, we have $f_{\beta}(t)\le f_{\beta}(0)=1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}= \tilde{g}(\beta)$ for all $t\le 0$.
+{\bf Case 2}: If $\beta< \frac{1}{2k}\log\frac{a}{b}$, then we simply use the global maximum $f_{\beta}(t^\ast)$ to upper bound $f_{\beta}(t)$, i.e., $f_{\beta}(t)\le f_{\beta}(t^\ast)=g(\beta)$ for all $t$.
+Combining these two cases, we have $f_{\beta}(t)\le \tilde{g}(\beta)$ for all $t\le 0$ as long as $a>b>0$.
+If $\sqrt{a}-\sqrt{b}>\sqrt{k}$ and $\beta>\beta^\ast$, then by property (iv) of Lemma~\ref{lm:ele} we further have $f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
+\end{proof}
 \subsection{Proof of Proposition~\ref{prop:big} for general $r$} \label{sect:gen}
 We want to bound the ratio
 $$
