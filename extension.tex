@@ -692,7 +692,7 @@ $
 There is an integer $n_0$ such that for every even integer $n>n_0$ and  every integer $1\le r\le kn/\log^{1/3}(n)$, there is a set $\cG^{(r)}$ for which
 
 \noindent (i)
-$P(G\in\cG^{(r)}) \ge 1- k n^{r\tilde{g}(\beta)/8}$ ,
+$P(G\in\cG^{(r)}) \ge 1- 2(k-1) n^{r\tilde{g}(\beta)/8}$ ,
 
 \noindent (ii) For every $G\in\cG^{(r)}$,
 $$
@@ -780,26 +780,26 @@ $f''(s)=ae^{-s}+be^s>0$, $f(s)$ is a convex function and takes global minimum at
 Note that $A^r_i$ are functions of the underlying graph $G$.
 Given a graph $G$, define 
 $$
-\tilde{D}(G):=|\{i\in[n]:A^1_i- A^0_i\ge 0\}|
+\tilde{D}_r(G):=|\{i\in[n]:A^r_i- A^0_i\ge 0\}|
 \text{~~and~~}
-\tilde{D}_i(G):=\mathbbm{1}[A^1_i- A^0_i\ge 0] ,
+\tilde{D}_{ri}(G):=\mathbbm{1}[A^r_i- A^0_i\ge 0] ,
 $$
 where $\mathbbm{1}[\cdot]$ is the indicator function. Then
-$\tilde{D}(G)=\sum_{i=1}^n \tilde{D}_i(G)$ and
+$\tilde{D}_r(G)=\sum_{i=1}^n \tilde{D}_{ri}(G)$ and
 $$
-E[\tilde{D}(G)]=\sum_{i=1}^n E[\tilde{D}_i(G)]
-=\sum_{i=1}^n P( A^1_i- A^0_i\ge 0).
+E[\tilde{D}_r(G)]=\sum_{i=1}^n E[\tilde{D}_{ri}(G)]
+=\sum_{i=1}^n P( A^r_i- A^0_i\ge 0).
 $$
 Taking $t=0$ into \eqref{eq:upba}, we have
-$P(B_i- A_i\ge 0)\le \exp\big(\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)) \big)$. Therefore,
+$P(A^r_i- A^0_i\ge 0)\le \exp\big(\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)) \big)$. Therefore,
 $$
-E[\tilde{D}(G)]\le n \exp\Big(\log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1) \big) \Big)
+E[\tilde{D}_r(G)]\le n \exp\Big(\log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1) \big) \Big)
 = n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)}.
 $$
 By Markov inequality,
 \begin{equation} \label{eq:tD}
-P\big(\tilde{D}(G)=0 \big) = 1-
-P\big(\tilde{D}(G)\ge 1\big) \ge 1- E[\tilde{D}(G)]
+P\big(\tilde{D}_r(G)=0 \big) = 1-
+P\big(\tilde{D}_r(G)\ge 1\big) \ge 1- E[\tilde{D}_r(G)]
 \ge 1- n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)} .
 \end{equation}
 Since $\sqrt{a}-\sqrt{b} > \sqrt{k}$, we have
@@ -815,101 +815,101 @@ By \eqref{eq:isingma}, we have
 \begin{align*}
 \frac{P_{\sigma|G}(\sigma=X^{(\sim i)} )}
 {P_{\sigma|G}(\sigma=X)}
-& = \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_i-A_i)
--\frac{2\alpha\log(n)}{n} \Big) \\
-& \le \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_i-A_i) \Big)  .
+& = \sum_{r=1}^{k-1}\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i)
+-\frac{2(k-1)\alpha\log(n)}{n} \Big) \\
+& \le \sum_{r=1}^{k-1}\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \Big)  .
 \end{align*}
-Since $B_i-A_i$ takes integer value between $-n/2$ and $n/2$,
+Since $A^r_i-A^0_i$ takes integer value between $-n/k$ and $n/k$,
 we can use indicator functions to write
 \begin{align*}
-& \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_i-A_i) \Big) \\
-= & \sum_{t\log(n)=-n/2}^{n/2}
-\mathbbm{1}[B_i-A_i=t \log(n)] \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big) ,
+& \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \Big) \\
+= & \sum_{t\log(n)=-n/k}^{n/k}
+\mathbbm{1}[A^r_i-A^0_i=t \log(n)] \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big) ,
 \end{align*}
-where the quantity $t\log(n)$ ranges over all integer values from $-n/2$ to $n/2$ in the summation on the second line.
-Define $D(G,t):=|\{i\in[n]:B_i-A_i= t\log(n)\}|$ and notice that $D(G,t)=\sum_{i=1}^n \mathbbm{1}[B_i-A_i=t \log(n)]$.
+where the quantity $t\log(n)$ ranges over all integer values from $-n/k$ to $n/k$ in the summation on the second line.
+Define $D_r(G,t):=|\{i\in[n]:A^r_i-A^0_i= t\log(n)\}|$ and notice that $D_r(G,t)=\sum_{i=1}^n \mathbbm{1}[A^r_i-A^0_i=t \log(n)]$.
 Therefore,
 \begin{equation}  \label{eq:fd}
 \begin{aligned}
  & \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
 {P_{\sigma|G}(\sigma=X)}
-\le \sum_{i=1}^n \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_i-A_i) \Big) \\
-= & \sum_{i=1}^n
+\le \sum_{i=1}^n \sum_{r=1}^{k-1} \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \Big) \\
+= & \sum_{i=1}^n\sum_{r=1}^{k-1}
 \hspace*{0.05in}
-\sum_{t\log(n)=-n/2}^{n/2}
-\mathbbm{1}[B_i-A_i=t \log(n)] \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big) \\
-= & \sum_{t\log(n)=-n/2}^{n/2}
-D(G,t) \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big)
+\sum_{t\log(n)=-n/k}^{n/k}
+\mathbbm{1}[A^r_i-A^0_i=t \log(n)] \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big) \\
+= & \sum_{r=1}^{k-1}\sum_{t\log(n)=-n/k}^{n/k}
+D_r(G,t) \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big)
 \end{aligned}
 \end{equation}
 Define a set 
 $$
-\cG_1:=\{G:\tilde{D}(G)=0\}.
+\cG_1:=\bigcap_{r=1}^{k-1} \{G:\tilde{D}_r(G)=0\}.
 $$
-By \eqref{eq:tD}, $P(G\in\cG_1)= 1-o(1)$. By definition of $\tilde{D}(G)$, $G\in\cG_1$ implies that $D(G,t)=0$ for all $t\ge 0$. Therefore, for $G\in\cG_1$, we have
+By \eqref{eq:tD}, $P(G\in\cG_1)= 1-o(1)$. By definition of $\tilde{D}_r(G)$, $G\in\cG_1$ implies that $D_r(G,t)=0$ for all $t\ge 0$ and $r=1,\dots,k-1$. Therefore, for $G\in\cG_1$, we have
 \begin{equation} \label{eq:lq}
 \begin{aligned}
 & \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
 {P_{\sigma|G}(\sigma=X)}
-\le \sum_{t\log(n)=-n/2}^{-1}
-D(G,t) \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big)   \\
-\overset{(a)}{\le} & \sum_{t\log(n)=-n/2}^{-1}
-D(G,t) \exp\big(2\beta t \log(n) \big) \\
-= & \sum_{t\log(n)=-n/2}^{\lfloor\frac{b-a}{2}\log(n) \rfloor} D(G,t)
-\exp\big(2\beta t \log(n) \big)  + \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1} D(G,t)
-\exp\big(2\beta t \log(n) \big) \\
-\le & \sum_{t\log(n)=-n/2}^{\lfloor\frac{b-a}{2}\log(n) \rfloor} D(G,t)
-\exp\big(\beta(b-a)\log(n) \big)  + \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1} D(G,t)
-\exp\big(2\beta t \log(n) \big)  \\
-\overset{(b)}{\le} & n
-\exp\big(\beta(b-a)\log(n) \big)  + \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1} D(G,t)
-\exp\big(2\beta t \log(n) \big) ,
+\le \sum_{r=1}^{k-1}\sum_{t\log(n)=-n/k}^{-1}
+D_r(G,t) \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big)   \\
+\overset{(a)}{\le} & \sum_{r=1}^{k-1}\sum_{t\log(n)=-n/k}^{-1}
+D_r(G,t) \exp\big(k\beta t \log(n) \big) \\
+= & \sum_{r=1}^{k-1}\sum_{t\log(n)=-n/k}^{\lfloor\frac{b-a}{k}\log(n) \rfloor} D_r(G,t)
+\exp\big(k\beta t \log(n) \big)  +  \sum_{r=1}^{k-1}\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1} D_r(G,t)
+\exp\big(k\beta t \log(n) \big) \\
+\le &  \sum_{r=1}^{k-1}\sum_{t\log(n)=-n/k}^{\lfloor\frac{b-a}{k}\log(n) \rfloor} D_r(G,t)
+\exp\big(\beta(b-a)\log(n) \big)  +  \sum_{r=1}^{k-1}\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1} D_r(G,t)
+\exp\big(k\beta t \log(n) \big)  \\
+\overset{(b)}{\le} & n(k-1)
+\exp\big(\beta(b-a)\log(n) \big)  + \sum_{r=1}^{k-1}\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1} D_r(G,t)
+\exp\big(k\beta t \log(n) \big) ,
 \end{aligned}
 \end{equation}
 where inequality $(a)$ holds because $t\log(n)$ only takes negative values in the summation, and inequality $(b)$ follows from the trivial upper bound
-$\sum_{t\log(n)=-n/2}^{\lfloor\frac{b-a}{2}\log(n) \rfloor} D(G,t)\le n$.
+$\sum_{t\log(n)=-n/k}^{\lfloor\frac{b-a}{k}\log(n) \rfloor} D_r(G,t)\le n$.
 Define a function
 \begin{equation} \label{eq:gt}
 f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big) -\frac{a+b}{k} +1 +k\beta t.
 \end{equation}
-Then for $t\in [\frac{1}{2}(b-a), 0]$, we have 
+Then for $t\in [\frac{1}{k}(b-a), 0]$, we have 
 \begin{align*}
-& E[D(G,t)
-\exp\big(2\beta t \log(n) \big)] \\
-= & \sum_{i=1}^n E[\mathbbm{1}[B_i-A_i=t \log(n)]] \exp\big(2\beta t \log(n) \big) \\
-= & \sum_{i=1}^n P\big(B_i-A_i=t \log(n) \big) \exp\big(2\beta t \log(n) \big) \\
-\le & \sum_{i=1}^n P\big(B_i-A_i \ge t \log(n) \big) \exp\big(2\beta t \log(n) \big) \\
+& E[D_r(G, t)
+\exp\big(k\beta t \log(n) \big)] \\
+= & \sum_{i=1}^n E[\mathbbm{1}[A^r_i-A^0_i =t \log(n)]] \exp\big(k\beta t \log(n) \big) \\
+= & \sum_{i=1}^n P\big(A^r_i-A^0_i=t \log(n) \big) \exp\big(k\beta t \log(n) \big) \\
+\le & \sum_{i=1}^n P\big(A^r_i-A^0_i \ge t \log(n) \big) \exp\big(k\beta t \log(n) \big) \\
 \le &  \sum_{i=1}^n \exp\Big(\log(n)
-\Big(\sqrt{t^2+ab} -t\big(\log(\sqrt{t^2+ab}+t)-\log(b) \big) -\frac{a+b}{2} +2\beta t +o(1)\Big)\Big) \\
+\Big(\frac{1}{k}\sqrt{k^2t^2+4ab} -t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big) -\frac{a+b}{k} +k\beta t +o(1)\Big)\Big) \\
 = &  n^{f_{\beta}(t) +o(1)} ,
 \end{align*}
 where the second inequality follows from \eqref{eq:upba}.
 For $\epsilon>0$, define a set
 $$
-\cG(\epsilon):=\left\{
-\sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1} D(G,t)
-\exp\big(2\beta t \log(n) \big)
-\le \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1}
+\cG^r(\epsilon):=\left\{
+\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1} D_r(G,t)
+\exp\big(k\beta t \log(n) \big)
+\le \sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}
  n^{f_{\beta}(t) + \epsilon}
 \right\} .
 $$
 Then by Markov inequality,
 \begin{equation} \label{eq:mk}
-P(G\in \cG(\epsilon))\ge 1-n^{-(\epsilon-o(1))} >
+P(G\in \cG^r(\epsilon))\ge 1-n^{-(\epsilon-o(1))} >
 1-n^{-\epsilon/2}
 \end{equation}
 for large $n$ and positive $\epsilon$.
-Using \eqref{eq:lq}, we obtain that for $G\in\cG_1\cap\cG(\epsilon)$,
+Using \eqref{eq:lq}, we obtain that for $G\in\cG_1\cap \bigcap_{r=1}^{k-1}\cG^r(\epsilon)$,
 \begin{equation}  \label{eq:zz}
 \begin{aligned}
 \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
 {P_{\sigma|G}(\sigma=X)} 
-& \le n
-\exp\big(\beta(b-a)\log(n) \big)  + \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \epsilon} \\
-& = n^{f_{\beta}((b-a)/2)} + \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \epsilon} ,
+& \le n(k-1)
+\exp\big(\beta(b-a)\log(n) \big)  + (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \epsilon} \\
+& = (k-1)n^{f_{\beta}((b-a)/k)} + (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \epsilon} ,
 \end{aligned}
 \end{equation}
-where the equality follows from the fact that $f_{\beta}(\frac{1}{2}(b-a))=\beta(b-a)+1$.
+where the equality follows from the fact that $f_{\beta}(\frac{1}{k}(b-a))=\beta(b-a)+1$.
 Recall the definitions of the functions $g(\beta)$ and $\tilde{g}(\beta)$ in \eqref{eq:gbt}.
 By Lemma~\ref{lm:tus} below, we have
 $f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
@@ -919,17 +919,17 @@ $G\in\cG_1\cap\cG(\epsilon)$,
 \begin{aligned}
 & \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
 {P_{\sigma|G}(\sigma=X)} 
-\le n^{\tilde{g}(\beta)}
-+ \sum_{t\log(n)=\lceil\frac{b-a}{2}\log(n) \rceil}^{-1}  n^{\tilde{g}(\beta) + \epsilon}  \\
-& \le n^{\tilde{g}(\beta) + \epsilon}
-\big(\frac{a-b}{2}\log(n)+1 \big)
+\le (k-1)n^{\tilde{g}(\beta)}
++ (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{\tilde{g}(\beta) + \epsilon}  \\
+& \le (k-1)n^{\tilde{g}(\beta) + \epsilon}
+\big(\frac{a-b}{k}\log(n)+1 \big)
 < n^{\tilde{g}(\beta) + 2\epsilon} 
 \end{aligned}
 \end{equation}
 for large $n$ and positive $\epsilon$.
 Let $\epsilon=-\tilde{g}(\beta)/4>0$ and define
 $$
-\cG^{(1)}:=\cG_1\cap\cG(-\tilde{g}(\beta)/4) .
+\cG^{(1)}:=\cG_1\cap \bigcap_{r=1}^{k-1}\cG(-\tilde{g}(\beta)/4) .
 $$
 By \eqref{eq:lh}, for $G\in\cG^{(1)}$ we have
 $$
@@ -939,11 +939,11 @@ n^{\tilde{g}(\beta) /2} .
 $$
 By \eqref{eq:tD} and \eqref{eq:mk}, 
 $$
-P(G\in\cG^{(1)})\ge 1-n^{\tilde{g}(\beta)/8}- n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{2}+o(1)}> 1- 2n^{\tilde{g}(\beta)/8},
+P(G\in\cG^{(1)})\ge 1-(k-1)n^{\tilde{g}(\beta)/8}- (k-1)n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{2}+o(1)}> 1- 2(k-1)n^{\tilde{g}(\beta)/8},
 $$
-where the last inequality follows from the fact that $1-\frac{(\sqrt{a}-\sqrt{b})^2}{2}\le
+where the last inequality follows from the fact that $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}\le
 \tilde{g}(\beta)<\tilde{g}(\beta)/8< 0$.
-This completes the proof of Proposition~\ref{prop:big} for the special case of $k=1$. 
+This completes the proof of Proposition~\ref{prop:big} for the special case of $r=1$. 
 Next we prove the two auxiliary lemmas used above.
 \begin{lemma}[Elementary properties of $\beta^\ast$ defined in \eqref{eq:defstar}] \label{lm:ele}
 Let $g(\beta)$ and $\tilde{g}(\beta)$ be the functions defined in \eqref{eq:gbt}. Assume that $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
