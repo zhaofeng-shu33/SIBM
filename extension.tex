@@ -1091,6 +1091,186 @@ By Chernoff bound, for $s>0$, we have
 The rest of the proof is to find $s^\ast$ to minimize $a e^{-s}+b e^s -kst$ and take $s^\ast$ into the above bound. This is exactly the same as the proof of \eqref{eq:upba}, and we do not repeat it here.
 \end{proof}
 
+
+Given a graph $G$, define 
+$$
+\tilde{D}^{(r,v)}(G):=|\{\cI\subseteq[n],|\cI|=r:B_{\cI,v}- A_{\cI}\ge 0\}|
+\text{~~and~~}
+\tilde{D}^v_{\cI}(G):=\mathbbm{1}[B_{\cI,v}-A_{\cI}\ge 0] .
+$$
+ Then
+$\tilde{D}^{(r,v)}(G)=\sum_{\cI\subseteq[n],|\cI|=r} \tilde{D}^v_{\cI}(G)$ and
+$$
+E[\tilde{D}^{(k)}(G)]=\sum_{\cI\subseteq[n],|\cI|=r} E[\tilde{D}_{\cI}(G)]
+=\sum_{\cI\subseteq[n],|\cI|=k} P(B_{\cI}- A_{\cI}\ge 0).
+$$
+Taking $t=0$ into \eqref{eq:upmpt}, we have
+$P(B_{\cI}- A_{\cI}\ge 0)\le \exp\big(|\cI|\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) ) \big)$. Therefore,
+\begin{align*}
+& E[\tilde{D}^{(k)}(G)]\le \binom{n}{k} \exp\Big(k \log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) \big) \Big) \\
+\le & n^k \exp\Big(k \log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) \big) \Big)
+= n^{k( 1-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) )}.
+\end{align*}
+By Markov inequality,
+\begin{equation} \label{eq:Dk}
+P\big(\tilde{D}^{(k)}(G)=0 \big) = 1-
+P\big(\tilde{D}^{(k)}(G)\ge 1\big) \ge 1- E[\tilde{D}^{(k)}(G)]
+\ge 1-  n^{k (1-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) )} .
+\end{equation}
+Since $\sqrt{a}-\sqrt{b} > \sqrt{2}$, we have
+$P\big(\tilde{D}^{(k)}(G)=0 \big)= 1-o(1)$.
+
+
+By \eqref{eq:isingma}, we have
+\begin{equation} \label{eq:ts}
+\begin{aligned}
+& \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} \\
+= & \exp\Big(\beta\sum_{\{i,j\}\in E(G)} (X_i^{(\sim\cI)} X_j^{(\sim\cI)}
+-X_i X_j)
+-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} (X_i^{(\sim\cI)} X_j^{(\sim\cI)}
+-X_i X_j) \Big) \\
+\overset{(a)}{=} & \exp\Big(-2 \beta\sum_{\{i,j\}\in E(G)} X_i X_j \mathbbm{1}[\{i,j\}\in\nabla\cI]
++\frac{2\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} X_i X_j \mathbbm{1}[\{i,j\}\in\nabla\cI] \Big) \\
+= & \exp\Big(-2 \beta(A_{\cI} - B_{\cI})
++\frac{2\alpha\log(n)}{n} \big( (|\nabla\cI_+|-A_{\cI}) -(|\nabla\cI_-|-B_{\cI}) \big)\Big) \\
+\overset{(b)}{=} & \exp\Big( 2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI}-A_{\cI})
+- \frac{2\alpha\log(n)}{n} (|\cI_+|-|\cI_-|)^2
+\Big) \\
+\le & \exp\Big( 2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI}-A_{\cI})
+\Big) ,
+\end{aligned}
+\end{equation}
+where $(a)$ follows from the fact that $X_i^{(\sim\cI)} X_j^{(\sim\cI)}=-X_i X_j$ if $\{i,j\}\in\nabla\cI$ and $X_i^{(\sim\cI)} X_j^{(\sim\cI)}=X_i X_j$ if $\{i,j\}\notin\nabla\cI$;
+and $(b)$ follows from \eqref{eq:partial}.
+Since $B_{\cI}-A_{\cI}$ takes integer value between $-|\cI|n/2$ and $|\cI|n/2$,
+we can use indicator functions to write
+\begin{align*}
+& \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI}-A_{\cI}) \Big) \\
+= & \sum_{t|\cI|\log(n)=-|\cI|n/2}^{|\cI|n/2}
+\mathbbm{1}[B_{\cI}-A_{\cI}=t|\cI| \log(n)] \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t|\cI| \log(n) \Big) ,
+\end{align*}
+where the quantity $t|\cI|\log(n)$ ranges over all integer values from $-|\cI|n/2$ to $|\cI|n/2$ in the summation on the second line.
+Define $D^{(k)}(G,t):=|\{\cI\subseteq[n],|\cI|=k:B_{\cI}-A_{\cI}= tk\log(n)\}|$ and notice that $D^{(k)}(G,t)=\sum_{\cI\subseteq[n],|\cI|=k} \mathbbm{1}[B_{\cI}-A_{\cI}= tk\log(n)]$.
+Therefore,
+\begin{align*}
+ & \sum_{\cI\subseteq[n],|\cI|=k}
+ \frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)}
+\le \sum_{\cI\subseteq[n],|\cI|=k} \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI}-A_{\cI}) \Big) \\
+= & \sum_{\cI\subseteq[n],|\cI|=k}
+\hspace*{0.05in}
+\sum_{tk\log(n)=-kn/2}^{kn/2}
+\mathbbm{1}[B_{\cI}-A_{\cI}=tk \log(n)] \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) tk \log(n) \Big) \\
+= & \sum_{tk\log(n)=-kn/2}^{kn/2}
+D^{(k)}(G,t) \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t k \log(n) \Big)
+\end{align*}
+Define a set 
+\begin{equation} \label{eq:g1k}
+\cG_1^{(k)}:=\{G:\tilde{D}^{(k)}(G)=0\}.
+\end{equation}
+By \eqref{eq:Dk}, $P(G\in\cG_1^{(k)})= 1-o(1)$. By definition of $\tilde{D}^{(k)}(G)$, $G\in\cG_1^{(k)}$ implies that $D^{(k)}(G,t)=0$ for all $t\ge 0$. Therefore, for $G\in\cG_1^{(k)}$, we have
+\begin{equation} \label{eq:bk}
+\begin{aligned}
+& \sum_{\cI\subseteq[n],|\cI|=k}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)} \\
+\le & \sum_{tk\log(n)=-kn/2}^{-1}
+D^{(k)}(G,t) \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t k \log(n) \Big)   \\
+\overset{(a)}{\le} & \sum_{tk\log(n)=-kn/2}^{-1}
+D^{(k)}(G,t) \exp\big(2\beta t k \log(n) \big) \\
+= & \sum_{tk\log(n)=-kn/2}^{\lfloor\frac{b-a}{2}k\log(n) \rfloor} D^{(k)}(G,t) \exp\big(2\beta t k \log(n) \big) \\
+& \hspace*{1.5in} + \sum_{tk\log(n)=\lceil\frac{b-a}{2}k\log(n) \rceil}^{-1} D^{(k)}(G,t) \exp\big(2\beta t k \log(n) \big) \\
+\le & \sum_{tk\log(n)=-kn/2}^{\lfloor\frac{b-a}{2}k\log(n) \rfloor} D^{(k)}(G,t)
+\exp\big(\beta(b-a)k\log(n) \big) \\
+& \hspace*{1.5in} + \sum_{tk\log(n)=\lceil\frac{b-a}{2}k\log(n) \rceil}^{-1} D^{(k)}(G,t) \exp\big(2\beta t k \log(n) \big) \\
+\overset{(b)}{\le} & \binom{n}{k}
+\exp\big(\beta(b-a) k \log(n) \big)  + \sum_{tk\log(n)=\lceil\frac{b-a}{2}k\log(n) \rceil}^{-1} D^{(k)}(G,t) \exp\big(2\beta t k \log(n) \big) ,
+\end{aligned}
+\end{equation}
+where inequality $(a)$ holds because $tk\log(n)$ only takes negative values in the summation, and inequality $(b)$ follows from the trivial upper bound
+$\sum_{tk\log(n)=-kn/2}^{\lfloor\frac{b-a}{2}k\log(n) \rfloor} D^{(k)}(G,t)\le \binom{n}{k}$.
+
+
+
+
+Recall the function $f_{\beta}(t)$ defined in \eqref{eq:gt}.
+Then for $t\in [\frac{1}{2}(b-a), 0]$, we have 
+\begin{align*}
+& E[D^{(k)}(G,t) \exp\big(2\beta t k \log(n) \big)] \\
+= & \sum_{\cI\subseteq[n],|\cI|=k} E[\mathbbm{1}[B_{\cI}-A_{\cI}=t k \log(n)]] \exp\big(2\beta t k \log(n) \big) \\
+= & \sum_{\cI\subseteq[n],|\cI|=k} P\big(B_{\cI}-A_{\cI}=t k \log(n) \big) \exp\big(2\beta t k \log(n) \big) \\
+\le & \sum_{\cI\subseteq[n],|\cI|=k} P\big(B_{\cI}-A_{\cI} \ge t k \log(n) \big) \exp\big(2\beta t k \log(n) \big) \\
+\le &  \sum_{\cI\subseteq[n],|\cI|=k} \exp\Big( k \log(n)
+\Big(\sqrt{t^2+ab} -t\big(\log(\sqrt{t^2+ab}+t)-\log(b) \big) -\frac{a+b}{2} +2\beta t +o(1) \Big)\Big) \\
+= & \binom{n}{k} n^{k(f_{\beta}(t)-1+o(1))} ,
+\end{align*}
+where the second inequality follows from \eqref{eq:upmpt}.
+For $\epsilon>0$, define a set
+\begin{equation} \label{eq:gep}
+\begin{aligned}
+\cG^{(k)}(\epsilon):=\left\{
+\sum_{tk\log(n)=\lceil\frac{b-a}{2}k\log(n) \rceil}^{-1} D^{(k)}(G,t) \exp  \big(2\beta t k \log(n) \big) \hspace*{1.5in} \right. \\
+\left.
+ \le  \sum_{tk\log(n)=\lceil\frac{b-a}{2}k\log(n) \rceil}^{-1}
+\binom{n}{k} n^{k(f_{\beta}(t)-1+\epsilon)}
+\right\} .
+\end{aligned}
+\end{equation}
+Then by Markov inequality,
+\begin{equation} \label{eq:Gk}
+P(G\in \cG^{(k)}(\epsilon))\ge 1-n^{-k(\epsilon-o(1))} >1-n^{-k\epsilon/2}
+\end{equation}
+for large $n$ and positive $\epsilon$.
+Using \eqref{eq:bk}, we obtain that for $G\in\cG_1^{(k)}\cap\cG^{(k)}(\epsilon)$,
+\begin{equation}  \label{eq:3l}
+\begin{aligned}
+& \sum_{\cI\subseteq[n],|\cI|=k}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)}  \\
+\le & \binom{n}{k}
+\exp\big(\beta(b-a) k \log(n) \big)  + \sum_{tk\log(n)=\lceil\frac{b-a}{2}k\log(n) \rceil}^{-1}
+\binom{n}{k} n^{k(f_{\beta}(t)-1+\epsilon)} \\
+= & \binom{n}{k} n^{k(f_{\beta}((b-a)/2)-1)} + \sum_{tk\log(n)=\lceil\frac{b-a}{2}k\log(n) \rceil}^{-1}
+\binom{n}{k} n^{k(f_{\beta}(t)-1+\epsilon)} ,
+\end{aligned}
+\end{equation}
+where the equality follows from the fact that $f_{\beta}(\frac{1}{2}(b-a))=\beta(b-a)+1$.
+Recall the function $\tilde{g}(\beta)$ defined in \eqref{eq:gbt}, and recall from  Lemma~\ref{lm:tus} that
+$f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
+Using this in \eqref{eq:3l} together with the fact $\binom{n}{k}<n^k$, we obtain that for
+$G\in\cG_1^{(k)}\cap\cG^{(k)}(\epsilon)$,
+\begin{equation} \label{eq:wuh}
+\begin{aligned}
+& \sum_{\cI\subseteq[n],|\cI|=k}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)} 
+\le n^{k\tilde{g}(\beta)}
++ \sum_{tk\log(n)=\lceil\frac{b-a}{2}k\log(n) \rceil}^{-1}  n^{k(\tilde{g}(\beta) + \epsilon)}  \\
+& \le n^{k(\tilde{g}(\beta) + \epsilon)}
+\Big(\frac{a-b}{2}\log(n^k)+1 \Big)
+< n^{k(\tilde{g}(\beta) + 2\epsilon)} 
+\end{aligned}
+\end{equation}
+for large $n$ and positive $\epsilon$.kld
+Let $\epsilon=-\tilde{g}(\beta)/4>0$ and define
+$$
+\cG^{(k)}:=\cG_1^{(k)}\cap\cG^{(k)}(-\tilde{g}(\beta)/4) .
+$$
+By \eqref{eq:wuh}, for $G\in\cG^{(k)}$ we have
+$$
+\sum_{\cI\subseteq[n],|\cI|=k}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)} <
+n^{k \tilde{g}(\beta) /2} .
+$$
+By \eqref{eq:Dk}, \eqref{eq:g1k} and \eqref{eq:Gk}, 
+$$
+P(G\in\cG^{(k)})\ge 1-n^{k\tilde{g}(\beta)/8}- n^{k (1-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) )}> 1- 2 n^{k\tilde{g}(\beta)/8},
+$$
+where the last inequality follows from the fact that $1-\frac{(\sqrt{a}-\sqrt{b})^2}{2}\le
+\tilde{g}(\beta)<\tilde{g}(\beta)/8< 0$.
+
+
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
 
