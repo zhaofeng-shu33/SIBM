@@ -274,8 +274,8 @@ $$
 $$
 Similarly to $A_i$ and $A^r_i$, for a set $\cI\subseteq[n]$, we define
 define
-$A_{\cI}=A_{\cI}(G):=|\{\{i,j\}\in E(G):  i\in\cI, j\in[n]\setminus\cI, X_j=X_i\}|$ and  
-$B_{\cI,v}=B_{\cI,v}(G):=|\{\{i,j\}\in E(G): i\in\cI, j\in[n]\setminus\cI, X_j= v_{\mathrm{index}(i)} \cdot X_i\}|$.
+$A_{\cI}=A_{\cI}(G):=|\{i,j\}\in E(G):  \{i, j\} \not\subseteq [n]\setminus\cI, X_j=X_i\}|$ and  
+$B_{\cI,v}=B_{\cI,v}(G):=|\{\{i,j\}\in E(G): \{i, j\} \not\subseteq [n]\setminus\cI, X_j= v_{\mathrm{index}(i)} \cdot X_i\}|$.
 Then by \eqref{eq:isingma} one can show that
 $$
  \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} 
@@ -1023,7 +1023,7 @@ $$
 $$
 and define 
 $$
-\nabla \cI:=\{\{i,j\}:i\in\cI,j\in[n]\setminus\cI\} .
+\nabla \cI:=\{\{i,j\}: \{i,j\} \not\subseteq [n]\setminus\cI\} .
 $$
 We further define
 $$
@@ -1034,10 +1034,10 @@ $$
 Then 
 \begin{equation} \label{eq:partial}
 \begin{aligned}
-& |\nabla\cI_+|=\sum_{j=0}^{k-1}|\cI_j|(\frac{n}{k}-|\cI_j|)
-=\frac{n}{k}|\cI|- \sum_{j=0}^{k-1}|\cI_j|^2 , \\
-& |\nabla\cI_v|=\sum_{j_1,j_2=0}^{k-1}|\cI_{j_1, j_2}|(\frac{n}{k}-|\cI_{j_1+j_2}|) =\frac{n}{k}|\cI|
--\sum_{j_1,j_2=0}^{k-1} |\cI_{j_1,j_2}||\cI_{j_1+j_2}|.
+& |\nabla\cI_+|=\sum_{j=0}^{k-1}\Big(|\cI_j|(\frac{n}{k}-|\cI_j|) + \frac{|\cI_j| (|\cI_j|-1)}{2}\Big)
+=\frac{n}{k}|\cI|- \frac{1}{2}\sum_{j=0}^{k-1}|\cI_j|(|\cI_j|+1) , \\
+& |\nabla\cI_v|=\sum_{j_1}^{k-1}\sum_{j_2=1}^{k-1}|\cI_{j_1, j_2}|\frac{n}{k} =\frac{n}{k}|\cI|
+.
 \end{aligned}
 \end{equation}
 Given a graph $G$,
@@ -1046,7 +1046,7 @@ define
 & A_{\cI}=A_{\cI}(G):=|\{\{i,j\}\in\nabla\cI\cap E(G):X_i=X_j\}| ,  \\
 & B_{\cI,v}=B_{\cI,v}(G):=|\{\{i,j\}\in\nabla\cI\cap E(G):X_j= v_{\mathrm{index}(i)} \cdot X_i\}| .
 \end{align*}
-we have $|A_{\cI}|=|\nabla \cI_+|, |B_{\cI,v}|=|\nabla \cI_v|$.
+
 
 
 
@@ -1063,12 +1063,12 @@ and $|\cI|\le kn/\log^{1/3}(n),v$
 \end{equation}
 \end{proposition}
 \begin{proof}
-By definition, $A_{\cI}\sim\Binom(|\nabla\cI_+|,\frac{a\log(n)}{n})$ and $B_{\cI,v}\sim\Binom(|\nabla\cI_v|,\frac{b\log(n)}{n})$, and they are independent. For $s>0$, the moment generating function of $B_{\cI}-A_{\cI}$ for $|\cI|\le kn/\log^{1/3}(n)$ can be bounded from above as follows:
+By definition, $A_{\cI}\sim\Binom(|\nabla\cI_+|,\frac{a\log(n)}{n})$ and $B_{\cI,v}\sim\Binom(|\nabla\cI_v|,\frac{b\log(n)}{n})$, and they are independent. For $s>0$, the moment generating function of $B_{\cI,v}-A_{\cI}$ for $|\cI|\le kn/\log^{1/3}(n)$ can be bounded from above as follows:
 \begin{align*}
-& E[e^{s(B_{\cI}-A_{\cI})}] \\
+& E[e^{s(B_{\cI,v}-A_{\cI})}] \\
 & =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{n|\cI|/k
--\sum_{j_1,j_2=0}^{k-1} |\cI_{j_1,j_2}||\cI_{j_1+j_2}|}
-\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n |\cI|/k-\sum_{j=0}^{k-1}|\cI_j|^2 }  \\
+}
+\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n |\cI|/k-\frac{1}{2}\sum_{j=0}^{k-1}(|\cI_j|+1)|\cI_j| }  \\
 & \le 
 \Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{n|\cI|/k}
 \Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n |\cI|/k-|\cI|^2}
@@ -1083,8 +1083,8 @@ O(\log^{-1/3}(n))) \Big),
 where the first inequality follows from $1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s>1$ and $1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s}<1$; in the second inequality we use the Taylor expansion $\log(1+x)=x+O(x^2)$; the last equality follows from the assumption that $|\cI|\le kn/\log^{1/3}(n)$.
 By Chernoff bound, for $s>0$, we have
 \begin{align*} 
-& P(B_{\cI}-A_{\cI}\ge t|{\cI}|\log(n))\le
-\frac{E[e^{s(B_{\cI}-A_{\cI})}]}{e^{st|{\cI}|\log(n)}}  \\
+& P(B_{\cI,v}-A_{\cI}\ge t|{\cI}|\log(n))\le
+\frac{E[e^{s(B_{\cI,v}-A_{\cI})}]}{e^{st|{\cI}|\log(n)}}  \\
 \le & \exp\Big(\frac{{\cI}\log(n)}{k} \big(a e^{-s}+b e^s -kst -a-b
  + O(\log^{-1/3}(n)) \big)\Big)  .
 \end{align*}
@@ -1101,59 +1101,67 @@ $$
  Then
 $\tilde{D}^{(r,v)}(G)=\sum_{\cI\subseteq[n],|\cI|=r} \tilde{D}^v_{\cI}(G)$ and
 $$
-E[\tilde{D}^{(k)}(G)]=\sum_{\cI\subseteq[n],|\cI|=r} E[\tilde{D}_{\cI}(G)]
-=\sum_{\cI\subseteq[n],|\cI|=k} P(B_{\cI}- A_{\cI}\ge 0).
+E[\tilde{D}^{(r, v)}(G)]=\sum_{\cI\subseteq[n],|\cI|=r} E[\tilde{D}^v_{\cI}(G)]
+=\sum_{\cI\subseteq[n],|\cI|=r} P(B_{\cI,v}- A_{\cI}\ge 0).
 $$
 Taking $t=0$ into \eqref{eq:upmpt}, we have
-$P(B_{\cI}- A_{\cI}\ge 0)\le \exp\big(|\cI|\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) ) \big)$. Therefore,
+$P(B_{\cI,v}- A_{\cI}\ge 0)\le \exp\big(|\cI|\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) ) \big)$. Therefore,
 \begin{align*}
-& E[\tilde{D}^{(k)}(G)]\le \binom{n}{k} \exp\Big(k \log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) \big) \Big) \\
-\le & n^k \exp\Big(k \log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) \big) \Big)
-= n^{k( 1-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) )}.
+& E[\tilde{D}^{(r,v)}(G)]\le \binom{n}{r} \exp\Big(r \log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) \big) \Big) \\
+\le & n^r \exp\Big(r \log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) \big) \Big)
+= n^{r( 1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) )}.
 \end{align*}
 By Markov inequality,
 \begin{equation} \label{eq:Dk}
-P\big(\tilde{D}^{(k)}(G)=0 \big) = 1-
-P\big(\tilde{D}^{(k)}(G)\ge 1\big) \ge 1- E[\tilde{D}^{(k)}(G)]
-\ge 1-  n^{k (1-\frac{(\sqrt{a}-\sqrt{b})^2}{2} + o(1) )} .
+P\big(\tilde{D}^{(r,v)}(G)=0 \big) = 1-
+P\big(\tilde{D}^{(r,v)}(G)\ge 1\big) \ge 1- E[\tilde{D}^{(r,v)}(G)]
+\ge 1-  n^{r (1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) )} .
 \end{equation}
-Since $\sqrt{a}-\sqrt{b} > \sqrt{2}$, we have
-$P\big(\tilde{D}^{(k)}(G)=0 \big)= 1-o(1)$.
+Since $\sqrt{a}-\sqrt{b} > \sqrt{k}$, we have
+$P\big(\tilde{D}^{(r,v)}(G)=0 \big)= 1-o(1)$.
 
 
 By \eqref{eq:isingma}, we have
 \begin{equation} \label{eq:ts}
 \begin{aligned}
 & \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} \\
-= & \exp\Big(\beta\sum_{\{i,j\}\in E(G)} (X_i^{(\sim\cI)} X_j^{(\sim\cI)}
--X_i X_j)
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} (X_i^{(\sim\cI)} X_j^{(\sim\cI)}
--X_i X_j) \Big) \\
-\overset{(a)}{=} & \exp\Big(-2 \beta\sum_{\{i,j\}\in E(G)} X_i X_j \mathbbm{1}[\{i,j\}\in\nabla\cI]
-+\frac{2\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} X_i X_j \mathbbm{1}[\{i,j\}\in\nabla\cI] \Big) \\
-= & \exp\Big(-2 \beta(A_{\cI} - B_{\cI})
-+\frac{2\alpha\log(n)}{n} \big( (|\nabla\cI_+|-A_{\cI}) -(|\nabla\cI_-|-B_{\cI}) \big)\Big) \\
-\overset{(b)}{=} & \exp\Big( 2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI}-A_{\cI})
-- \frac{2\alpha\log(n)}{n} (|\cI_+|-|\cI_-|)^2
+= & \sum_{v}\exp\Big(\beta\sum_{\{i,j\}\in E(G)} (I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)})
+-I(X_i,X_j))
+-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} (I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)})
+-I(X_i,X_j)) \Big) \\
+=& \exp\Big((\beta+ \frac{\alpha \log(n)}{n})\sum_{\{i,j\}\in E(G) \cap \nabla \cI} (I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)})
+-I(X_i,X_j))
+-\frac{\alpha\log(n)}{n} \sum_{\{i,j\} \in \nabla \cI}  (I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)})
+-I(X_i,X_j))\Big) \\
+\overset{(a)}{=}  & \exp\Big( k(\beta+ \frac{\alpha \log(n)}{n})( B_{\cI,v} - A_{\cI})
+-\frac{k\alpha\log(n)}{n} \big( |\nabla \cI_v | - | \nabla \cI_+ | \big)\Big) \\
+\overset{(b)}{=} & \exp\Big( k\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI,v}-A_{\cI})
+- \frac{k\alpha\log(n)}{2n}\sum_{j=0}^{j-1} | \cI_j | ( |\cI_j| + 1)
 \Big) \\
-\le & \exp\Big( 2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI}-A_{\cI})
+\le & \exp\Big( k\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI,v}-A_{\cI})
 \Big) ,
 \end{aligned}
 \end{equation}
-where $(a)$ follows from the fact that $X_i^{(\sim\cI)} X_j^{(\sim\cI)}=-X_i X_j$ if $\{i,j\}\in\nabla\cI$ and $X_i^{(\sim\cI)} X_j^{(\sim\cI)}=X_i X_j$ if $\{i,j\}\notin\nabla\cI$;
+where $(a)$ follows from the fact that:
+\begin{align*}
+\sum_{\{i,j\}\in E(G) \cap \nabla \cI} I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)}) &= (k-1) B_{\cI, v} - \sum_{v'\neq v} B_{\cI, v'} - A_{\cI} \\
+\sum_{\{i,j\}\in E(G) \cap \nabla \cI} I(X_i, X_j) &= (k-1)A_{\cI} - \sum_{v'} B_{\cI, v'} \\
+\sum_{\{i,j\}\in \nabla \cI} I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)}) &= (k-1) |\nabla I_v| - \sum_{v'\neq v} | \nabla I_{v'}| - | \nabla I_{+}| \\
+\sum_{\{i,j\}\in \nabla \cI} I(X_i, X_j) &= (k-1) | \nabla I_{+} | - \sum_{v'} | \nabla I_{v'} |
+\end{align*}
 and $(b)$ follows from \eqref{eq:partial}.
-Since $B_{\cI}-A_{\cI}$ takes integer value between $-|\cI|n/2$ and $|\cI|n/2$,
+Since $B_{\cI,v}-A_{\cI}$ takes integer value between $-|\cI|n/k$ and $|\cI|n/k$,
 we can use indicator functions to write
 \begin{align*}
 & \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI}-A_{\cI}) \Big) \\
-= & \sum_{t|\cI|\log(n)=-|\cI|n/2}^{|\cI|n/2}
+= & \sum_{t|\cI|\log(n)=-|\cI|n/k}^{|\cI|n/k}
 \mathbbm{1}[B_{\cI}-A_{\cI}=t|\cI| \log(n)] \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) t|\cI| \log(n) \Big) ,
 \end{align*}
 where the quantity $t|\cI|\log(n)$ ranges over all integer values from $-|\cI|n/2$ to $|\cI|n/2$ in the summation on the second line.
 Define $D^{(k)}(G,t):=|\{\cI\subseteq[n],|\cI|=k:B_{\cI}-A_{\cI}= tk\log(n)\}|$ and notice that $D^{(k)}(G,t)=\sum_{\cI\subseteq[n],|\cI|=k} \mathbbm{1}[B_{\cI}-A_{\cI}= tk\log(n)]$.
 Therefore,
 \begin{align*}
- & \sum_{\cI\subseteq[n],|\cI|=k}
+ & \sum_{\cI\subseteq[n],|\cI|=r}
  \frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
 {P_{\sigma|G}(\sigma=X)}
 \le \sum_{\cI\subseteq[n],|\cI|=k} \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI}-A_{\cI}) \Big) \\
