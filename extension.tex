@@ -1301,6 +1301,170 @@ $$
 where the last inequality follows from the fact that $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}\le
 \tilde{g}(\beta)<\tilde{g}(\beta)/8< 0$.
 
+\section{Samples differ from $\Gamma$ in $O(n^{\theta})$ coordinates for some $\theta<1$ when $\beta\le\beta^\ast$}
+\label{sect:theta}
+
+
+
+\begin{proposition}[Refinement of Proposition~\ref{prop:1}] \label{prop:43}
+Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $\beta\le\beta^\ast$. Let $m$ be a constant integer that is independent of $n$.
+Let 
+$$
+(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+$$
+Then for any (arbitrarily small) $\delta>0$ and any (arbitrarily large) $r>0$, there exists $n_0(\delta, r)$ such that for all even integers $n>n_0(\delta, r)$,
+$$
+P_{\SIBM} \Big(\dist(\sigma^{(i)},\Gamma)<n^{g(\beta)+\delta}
+\text{~for all~} i\in[m] \Big) \ge 1- n^{-r} .
+$$
+\end{proposition}
+
+By Lemma~\ref{lm:ele} (vi), we know that $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, so we can always choose a $\delta>0$ such that $g(\beta)+\delta<1$.
+Then Proposition~\ref{prop:43} implies that when $\beta\le\beta^\ast$, with probability $1-o(1)$ all samples differ from $\Gamma$ in $O(n^\theta)$ coordinates for some $\theta<1$.
+
+
+Since we assume that $m$ is a constant that is independent of $n$,
+we only need to prove Proposition~\ref{prop:43} for the special case of $m=1$, and the case of general values of $m$ follows immediately from this special case.
+Proposition~\ref{prop:1} tells us that if $\alpha>b\beta$, then $\dist(\sigma,\pm X) \le kn/\log^{1/3}(n)$
+ with probability $1-n^{-2r}$ for any given $r>0$ and large enough $n$.
+Also note that
+\begin{align*}
+ \sum_{\cI\subseteq[n],~
+n^{g(\beta)+\delta}
+\le |\cI|\le kn/\log^{1/3}(n)}
+\frac{P_{\sigma|G}(\sigma=f(X)^{(\sim\cI)})}{P_{\sigma|G}(\sigma=f(X))} 
+=  \sum_{\cI\subseteq[n],~
+n^{g(\beta)+\delta}
+\le |\cI|\le kn/\log^{1/3}(n)}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} .
+\end{align*}
+Therefore, to prove Proposition~\ref{prop:43}, we only need to show that given $r>0$, there exists a set $\cG_{\delta}$ such that the following two conditions hold for large enough $n$:  (i)
+$P(G\in\cG_{\delta})\ge 1-n^{-2r}$, and (ii)
+For every $G\in\cG_{\delta}$,
+$$
+\sum_{\cI\subseteq[n],~
+n^{g(\beta)+\delta}
+\le |\cI|\le kn/\log^{1/3}(n)}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} \le n^{-2r} .
+$$
+The existence of $\cG_{\delta}$ is guaranteed by the following proposition:
+\begin{proposition} \label{prop:xz}
+Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
+Let 
+$$
+(X,G,\sigma) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
+$$
+For any $\delta>0$, there exists $n_0(\delta)$ such that
+for every even integer $n>n_0(\delta)$ and
+every integer $n^{g(\beta)+\delta} \le s \le kn/\log^{1/3}(n)$,
+there is a set $\cG_{\delta}^{(s)}$ for which
+
+\noindent (i)
+$P(G\in\cG_\delta^{(s)}) \ge 1- 2(k-1)^s n^{-s\delta'}$,
+where $\delta':=\min(\frac{\delta}{8},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2}) >0$.
+
+\noindent (ii) For every $G\in\cG_\delta^{(s)}$,
+$$
+\sum_{\cI\subseteq[n],|\cI|=s}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)} <
+n^{-s \delta /4} .
+$$
+\end{proposition}
+With the $\cG_\delta^{(s)}$'s given by Proposition~\ref{prop:xz}, we
+define 
+$$
+\cG_\delta:=\bigcap_{s=n^{g(\beta)+\delta}}^{kn/\log^{1/3}(n)} \cG_\delta^{(s)} .
+$$
+By the union bound,
+$$
+P(G\in\cG_\delta)\ge 1-2 \sum_{s=n^{g(\beta)+\delta}}^{kn/\log^{1/3}(n)} (k-1)^sn^{-s\delta'}
+> 1-2 \sum_{s=\lceil 4r/\delta' \rceil}^{+\infty} (k-1)^sn^{-s\delta'}
+\ge 1- (k-1)^{\lceil 4r/\delta' \rceil}\frac{2 n^{-4r}}{1-n^{-\delta'}}
+>1-n^{-2r}
+$$
+for large enough $n$.
+ Moreover, for every $G\in\cG_\delta$ and large enough $n$,
+\begin{align*}
+& \sum_{\cI\subseteq[n],~~
+n^{g(\beta)+\delta}\le |\cI|\le kn/\log^{1/3}(n)}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} =
+\sum_{s=n^{g(\beta)+\delta}}^{2n/\log^{1/3}(n)}
+\hspace*{0.05in}
+\sum_{\cI\subseteq[n],|\cI|=s}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)}  \\
+& < \sum_{s=n^{g(\beta)+\delta}}^{2n/\log^{1/3}(n)}
+n^{-s \delta /4}
+< \sum_{s=\lceil 16r/\delta \rceil}^{+\infty}
+n^{-s \delta /4}
+\le \frac{n^{-4r}}{1-n^{-\delta /4}} < n^{-2r} .
+\end{align*}
+Thus we have shown that Proposition~\ref{prop:43} is implied by Proposition~\ref{prop:xz}. Now we are left to prove the latter proposition.
+It turns out that all we need for the proof of Proposition~\ref{prop:xz} is a tighter inequality than \eqref{eq:wuh}.
+Recall that we obtain \eqref{eq:wuh} from \eqref{eq:3l} by using a coarse upper bound $\binom{n}{s}<n^s$.
+Here we use a tighter upper bound $\binom{n}{s}<n^s/(s!)$ in \eqref{eq:3l} and obtain that for
+$G\in\cG_1^{(s)}\cap\cG^{(s)}(\epsilon)$,
+(see the definitions of $\cG_1^{(s)}$ and $\cG^{(s)}(\epsilon)$
+in \eqref{eq:g1k} and \eqref{eq:gep})
+\begin{equation} \label{eq:zm}
+\begin{aligned}
+& \sum_{\cI\subseteq[n],|\cI|=s}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)} 
+< (k-1)^s(s!)^{-1} n^{sf_{\beta}((b-a)/k)} +
+(k-1)^s\sum_{ts\log(n)=\lceil\frac{b-a}{k}s\log(n) \rceil}^{-1}
+(r!)^{-1} n^{r(f_{\beta}(t)+\epsilon)} \\
+& \le (k-1)^s(s!)^{-1} n^{sg(\beta)}
++ (k-1)^s\sum_{ts\log(n)=\lceil\frac{b-a}{k}s\log(n) \rceil}^{-1}  (s!)^{-1} n^{s(g(\beta) + \epsilon)}  \\
+& \le (s!)^{-1} (k-1)^s n^{s(g(\beta) + \epsilon)}
+\Big(\frac{a-b}{k}\log(n^s)+1 \Big) \\
+& < (s!)^{-1} n^{s(g(\beta) + 2\epsilon)}  ,
+\end{aligned}
+\end{equation}
+where the second inequality holds because
+$f_{\beta}(t)\le \tilde{g}(\beta) \le g(\beta)$ for all $t\le 0$
+(see  Lemma~\ref{lm:tus}), and the last inequality holds for positive $\epsilon$ and large $n$.
+It is well known that\footnote{We know from the Taylor expansion that $e^x>x^k/(k!)$ for any $x>0$. Taking $x=k$ gives us $k!>(k/e)^k$.}
+$s!>(s/e)^s$
+for all positive integer $s$.
+Therefore, for $s>n^{g(\beta)+\delta}$, we have
+$$
+s!>(s/e)^s
+=\exp(s\log(s)-s)
+>\exp(s(g(\beta)+\delta)\log(n)-s)
+=n^{s(g(\beta)+\delta-o(1))}
+$$
+Taking this into \eqref{eq:zm}, we obtain that $G\in\cG_1^{(s)}\cap\cG^{(s)}(\epsilon)$,
+$$
+\sum_{\cI\subseteq[n],|\cI|=s}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)} 
+< n^{s(2\epsilon-\delta+o(1))}
+< n^{s(3\epsilon-\delta)}
+$$
+for positive $\epsilon$ and large $n$.
+Let $\epsilon=\delta/4$ and define 
+$$
+\cG_{\delta}^{(s)}
+:=\cG_1^{(s)}\cap\cG^{(s)}(\delta/4) .
+$$
+Then for $G\in\cG_{\delta}^{(s)}$ we have
+$$
+\sum_{\cI\subseteq[n],|\cI|=s}
+\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+{P_{\sigma|G}(\sigma=X)} <
+n^{-s \delta /4} .
+$$
+By \eqref{eq:Dk}, \eqref{eq:g1k} and \eqref{eq:Gk}, 
+\begin{align*}
+P(G\in\cG_{\delta}^{(k)})
+& \ge 1-(k-1)^s n^{-s\delta/8}- (k-1)^s n^{s (1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) )} \\
+& \ge 1-(k-1)^s n^{-s\delta/8}- (k-1)^sn^{s(\frac{1}{2}-\frac{(\sqrt{a}-\sqrt{b})^k}{2k} )}
+> 1- 2 (k-1)^s n^{-s\delta'},
+\end{align*}
+where the second inequality follows from  $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}< 0$, and the last inequality follows from the definition $\delta'=\min(\frac{\delta}{8},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2})$.
+
 
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
