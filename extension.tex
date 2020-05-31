@@ -1468,9 +1468,103 @@ where the second inequality follows from  $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}< 0$
 
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
+Given the ground truth $X$, the graph $G$ and a vertex $i\in[n]$, define the neighbors of $i$ in $G$ as 
+\begin{equation} \label{eq:ngbi}
+\cN_i(G) := \{j\in[n]\setminus\{i\}:
+\{i,j\}\in E(G) \} .
+\end{equation}
+Given a sample $\sigma\in W^n$ and a graph $G$,  we define the set of ``bad" neighbors of the vertex $i$ in $G$ as
+$$
+\Omega_i(\sigma,G):=\{j\in \cN_i(G): 
+\sigma_j \neq X_j \} .
+$$
+Given a vertex $i\in[n]$, a graph $G$ and an integer $z>0$, we also define
+$$
+\Lambda_i(G, z):=\{ \sigma\in W^n: |\Omega_i(\sigma,G)| < z \} ,
+$$
+i.e., $\Lambda_i(G, z)$ consists of all the samples for which the number of ``bad" neighbors of the vertex $i$ in $G$ is less than $z$.
 
+\begin{lemma} \label{lm:us}
+Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $\beta\le \beta^\ast$.
+Given any $r>0$, there exists an integer $z>0$ such that for large enough $n$ and every $i\in[n]$, 
+\begin{equation} \label{eq:zr}
+P_{\SIBM} (\sigma\in \Lambda_i(G, z)
+| \dist(\sigma, X) \le n/k)
+> 1 - n^{-r} .
+\end{equation}
+\end{lemma}
+\begin{proof}
+The event $\{\sigma\notin \Lambda_i(G, z) \}$ can be written as
+\begin{equation} \label{eq:lei}
+\{\sigma\notin \Lambda_i(G, z) \}
+=\{|\Omega_i(\sigma,G)| \ge z \}
+=\bigcup_{\tilde{\cI}\subseteq[n]\setminus\{i\}, |\tilde{\cI}| = z} \{\tilde{\cI} \subseteq \Omega_i(\sigma,G)\} .
+\end{equation}
+Given a subset $\tilde{\cI}\subseteq[n]\setminus\{i\}$,
+the event $\{\tilde{\cI} \subseteq \Omega_i(\sigma,G) \}$ is the intersection of two events $\{\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}\}$ and $\{i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI}\}$.
+
+We start with the analysis of the first event.
+In Proposition~\ref{prop:43}, we have shown that
+for any $\delta>0$ and any $r'>0$, there exists $n_0(\delta, r')$ such that for all even integers $n>n_0(\delta, r')$,
+$$ 
+P_{\SIBM} \Big(\dist(\sigma,\pm X) \le n^{g(\beta)+\delta}
+ \Big) \ge 1- n^{-r'} .
+$$
+By Lemma~\ref{lm:ele} (vi), we know that $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, so we can always choose a $\delta>0$ such that $g(\beta)+\delta<1$.
+Let $\theta:=g(\beta)+\delta<1$. Then for large enough $n$,
+$$
+P_{\SIBM} \Big(\dist(\sigma, \Gamma) \le n^{\theta} \Big) \ge 1- n^{-r'} .
+$$
+This in particular implies that
+$$
+P_{\SIBM} \Big(\dist(\sigma, X) \le n^{\theta} | \dist(\sigma, X) \le n/k
+\Big) \ge 1- n^{-r'} .
+$$
+Moreover, Lemma~\ref{lm:bq} in Appendix~\ref{ap:6} (see inequality \eqref{eq:l2}) tells us that
+$$
+ P_{\SIBM}(\sigma_j \neq X_j \text{~for all~}  j\in\tilde{\cI}
+~\big| \dist(\sigma,X) \le n^\theta) \le \Big(\frac{n^\theta}{n/k-|\tilde{\cI}|}
+\Big)^{|\tilde{\cI}|}
+\quad \text{for all~} \tilde{\cI}\subseteq [n] .
+$$
+Therefore, for any subset $\tilde{\cI}\subseteq[n]\setminus\{i\}$ with size $|\tilde{\cI}|=z$, we have
+$$
+P_{\SIBM}(\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}
+| \dist(\sigma, X) \le n/k )
+\le O(n^{-(1-\theta) z}) + O(n^{-r'}) . 
+$$
+Taking $r'>(1-\theta) z$ gives us
+\begin{equation} \label{eq:gr}
+P_{\SIBM}(\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}
+| \dist(\sigma, X) \le n/k )
+\le O(n^{-(1-\theta) z}) . 
+\end{equation}
+
+Given $r>0$, we will prove \eqref{eq:zr} for any integer $z\ge \frac{r+1}{1-\theta}$. 
+Now condition on the event $\{\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}\}$.
+Taking a specific $\sigma'$ which satistifies  $\{\sigma_j \neq X_j \text{~for all~} j \in \tilde{\cI}, \dist(\sigma, X) \le n/k\}$.
+Using Lemma \ref{lem:post_independent}, we can show that
+\begin{align*}
+P(i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI} | \sigma_j \neq X_j \text{~for all~} j \in \tilde{\cI}, \dist(\sigma, X) \le n/k) &\leq P(i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI} | \sigma =\sigma')\\
+&=\prod_{j\in \tilde{\cI}}\Pr((i,j)\in E(G) | \sigma = \sigma') =  O\Big( \frac{\log^z(n)}{n^z} \Big) .
+\end{align*}
+Combining this with \eqref{eq:gr}, we have
+$$
+P_{\SIBM} (\tilde{\cI} \subseteq \Omega_i(\sigma,G))
+= O (n^{-(2-\theta)z}\log^z(n)) .
+$$
+Finally, combining this with \eqref{eq:lei} and the union bound, we have
+\begin{align*}
+P_{\SIBM} \big(\sigma\notin \Lambda_i(G, z)
+| \dist(\sigma, X) \le n/k \big)
+& \le n^z O (n^{-(2-\theta)z}\log^z(n))
+= O (n^{-(1-\theta)z}\log^z(n))  \\
+& \le O (n^{-r-1}\log^z(n)) <n^{-r}
+\end{align*}
+for large enough $n$. This completes the proof of the lemma.
+\end{proof}
 \appendix
-\section{Auxiliary lemmas used in Section}
+\section{Auxiliary lemmas used in Section~\ref{sect:direct}}\label{ap:6}
 
 \begin{lemma} \label{lm:bq}
 For $0<\theta<1$,
@@ -1544,6 +1638,31 @@ Let $\cI,\cI'\subseteq[n]\setminus\{i\}$ be two subsets such that $|\cI_j|=|\cI_
 Then $P_{\SIBM}(\sigma=X^{(\sim\cI)}) = P_{\SIBM}(\sigma=X^{(\sim\cI')})$.
 \end{lemma}
 
+\begin{lemma}\label{lem:post_independent}
+Let $p_{ij}=\Pr(\{\{i,j\} \in E(G) \})$ be the prior probability, which equals $\frac{a\log n}{n}$ or $\frac{b\log n}{n}$ depending on $X$.
+The event $\{\{i,j\} \in E(G) \}$ are independent given $\sigma$ and the posterior probability is
+\begin{equation}
+\Pr(\{\{i,j\} \in E(G) \} | \sigma) = \frac{c p_{ij} }{1-p_{ij} + cp_{ij}} \text{ where  } c= \exp(\beta + \frac{\alpha \log n}{n} ) I(\bar{\sigma}_i, \bar{\sigma}_j) 
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $Y_{ij}$ be a Bernoulli random variable with $\Pr(Y_{ij} = 1) = \Pr(\{\{i,j\} \in E(G)\}) = p_{ij}$. $Y_{ij}$ represents whether there is an edge between node $i$ and $j$.
+The prior distribution for $Y:=\{Y_{ij}\}$ can be written as:
+$$
+\Pr(Y) = \prod_{i,j} p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}
+$$ 
+Using Equation \eqref{eq:isingma}, the posterior probability for $Y| \sigma$ can be written as
+$$
+\Pr(Y|\sigma) = C\prod_{ij} \exp((\beta + \frac{\alpha \log n}{n})I(\bar{\sigma_i}, \bar{\sigma_j} )y_{ij}) \Pr(Y)
+$$
+where $C$ is a constant irrelevant with $Y$.
+We can see from the joint distribution of $Y|\sigma$ that $Y_{ij} | \sigma$ are independent and each marginal distribution has the following form:
+$$
+\Pr(Y_{ij} | \sigma) = C_{ij} \exp((\beta + \frac{\alpha \log n}{n})I(\bar{\sigma_i}, \bar{\sigma_j} )y_{ij}) p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}
+$$
+Using the normalization condition for $Y_{ij} | \sigma $, we can compute $C_{ij} = \frac{1}{1-p_{ij} + p_{ij}c}$. From $\Pr(\{\{i,j\} \in E(G) \} | \sigma) =\Pr(Y_{ij}=1|\sigma)$ the proof is complete.
+\end{proof}
+\section{Auxiliary propositions used in Section~\ref{sect:struct}}\label{ap:um}
 \bibliographystyle{plain}
 \bibliography{exportlist}
 \end{document}
