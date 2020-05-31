@@ -1642,7 +1642,7 @@ Then $P_{\SIBM}(\sigma=X^{(\sim\cI)}) = P_{\SIBM}(\sigma=X^{(\sim\cI')})$.
 Let $p_{ij}=\Pr(\{\{i,j\} \in E(G) \})$ be the prior probability, which equals $\frac{a\log n}{n}$ or $\frac{b\log n}{n}$ depending on $X$.
 The event $\{\{i,j\} \in E(G) \}$ are independent given $\sigma$ and the posterior probability is
 \begin{equation}
-\Pr(\{\{i,j\} \in E(G) \} | \sigma) = \frac{c p_{ij} }{1-p_{ij} + cp_{ij}} \text{ where  } c= \exp(\beta + \frac{\alpha \log n}{n} ) I(\bar{\sigma}_i, \bar{\sigma}_j) 
+\Pr(\{\{i,j\} \in E(G) \} | \sigma) = \frac{c p_{ij} }{1-p_{ij} + cp_{ij}} \text{ where  } c= \exp\Big((\beta + \frac{\alpha \log n}{n} ) I(\bar{\sigma}_i, \bar{\sigma}_j) \Big)
 \end{equation}
 \end{lemma}
 \begin{proof}
