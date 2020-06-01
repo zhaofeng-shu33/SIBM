@@ -1563,6 +1563,41 @@ P_{\SIBM} \big(\sigma\notin \Lambda_i(G, z)
 \end{align*}
 for large enough $n$. This completes the proof of the lemma.
 \end{proof}
+We further define 
+\begin{align*}
+\Lambda(G, z) :=
+\bigcap_{i=1}^n
+\Lambda_i(G, z) .
+\end{align*}
+The following corollary follows immediately from Lemma~\ref{lm:us} and the union bound.
+\begin{corollary} \label{cr:1}
+Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
+Given any $r>0$, there exists an integer $z>0$ such that for large enough $n$, 
+$$
+P_{\SIBM} (\sigma\in \Lambda(G, z)
+| \dist(\sigma, X) \le n/k)
+> 1 - n^{-2r} .
+$$
+Equivalently, for any $r>0$, there is an integer $z>0$ and a set $\cG_{\good}$ such that
+
+\noindent (i)
+$P(G\in\cG_{\good}) \ge 1- O(n^{-r})$.
+
+\noindent (ii) For every $G\in\cG_{\good}$,
+$$
+P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)  \big| \dist(\sigma, X) \le n/2 \big) =1- O(n^{-r}).
+$$
+\end{corollary}
+\begin{proof}
+We only explain why the first statement implies the second one.
+Define a set 
+$$
+\cG_{\bad}:= \big\{ G: P_{\sigma|G} \big( \sigma \notin  \Lambda(G, z)  \big| \dist(\sigma, X) \le n/k \big)
+>n^{-r} \big\} .
+$$
+Then by the union bound and Lemma~\ref{lm:us}, $P(G\in\cG_{\bad})\le n^{-r}$. Therefore, the second statement follows by taking $\cG_{\good}$ to be the complement of $\cG_{\bad}$.
+\end{proof}
+
 \appendix
 \section{Auxiliary lemmas used in Section~\ref{sect:direct}}\label{ap:6}
 
