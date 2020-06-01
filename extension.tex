@@ -1598,6 +1598,63 @@ $$
 Then by the union bound and Lemma~\ref{lm:us}, $P(G\in\cG_{\bad})\le n^{-r}$. Therefore, the second statement follows by taking $\cG_{\good}$ to be the complement of $\cG_{\bad}$.
 \end{proof}
 
+We define subsets of $\cN_i(G)$ with the same labeling and the opposite labeling as
+$$
+\cN_{i,r}(G):=\{j\in \cN_i(G): X_j=\omega^r \cdot X_i \}
+$$
+respectively.
+Recall that in \eqref{eq:defAB}, we defined $A^r_i=A^r_i(G):=|\cN_{i,r}(G)|$.
+By definition, $\sigma = X^{(\sim\cI)}\in  \Lambda_i(G,z)$ if and only if $|\cI\cap \cN_i(G)| < z$.
+
+
+\begin{lemma} \label{lm:et}
+Let $0<\theta<1$ be some constant and $1\leq r \leq k-1$. Then for large enough $n$ we have
+\begin{align*}
+\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
+\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
+{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } \\
+& \le \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+We only need to show that for every $\cI\in [n]\setminus\{i\},v$ with size $|\cI|\le n^\theta$ such that $X^{(\sim\cI,v)}\in \Lambda_i(G,z)$,
+and $v'$ be an extension of $v$ such that $v'=[v, \omega^r]$:
+\begin{equation} \label{eq:qk}
+\begin{aligned}
+\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - kz) \Big) & \le 
+\frac{P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}), v')} ) } { P_{\sigma|G}(\sigma= X^{(\sim\cI,v)} ) } \\
+& \le \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + kz) \Big) .
+\end{aligned}
+\end{equation}
+Then using 
+$$
+\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
+{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
+= \frac{\sum_{\cI, v} P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}), v')} ) } {\sum_{\cI, v} P_{\sigma|G}(\sigma= X^{(\sim\cI,v)} ) } 
+$$
+we can get the conclusion.
+
+Define $v^{-r} = |\{i | v_i = \omega^{k-r}\}|$ and
+$$
+A'^r_i :=A^r_i-|\cI\cap \cN_{i,r}(G)| + \sum_{s=0, s\neq r}^{k-1}|\cI\cap \cN_{i,s}(G) \cap v^{-(s-r)}| .
+$$
+Since $X^{(\sim\cI, v)}\in \Lambda_i(G,z)$, we have $|\cI\cap \cN_{i,r}(G)| \le z-1$. Therefore,
+\begin{equation} \label{eq:oo}
+A^r_i-A^0_i-k(z-1) \le A'^r_i-A'^0_i\le A^r_i-A^0_i+k(z-1) .
+\end{equation}
+By \eqref{eq:isingma}, we have
+\begin{align*}
+& \frac{P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}))} ) } { P_{\sigma|G}(\sigma= X^{(\sim\cI)} ) } \\
+= & \exp\Big(k(\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)
+-2\frac{(k-1)\alpha\log(n)}{n}
+\Big)
+ \\
+= & \exp\Big(k(\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)+o(1) \Big)
+\end{align*}
+Taking \eqref{eq:oo} into this equation gives us \eqref{eq:qk} and completes the proof.
+\end{proof}
+
 \appendix
 \section{Auxiliary lemmas used in Section~\ref{sect:direct}}\label{ap:6}
 
