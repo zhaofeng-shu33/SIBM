@@ -1756,9 +1756,17 @@ $$
 $$
 Using the normalization condition for $Y_{ij} | \sigma $, we can compute $C_{ij} = \frac{1}{1-p_{ij} + p_{ij}c}$. From $\Pr(\{\{i,j\} \in E(G) \} | \sigma) =\Pr(Y_{ij}=1|\sigma)$ the proof is complete.
 \end{proof}
+
+
+\begin{lemma} \label{lm:bmd}
+Let $Y\sim \Binom(n + o(n), a\log(n)/n)$. Then for $r>8$ and large enough $n$, we have
+$$
+P(Y\ge r a \log(n)) < n^{-r} .
+$$
+\end{lemma}
 \section{Auxiliary propositions used in Section~\ref{sect:theta}}\label{ap:um}
 
-We first prove a tight estimate of $P(A^1_i-A^0_i = t\log(n))$ for $t=\Theta(1)$. Note that \eqref{eq:upba} gives an upper bound on $P(B_i-A_i \ge t\log(n))$ for $t\in [\frac{1}{k}(b-a), 0]$, so it is also an upper bound of $P(A^1_i-A^0 = t\log(n))$. Below we prove that the upper bound in \eqref{eq:upba} is in fact tight up to a $\Theta(1/ \sqrt{\log(n)})$ factor for all $t=\Theta(1)$ such that $t\log(n)$ is an integer.
+We first prove a tight estimate of $P(A^1_i-A^0_i = t\log(n))$ for $t=\Theta(1)$. Note that \eqref{eq:upba} gives an upper bound on $P(A^1_i-A^0_i \ge t\log(n))$ for $t\in [\frac{1}{k}(b-a), 0]$, so it is also an upper bound of $P(A^1_i-A^0 = t\log(n))$. Below we prove that the upper bound in \eqref{eq:upba} is in fact tight up to a $\Theta(1/ \sqrt{\log(n)})$ factor for all $t=\Theta(1)$ such that $t\log(n)$ is an integer.
 
 We use $f(n)=\Theta(g(n))$ and $f(n)\asymp g(n)$ interchangeably if there is a constant $C>0$ such that $C^{-1}g(n)\le f(n)\le C g(n)$ for large enough $n$.
 
@@ -1777,54 +1785,54 @@ For any $t$ such that $t\log(n)$ is an integer and $|t|<100a$,
 \begin{proof}
 Since
 $$
-P(B_i-A_i = t\log(n))
-= \sum_{s\log(n)=0}^{n/2}
-P(B_i = s\log(n)) P(A_i=(s-t)\log(n)) ,
+P(A^1_i-A^0_i = t\log(n))
+= \sum_{s\log(n)=0}^{n/k}
+P(A^1_i = s\log(n)) P(A^0_i=(s-t)\log(n)) ,
 $$
-we first calculate tight estimates of $P(B_i = s\log(n))$ and $P(A_i=(s-t)\log(n))$. (The summation $\sum_{s\log(n)=0}^{n/2}$ in the above equation means that the quantity $s\log(n)$ ranges over all integer values from $0$ to $n/2$.)
+we first calculate tight estimates of $P(A^1_i = s\log(n))$ and $P(A^0_i=(s-t)\log(n))$. (The summation $\sum_{s\log(n)=0}^{n/k}$ in the above equation means that the quantity $s\log(n)$ ranges over all integer values from $0$ to $n/k$.)
 By Lemma~\ref{lm:bmd} in Appendix~\ref{ap:6}, we only need to focus on the regime where both $|s|$ and $|t|$ are bounded from above by some (large) constants, e.g., $100a$.
 Therefore,
 \begin{align*}
-& P(B_i = s\log(n)) \\
-= & \binom{n/2}{s\log(n)}
+& P(A^1_i = s\log(n)) \\
+= & \binom{n/k}{s\log(n)}
 \Big( \frac{b\log(n)}{n} \Big)^{s\log(n)}
-\Big( 1- \frac{b\log(n)}{n} \Big)^{n/2-s\log(n)}  \\
+\Big( 1- \frac{b\log(n)}{n} \Big)^{n/k-s\log(n)}  \\
 = & (1+o(1))
-\frac{(n/2)^{s\log(n)}}{(s\log(n))!} \Big( \frac{b\log(n)}{n} \Big)^{s\log(n)}
-\exp \Big(-\frac{b\log(n)}{2} \Big)  \\
+\frac{(n/k)^{s\log(n)}}{(s\log(n))!} \Big( \frac{b\log(n)}{n} \Big)^{s\log(n)}
+\exp \Big(-\frac{b\log(n)}{k} \Big)  \\
 = & (1+o(1))
-\frac{1} {(s\log(n))!} \Big( \frac{b\log(n)}{2} \Big)^{s\log(n)}
-\exp \Big(-\frac{b\log(n)}{2} \Big)  \\
+\frac{1} {(s\log(n))!} \Big( \frac{b\log(n)}{k} \Big)^{s\log(n)}
+\exp \Big(-\frac{b\log(n)}{k} \Big)  \\
 \overset{(a)}{=} & (1+o(1))
 \frac{1} {\sqrt{2\pi s\log(n)}}
 \Big(\frac{e}{s\log(n)} \Big)^{s\log(n)}
-\Big( \frac{b\log(n)}{2} \Big)^{s\log(n)}
-\exp \Big(-\frac{b\log(n)}{2} \Big)  \\
+\Big( \frac{b\log(n)}{k} \Big)^{s\log(n)}
+\exp \Big(-\frac{b\log(n)}{k} \Big)  \\
 = & (1+o(1))
 \frac{1} {\sqrt{2\pi s\log(n)}}
-\Big( \frac{ e b }{2s} \Big)^{s\log(n)}
-\exp \Big(-\frac{b\log(n)}{2} \Big) \\
+\Big( \frac{ e b }{ks} \Big)^{s\log(n)}
+\exp \Big(-\frac{b\log(n)}{k} \Big) \\
 = & (1+o(1))
 \frac{1} {\sqrt{2\pi s\log(n)}}
 \exp\Big( \log(n) \Big( 
-s+ s\log(b)-s\log(2)-s\log(s)-\frac{b}{2}
+s+ s\log(b)-s\log(k)-s\log(s)-\frac{b}{k}
 \Big)\Big) ,
 \end{align*}
 where $(a)$ follows from Stirling's formula.
 Similarly, when $s > t$,
 \begin{align*}
-& P(A_i=(s-t)\log(n)) \\
+& P(A^0_i=(s-t)\log(n)) \\
 = & (1+o(1))
 \frac{1} {\sqrt{2\pi (s-t)\log(n)}}
 \exp\Big( \log(n) \Big( 
- (s-t)(1+\log(a)-\log(2)-\log(s-t))-\frac{a}{2}
+ (s-t)(1+\log(a)-\log(k)-\log(s-t))-\frac{a}{k}
 \Big)\Big)
 \end{align*}
 Define a function
 $$
-h_t(s):=(2s-t)(1-\log(2))
+h_t(s):=(2s-t)(1-\log(k))
 +s\log\frac{ab}{s(s-t)}
-+t\log\frac{s-t}{a} -\frac{a+b}{2} .
++t\log\frac{s-t}{a} -\frac{a+b}{k} .
 $$
 Then for $s>\max(0,t)$,
 $$
@@ -1835,20 +1843,20 @@ $$
 Therefore, for $t$ such that $t\log(n)$ is an integer, we have
 \begin{equation} \label{eq:gj}
 \begin{aligned}
-& P(B_i-A_i = t\log(n))  \\
-= & (1+o(1)) \sum_{s\log(n)=\max(0,t\log(n))}^{n/2}
+& P(A^1_i-A^0_i = t\log(n))  \\
+= & (1+o(1)) \sum_{s\log(n)=\max(0,t\log(n))}^{n/k}
 \frac{1} {2\pi \log(n)\sqrt{s (s-t)}}
 \exp(h_t(s) \log(n)) .
 \end{aligned}
 \end{equation}
 In order to estimate this sum, we need to analyze the function $h_t(s)$. Its first and second derivatives are
-$h_t'(s)=\log\frac{ab}{4s(s-t)}$
+$h_t'(s)=\log\frac{ab}{k^2s(s-t)}$
 and $h_t''(s)=-\frac{1}{s}-\frac{1}{s-t}<0$, so $h_t(s)$ is a concave function and takes maximum at $s^\ast$ such that $h_t'(s^\ast)=0$.
 Simple calculations show that
-$s^\ast=(t+\sqrt{t^2+ab})/2>\max(0,t)$ and
+$s^\ast=(t+\sqrt{t^2+4ab/k^2})/2>\max(0,t)$ and
 $$
 h_t(s^\ast)
-= \sqrt{t^2+ab} -t\big(\log(\sqrt{t^2+ab}+t)-\log(b) \big) -\frac{a+b}{2} .
+= \sqrt{t^2+4ab/k^2} +t\big(\log(\sqrt{t^2+4ab/k^2}-t)-\log(2a) \big) -\frac{a+b}{k} .
 $$
 By Lemma~\ref{lm:bmd} in Appendix~\ref{ap:6}, both $|s|$ and $|t|$ are upper bounded by some (large) constants
 with probability $1-o(n^{-10})$. Therefore, the sum on the right-hand side of \eqref{eq:gj} is concentrated around a small neighborhood of $s^\ast$. In this neighborhood, we have
@@ -1897,6 +1905,199 @@ Therefore,
 The sum over $s\log(n) < s^\ast\log(n) - c\sqrt{\log(n)}$ can be bounded in the same way. Thus we have shown \eqref{eq:jh}, and this completes the proof of the proposition.
 \end{proof}
 
+Let $\cG_1:=\{G:B_i-A_i<0\text{~for all~}i\in[n]\}$. By \eqref{eq:tD}, we have $P(G\in\cG_1)=1-o(1)$. In the proposition below, we will prove that if $0<\beta<\frac{1}{4}\log\frac{a}{b}$, then the conditional expectation $E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) ~\Big|~ G\in\cG_1 \Big]$ is very close to the unconditional expectation $E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) \Big]$. On the other hand, if $\beta\ge\frac{1}{4}\log\frac{a}{b}$, then the conditional expectation is $O(n^{\tilde{g}(\beta)})$ while the unconditional one is $\Theta(n^{g(\beta)})$. Since $\tilde{g}(\beta)<g(\beta)$ when $\beta>\frac{1}{4}\log\frac{a}{b}$, the conditional expectation is much smaller than the unconditional one in this case.
+\begin{proposition}  \label{prop:df}
+Assume that $\sqrt{a}-\sqrt{b}>\sqrt{2}$.
+If $0<\beta<\frac{1}{4}\log\frac{a}{b}$, then
+$$
+E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+= (1+o(1)) E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) \Big]
+= (1+o(1)) n^{g(\beta)}  .
+$$
+If $\beta\ge\frac{1}{4}\log\frac{a}{b}$, then
+\begin{align*}
+E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+= O(n^{\tilde{g}(\beta)})  .
+\end{align*}
+\end{proposition}
+\begin{proof}
+We first calculate the unconditional expectation:
+By writing $A_i$ and $B_i$ as sums of independent Bernoulli random variables, we obtain that
+\begin{align*}
+E[e^{2\beta(B_i-A_i)}]
+& =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^{2\beta} \Big)^{n/2}
+\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-2\beta} \Big)^{n/2-1}  \\
+& = 
+\exp\Big(\frac{\log(n)}{2} ( a e^{-2\beta}+b e^{2\beta} -a-b )
++o(1) \Big) \\
+& = (1+o(1)) n^{g(\beta)-1} .
+\end{align*}
+Therefore, for all $\beta$ we have
+\begin{equation} \label{eq:lb}
+E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) \Big]
+= (1+o(1)) n^{g(\beta)}  .
+\end{equation}
+Now let us switch to conditional expectation. In light of \eqref{eq:lb}, for the case of $0<\beta<\frac{1}{4}\log\frac{a}{b}$ we only need to prove that the conditional expectation is very close to the unconditional expectation.
+To that end, we first reprove a weaker version of \eqref{eq:lb} using Proposition~\ref{prop:99}. This will help us estimate the difference between the conditional and unconditional expectations.
+
+Define $D(G,t):=|\{i\in[n]:B_i-A_i= t\log(n)\}|$.
+Similarly to \eqref{eq:fd}, we have
+\begin{equation} \label{eq:s1}
+\sum_{i=1}^n \exp\big(2\beta (B_i-A_i) \big) 
+=  \sum_{t\log(n)=-n/2}^{n/2}
+D(G,t) \exp\big(2\beta t \log(n) \big) .
+\end{equation}
+By definition, $D(G,t)=\sum_{i=1}^n \mathbbm{1}[B_i-A_i= t\log(n)]$, so
+$E[D(G,t)]=n P(B_i-A_i= t\log(n))$. Therefore, by Proposition~\ref{prop:99} and the definition of function $f_{\beta}(t)$ in \eqref{eq:gt},
+$$
+E[D(G,t)
+\exp\big(2\beta t \log(n) \big)]
+\asymp \frac{1} {\sqrt{\log(n)}} \exp( f_{\beta}(t) \log(n) ) .
+$$
+As a consequence,
+\begin{equation}  \label{eq:wf1}
+\begin{aligned}
+E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) \Big]     
+& =  \sum_{t\log(n)=-n/2}^{n/2}
+E \big[ D(G,t) \exp\big(2\beta t \log(n) \big) \big]  \\
+& \asymp  \frac{1} {\sqrt{\log(n)}} \sum_{t\log(n)=-n/2}^{n/2}
+ \exp( f_{\beta}(t) \log(n) ) .
+\end{aligned}
+\end{equation}
+By the proof of Lemma~\ref{lm:tus}, $f_{\beta}(t)$ is a concave function and takes maximum at
+$t^\ast=\frac{b e^{2\beta}-a e^{-2\beta}}{2}$. 
+Similarly to the analysis of \eqref{eq:jh}, $\exp( f_{\beta}(t) \log(n))$ varies by a constant factor within a window of length $\Theta(1/\sqrt{\log(n)})$ around $t^\ast$, and
+then drops off geometrically fast beyond that window. Since $t\log(n)$ takes $\Theta(\sqrt{\log(n)})$ integer values when $t$ takes values in such a window, we have
+\begin{equation} \label{eq:wf2}
+\sum_{t\log(n)=-n/2}^{n/2}
+ \exp( f_{\beta}(t) \log(n) )
+ \asymp \sqrt{\log(n)}
+ \exp( f_{\beta}(t^\ast) \log(n) ) .
+\end{equation}
+By the proof of Lemma~\ref{lm:tus}, we have $f_{\beta}(t^\ast)=g(\beta)$. Taking this into \eqref{eq:wf1} and \eqref{eq:wf2}, we obtain that
+$$
+E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) \Big]
+= \Theta (n^{g(\beta)}) .
+$$
+Now let us consider the conditional expectation. When conditioning on the event $G\in\cG_1$, we have $D(G,t)=0$ for all $t\ge 0$. In this case, the range of sum in both \eqref{eq:s1} and \eqref{eq:wf1} reduces from $[-n/2,n/2]$ to $[-n/2,0)$. By Lemma~\ref{lm:5t} below, we have $P(B_i-A_i= t\log(n)~|~G\in\cG_1)= (1+o(1))P(B_i-A_i= t\log(n))$ for $t<0$, and so
+$E[D(G,t)|G\in\cG_1]=(1+o(1))E[D(G,t)]$ for $t<0$. Therefore,
+$$
+E\Big[ \sum_{i=1}^n \exp\big(2\beta (B_i-A_i) \big) \Big| G\in\cG_1 \Big]
+= (1+o(1)) \sum_{t\log(n)=-n/2}^{-1}
+E\big[ D(G,t) \exp\big(2\beta t \log(n) \big) \big] .
+$$
+From the analysis of \eqref{eq:wf1}, we know that 
+\begin{align*}
+& \sum_{t\log(n)=-n/2}^{n/2}
+E\big[ D(G,t) \exp\big(2\beta t \log(n) \big) \big]  \\
+= & (1+o(1)) \sum_{t\log(n)=t^\ast\log(n)-\Theta(\sqrt{\log(n)})}^{t^\ast\log(n)+\Theta(\sqrt{\log(n)})}
+E\big[ D(G,t) \exp\big(2\beta t \log(n) \big) \big] .
+\end{align*}
+Therefore, if $t^\ast=\frac{b e^{2\beta}-a e^{-2\beta}}{2}<0$, or equivalently $0<\beta<\frac{1}{4}\log\frac{a}{b}$, then
+$$
+\sum_{t\log(n)=-n/2}^{n/2}
+E\big[ D(G,t) \exp\big(2\beta t \log(n) \big) \big] = (1+o(1))
+\sum_{t\log(n)=-n/2}^{-1}
+E\big[ D(G,t) \exp\big(2\beta t \log(n) \big) \big] ,
+$$
+i.e.,
+\begin{equation} \label{eq:bz}
+E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+= (1+o(1)) E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) \Big] .
+\end{equation}
+On the other hand,
+if $t^\ast=\frac{b e^{2\beta}-a e^{-2\beta}}{2}\ge 0$, or equivalently $\beta\ge\frac{1}{4}\log\frac{a}{b}$, then
+\begin{equation}  \label{eq:wq}
+E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) ~\Big|~ G\in\cG_1 \Big]   
+\asymp  \frac{1} {\sqrt{\log(n)}} \sum_{t\log(n)=-n/2}^{-1}
+ \exp( f_{\beta}(t) \log(n) ) .
+\end{equation}
+Since $f_{\beta}(t)$ is concave, it is an increasing function when $t<t^\ast$. Therefore, $f_{\beta}(t)<f_{\beta}(0)=g(\frac{1}{4}\log\frac{a}{b})=\tilde{g}(\beta)$ for $\beta\ge\frac{1}{4}\log\frac{a}{b}$.
+Similarly to the analysis of \eqref{eq:jh} and \eqref{eq:wf1},
+$\exp( f_{\beta}(t) \log(n))$ varies by a constant factor within a window of length $O(1/\sqrt{\log(n)})$ around $t=0$, and
+then drops off geometrically fast beyond that window. As a consequence,
+\begin{align*}
+\sum_{t\log(n)=-n/2}^{-1}
+ \exp( f_{\beta}(t) \log(n) )
+=   O(\sqrt{\log(n)}) \exp(\tilde{g}(\beta) \log(n)) .
+\end{align*}
+Taking this into \eqref{eq:wq} completes the proof of the proposition.
+\end{proof}
+
+The following corollary follows immediately from Proposition~\ref{prop:df} and \eqref{eq:lb}:
+\begin{corollary} \label{cr:yy}
+For all $\beta>0$,
+\begin{align*}
+& E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big)  \Big] 
+= \Theta(n^{g(\beta)}),  \\
+& E \Big[ \sum_{i=1}^n  \exp\big(2\beta (B_i-A_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+= O(n^{\tilde{g}(\beta)})  .
+\end{align*}
+\end{corollary}
+
+
+
+\begin{remark}
+From the proof of \eqref{eq:bz}, we can see that if $0<\beta<\frac{1}{4}\log\frac{a}{b}$, then
+\begin{equation} \label{eq:pl}
+E \big[  \exp\big(2\beta (B_i-A_i) \big) ~\big|~ G\in\cG_1 \big] 
+= (1+o(1)) E \big[  \exp\big(2\beta (B_i-A_i) \big) \big] ,
+\end{equation}
+i.e., we can remove the summation in \eqref{eq:bz}. We will use this in the proof of Proposition~\ref{prop:con}.
+\end{remark}
+
+
+
+\begin{lemma}  \label{lm:5t}
+Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\text{~and~}1\leq r \leq k-1\}$. Then $P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
+\end{lemma}
+
+\begin{proof}
+Note that 
+$$
+P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1)
+=\frac{P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log(n) \big)}{P(G\in\cG_1)} .
+$$
+By \eqref{eq:tD}, we have $P(G\in\cG_1)=1-o(1)$, so
+\begin{align*}
+& P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1) \\
+= & (1+o(1)) P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log(n) \big) \\
+= & (1+o(1)) P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log(n) \big) P(A^r_i-A^0_i= t\log(n)) .
+\end{align*}
+Therefore, to prove the lemma we only need to show that $P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log(n) \big)=1-o(1)$. 
+
+For $j\in[n]\setminus\{i\}$, define $\xi_{ij}=\xi_{ij}(G):=\mathbbm{1}[\{i,j\}\in E(G)]$ as the indicator function of the edge $\{i,j\}$ connected in graph $G$. We also define 
+$$
+A'^r_j=\left\{
+\begin{array}{cl}
+  A^r_j-\xi_{ij}   & \mbox{if~} X_i\neq X_j \\
+  A^r_j   &   \mbox{if~} X_i= X_j
+\end{array}
+\right.
+\quad \text{and} \quad
+A'^0_j=\left\{
+\begin{array}{cl}
+  A^0_j   & \mbox{if~} X_i\neq X_j \\
+  A^0_j-\xi_{ij}   &   \mbox{if~} X_i= X_j
+\end{array}
+\right. .
+$$
+Then $A'^r_j-A'^0_j$ differs from $A^r_j-A^0_j$ by at most $1$.
+Therefore, $A'^r_j-A'^0_j<-1$ implies that $A^r_j-A^0_j<0$,
+and so $P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log(n) \big) \ge P \big(A'^r_j-A'^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log(n) \big)$.
+Now we only need to prove that the right-hand side is $1-o(1)$.
+Also note that the two sets of random variables $\{A'^r_j,A'^0_j:j\in[n]\setminus\{i\}\}$ and $\{A^r_i,A^0_i\}$ are independent,
+so $P \big(A'^r_j-A'^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log(n) \big)=P \big(A'^r_j-A^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\}  \big)$.
+By definition, we have
+$A'^r_j\sim\Binom(\frac{n}{k}-\Theta(1),b\log(n)/n)$
+and $A'^0_j\sim\Binom(\frac{n}{k}-\Theta(1),a\log(n)/n)$ for all $j\in[n]\setminus\{i\}$.
+Then following exactly the same proof\footnote{First use Chernoff bound as we did in Proposition~\ref{prop:cher} and then use the union bound.} as that of \eqref{eq:tD}, we have
+$$
+P \big(A'^r_j-A'^0_j <-1 \text{~for all~} j\in[n]\setminus\{i\}  \big)
+\ge 1- n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)} = 1-o(1).
+$$
+This completes the proof of the lemma.
+\end{proof}
 
 \bibliographystyle{plain}
 \bibliography{exportlist}
