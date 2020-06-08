@@ -1,0 +1,52 @@
+\documentclass{article}
+\input{macros.tex}
+\title{Supplementary Meterial to SIBM with 2 communities}
+\author{Feng Zhao}
+\begin{document}
+\maketitle
+In this supplementary material, we give some undocumented proof.
+\begin{lemma}\label{lem:ucBA}
+Let $\cG_1:=\{G:B_i-A_i<0\text{~for all~}i\in[n]\}$. Suppose $i\neq j$, then $P(B_i-A_i + B_j - A_j= t\log(n)~|~G\in\cG_1)= (1+o(1))P(B_i-A_i + B_j - A_j= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
+\end{lemma}
+\begin{lemma}\label{lem:BijG}
+\begin{equation} 
+E \big[  \exp\big(2\beta (B_i-A_i + B_j - A_j) \big) ~\big|~ G\in\cG_1 \big] 
+= (1+o(1)) E \big[  \exp\big(2\beta (B_i-A_i + B_j - A_j) \big) \big] ,
+\end{equation}
+\end{lemma}
+\begin{proof}
+First we have
+\begin{align}
+E \big[  \exp\big(2\beta (B_i-A_i + B_j - A_j) \big) ~\big|~ G\in\cG_1 \big] 
+&= \sum_{t=-n}^{-2} P(B_i -A_i + B_j - A_j = t\log n | G \in \cG_1) \exp(2\beta t \log n) \notag \\
+\text{ Lemma \ref{lem:ucBA} implies }&= (1+o(1))\sum_{t=-n}^{-2} P(B_i -A_i + B_j - A_j = t\log n) \exp(2\beta t \log n)
+\end{align}
+On the other hand, we suppose $X_i \neq X_j$ and we decompose $B_j = B'_j + \xi_{ij}, B_i = B'_i + \xi_{ij}$ where $\xi_{ij}$ is an indicator function of $\{i,j\} \in E(G)$. Then $B'_j, B'_i, A_j, A_i, \xi_{ij}$ are independent.
+$\xi_{ij} \sim Bern(\frac{b\log n}{n})$.
+Then we have
+\begin{align*}
+E \big[  \exp\big(2\beta (B_i-A_i + B_j - A_j) \big) \big] & = E[\exp(4\beta \xi_{ij})] E[\exp(2\beta (B'_i - A_i)]
+E[\exp(2\beta (B'_j - A_j)] \\
+& = (1+o(1))E[\exp(2\beta(B'_i - A_i))] E[\exp(2\beta(B'_j - A_j))]
+\end{align*}
+Using the conclusion that
+$$
+E[\exp(2\beta(B_i - A_i))] = (1+o(1)) \sum_{t=-n/2}^{-1} P(B_i - A_i = t \log n)E[\exp(2\beta t \log n)]
+$$
+we have
+\begin{align*}
+E \big[  \exp\big(2\beta (B_i-A_i + B_j - A_j) \big) \big] & = (1+o(1))
+\sum_{t_1=-n/2}^{-1} P(B'_i - A_i = t_1 \log n)E[\exp(2\beta t_1 \log n)] \\
+& \cdot
+\sum_{t_2=-n/2}^{-1} P(B'_j - A_j = t_2 \log n)E[\exp(2\beta t_2 \log n)] \\
+& = (1+o(1)) = \sum_{t=-n}^{-2} E[\exp(2\beta t \log n)]\sum_{\substack{t_1 + t_2 = t \\ t_1 < 0, t_2 < 0}} P(B'_i - A_i = t_1 \log n) P(B'_j - A_j = t_2\log n)
+\end{align*}
+Since 
+\begin{align*}
+P(B_i -A_i + B_j - A_j = t\log n)
+&= \sum_{\substack{t_1 + t_2 + t_3 = t\\ t_3 \in\{0, 1\}}} P(B'_i - A_i = t_1 \log n) P(B'_j - A_j = t_2 \log n) P(2\xi_{ij} = t_3 \log n) \\
+&=(1+o(1)) \sum_{t_1 + t_2 = t} P(B'_i - A_i = t_1 \log n) P(B'_j - A_j = t_2 \log n)  \\
+\end{align*}
+Since $P(G\in G_1) = 1-o(1)$, the above summation can be further restricted to $t_1 < 0, t_2 < 0$. Thus Lemma \ref{lem:BijG} follows. 
+\end{proof}
+\end{document}
