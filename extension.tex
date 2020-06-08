@@ -1465,7 +1465,110 @@ P(G\in\cG_{\delta}^{(k)})
 \end{align*}
 where the second inequality follows from  $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}< 0$, and the last inequality follows from the definition $\delta'=\min(\frac{\delta}{8},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2})$.
 
+\section{Samples differ from $\pm X$ in $\Theta(n^{g(\beta)})$ coordinates when $\beta\le\beta^\ast$}  \label{sect:struct}
+Recall the definitions of $A^r_i$ in previous sections; see the beginning of Section~\ref{sect:k=1}. 
+By definition,
+$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$ and $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $r>0$, and they are independent. 
+Also note that $A^r_i$ are functions of the underlying graph $G$.
 
+\begin{proposition}  \label{prop:con}
+Let $(X,G)\sim \SSBM(n,a\log(n)/n, b\log(n)/n)$, where $\sqrt{a}-\sqrt{b} > \sqrt{k}$.
+Suppose that $0< \beta\le \beta^\ast$.
+Then there is a set $\cG_{\con}$ such that (i) $P(G \in \cG_{\con}) = 1-o(1)$ and (ii) for every $G\in \cG_{\con}$, 
+$$
+\sum_{i=1}^n \exp\big(k\beta (A^r_i-A^0_i) \big)
+=(1+o(1)) n^{g(\beta)} .
+$$
+\end{proposition}
+
+\begin{proof}
+Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n] \text{ and } 1\leq r \leq k-1 \}$. By \eqref{eq:tD}, we have $P(G\in\cG_1)=1-o(1)$. We will prove that
+\begin{align}
+& E \Big[ \sum_{i=1}^n  \exp\big(k\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
+= (1+o(1)) n^{g(\beta)}  , \label{eq:cg} \\
+& \Var \Big[ \sum_{i=1}^n  \exp\big(k\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
+= o (n^{g(\beta)} ) .  \label{eq:sw}
+\end{align}
+Then the proposition follows immediately from  Chebyshev's inequality and the fact that $g(\beta)\ge 0$ when $0<\beta\le\beta^\ast$ (see Lemma~\ref{lm:ele}).
+
+
+In Proposition~\ref{prop:df} (see Appendix~\ref{ap:um}), we prove \eqref{eq:cg} for $0<\beta<\frac{1}{2k}\log\frac{a}{b}$. By Lemma~\ref{lm:ele}, $\beta^\ast<\frac{1}{2k}\log\frac{a}{b}$, so \eqref{eq:cg} holds for $0< \beta\le \beta^\ast$.
+Now we are left to prove \eqref{eq:sw}. Observe that
+\begin{equation} \label{eq:mh1}
+\begin{aligned}
+& \Var \Big[ \sum_{i=1}^n  \exp\big(k\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] \\
+= & \sum_{i=1}^n  \Var \big[\exp\big(k\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] \\
+& \hspace*{1.2in} + \sum_{i,j\in[n],i\neq j}
+\Cov(\exp\big(k\beta (A^r_i-A^0_i) \big), \exp\big(k\beta (A^r_j-A^0_j) \big) ~\big|~ G\in\cG_1 ) \\
+\le & \sum_{i=1}^n E \big[ \exp\big(2k\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] \\
+& \hspace*{1.2in} + \sum_{i,j\in[n],i\neq j}
+\Cov(\exp\big(k\beta (A^r_i-A^0_i) \big), \exp\big(k\beta (A^r_j-A^0_j) \big) ~\big|~ G\in\cG_1) .
+\end{aligned}
+\end{equation}
+By Corollary~\ref{cr:yy} in Appendix~\ref{ap:um}, for all $\beta>0$ we have
+$$
+\sum_{i=1}^n E[ \exp\big(2k\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
+= O ( n^{\tilde{g}(2\beta)} ) .
+$$
+By Lemma~\ref{lm:ele}, $\tilde{g}(\beta)$ is a decreasing function, and it is strictly decreasing when $\beta\le\beta^\ast<\frac{1}{2k}\log\frac{a}{b}$. Therefore, $g(\beta)=\tilde{g}(\beta)>\tilde{g}(2\beta)$ whenever $\beta\le\beta^\ast$. As a consequence, 
+\begin{equation} \label{eq:mh2}
+\sum_{i=1}^n E[ \exp\big(2k\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
+< o ( n^{g(\beta)} ) .
+\end{equation}
+
+
+
+Now we are left to bound the covariance of $\exp\big(k\beta (A^r_i-A^0_i) \big)$ and $\exp\big(k\beta (A^r_j-A^0_j) \big)$ for $i\neq j$.
+Define $\xi_{ij}=\xi_{ij}(G):=\mathbbm{1}[\{i,j\}\in E(G)]$ as the indicator function of the edge $\{i,j\}$ connected in graph $G$.
+Now suppose that\footnote{The case of $X_i=X_j$ can be handled in the same way.} $X_i\neq X_j$. Then we can decompose $A'^r_i$ and $A'^r_j$ as $A^r_i=A'^r_i+\xi_{ij}$ and $A^r_j=A'^r_j+\xi_{ij}$, where both $A'^r_i$ and $A'^r_j$ have distribution $\Binom(\frac{n}{k} - 1 , \frac{b\log(n)}{n})$,
+and the five random variables $A^0_i, A^0_j, A'^r_i,A'^r_j$ and $\xi_{ij}$ are independent.
+Therefore,
+\begin{align*}
+& \Cov(\exp\big(k\beta (A^r_i-A^0_i) \big), \exp\big(k\beta (A^r_j-A^0_j) \big) ) \\
+= & E[\exp\big(k\beta (A^r_i-A^0_i+A^r_j-A^0_j) \big)] 
+-E[\exp\big(k\beta (A^r_i-A^0_i) \big)] E[\exp\big(k\beta (A^r_j-A^0_j) \big)]   \\
+= & E[\exp\big(k\beta (A'^r_i-A^0_i) \big)] E[\exp\big(k\beta (A'^r_j-A^0_j) \big)]  \Big( E[\exp(2k\beta \xi_{ij})] -
+\big(E[\exp(k\beta \xi_{ij})]\big)^2 \Big) \\
+= & E[\exp\big(k\beta (A'^r_i-A^0_i) \big)] E[\exp\big(k\beta (A'^r_j-A^0_j) \big)] \\
+& \hspace*{1.2in}
+\Big( 1-\frac{b\log(n)}{n} + \frac{b\log(n)}{n} e^{2k\beta} -
+\Big(1-\frac{b\log(n)}{n} + \frac{b\log(n)}{n} e^{k\beta} \Big)^2 \Big) \\
+= & \Theta\Big( \frac{\log(n)}{n} \Big) E[\exp\big(k\beta (A'^r_i-A^0_i) \big)] E[\exp\big(k\beta (A'^r_j-A^0_j) \big)] \\
+= & \Theta\Big( \frac{\log(n)}{n} \Big) E[\exp\big(k\beta (A^r_i-A^0_i) \big)] E[\exp\big(k\beta (A^r_j-A^0_j) \big)]  ,
+\end{align*} 
+where the last equality holds because $\exp\big(k\beta (A'^r_i-A^0_i) \big)$ differs from $\exp\big(k\beta (A^r_i-A^0_i) \big)$  by a factor of at most $e^{k\beta}$. 
+By \eqref{eq:pl} in Appendix~\ref{ap:um}, $E \big[  \exp\big(k\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] 
+= (1+o(1)) E \big[  \exp\big(k\beta (A^r_i-A^0_i) \big) \big]$ when $0<\beta\le\beta^\ast$. By Lemma \ref{lem:BijG} in Appendix~\ref{ap:um} we have $E[\exp\big(k\beta (A^r_i-A^0_i+A^r_j-A^0_j) ~\big|~ G\in\cG_1 \big)] = (1+o(1)) E[\exp\big(k\beta (A^r_i-A^0_i+A^r_j-A^0_j) \big)]$ when $0<\beta\le\beta^\ast$.
+Therefore,
+\begin{align*}
+& \Cov \big(\exp\big(k\beta (A^r_i-A^0_i) \big), \exp\big(k\beta (A^r_j-A^0_j)  \big) ~\big|~ G\in\cG_1 \big) \\
+= & (1+o(1)) \Cov \big(\exp\big(k\beta (A^r_i-A^0_i) \big), \exp\big(k\beta (A^r_j-A^0_j)  \big) \big) \\
+= & \Theta\Big( \frac{\log(n)}{n} \Big) E[\exp\big(k\beta (A^r_i-A^0_i) \big)] E[\exp\big(k\beta (A^r_j-A^0_j) \big)] .
+\end{align*}
+As a consequence,
+\begin{align*}
+& \sum_{i,j\in[n],i\neq j}
+\Cov \big(\exp\big(k\beta (A^r_i-A^0_i) \big), \exp\big(k\beta (A^r_j-A^0_j) \big) ~\big|~ G\in\cG_1 \big) \\
+= & \Theta\Big( \frac{\log(n)}{n} \Big) \sum_{i,j\in[n],i\neq j} \Big( E[\exp\big(k\beta (A^r_i-A^0_i) \big)] E[\exp\big(k\beta (A^r_j-A^0_j) \big)] \Big) \\
+\le & \Theta\Big( \frac{\log(n)}{n} \Big)
+\Big(\sum_{i=1}^n  E[\exp\big(k\beta (A^r_i-A^0_i) \big)] \Big)^2 \\
+\overset{(a)}{=} & \Theta(n^{2g(\beta)-1} \log(n)) \\
+\overset{(b)}{=} & o(n^{g(\beta)})
+\end{align*}
+where equality $(a)$ follows from \eqref{eq:lb}, and $(b)$ follows from $g(\beta)<1$ when $0<\beta\le\beta^\ast$; see Lemma~\ref{lm:ele} (vi).
+Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\eqref{eq:mh2}.
+\end{proof}
+
+\begin{remark}
+One might wonder why we use the conditional expectation and variance to prove Proposition~\ref{prop:con} instead of using the unconditional ones. By \eqref{eq:lb} in Appendix~\ref{ap:um},
+$$
+E \Big[ \sum_{i=1}^n  \exp\big(k\beta (A^r_i-A^0_i) \big) \Big]
+= (1+o(1)) n^{g(\beta)}  
+$$
+for all $\beta$. This gives us the same estimate as the conditional expectation in \eqref{eq:cg}. However, the unconditional variance can be much larger than the conditional one in \eqref{eq:sw}. Recall from \eqref{eq:mh1} that we use $\sum_{i=1}^n E[ \exp\big(2k\beta (A^r_i-A^0_i) \big)]$ to bound the variance. 
+By Corollary~\ref{cr:yy} in Appendix~\ref{ap:um},
+for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while for the conditional case it is of order $O(n^{\tilde{g}(2\beta)})$. One can show that if $\beta\le\beta^\ast$, then we always have $g(2\beta)>\tilde{g}(2\beta)$. Therefore the order of the unconditional variance is much larger than the conditonal one.
+\end{remark}
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
 Given the ground truth $X$, the graph $G$ and a vertex $i\in[n]$, define the neighbors of $i$ in $G$ as 
@@ -1948,8 +2051,8 @@ Similarly to \eqref{eq:fd}, we have
 =  \sum_{t\log(n)=-n/k}^{n/k}
 D_r(G,t) \exp\big(k\beta t \log(n) \big) .
 \end{equation}
-By definition, $D(G,t)=\sum_{i=1}^n \mathbbm{1}[B_i-A_i= t\log(n)]$, so
-$E[D(G,t)]=n P(B_i-A_i= t\log(n))$. Therefore, by Proposition~\ref{prop:99} and the definition of function $f_{\beta}(t)$ in \eqref{eq:gt},
+By definition, $D(G,t)=\sum_{i=1}^n \mathbbm{1}[A^r_i-A^0_i= t\log(n)]$, so
+$E[D(G,t)]=n P(A^r_i-A^0_i= t\log(n))$. Therefore, by Proposition~\ref{prop:99} and the definition of function $f_{\beta}(t)$ in \eqref{eq:gt},
 $$
 E[D(G,t)
 \exp\big(k\beta t \log(n) \big)]
@@ -1958,7 +2061,7 @@ $$
 As a consequence,
 \begin{equation}  \label{eq:wf1}
 \begin{aligned}
-E \Big[ \sum_{i=1}^n  \exp\big(k\beta (B_i-A_i) \big) \Big]     
+E \Big[ \sum_{i=1}^n  \exp\big(k\beta (A^r_i-A^0_i) \big) \Big]     
 & =  \sum_{t\log(n)=-n/k}^{n/k}
 E \big[ D(G,t) \exp\big(k\beta t \log(n) \big) \big]  \\
 & \asymp  \frac{1} {\sqrt{\log(n)}} \sum_{t\log(n)=-n/k}^{n/k}
