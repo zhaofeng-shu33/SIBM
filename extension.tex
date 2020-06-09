@@ -378,6 +378,13 @@ $$
 This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{g(\beta)+\delta} ) = 1- o(1)$ for any $\delta>0$. Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, we have $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$. This improves upon the upper bound 
 $\dist(\sigma, \Gamma)< kn/\log^{1/3}(n)$ we obtained using spectral method at the beginning of this section.
 
+More importantly, this allows us to prove a powerful structural result. (All the discussions below are conditioning on the event $\dist(\sigma,X)\le n/2$, i.e., $\sigma$ is closer to $X$ than to $-X$.) We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
+Conditioning on the event every vertex has at most $z$ ``bad" neighbors, it is easy to show that $P_{\sigma|G}(\sigma_i=- X_i)$ differs from $\exp (2 \beta (B_i-A_i))$ by at most a constant factor $\exp(4\beta z)$.
+Therefore, $E_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i=- X_i)$ differs from $\sum_{i=1}^n\exp (2 \beta (B_i-A_i))$ by at most a constant factor for almost all $G$.
+We can further prove that the pairwise correlation of the events $\{\sigma_i=- X_i\}$ and $\{\sigma_j=- X_j\}$ is very small, so $\dist(\sigma,X)$ concentrates around its expectation. Thus we conclude that $\dist(\sigma,X)$ differs from $\sum_{i=1}^n\exp (2 \beta (B_i-A_i))$ by at most a constant factor for almost all $G$.
+In Section~\ref{sect:why} (see \eqref{eq:mew}), we have shown that $E_G[\sum_{i=1}^n\exp (2 \beta (B_i-A_i))]=(1+o(1))n^{g(\beta)}$. Quite surprisingly, when $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation: For almost all graph $G$, we have $\sum_{i=1}^n\exp (2 \beta (B_i-A_i))=(1+o(1))n^{g(\beta)}$; see Proposition~\ref{prop:con} in Section~\ref{sect:struct} for a proof. Combining this with the above analysis, we conclude that $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ when $\beta\le\beta^\ast$. This completes the sketched proof of Theorem~\ref{thm:wt3}.
+See Sections~\ref{sect:theta} and Sections~\ref{sect:struct} for the rigorous proof of the above arguments.
+
 \section{Samples are concentrated around $\Gamma$ or $\Theta$} \label{sect:aln}
 In this section, we show that for $a>b$, if $\alpha>b\beta$, then all the samples produced by $\SIBM(n, k,\linebreak[4]
 a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ are very close to one element from $\Gamma$. More precisely, they differ from the ground truth $\Theta$ in at most $kn/\log^{1/3}(n)$ coordinates.
@@ -1464,7 +1471,8 @@ P(G\in\cG_{\delta}^{(k)})
 > 1- 2 (k-1)^s n^{-s\delta'},
 \end{align*}
 where the second inequality follows from  $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}< 0$, and the last inequality follows from the definition $\delta'=\min(\frac{\delta}{8},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2})$.
-
+\section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
+\label{sect:direct}
 \section{Samples differ from $\Gamma$ in $\Theta(n^{g(\beta)})$ coordinates when $\beta\le\beta^\ast$}  \label{sect:struct}
 Recall the definitions of $A^r_i$ in previous sections; see the beginning of Section~\ref{sect:k=1}. 
 By definition,
@@ -1866,8 +1874,6 @@ Taking \eqref{eq:oo} into this equation gives us \eqref{eq:qk} and completes the
 	\bar{C} \sum_{r=1}^{k-1} \exp(k\beta(A^r_i - A^0_i))
 	\end{equation}
 \end{remark}
-\section{Samples differ from $\Gamma$ in $O(n^{\theta})$ coordinates for some $\theta<1$ when $\beta\le\beta^\ast$}
-\label{sect:theta}
 
 \appendix
 \section{Auxiliary lemmas used in Section~\ref{sect:converse}}\label{ap:6}
