@@ -1606,20 +1606,21 @@ for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while fo
 		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. $\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
 		\item $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$.
 		\item Conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $P(\underline{S}_i=1)=\underline{C}
-		\exp\big(k\beta (B_i-A_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
-		\exp\big(k\beta (B_i-A_i) \big)$ for all $i\in[n]$. The constants $\bar{C}$ and $\underline{C}$ are defined in Equation \eqref{eq:qke}.
+		\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
+		\sum_{r=1}^{k-1}\exp\big(k\beta (B_i-A_i) \big)$ for all $i\in[n]$. The constants $\bar{C}$ and $\underline{C}$ are defined in Equation \eqref{eq:qke}.
 	\end{enumerate}
 	We will postpone the definition of random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ to the end of this proof. For now let us assume the existence of these random variables and prove the theorem.
 	By property 3), conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, we have
 	\begin{align*}
 	& E[\underline{S}_1 + \dots + \underline{S}_n] = \underline{C}
-	\sum_{i=1}^n \exp\big(2\beta (B_i-A_i) \big) , \quad
+	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(2\beta (A^r_i-A^0_i) \big) , \quad
 	\Var(\underline{S}_1 + \dots + \underline{S}_n) \le \underline{C}
-	\sum_{i=1}^n \exp\big(2\beta (B_i-A_i) , \\
+	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(2\beta (A^r_i-A^0_i) \big)
+ 	, \\
 	& E[\overline{S}_1 + \dots + \overline{S}_n] = \overline{C}
-	\sum_{i=1}^n \exp\big(2\beta (B_i-A_i) \big) , \quad
+	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(2\beta (A^r_i-A^0_i) \big) , \quad
 	\Var(\overline{S}_1 + \dots + \overline{S}_n) \le \overline{C}
-	\sum_{i=1}^n \exp\big(2\beta (B_i-A_i) \big) ,
+	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(2\beta (A^r_i-A^0_i) \big) ,
 	\end{align*}
 	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
 	By Proposition~\ref{prop:con}, for all $G\in\cG_{\good}\cap\cG_{\con}$, we have 
@@ -1630,7 +1631,7 @@ for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while fo
 	\Var(\overline{S}_1 + \dots + \overline{S}_n) = O(n^{g(\beta)}) 
 	\end{align*}
 	conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Since $g(\beta)\ge 0$ for all $0<\beta\le \beta^\ast$, by Chebyshev's inequality we know that both $\underline{S}_1 + \dots + \underline{S}_n=\Theta(n^{g(\beta)})$ and $\overline{S}_1 + \dots + \overline{S}_n=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG_{\good}\cap\cG_{\con}$, $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on $\{\dist(\sigma, X) \le n/2\}$. Finally, the theorem follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
+	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG_{\good}\cap\cG_{\con}$, $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on $\{\dist(\sigma, X) \le n/k\}$. Finally, the theorem follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
 	
 	Now we are left to define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$.
 	First we define some auxiliary random variables.
@@ -1638,13 +1639,13 @@ for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while fo
 	$\underline{R}_i=\underline{R}_i(\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n,G)$ be a Bernoulli random variable with parameter 
 	$$
 	\min \Big( \frac{\underline{C}
-		\exp\big(2\beta (B_i-A_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} , 1 \Big) ,
+		\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} , 1 \Big) ,
 	$$
 	and let 
 	$\overline{R}_i=\overline{R}_i(\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n,G)$ be a Bernoulli random variable with parameter 
 	$$
 	\min \Big(\frac{1- \overline{C}
-		\exp\big(2\beta (B_i-A_i) \big)}{P_{\sigma|G}(\phi_i=0|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} , 1 \Big) .
+		\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=0|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} , 1 \Big) .
 	$$
 	Furthermore, let both $\underline{R}_i$ and $\overline{R}_i$ be independent of $\phi_i$.
 	For $i\in[n]$, define
@@ -1655,8 +1656,9 @@ for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while fo
 	$$
 	Property 2) above directly follows from this definition.
 	Now condition on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-	By \eqref{eq:soon}, one can see that no matter what values $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ take, the conditional probability of $\underline{S}_i=1$ given these variables is always $\underline{C}
-	\exp\big(2\beta (B_i-A_i) \big)$. Therefore, conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $\underline{S}_i$ is independent of $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ and it only depends on $\phi_i$. As a consequence, $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Thus we have verified the three properties above for $\underline{S}_1,\dots, \underline{S}_n$. The arguments for $\overline{S}_1,\dots, \overline{S}_n$ are the same.
+	By \eqref{eq:soon} we have $\underline{R}_i =\frac{\underline{C}
+		\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} $, one can see that no matter what values $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ take, the conditional probability of $\underline{S}_i=1$ given these variables is always $\underline{C}
+	\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)$. Therefore, conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $\underline{S}_i$ is independent of $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ and it only depends on $\phi_i$. As a consequence, $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Thus we have verified the three properties above for $\underline{S}_1,\dots, \underline{S}_n$. The arguments for $\overline{S}_1,\dots, \overline{S}_n$ are the same.
 \end{proof}
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
@@ -1856,6 +1858,13 @@ Taking \eqref{eq:oo} into this equation gives us \eqref{eq:qk} and completes the
 	\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(k\beta (A^r_i-A^0_i ) \Big) 
 	\end{equation}
 	where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
+	Under the condition that $\bar{\sigma} \in \Lambda(G, z)$ and
+	$\dist(\bar{\sigma}, X) \leq n^{\theta}$,
+	we can also reformulate Equation \eqref{eq:qk} as follows:
+	\begin{equation}\label{eq:soon}
+	\underline{C} \sum_{r=1}^{k-1} \exp(k\beta(A^r_i - A^0_i)) \leq P_{\sigma | G}(\sigma_i \neq X_i | \sigma_j = \bar{\sigma}_j \text{ for all } j\neq i ) \leq
+	\bar{C} \sum_{r=1}^{k-1} \exp(k\beta(A^r_i - A^0_i))
+	\end{equation}
 \end{remark}
 \section{Samples differ from $\Gamma$ in $O(n^{\theta})$ coordinates for some $\theta<1$ when $\beta\le\beta^\ast$}
 \label{sect:theta}
