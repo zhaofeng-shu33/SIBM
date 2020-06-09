@@ -1310,7 +1310,7 @@ where the last inequality follows from the fact that $1-\frac{(\sqrt{a}-\sqrt{b}
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $\beta\le\beta^\ast$. Let $m$ be a constant integer that is independent of $n$.
 Let 
 $$
-(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
 $$
 Then for any (arbitrarily small) $\delta>0$ and any (arbitrarily large) $r>0$, there exists $n_0(\delta, r)$ such that for all even integers $n>n_0(\delta, r)$,
 $$
@@ -1465,14 +1465,14 @@ P(G\in\cG_{\delta}^{(k)})
 \end{align*}
 where the second inequality follows from  $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}< 0$, and the last inequality follows from the definition $\delta'=\min(\frac{\delta}{8},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2})$.
 
-\section{Samples differ from $\pm X$ in $\Theta(n^{g(\beta)})$ coordinates when $\beta\le\beta^\ast$}  \label{sect:struct}
+\section{Samples differ from $\Gamma$ in $\Theta(n^{g(\beta)})$ coordinates when $\beta\le\beta^\ast$}  \label{sect:struct}
 Recall the definitions of $A^r_i$ in previous sections; see the beginning of Section~\ref{sect:k=1}. 
 By definition,
 $A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$ and $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $r>0$, and they are independent. 
 Also note that $A^r_i$ are functions of the underlying graph $G$.
 
 \begin{proposition}  \label{prop:con}
-Let $(X,G)\sim \SSBM(n,a\log(n)/n, b\log(n)/n)$, where $\sqrt{a}-\sqrt{b} > \sqrt{k}$.
+Let $(X,G)\sim \SSBM(n,k, a\log(n)/n, b\log(n)/n)$, where $\sqrt{a}-\sqrt{b} > \sqrt{k}$.
 Suppose that $0< \beta\le \beta^\ast$.
 Then there is a set $\cG_{\con}$ such that (i) $P(G \in \cG_{\con}) = 1-o(1)$ and (ii) for every $G\in \cG_{\con}$, 
 $$
@@ -1569,6 +1569,95 @@ for all $\beta$. This gives us the same estimate as the conditional expectation 
 By Corollary~\ref{cr:yy} in Appendix~\ref{ap:um},
 for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while for the conditional case it is of order $O(n^{\tilde{g}(2\beta)})$. One can show that if $\beta\le\beta^\ast$, then we always have $g(2\beta)>\tilde{g}(2\beta)$. Therefore the order of the unconditional variance is much larger than the conditonal one.
 \end{remark}
+
+\begin{theorem}  \label{thm:dist}
+	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $0<\beta\le \beta^\ast$. Let 
+	$
+	(X,G,\sigma) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
+	$
+	Then
+	$$
+	P_{\SIBM}(\dist(\sigma, \Gamma) = \Theta(n^{g(\beta)}) ) = 1-o(1) .
+	$$
+\end{theorem}
+\begin{proof}
+	We prove the following equivalent form:
+	$$
+	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ \dist(\sigma, X) \le n/k) = 1-o(1) .
+	$$
+	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG_{\good}$ such that
+	
+	\noindent (i)
+	$P(G\in\cG_{\good}) \ge 1- O(n^{-4})$.
+	
+	\noindent (ii) For every $G\in\cG_{\good}$, 
+	\begin{equation}  \label{eq:hs}
+	P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)
+	\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ \dist(\sigma, X) \le n/k \big) 
+	=1- O(n^{-4}) ,
+	\end{equation}
+	where we can choose $\theta$ to be any constant in the open interval $(\tilde{g}(\beta), 1)$.
+	
+	We now define 
+	$\phi_i := \mathbbm{1}[\sigma_i \neq X_i]$ for $i\in[n]$, and
+	we want to estimate $\dist(\sigma,X)=\sum_{i=1}^n \phi_i$. 
+	Given a fixed graph $G$ and a random sample $\sigma$, we will define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
+	\begin{enumerate}
+		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. $\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
+		\item $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$.
+		\item Conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $P(\underline{S}_i=1)=\underline{C}
+		\exp\big(k\beta (B_i-A_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
+		\exp\big(k\beta (B_i-A_i) \big)$ for all $i\in[n]$. The constants $\bar{C}$ and $\underline{C}$ are defined in Equation \eqref{eq:qke}.
+	\end{enumerate}
+	We will postpone the definition of random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ to the end of this proof. For now let us assume the existence of these random variables and prove the theorem.
+	By property 3), conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, we have
+	\begin{align*}
+	& E[\underline{S}_1 + \dots + \underline{S}_n] = \underline{C}
+	\sum_{i=1}^n \exp\big(2\beta (B_i-A_i) \big) , \quad
+	\Var(\underline{S}_1 + \dots + \underline{S}_n) \le \underline{C}
+	\sum_{i=1}^n \exp\big(2\beta (B_i-A_i) , \\
+	& E[\overline{S}_1 + \dots + \overline{S}_n] = \overline{C}
+	\sum_{i=1}^n \exp\big(2\beta (B_i-A_i) \big) , \quad
+	\Var(\overline{S}_1 + \dots + \overline{S}_n) \le \overline{C}
+	\sum_{i=1}^n \exp\big(2\beta (B_i-A_i) \big) ,
+	\end{align*}
+	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
+	By Proposition~\ref{prop:con}, for all $G\in\cG_{\good}\cap\cG_{\con}$, we have 
+	\begin{align*}
+	& E[\underline{S}_1 + \dots + \underline{S}_n] = \Theta(n^{g(\beta)}) , \quad
+	\Var(\underline{S}_1 + \dots + \underline{S}_n) = O(n^{g(\beta)}) , \\
+	& E[\overline{S}_1 + \dots + \overline{S}_n] = \Theta(n^{g(\beta)}) , \quad
+	\Var(\overline{S}_1 + \dots + \overline{S}_n) = O(n^{g(\beta)}) 
+	\end{align*}
+	conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Since $g(\beta)\ge 0$ for all $0<\beta\le \beta^\ast$, by Chebyshev's inequality we know that both $\underline{S}_1 + \dots + \underline{S}_n=\Theta(n^{g(\beta)})$ and $\overline{S}_1 + \dots + \overline{S}_n=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
+	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG_{\good}\cap\cG_{\con}$, $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on $\{\dist(\sigma, X) \le n/2\}$. Finally, the theorem follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
+	
+	Now we are left to define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$.
+	First we define some auxiliary random variables.
+	For $i\in[n]$, let 
+	$\underline{R}_i=\underline{R}_i(\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n,G)$ be a Bernoulli random variable with parameter 
+	$$
+	\min \Big( \frac{\underline{C}
+		\exp\big(2\beta (B_i-A_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} , 1 \Big) ,
+	$$
+	and let 
+	$\overline{R}_i=\overline{R}_i(\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n,G)$ be a Bernoulli random variable with parameter 
+	$$
+	\min \Big(\frac{1- \overline{C}
+		\exp\big(2\beta (B_i-A_i) \big)}{P_{\sigma|G}(\phi_i=0|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} , 1 \Big) .
+	$$
+	Furthermore, let both $\underline{R}_i$ and $\overline{R}_i$ be independent of $\phi_i$.
+	For $i\in[n]$, define
+	$$
+	\underline{S}_i=\phi_i \underline{R}_i \quad
+	\text{and} \quad
+	\overline{S}_i = 1- (1-\phi_i) \overline{R}_i .
+	$$
+	Property 2) above directly follows from this definition.
+	Now condition on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
+	By \eqref{eq:soon}, one can see that no matter what values $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ take, the conditional probability of $\underline{S}_i=1$ given these variables is always $\underline{C}
+	\exp\big(2\beta (B_i-A_i) \big)$. Therefore, conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $\underline{S}_i$ is independent of $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ and it only depends on $\phi_i$. As a consequence, $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Thus we have verified the three properties above for $\underline{S}_1,\dots, \underline{S}_n$. The arguments for $\overline{S}_1,\dots, \overline{S}_n$ are the same.
+\end{proof}
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
 Given the ground truth $X$, the graph $G$ and a vertex $i\in[n]$, define the neighbors of $i$ in $G$ as 
@@ -1757,6 +1846,17 @@ By \eqref{eq:isingma}, we have
 \end{align*}
 Taking \eqref{eq:oo} into this equation gives us \eqref{eq:qk} and completes the proof.
 \end{proof}
+\begin{remark}
+	From the proof we can see that $\Gamma_i$ can be replaced with $\Gamma$. Since $A_i^r - A_i^0 < 0$ with probability one when
+	$n$ is large, we can get there exists $\underline{C}, \bar{C}$ such that
+	\begin{equation} \label{eq:qke}
+	\underline{C}\sum_{r=1}^{k-1}\exp\Big(k\beta(A^r_i-A^0_i) \Big)  \le 
+	P_{\sigma|G}(\sigma \neq X_i | \sigma \in \Lambda(G, z),
+	\dist(\sigma, X) \leq n^{\theta})
+	\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(k\beta (A^r_i-A^0_i ) \Big) 
+	\end{equation}
+	where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
+\end{remark}
 \section{Samples differ from $\Gamma$ in $O(n^{\theta})$ coordinates for some $\theta<1$ when $\beta\le\beta^\ast$}
 \label{sect:theta}
 
