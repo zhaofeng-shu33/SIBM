@@ -49,4 +49,51 @@ P(B_i -A_i + B_j - A_j = t\log n)
 \end{align*}
 Since $P(G\in G_1) = 1-o(1)$, the above summation can be further restricted to $t_1 < 0, t_2 < 0$. Thus Lemma \ref{lem:BijG} follows. 
 \end{proof}
+\begin{lemma}\label{lem:post_independent}
+	Let $p_{ij}=\Pr(\{\{i,j\} \in E(G) \})$ be the prior probability, which equals $\frac{a\log n}{n}$ or $\frac{b\log n}{n}$ depending on $X$.
+	The event $\{\{i,j\} \in E(G) \}$ are independent given $\sigma$ and the posterior probability is
+	\begin{equation}
+	\Pr(\{\{i,j\} \in E(G) \} | \sigma) = \frac{c p_{ij} }{1-p_{ij} + cp_{ij}} \text{ where  } c= \exp\Big((\beta + \frac{\alpha \log n}{n} ) I(\bar{\sigma}_i, \bar{\sigma}_j) \Big)
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	Let $Y_{ij}$ be a Bernoulli random variable with $\Pr(Y_{ij} = 1) = \Pr(\{\{i,j\} \in E(G)\}) = p_{ij}$. $Y_{ij}$ represents whether there is an edge between node $i$ and $j$.
+	The prior distribution for $Y:=\{Y_{ij}\}$ can be written as:
+	$$
+	\Pr(Y) = \prod_{i,j} p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}
+	$$ 
+	Using the conditional distribution for $\sigma|G$, the posterior probability for $Y| \sigma$ can be written as
+	$$
+	\Pr(Y|\sigma) = C\prod_{ij} \exp((\beta + \frac{\alpha \log n}{n})I(\bar{\sigma_i}, \bar{\sigma_j} )y_{ij}) \Pr(Y)
+	$$
+	where $C$ is a constant irrelevant with $Y$.
+	We can see from the joint distribution of $Y|\sigma$ that $Y_{ij} | \sigma$ are independent and each marginal distribution has the following form:
+	$$
+	\Pr(Y_{ij} | \sigma) = C_{ij} \exp((\beta + \frac{\alpha \log n}{n})I(\bar{\sigma_i}, \bar{\sigma_j} )y_{ij}) p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}
+	$$
+	Using the normalization condition for $Y_{ij} | \sigma $, we can compute $C_{ij} = \frac{1}{1-p_{ij} + p_{ij}c}$. From $\Pr(\{\{i,j\} \in E(G) \} | \sigma) =\Pr(Y_{ij}=1|\sigma)$ the proof is complete.
+\end{proof}
+\begin{lemma}
+	Suppose $X_i = - X_i'$. And a permutation $\pi$ satisfying $\pi(i) = i', \pi(i') = i, \pi(j) = j$ for $j\neq i, i'$.
+    Then we have $P_{SSBM}(G) = P_{SSBM}(\pi(G))$. Further if we have $m$ samples $\sigma^{(1)}, \dots, \sigma^{(m)}$ such that $\sigma^{(j)}_i = \sigma^{(j)}_{i'}$ then we have
+    $P_{SSBM}(G | \sigma^{(j)},j\in[m]) = P_{SSBM}(\pi(G) | \sigma^{(j)},j\in[m])$
+\end{lemma}
+\begin{proof}
+	We have already known that the random variable $G$ can be regarded as collections of binomial random variables.
+	That is, $G$ is described uniquely by the set $\{y_{st}, s,t \in [n], y_{st}=y_{ts}, s\neq t, y_{st} \in \{0, 1\} \}$ and the corresponding probability is
+	\begin{equation}
+	P(G) = \prod_{s,t} p_{st}^{y_{st}} (1 - p_{st})^{1-y_{st}}
+	\end{equation}
+	For $\pi(G)$, the difference with $G$ is that $i->i', i'->i$.
+	Therefore we only need to consider the edges whose endpoints are either $i$ or $i'$. WLOG, we suppose $X_i=1, X'_i=-1$
+	and 
+	\begin{align*}
+	M_1 &= |\{j | y_{ij} = 1, X_j = 1, j \neq i \}| \\
+	M_2 &= |\{j | y_{ij} = 1, X_j = -1, j \neq i\}| \\
+	N_1 &= |\{j | y_{ij} = 0, X_j = 1, j \neq i\}| \\
+	N_2 &= |\{j | y_{ij} = 0, X_j = -1, j \neq i\}|	
+	\end{align*}
+	Also let $A=\frac{a \log n }{n}, B=\frac{b \log n}{n}$.
+	Then for $G$, $i$ contributes to $A^{M_1} B^{M_2}(1-A)^{N1}(1-B)^{N2}$
+\end{proof}
 \end{document}
