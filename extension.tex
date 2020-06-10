@@ -106,13 +106,25 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 \begin{equation} \label{eq:defstar}
 \beta^\ast := \frac{1}{k}
 \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b} \text{~~and~~}
-m^\ast := 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 .
+m^\ast := k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 .
 \end{equation}
 {\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
 If $\beta^\ast/\beta$ is not an integer and $m<m^\ast$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m<m^\ast-2$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
+{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,лб a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
 \end{theorem}
-
+Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a  real number.
+When $\alpha>b\beta$ and $\beta^\ast/\beta$ is not an integer,
+the above theorem establishes a sharp recovery threshold $m^\ast$ on the number of samples. It is worth mentioning that the threshold $m^\ast$ does {\em not} depend on the value of the parameter $\alpha$, as long as $\alpha$ satisfies $\alpha>b\beta$.
+Below we present an equivalent characterization of the recovery threshold in terms of $\beta$.
+\begin{theorem} \label{thm:wt2}
+	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
+	Let 
+	$$
+	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
+	$$
+	If $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{m+1}{2} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
+\end{theorem}
+Note that $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$ if and only if $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$, so Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold\footnote{We give a proof of the equivalence between the two inequalities: $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$ implies that $\frac{\beta^\ast}{\beta}<\lfloor \frac{m+1}{2} \rfloor$. The smallest integer that is larger than $\frac{\beta^\ast}{\beta}$ is $\lfloor \frac{\beta^\ast}{\beta}\rfloor +1$, so $\lfloor \frac{\beta^\ast}{\beta} \rfloor +1 \le \lfloor \frac{m+1}{2} \rfloor\le \frac{m+1}{2}$, and thus $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$. Now assume $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$, then $\frac{m-1}{2} \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor$. Since the right hand side is an integer, we have $\lfloor \frac{m+1}{2} \rfloor = \lfloor \frac{m-1}{2} \rfloor +1  \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor +1 >\frac{\beta^\ast}{\beta}$.}.
 Notation convention:
 For $\cI \subseteq [n]$, we denote the event $\sigma = X^{(\sim \cI)}$ as $\sigma_i \neq X_i$ for all $i \in \cI$ and $\sigma_i = X_i$ for all $i \not\in \cI$.
 When $\cI$ only contains one element, e.g., $\cI=\{i\}$, we write the event $\sigma = X^{(\sim i)}$ instead of $\sigma = X^{(\sim\{i\})}$.
