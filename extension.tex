@@ -96,7 +96,7 @@ and we call $P_{\SIBM}(\hat{X} \in \Gamma)$ the success probability of the recov
 As mentioned above, we consider the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefor, if we cannot recover $X$ from $G$, then there is no hope to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
 
 \vspace*{.1in}
-\noindent{\bf Main Problem:} \emph{For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?}
+\noindent{\bf Main Problem:} \emph{For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?}
 
 \vspace*{.1in}  It is this optimal sample size problem that we address---and resolve---in this paper. 
 Our main results read as follows.
@@ -106,7 +106,7 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 \begin{equation} \label{eq:defstar}
 \beta^\ast := \frac{1}{k}
 \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b} \text{~~and~~}
-m^\ast := k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 .
+m^\ast := 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 .
 \end{equation}
 {\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
 If $\beta^\ast/\beta$ is not an integer and $m<m^\ast$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m<m^\ast-2$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
@@ -120,7 +120,7 @@ Below we present an equivalent characterization of the recovery threshold in ter
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
 	Let 
 	$$
-	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
+	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
 	$$
 	If $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{m+1}{2} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
 \end{theorem}
@@ -396,6 +396,45 @@ Therefore, $E_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \ne
 We can further prove that $\dist(\sigma,X)$ concentrates around its expectation. Thus we conclude that $\dist(\sigma,X)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
 Quite surprisingly, when $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation: For almost all graph $G$, we have $\sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))=(1+o(1))n^{g(\beta)}$; see Proposition~\ref{prop:con} in Section~\ref{sect:struct} for a proof. Combining this with the above analysis, we conclude that $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ when $\beta\le\beta^\ast$. This completes the sketched proof of Theorem~\ref{thm:wt3}.
 See Sections~\ref{sect:theta} and Sections~\ref{sect:struct} for the rigorous proof of the above arguments.
+
+\subsection{Multiple sample case: Proof of Theorem~\ref{thm:wt2}}
+\label{sect:multi}
+
+\begin{center}
+	\begin{minipage}{.55\textwidth}
+		\begin{algorithm}[H]
+			\caption{\texttt{LearnSIBM} in $O(n)$ time} \label{alg:ez}
+			Inputs: the samples $\sigma^{(1)},\sigma^{(2)}\dots,\sigma^{(m)}$ \\
+			Output: $\hat{X}$
+			\begin{algorithmic}[1]
+				\Statex \hspace*{-0.3in} 
+				{\bf Step 1: Align all the samples with $\sigma^{(1)}$ }
+				\For {$j=2,3,\dots,m$}
+				\State $f=\arg\max_{f_{\gamma}} \sum_{i=1}^n I(f_{\gamma}(\sigma^{(j)}_i), \sigma^{(1)}_i)$
+				\State $\sigma^{(j)} \gets f(\sigma^{(j)})$
+				\EndFor
+				\Statex \hspace*{-0.3in}
+				{\bf Step 2: Majority vote at each coordinate}
+				\For {i=1,2,\dots,n}
+				\State $g(r) = |\{j | \sigma^{(j)}_i = \omega^r,1\leq j \leq m\}|$ for $ 0 \leq r \leq k-1$
+				\State $\hat{X}_i \gets  \arg\max_r \omega^{g(r)}$
+				\State \Comment{If the max of $g(r)$ is not unique, assign $\hat{X}_i$ randomly to one of \texttt{argmax}}
+				\EndFor
+				\State Output $\hat{X}$
+			\end{algorithmic}
+		\end{algorithm}
+	\end{minipage}
+\end{center}
+For the multiple-sample case, we prove that the above simple algorithm can recover $X$ with probability $1-o(1)$ if and only if the Maximum Likelihood (ML) algorithm recovers $X$ with probability $1-o(1)$. We already showed that each sample is either very close to $\Gamma$, so after the alignment step in Algorithm~\ref{alg:ez}, all the samples are either simultaneously aligned with one of $\Gamma$. WLOG, we assume all samples are aligned with $X$.
+By the structural results discussed above, with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)} \neq X_i)$ differs from $\sum_{r=1}^{k-1} \exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$. Since the samples are independent, we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $\sum_{r=1}^{k-1} \exp (k u \beta (A^r_i-A^0_i))$
+by at most a constant factor.
+Here $u\beta$ plays the role of $\beta$ in the single-sample case.
+Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le u-1$, or equivalently, $X_i(\sum_{j=1}^m \sigma_i^{(j)} ) \ge m-2u+2$ for all $i\in[n]$. Let $u=\lfloor \frac{m+1}{2} \rfloor$,
+then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le \lfloor \frac{m-1}{2} \rfloor $ while $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = X_i]
+= m - \lfloor \frac{m-1}{2} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] $
+which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}. See Section~\ref{sect:direct} for a rigorous proof of the above argument.
+
+The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$, also relies on the structural result and it is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case. We refer the readers to Section~\ref{sect:converse} for details.
 
 \section{Samples are concentrated around $\Gamma$ or $\Theta$} \label{sect:aln}
 In this section, we show that for $a>b$, if $\alpha>b\beta$, then all the samples produced by $\SIBM(n, k,\linebreak[4]
