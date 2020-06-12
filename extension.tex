@@ -1522,8 +1522,6 @@ P(G\in\cG_{\delta}^{(k)})
 > 1- 2 (k-1)^s n^{-s\delta'},
 \end{align*}
 where the second inequality follows from  $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}< 0$, and the last inequality follows from the definition $\delta'=\min(\frac{\delta}{8},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2})$.
-\section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
-\label{sect:direct}
 \section{Samples differ from $\Gamma$ in $\Theta(n^{g(\beta)})$ coordinates when $\beta\le\beta^\ast$}  \label{sect:struct}
 Recall the definitions of $A^r_i$ in previous sections; see the beginning of Section~\ref{sect:k=1}. 
 By definition,
@@ -1719,6 +1717,84 @@ for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while fo
 		\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} $, one can see that no matter what values $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ take, the conditional probability of $\underline{S}_i=1$ given these variables is always $\underline{C}
 	\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)$. Therefore, conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $\underline{S}_i$ is independent of $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ and it only depends on $\phi_i$. As a consequence, $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Thus we have verified the three properties above for $\underline{S}_1,\dots, \underline{S}_n$. The arguments for $\overline{S}_1,\dots, \overline{S}_n$ are the same.
 \end{proof}
+\section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
+\label{sect:direct}
+\begin{proposition} \label{prop:nr}
+	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. Let $m$ be an integer such that $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$.
+	Let 
+	$$
+	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+	$$
+	Let $\hat{X}=\texttt{LearnSIBM}(\sigma^{(1)},\dots,\sigma^{(m)})$ be the output of Algorithm~\ref{alg:ez}. Then
+	$$
+	P(\hat{X} \in \Gamma) = 1-o(1) .
+	$$
+\end{proposition}
+\noindent
+{\em Proof of Proposition~\ref{prop:nr}.}
+Recall that $\sigma^{(1)},\dots,\sigma^{(m)}$ are the samples of SIBM.
+At the beginning of this section, we have shown that after the alignment step in Algorithm~\ref{alg:ez}, with probability $1-O(n^{-r})$ for any constant $r>0$ $\dist(\sigma^{(j)}, f(X))=o(n)$ for all $j\in[m]$ and $f(X) \in \Gamma$. Without loss of generality, we assume that 
+$\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$. 
+
+Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG_{\good}$ such that
+
+\noindent (i)
+$P(G\in\cG_{\good}) \ge 1- O(n^{-4})$.
+
+\noindent (ii) For every $G\in\cG_{\good}$, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$,
+\begin{equation}  \label{eq:chui}
+P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
+\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
+\text{~for all~} j\in[m]  \big) 
+=1- O(n^{-4}) ,
+\end{equation}
+where we can choose $\theta$ to be any constant in the open interval $(g(\beta), 1)$.
+By Lemma~\ref{lm:et},
+$$
+P_{\sigma|G}(\sigma_i^{(j)} \neq X_i^{(j)} \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} ) 
+\le \sum_{r=1}^{k-1} \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + kz) \Big)
+$$
+for all $i\in[n]$ and all $j\in[m]$.
+For $i\in[n]$, define 
+$$
+\Phi_i := |\{j\in[m]: \sigma_i^{(j)} \neq X_i^{(j)}\}|
+$$
+as the number of samples for which $\sigma_i^{(j)} \neq X_i^{(j)}$.
+For an integer $u\in[m]$, we have
+$$
+\{\Phi_i \ge u\} =
+\bigcup_{\cJ\subseteq[m], |\cJ|=u}
+\{\sigma_i^{(j)} \neq X_i^{(j)} \text{~for all~} j\in \cJ\} .
+$$
+Therefore, by the union bound,
+\begin{align*}
+& P_{\sigma|G}( \Phi_i \ge u  ~\big|~  \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m] ) \\
+\le & \sum_{r=1}^{k-1} \binom{m}{u} \exp\Big(ku\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_i-A_i + kz) \Big)
+\quad\quad\quad\quad\text{~for all~} i\in[n] .
+\end{align*}
+Combining this with \eqref{eq:chui}, we obtain that for every $G\in\cG_{\good}$, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$,
+$$
+P_{\sigma|G} \big( \Phi_i \ge u \big) \le \sum_{r=1}^{k-1}\binom{m}{u} \exp\Big(ku \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + kz) \Big) + O(n^{-4}).
+$$
+Using the union bound, we have
+$$
+P_{\sigma|G} \big(\exists i \text{~s.t.~} \Phi_i \ge u \big) \le 
+C \sum_{r=1}^{k-1}\sum_{i=1}^n \exp\Big(2u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) + o(1) ,
+$$
+where $C:=\binom{m}{u}\exp(k^2u(\beta+\alpha)z)$ is a constant.
+By Proposition \ref{prop:con}, if $\beta>\beta^*$, then there is a set $\cG^{(1)}$ such that (i) $P(G\in \cG^{(1)})=1-o(1)$; (ii) for every $G\in\cG^{(1)}$,
+$$
+\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\Big(k \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) = o(1) .
+$$
+This immediately implies that if $u\beta>\beta^*$, then for every $G\in\cG^{(1)}\cap\cG_{\good}$, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$,
+$$
+P_{\sigma|G} \big(\exists i \text{~s.t.~} \Phi_i \ge u \big) \le 
+C \sum_{r=1}^{k}\sum_{i=1}^n \exp\Big(ku \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) + o(1) =o(1).
+$$
+Since $P(G\in\cG^{(1)}\cap\cG_{\good})=1-o(1)$, we conclude that $P_{\SIBM} \big(\Phi_i \le u-1 \text{~for all~} i\in[n] \big)=1-o(1)$ conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$.
+
+By assumption we have $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$. Therefore, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$, we have $\Phi_i\le \lfloor \frac{m-1}{2} \rfloor$ for all $i\in[n]$ with probability $1-o(1)$. As a consequence, after the majority voting step in Algorithm~\ref{alg:ez}, $\hat{X}_i=X_i$ for all $i\in[n]$ with probability $1-o(1)$. This completes the proof of Proposition~\ref{prop:nr}.
+\hfill\qed
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
 Given the ground truth $X$, the graph $G$ and a vertex $i\in[n]$, define the neighbors of $i$ in $G$ as 
