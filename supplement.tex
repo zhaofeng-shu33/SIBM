@@ -73,10 +73,10 @@ Since $P(G\in G_1) = 1-o(1)$, the above summation can be further restricted to $
 	$$
 	Using the normalization condition for $Y_{ij} | \sigma $, we can compute $C_{ij} = \frac{1}{1-p_{ij} + p_{ij}c}$. From $\Pr(\{\{i,j\} \in E(G) \} | \sigma) =\Pr(Y_{ij}=1|\sigma)$ the proof is complete.
 \end{proof}
-\begin{lemma}
+\begin{lemma}\label{lem:xpi}
 	Suppose $X_i = - X_i'$. And a permutation $\pi$ satisfying $\pi(i) = i', \pi(i') = i, \pi(j) = j$ for $j\neq i, i'$.
     Then we have $P_{SSBM}(G) = P_{SSBM}(\pi(G))$. Further if we have $m$ samples $\sigma^{(1)}, \dots, \sigma^{(m)}$ such that $\sigma^{(j)}_i = \sigma^{(j)}_{i'}$ then we have
-    $P_{SSBM}(G | \sigma^{(j)},j\in[m]) = P_{SSBM}(\pi(G) | \sigma^{(j)},j\in[m])$
+    $P_{SSBM}(G | \sigma=\sigma^{(j)},j\in[m]) = P_{SSBM}(\pi(G) | \sigma=\sigma^{(j)},j\in[m])$
 \end{lemma}
 \begin{proof}
 	We have already known that the random variable $G$ can be regarded as collections of binomial random variables.
@@ -96,7 +96,36 @@ Since $P(G\in G_1) = 1-o(1)$, the above summation can be further restricted to $
 	Also let $A=\frac{a \log n }{n}, B=\frac{b \log n}{n}$.
 	Then for $G$, $i$ contributes to $A^{M_1} B^{M_2}(1-A)^{N1}(1-B)^{N2}$. For $\pi(G)$ we can show that $i'$ contributes
 	to $A^{M_1} B^{M_2}(1-A)^{N1}(1-B)^{N2}$. Similarly, the contribution of $i'$ for $G$ is the same with that of $i$ for $\pi(G)$. Therefore
-	we conclude that $P_{SSBM}(G) = P_{SSBM}(\pi(G))$. Using Lemma \ref{lem:post_independent}, it is not difficult to show that
-	$P_{SSBM}(G | \sigma^{(j)},j\in[m]) = P_{SSBM}(\pi(G) | \sigma^{(j)},j\in[m])$
+	we conclude that $P_{SSBM}(G) = P_{SSBM}(\pi(G))$. Using Lemma \ref{lem:post_independent}, since $\sigma_i^{j} = \sigma_{i'}^{(j)}$,
+	$\Pr(\{\{i,j\} \in E(G)\} | \sigma^{(r)}, r\in[m]) =\Pr(\{\{i',j\} \in E(\pi(G))\} | \sigma^{(r)}, r\in[m])$.
+	Then we can show that the contribution of $i$ for $G$ is still the same with that of $i'$ for $\pi(G)$. Therefore
+	$P_{SSBM}(G | \sigma=\sigma^{(j)},j\in[m]) = P_{SSBM}(\pi(G) | \sigma=\sigma^{(j)},j\in[m])$
+\end{proof}
+\begin{lemma} \label{lm:qq}
+	Let 
+	$$
+	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+	$$
+	If there is a pair $i,i'\in[n]$ satisfying the following two conditions: (1) $\sigma_i^{(j)}=\sigma_{i'}^{(j)}$ for all $j\in[m]$ and (2) $X_i=-X_{i'}$, then it is not possible to distinguish the case $X_i=-X_{i'}=1$ from the case $X_i=-X_{i'}=-1$. In other words, conditioning on the samples, the posterior probability of the ground truth being $X$ is the same as that of the ground truth being $X^{(\sim\{i,i'\})}$.
+\end{lemma}
+\begin{proof}
+We show the result for $m=1$, since different samples are independent, for $m>1$ the proof is similar. Let the graph $G'$ be the subgraph of $G$ after removing node $i$ and
+$i'$. Denote $C(G) = \frac{1}{Z(\alpha, \beta)} \exp\Big(\beta \sum_{\{s,t\} \in E(G')} I(X_s, X_t) - \frac{\alpha \log n }{n} \sum_{\{s,t\} \not\in E(G')} I(X_s, X_t)\Big)$
+and 
+$$
+\ell_G(s,t) = [\beta I(X_s, X_t) + \frac{\alpha \log n}{n} I(X_s, X_t)] \mathbbm{1}[\{i, j\}\in E(\pi(G))] - \frac{\alpha \log n}{n} I(X_s, X_t).
+$$
+For conditional probability we have
+$ P(\sigma = \bar{\sigma} | \sigma=\sigma^{(1)}) = \sum_{G\in\cG_{[n]}} P_{SSBM}(G) P_{\sigma|G, \sigma=\sigma^{(1)}}(\sigma = \bar{\sigma} | \sigma=\sigma^{(1)}) $
+Let the permutation $\pi$ be defined in Lemma \ref{lem:xpi}, 
+Then 
+\begin{align*}
+P(\sigma = X | \sigma=\sigma^{(1)}) & = \sum_{G\in\cG_{[n]}} P_{SSBM}(G) P_{\sigma|G, \sigma=\sigma^{(1)}}(\sigma = X | \sigma=\sigma^{(1)}) \\
+& = \sum_{G\in\cG_{[n]}} P_{SSBM}(\pi(G)) P_{\sigma|G, \sigma=\sigma^{(1)}}(\sigma = X | \sigma=\sigma^{(1)}) \\
+& = \sum_{G\in\cG_{[n]}} P_{SSBM}(\pi(G)) C(G) \exp\Big(\sum_{s \in N_i(G)} \ell_G(i,s) + \sum_{s \in N_{i'}(G)} \ell_G(i',s) - \ell_G(i,i') \Big)\\
+& = \sum_{G\in\cG_{[n]}} P_{SSBM}(\pi(G)) C(\pi(G)) \exp\Big(\sum_{s \in N_{\pi(i)}(\pi(G))} \ell_{\pi(G)}(\pi(i),s) + \sum_{s \in N_{i'}(G)} \ell(\pi(i),s) - \ell_{\pi(G)}(\pi(i'),\pi(i)) \Big)\\
+&= \sum_{G\in\cG_{[n]}} P_{SSBM}(\pi(G)) P_{\sigma|\pi(G), \sigma=\sigma^{(1)}}(\sigma = X | \sigma=\sigma^{(1)}) \\
+& = P(\sigma = X^{(\sim\{i,i'\})} | \sigma=\sigma^{(1)})
+\end{align*}
 \end{proof}
 \end{document}
