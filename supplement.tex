@@ -84,7 +84,7 @@ Since $P(G\in G_1) = 1-o(1)$, the above summation can be further restricted to $
 	\begin{equation}
 	P(G) = \prod_{s,t} p_{st}^{y_{st}} (1 - p_{st})^{1-y_{st}}
 	\end{equation}
-	For $\pi(G)$, the difference with $G$ is that $i->i', i'->i$.
+	For $\pi(G)$, the difference with $G$ is that $i \to i', i' \to i$.
 	Therefore we only need to consider the edges whose endpoints are either $i$ or $i'$. WLOG, we suppose $X_i=1, X'_i=-1$
 	and 
 	\begin{align*}
@@ -94,6 +94,9 @@ Since $P(G\in G_1) = 1-o(1)$, the above summation can be further restricted to $
 	N_2 &= |\{j | y_{ij} = 0, X_j = -1, j \neq i\}|	
 	\end{align*}
 	Also let $A=\frac{a \log n }{n}, B=\frac{b \log n}{n}$.
-	Then for $G$, $i$ contributes to $A^{M_1} B^{M_2}(1-A)^{N1}(1-B)^{N2}$
+	Then for $G$, $i$ contributes to $A^{M_1} B^{M_2}(1-A)^{N1}(1-B)^{N2}$. For $\pi(G)$ we can show that $i'$ contributes
+	to $A^{M_1} B^{M_2}(1-A)^{N1}(1-B)^{N2}$. Similarly, the contribution of $i'$ for $G$ is the same with that of $i$ for $\pi(G)$. Therefore
+	we conclude that $P_{SSBM}(G) = P_{SSBM}(\pi(G))$. Using Lemma \ref{lem:post_independent}, it is not difficult to show that
+	$P_{SSBM}(G | \sigma^{(j)},j\in[m]) = P_{SSBM}(\pi(G) | \sigma^{(j)},j\in[m])$
 \end{proof}
 \end{document}
