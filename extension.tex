@@ -2039,8 +2039,29 @@ Using the Markov property of $X \to G \to \sigma$, we have Eq. \eqref{eq:13} $\R
 \end{align}
 Since the conditional probability for graph is equal, the proof is complete.
 \end{proof}
-
-
+\begin{lemma}  \label{lm:cvs}
+	Let $v=(v^{(1)},v^{(2)},\dots,v^{(m)})\in W^m$ be a vector of length $m$ and let $u_r:=|\{i\in[m]:v^{(i)}=\omega^r\}|$ be the number of $\omega^r$'s in $v$ for $r=0,1,\dots, k-1$.
+	Let $\sigma^{(1)},\dots,\sigma^{(m)}$ be the aligned samples of SIBM (see the alignment step in Algorithm~\ref{alg:ez}).
+	Without loss of generality we assume that the aligned samples satisfy  $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$.
+	Define 
+	\begin{equation}  \label{eq:rl}
+	T_r:= | \{i\in[n]:(\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v, X_i=\omega^r \} | ,  \\
+	\end{equation}
+	If $(m-u_r)\beta<\beta^\ast$, then $P_{\SIBM}\big(T_r = \Theta(n^{g((m-u_r)\beta)}) \big) = 1-o(1)$.
+\end{lemma}
+Using the above two lemmas, we obtain the following proposition
+\begin{proposition}
+	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
+	Let 
+	$$
+	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+	$$
+	If $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta<\beta^\ast$, then no algorithm can recover $X$ from the samples with constant success probability, i.e., the success probability of any algorithm is $o(1)$.
+\end{proposition}
+\begin{proof}
+	First observe that $m-\lfloor \frac{m+1}{k}  \rfloor \le \lfloor (k-1)\frac{m+1}{k} \rfloor$. If $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta<\beta^\ast$, then $(m-\lfloor \frac{m+1}{k}  \rfloor) \beta<\beta^\ast$.
+	Now pick a vector $v\in\{\pm 1\}^m$ such that it has $\lfloor \frac{m+1}{k} \rfloor$ coordinates being $\omega^r$ for $r=0, \dots, k-2$ and $(m-(k-1)\lfloor \frac{m+1}{k} \rfloor)$ coordinates being $\omega^{k-1}$. Since $(k-1)\lfloor \frac{m+1}{k} \rfloor \leq \lfloor (k-1)\frac{m+1}{k} \rfloor$, by Lemma~\ref{lm:cvs}, with probability $1-o(1)$, $T_r$ is $\omega(1)$ for $r=0, \dots, k-1$. Therefore, we can find $\omega(1)$ pairs of $i_1, \dots, i_k \in[n]$ satisfying the following two conditions: (1) $\sigma_{i_r}^{(j)}=\sigma_{i_1}^{(j)}$ for all $j\in[m], r\in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k} \} = \{1, \omega, \dots, \omega^{k-1} \}$. Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X$ from $X^{(\sim\{I\}, v)}$ for $\omega(1)$ pairs of $i_1, \dots,i_k$. Therefore, the success probability of any recovery algorithm is $o(1)$.
+\end{proof}
 \appendix
 \section{Auxiliary lemmas used in Section~\ref{sect:converse}}\label{ap:6}
 
