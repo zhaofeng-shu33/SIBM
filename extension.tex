@@ -8,7 +8,7 @@
 \section{Problem setup and main results} \label{s:Preliminaries}
 We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $k$ communities and the definition of Ising model with $k$ state (See Definition 4 in \cite{Abbe17}).
 \begin{definition}[SSBM with $k$ communities] \label{def:SSBM}
-Let $n$ be a positive even integer, $W= \{1, \omega, \dots, \omega^{k-1}\}$ is a cyclic group with order $k$ and let $p,q\in[0,1]$ be two real numbers. Let $X=(X_1,\dots,X_n)\in W^n$, and let $G=([n],E(G))$ be a undirected graph with vertex set $[n]$ and edge set $E(G)$. The pair $(X,G)$ is drawn under $\SSBM(n,k,p,q)$ if 
+Let $n$ be a positive even integer, $W= \{1, \omega, \dots, \omega^{k-1}\}$ is a cyclic group with order $k$ and let $p,q\in[0,1]$ be two real numbers. Let $X=(X_1,\dots,X_n)\in W^n$, and let $G=([n],E(G))$ be an undirected graph with vertex set $[n]$ and edge set $E(G)$. The pair $(X,G)$ is drawn under $\SSBM(n,k,p,q)$ if 
 
 \noindent
 (i) $X$ is drawn uniformly with the constraint that $|\{v \in [n] : X_v = \omega^i\}| = \frac{n}{k}$;
@@ -1719,6 +1719,8 @@ for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while fo
 \end{proof}
 \section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
 \label{sect:direct}
+In this section, we prove that Algorithm~\ref{alg:ez} in Section~\ref{sect:multi} is able to learn $\SIBM(n,k,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta, m)$ as long as $\sqrt{a}-\sqrt{b} > \sqrt{k}$,  $\alpha>b\beta$ and $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, where $\beta^\ast$ is defined in \eqref{eq:defstar}.
+
 \begin{proposition} \label{prop:nr}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. Let $m$ be an integer such that $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$.
 	Let 
@@ -1730,6 +1732,220 @@ for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while fo
 	P(\hat{X} \in \Gamma) = 1-o(1) .
 	$$
 \end{proposition}
+
+By Proposition~\ref{prop:tt},
+if $\beta>\beta^\ast$, then $\sigma \in \Gamma $ with probability $1-o(1)$, so $m=1$ sample suffices for recovery. In the rest of this section, we will focus on the case $\beta\le \beta^\ast$.
+
+In Proposition~\ref{prop:43} (or Proposition~\ref{prop:1}), we have shown that $\dist(\sigma^{(i)}, \Gamma) =o(n)$ for all $i\in[m]$ with probability $1-O(n^{-r})$ for any constant $r>0$, but it is possible that $\sigma^{(1)}$ is close to $X$ while $\sigma^{(2)}$ is close to some $f(X)$. Step 1 (the alignment step) in the above algorithm eliminates such possibility: After the alignment step, with probability $1-O(n^{-r})$ only the following two scenarios will happen: Either
+$\dist(\sigma^{(i)}, X)=o(n)$ for all $i\in[m]$ or $\dist(\sigma^{(i)}, f(X))=o(n)$ for all $i\in[m]$ where $f \in \Gamma \backslash \{\textrm{id}\}$. Without loss of generality, we assume the former case, i.e., we assume that 
+$\dist(\sigma^{(i)}, X) \le n/k$ for all $i\in[m]$,
+and in the rest of this section we will prove that Algorithm~\ref{alg:ez} outputs $\hat{X}=X$ with probability $1-o(1)$.
+
+
+Given the ground truth $X$, the graph $G$ and a vertex $i\in[n]$, define the neighbors of $i$ in $G$ as 
+\begin{equation} \label{eq:ngbi}
+\cN_i(G) := \{j\in[n]\setminus\{i\}:
+\{i,j\}\in E(G) \} .
+\end{equation}
+Given a sample $\sigma\in W^n$ and a graph $G$,  we define the set of ``bad" neighbors of the vertex $i$ in $G$ as
+$$
+\Omega_i(\sigma,G):=\{j\in \cN_i(G): 
+\sigma_j \neq X_j \} .
+$$
+Given a vertex $i\in[n]$, a graph $G$ and an integer $z>0$, we also define
+$$
+\Lambda_i(G, z):=\{ \sigma\in W^n: |\Omega_i(\sigma,G)| < z \} ,
+$$
+i.e., $\Lambda_i(G, z)$ consists of all the samples for which the number of ``bad" neighbors of the vertex $i$ in $G$ is less than $z$.
+
+\begin{lemma} \label{lm:us}
+	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $\beta\le \beta^\ast$.
+	Given any $r>0$, there exists an integer $z>0$ such that for large enough $n$ and every $i\in[n]$, 
+	\begin{equation} \label{eq:zr}
+	P_{\SIBM} (\sigma\in \Lambda_i(G, z)
+	| \dist(\sigma, X) \le n/k)
+	> 1 - n^{-r} .
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	The event $\{\sigma\notin \Lambda_i(G, z) \}$ can be written as
+	\begin{equation} \label{eq:lei}
+	\{\sigma\notin \Lambda_i(G, z) \}
+	=\{|\Omega_i(\sigma,G)| \ge z \}
+	=\bigcup_{\tilde{\cI}\subseteq[n]\setminus\{i\}, |\tilde{\cI}| = z} \{\tilde{\cI} \subseteq \Omega_i(\sigma,G)\} .
+	\end{equation}
+	Given a subset $\tilde{\cI}\subseteq[n]\setminus\{i\}$,
+	the event $\{\tilde{\cI} \subseteq \Omega_i(\sigma,G) \}$ is the intersection of two events $\{\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}\}$ and $\{i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI}\}$.
+	
+	We start with the analysis of the first event.
+	In Proposition~\ref{prop:43}, we have shown that
+	for any $\delta>0$ and any $r'>0$, there exists $n_0(\delta, r')$ such that for all even integers $n>n_0(\delta, r')$,
+	$$ 
+	P_{\SIBM} \Big(\dist(\sigma,\pm X) \le n^{g(\beta)+\delta}
+	\Big) \ge 1- n^{-r'} .
+	$$
+	By Lemma~\ref{lm:ele} (vi), we know that $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, so we can always choose a $\delta>0$ such that $g(\beta)+\delta<1$.
+	Let $\theta:=g(\beta)+\delta<1$. Then for large enough $n$,
+	$$
+	P_{\SIBM} \Big(\dist(\sigma, \Gamma) \le n^{\theta} \Big) \ge 1- n^{-r'} .
+	$$
+	This in particular implies that
+	$$
+	P_{\SIBM} \Big(\dist(\sigma, X) \le n^{\theta} | \dist(\sigma, X) \le n/k
+	\Big) \ge 1- n^{-r'} .
+	$$
+	Moreover, Lemma~\ref{lm:bq} in Appendix~\ref{ap:6} (see inequality \eqref{eq:l2}) tells us that
+	$$
+	P_{\SIBM}(\sigma_j \neq X_j \text{~for all~}  j\in\tilde{\cI}
+	~\big| \dist(\sigma,X) \le n^\theta) \le \Big(\frac{n^\theta}{n/k-|\tilde{\cI}|}
+	\Big)^{|\tilde{\cI}|}
+	\quad \text{for all~} \tilde{\cI}\subseteq [n] .
+	$$
+	Therefore, for any subset $\tilde{\cI}\subseteq[n]\setminus\{i\}$ with size $|\tilde{\cI}|=z$, we have
+	$$
+	P_{\SIBM}(\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}
+	| \dist(\sigma, X) \le n/k )
+	\le O(n^{-(1-\theta) z}) + O(n^{-r'}) . 
+	$$
+	Taking $r'>(1-\theta) z$ gives us
+	\begin{equation} \label{eq:gr}
+	P_{\SIBM}(\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}
+	| \dist(\sigma, X) \le n/k )
+	\le O(n^{-(1-\theta) z}) . 
+	\end{equation}
+	
+	Given $r>0$, we will prove \eqref{eq:zr} for any integer $z\ge \frac{r+1}{1-\theta}$. 
+	Now condition on the event $\{\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}\}$.
+	Taking a specific $\sigma'$ which satistifies  $\{\sigma_j \neq X_j \text{~for all~} j \in \tilde{\cI}, \dist(\sigma, X) \le n/k\}$.
+	Using Lemma \ref{lem:post_independent}, we can show that
+	\begin{align*}
+	P(i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI} | \sigma_j \neq X_j \text{~for all~} j \in \tilde{\cI}, \dist(\sigma, X) \le n/k) &\leq P(i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI} | \sigma =\sigma')\\
+	&=\prod_{j\in \tilde{\cI}}\Pr((i,j)\in E(G) | \sigma = \sigma') =  O\Big( \frac{\log^z(n)}{n^z} \Big) .
+	\end{align*}
+	Combining this with \eqref{eq:gr}, we have
+	$$
+	P_{\SIBM} (\tilde{\cI} \subseteq \Omega_i(\sigma,G))
+	= O (n^{-(2-\theta)z}\log^z(n)) .
+	$$
+	Finally, combining this with \eqref{eq:lei} and the union bound, we have
+	\begin{align*}
+	P_{\SIBM} \big(\sigma\notin \Lambda_i(G, z)
+	| \dist(\sigma, X) \le n/k \big)
+	& \le n^z O (n^{-(2-\theta)z}\log^z(n))
+	= O (n^{-(1-\theta)z}\log^z(n))  \\
+	& \le O (n^{-r-1}\log^z(n)) <n^{-r}
+	\end{align*}
+	for large enough $n$. This completes the proof of the lemma.
+\end{proof}
+We further define 
+\begin{align*}
+\Lambda(G, z) :=
+\bigcap_{i=1}^n
+\Lambda_i(G, z) .
+\end{align*}
+The following corollary follows immediately from Lemma~\ref{lm:us} and the union bound.
+\begin{corollary} \label{cr:1}
+	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
+	Given any $r>0$, there exists an integer $z>0$ such that for large enough $n$, 
+	$$
+	P_{\SIBM} (\sigma\in \Lambda(G, z)
+	| \dist(\sigma, X) \le n/k)
+	> 1 - n^{-2r} .
+	$$
+	Equivalently, for any $r>0$, there is an integer $z>0$ and a set $\cG_{\good}$ such that
+	
+	\noindent (i)
+	$P(G\in\cG_{\good}) \ge 1- O(n^{-r})$.
+	
+	\noindent (ii) For every $G\in\cG_{\good}$,
+	$$
+	P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)  \big| \dist(\sigma, X) \le n/2 \big) =1- O(n^{-r}).
+	$$
+\end{corollary}
+\begin{proof}
+	We only explain why the first statement implies the second one.
+	Define a set 
+	$$
+	\cG_{\bad}:= \big\{ G: P_{\sigma|G} \big( \sigma \notin  \Lambda(G, z)  \big| \dist(\sigma, X) \le n/k \big)
+	>n^{-r} \big\} .
+	$$
+	Then by the union bound and Lemma~\ref{lm:us}, $P(G\in\cG_{\bad})\le n^{-r}$. Therefore, the second statement follows by taking $\cG_{\good}$ to be the complement of $\cG_{\bad}$.
+\end{proof}
+We define subsets of $\cN_i(G)$ with the same labeling and the opposite labeling as
+$$
+\cN_{i,r}(G):=\{j\in \cN_i(G): X_j=\omega^r \cdot X_i \}
+$$
+respectively.
+Recall that in \eqref{eq:defAB}, we defined $A^r_i=A^r_i(G):=|\cN_{i,r}(G)|$.
+By definition, $\sigma = X^{(\sim\cI)}\in  \Lambda_i(G,z)$ if and only if $|\cI\cap \cN_i(G)| < z$.
+
+
+\begin{lemma} \label{lm:et}
+	Let $0<\theta<1$ be some constant and $1\leq r \leq k-1$. Then for large enough $n$ we have
+	\begin{align*}
+	\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
+	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
+	{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } \\
+	& \le \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
+	\end{align*}
+\end{lemma}
+
+\begin{proof}
+	We only need to show that for every $\cI\in [n]\setminus\{i\},v$ with size $|\cI|\le n^\theta$ such that $X^{(\sim\cI,v)}\in \Lambda_i(G,z)$,
+	and $v'$ be an extension of $v$ such that $v'=[v, \omega^r]$:
+	\begin{equation} \label{eq:qk}
+	\begin{aligned}
+	\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - kz) \Big) & \le 
+	\frac{P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}), v')} ) } { P_{\sigma|G}(\sigma= X^{(\sim\cI,v)} ) } \\
+	& \le \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + kz) \Big) .
+	\end{aligned}
+	\end{equation}
+	Then using 
+	$$
+	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
+	{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
+	= \frac{\sum_{\cI, v} P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}), v')} ) } {\sum_{\cI, v} P_{\sigma|G}(\sigma= X^{(\sim\cI,v)} ) } 
+	$$
+	we can get the conclusion.
+	
+	Define $v^{-r} = |\{i | v_i = \omega^{k-r}\}|$ and
+	$$
+	A'^r_i :=A^r_i-|\cI\cap \cN_{i,r}(G)| + \sum_{s=0, s\neq r}^{k-1}|\cI\cap \cN_{i,s}(G) \cap v^{-(s-r)}| .
+	$$
+	Since $X^{(\sim\cI, v)}\in \Lambda_i(G,z)$, we have $|\cI\cap \cN_{i,r}(G)| \le z-1$. Therefore,
+	\begin{equation} \label{eq:oo}
+	A^r_i-A^0_i-k(z-1) \le A'^r_i-A'^0_i\le A^r_i-A^0_i+k(z-1) .
+	\end{equation}
+	By \eqref{eq:isingma}, we have
+	\begin{align*}
+	& \frac{P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}))} ) } { P_{\sigma|G}(\sigma= X^{(\sim\cI)} ) } \\
+	= & \exp\Big(k(\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)
+	-2\frac{(k-1)\alpha\log(n)}{n}
+	\Big)
+	\\
+	= & \exp\Big(k(\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)+o(1) \Big)
+	\end{align*}
+	Taking \eqref{eq:oo} into this equation gives us \eqref{eq:qk} and completes the proof.
+\end{proof}
+\begin{remark}
+	From the proof we can see that $\Gamma_i$ can be replaced with $\Gamma$. Since $A_i^r - A_i^0 < 0$ with probability one when
+	$n$ is large, we can get there exists $\underline{C}, \bar{C}$ such that
+	\begin{equation} \label{eq:qke}
+	\underline{C}\sum_{r=1}^{k-1}\exp\Big(k\beta(A^r_i-A^0_i) \Big)  \le 
+	P_{\sigma|G}(\sigma \neq X_i | \sigma \in \Lambda(G, z),
+	\dist(\sigma, X) \leq n^{\theta})
+	\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(k\beta (A^r_i-A^0_i ) \Big) 
+	\end{equation}
+	where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
+	Under the condition that $\bar{\sigma} \in \Lambda(G, z)$ and
+	$\dist(\bar{\sigma}, X) \leq n^{\theta}$,
+	we can also reformulate Equation \eqref{eq:qk} as follows:
+	\begin{equation}\label{eq:soon}
+	\underline{C} \sum_{r=1}^{k-1} \exp(k\beta(A^r_i - A^0_i)) \leq P_{\sigma | G}(\sigma_i \neq X_i | \sigma_j = \bar{\sigma}_j \text{ for all } j\neq i ) \leq
+	\bar{C} \sum_{r=1}^{k-1} \exp(k\beta(A^r_i - A^0_i))
+	\end{equation}
+\end{remark}
+
 \noindent
 {\em Proof of Proposition~\ref{prop:nr}.}
 Recall that $\sigma^{(1)},\dots,\sigma^{(m)}$ are the samples of SIBM.
@@ -1797,210 +2013,8 @@ By assumption we have $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$. Therefor
 \hfill\qed
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
-Given the ground truth $X$, the graph $G$ and a vertex $i\in[n]$, define the neighbors of $i$ in $G$ as 
-\begin{equation} \label{eq:ngbi}
-\cN_i(G) := \{j\in[n]\setminus\{i\}:
-\{i,j\}\in E(G) \} .
-\end{equation}
-Given a sample $\sigma\in W^n$ and a graph $G$,  we define the set of ``bad" neighbors of the vertex $i$ in $G$ as
-$$
-\Omega_i(\sigma,G):=\{j\in \cN_i(G): 
-\sigma_j \neq X_j \} .
-$$
-Given a vertex $i\in[n]$, a graph $G$ and an integer $z>0$, we also define
-$$
-\Lambda_i(G, z):=\{ \sigma\in W^n: |\Omega_i(\sigma,G)| < z \} ,
-$$
-i.e., $\Lambda_i(G, z)$ consists of all the samples for which the number of ``bad" neighbors of the vertex $i$ in $G$ is less than $z$.
-
-\begin{lemma} \label{lm:us}
-Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $\beta\le \beta^\ast$.
-Given any $r>0$, there exists an integer $z>0$ such that for large enough $n$ and every $i\in[n]$, 
-\begin{equation} \label{eq:zr}
-P_{\SIBM} (\sigma\in \Lambda_i(G, z)
-| \dist(\sigma, X) \le n/k)
-> 1 - n^{-r} .
-\end{equation}
-\end{lemma}
-\begin{proof}
-The event $\{\sigma\notin \Lambda_i(G, z) \}$ can be written as
-\begin{equation} \label{eq:lei}
-\{\sigma\notin \Lambda_i(G, z) \}
-=\{|\Omega_i(\sigma,G)| \ge z \}
-=\bigcup_{\tilde{\cI}\subseteq[n]\setminus\{i\}, |\tilde{\cI}| = z} \{\tilde{\cI} \subseteq \Omega_i(\sigma,G)\} .
-\end{equation}
-Given a subset $\tilde{\cI}\subseteq[n]\setminus\{i\}$,
-the event $\{\tilde{\cI} \subseteq \Omega_i(\sigma,G) \}$ is the intersection of two events $\{\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}\}$ and $\{i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI}\}$.
-
-We start with the analysis of the first event.
-In Proposition~\ref{prop:43}, we have shown that
-for any $\delta>0$ and any $r'>0$, there exists $n_0(\delta, r')$ such that for all even integers $n>n_0(\delta, r')$,
-$$ 
-P_{\SIBM} \Big(\dist(\sigma,\pm X) \le n^{g(\beta)+\delta}
- \Big) \ge 1- n^{-r'} .
-$$
-By Lemma~\ref{lm:ele} (vi), we know that $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, so we can always choose a $\delta>0$ such that $g(\beta)+\delta<1$.
-Let $\theta:=g(\beta)+\delta<1$. Then for large enough $n$,
-$$
-P_{\SIBM} \Big(\dist(\sigma, \Gamma) \le n^{\theta} \Big) \ge 1- n^{-r'} .
-$$
-This in particular implies that
-$$
-P_{\SIBM} \Big(\dist(\sigma, X) \le n^{\theta} | \dist(\sigma, X) \le n/k
-\Big) \ge 1- n^{-r'} .
-$$
-Moreover, Lemma~\ref{lm:bq} in Appendix~\ref{ap:6} (see inequality \eqref{eq:l2}) tells us that
-$$
- P_{\SIBM}(\sigma_j \neq X_j \text{~for all~}  j\in\tilde{\cI}
-~\big| \dist(\sigma,X) \le n^\theta) \le \Big(\frac{n^\theta}{n/k-|\tilde{\cI}|}
-\Big)^{|\tilde{\cI}|}
-\quad \text{for all~} \tilde{\cI}\subseteq [n] .
-$$
-Therefore, for any subset $\tilde{\cI}\subseteq[n]\setminus\{i\}$ with size $|\tilde{\cI}|=z$, we have
-$$
-P_{\SIBM}(\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}
-| \dist(\sigma, X) \le n/k )
-\le O(n^{-(1-\theta) z}) + O(n^{-r'}) . 
-$$
-Taking $r'>(1-\theta) z$ gives us
-\begin{equation} \label{eq:gr}
-P_{\SIBM}(\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}
-| \dist(\sigma, X) \le n/k )
-\le O(n^{-(1-\theta) z}) . 
-\end{equation}
-
-Given $r>0$, we will prove \eqref{eq:zr} for any integer $z\ge \frac{r+1}{1-\theta}$. 
-Now condition on the event $\{\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}\}$.
-Taking a specific $\sigma'$ which satistifies  $\{\sigma_j \neq X_j \text{~for all~} j \in \tilde{\cI}, \dist(\sigma, X) \le n/k\}$.
-Using Lemma \ref{lem:post_independent}, we can show that
-\begin{align*}
-P(i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI} | \sigma_j \neq X_j \text{~for all~} j \in \tilde{\cI}, \dist(\sigma, X) \le n/k) &\leq P(i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI} | \sigma =\sigma')\\
-&=\prod_{j\in \tilde{\cI}}\Pr((i,j)\in E(G) | \sigma = \sigma') =  O\Big( \frac{\log^z(n)}{n^z} \Big) .
-\end{align*}
-Combining this with \eqref{eq:gr}, we have
-$$
-P_{\SIBM} (\tilde{\cI} \subseteq \Omega_i(\sigma,G))
-= O (n^{-(2-\theta)z}\log^z(n)) .
-$$
-Finally, combining this with \eqref{eq:lei} and the union bound, we have
-\begin{align*}
-P_{\SIBM} \big(\sigma\notin \Lambda_i(G, z)
-| \dist(\sigma, X) \le n/k \big)
-& \le n^z O (n^{-(2-\theta)z}\log^z(n))
-= O (n^{-(1-\theta)z}\log^z(n))  \\
-& \le O (n^{-r-1}\log^z(n)) <n^{-r}
-\end{align*}
-for large enough $n$. This completes the proof of the lemma.
-\end{proof}
-We further define 
-\begin{align*}
-\Lambda(G, z) :=
-\bigcap_{i=1}^n
-\Lambda_i(G, z) .
-\end{align*}
-The following corollary follows immediately from Lemma~\ref{lm:us} and the union bound.
-\begin{corollary} \label{cr:1}
-Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
-Given any $r>0$, there exists an integer $z>0$ such that for large enough $n$, 
-$$
-P_{\SIBM} (\sigma\in \Lambda(G, z)
-| \dist(\sigma, X) \le n/k)
-> 1 - n^{-2r} .
-$$
-Equivalently, for any $r>0$, there is an integer $z>0$ and a set $\cG_{\good}$ such that
-
-\noindent (i)
-$P(G\in\cG_{\good}) \ge 1- O(n^{-r})$.
-
-\noindent (ii) For every $G\in\cG_{\good}$,
-$$
-P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)  \big| \dist(\sigma, X) \le n/2 \big) =1- O(n^{-r}).
-$$
-\end{corollary}
-\begin{proof}
-We only explain why the first statement implies the second one.
-Define a set 
-$$
-\cG_{\bad}:= \big\{ G: P_{\sigma|G} \big( \sigma \notin  \Lambda(G, z)  \big| \dist(\sigma, X) \le n/k \big)
->n^{-r} \big\} .
-$$
-Then by the union bound and Lemma~\ref{lm:us}, $P(G\in\cG_{\bad})\le n^{-r}$. Therefore, the second statement follows by taking $\cG_{\good}$ to be the complement of $\cG_{\bad}$.
-\end{proof}
-
-We define subsets of $\cN_i(G)$ with the same labeling and the opposite labeling as
-$$
-\cN_{i,r}(G):=\{j\in \cN_i(G): X_j=\omega^r \cdot X_i \}
-$$
-respectively.
-Recall that in \eqref{eq:defAB}, we defined $A^r_i=A^r_i(G):=|\cN_{i,r}(G)|$.
-By definition, $\sigma = X^{(\sim\cI)}\in  \Lambda_i(G,z)$ if and only if $|\cI\cap \cN_i(G)| < z$.
 
 
-\begin{lemma} \label{lm:et}
-Let $0<\theta<1$ be some constant and $1\leq r \leq k-1$. Then for large enough $n$ we have
-\begin{align*}
-\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
-\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
-{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } \\
-& \le \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
-\end{align*}
-\end{lemma}
-
-\begin{proof}
-We only need to show that for every $\cI\in [n]\setminus\{i\},v$ with size $|\cI|\le n^\theta$ such that $X^{(\sim\cI,v)}\in \Lambda_i(G,z)$,
-and $v'$ be an extension of $v$ such that $v'=[v, \omega^r]$:
-\begin{equation} \label{eq:qk}
-\begin{aligned}
-\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - kz) \Big) & \le 
-\frac{P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}), v')} ) } { P_{\sigma|G}(\sigma= X^{(\sim\cI,v)} ) } \\
-& \le \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + kz) \Big) .
-\end{aligned}
-\end{equation}
-Then using 
-$$
-\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
-{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
-= \frac{\sum_{\cI, v} P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}), v')} ) } {\sum_{\cI, v} P_{\sigma|G}(\sigma= X^{(\sim\cI,v)} ) } 
-$$
-we can get the conclusion.
-
-Define $v^{-r} = |\{i | v_i = \omega^{k-r}\}|$ and
-$$
-A'^r_i :=A^r_i-|\cI\cap \cN_{i,r}(G)| + \sum_{s=0, s\neq r}^{k-1}|\cI\cap \cN_{i,s}(G) \cap v^{-(s-r)}| .
-$$
-Since $X^{(\sim\cI, v)}\in \Lambda_i(G,z)$, we have $|\cI\cap \cN_{i,r}(G)| \le z-1$. Therefore,
-\begin{equation} \label{eq:oo}
-A^r_i-A^0_i-k(z-1) \le A'^r_i-A'^0_i\le A^r_i-A^0_i+k(z-1) .
-\end{equation}
-By \eqref{eq:isingma}, we have
-\begin{align*}
-& \frac{P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}))} ) } { P_{\sigma|G}(\sigma= X^{(\sim\cI)} ) } \\
-= & \exp\Big(k(\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)
--2\frac{(k-1)\alpha\log(n)}{n}
-\Big)
- \\
-= & \exp\Big(k(\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)+o(1) \Big)
-\end{align*}
-Taking \eqref{eq:oo} into this equation gives us \eqref{eq:qk} and completes the proof.
-\end{proof}
-\begin{remark}
-	From the proof we can see that $\Gamma_i$ can be replaced with $\Gamma$. Since $A_i^r - A_i^0 < 0$ with probability one when
-	$n$ is large, we can get there exists $\underline{C}, \bar{C}$ such that
-	\begin{equation} \label{eq:qke}
-	\underline{C}\sum_{r=1}^{k-1}\exp\Big(k\beta(A^r_i-A^0_i) \Big)  \le 
-	P_{\sigma|G}(\sigma \neq X_i | \sigma \in \Lambda(G, z),
-	\dist(\sigma, X) \leq n^{\theta})
-	\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(k\beta (A^r_i-A^0_i ) \Big) 
-	\end{equation}
-	where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
-	Under the condition that $\bar{\sigma} \in \Lambda(G, z)$ and
-	$\dist(\bar{\sigma}, X) \leq n^{\theta}$,
-	we can also reformulate Equation \eqref{eq:qk} as follows:
-	\begin{equation}\label{eq:soon}
-	\underline{C} \sum_{r=1}^{k-1} \exp(k\beta(A^r_i - A^0_i)) \leq P_{\sigma | G}(\sigma_i \neq X_i | \sigma_j = \bar{\sigma}_j \text{ for all } j\neq i ) \leq
-	\bar{C} \sum_{r=1}^{k-1} \exp(k\beta(A^r_i - A^0_i))
-	\end{equation}
-\end{remark}
 
 \appendix
 \section{Auxiliary lemmas used in Section~\ref{sect:converse}}\label{ap:6}
