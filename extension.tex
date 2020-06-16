@@ -2063,113 +2063,9 @@ Using the above two lemmas, we obtain the following proposition
 	Now pick a vector $v\in\{\pm 1\}^m$ such that it has $\lfloor \frac{m+1}{k} \rfloor$ coordinates being $\omega^r$ for $r=0, \dots, k-2$ and $(m-(k-1)\lfloor \frac{m+1}{k} \rfloor)$ coordinates being $\omega^{k-1}$. Since $(k-1)\lfloor \frac{m+1}{k} \rfloor \leq \lfloor (k-1)\frac{m+1}{k} \rfloor$, by Lemma~\ref{lm:cvs}, with probability $1-o(1)$, $T_r$ is $\omega(1)$ for $r=0, \dots, k-1$. Therefore, we can find $\omega(1)$ pairs of $i_1, \dots, i_k \in[n]$ satisfying the following two conditions: (1) $\sigma_{i_r}^{(j)}=\sigma_{i_1}^{(j)}$ for all $j\in[m], r\in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k} \} = \{1, \omega, \dots, \omega^{k-1} \}$. Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X$ from $X^{(\sim\{I\}, v)}$ for $\omega(1)$ pairs of $i_1, \dots,i_k$. Therefore, the success probability of any recovery algorithm is $o(1)$.
 \end{proof}
 \appendix
-\section{Auxiliary lemmas used in Section~\ref{sect:converse}}\label{ap:6}
-
-\begin{lemma} \label{lm:bq}
-For $0<\theta<1$,
-\begin{align}
-& P_{\SIBM}(\sigma_i \neq X_i
-\big| \dist(\sigma,X) \le n^\theta) \le k n^{\theta-1}
-\quad \text{for all~} i\in[n] , \label{eq:l1}\\
-& P_{\SIBM}(\sigma_i \neq X_i \text{~for all~}  i\in\tilde{\cI}
-~\big| \dist(\sigma,X) \le n^\theta) \le \Big(\frac{n^\theta}{n/k - |\tilde{\cI}|}
-\Big)^{|\tilde{\cI}|}
-\quad \text{for all~} \tilde{\cI}\subseteq [n] .   \label{eq:l2}
-\end{align}
-\end{lemma}
-\begin{proof}
-Define $\dist_j(\sigma,X):=|\{i\in[n]:X_i=\omega^j, \sigma_i \neq X_i\}|$ for $j \in \{0, \dots, k-1\}$. Clearly, $\dist(\sigma,X)=\sum_{j=0}^{k-1} \dist_j(\sigma,X)$.
-
-Inequality \eqref{eq:l1} follows immediately from the following equality:
-$$
-P_{\SIBM}(\sigma_i \neq X_i |
-\dist_j(\sigma,X)=u_j,
-j=0,\dots,k-1) 
-= k u_r / n \textrm{ where } X_i = \omega^r
-$$
-Without loss of generality,
-we only prove the case of $X_i=1 (r=0)$, and
-we need the following definition for the proof of this equality:
-For $\cI\subseteq[n]$, define $\cI_j:=\{i\in\cI:X_i=\omega^j\}$ Then
-\begin{align*}
-& P_{\SIBM}(\sigma_i \neq X_i |
-\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)  \\
-= & \frac{P_{\SIBM}(\sigma_i \neq X_i ,
-\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)}
-{P_{\SIBM}(
-\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)} \\
-= & \frac{\sum_{\cI:i\in\cI_0,|\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }
-{\sum_{\cI: |\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) } \\
-\overset{(a)}{=} & \frac{\binom{n/k-1}{u_0 -1}}
-{\binom{n/k}{u_0} }
-= ku_0/n ,
-\end{align*}
-where equality (a) follows from Lemma~\ref{lm:cc} below.
-
-Similarly, inequality \eqref{eq:l2} follows from the following inequality:
-For $u_j\geq |\tilde{\cI}_j|, j=0, \dots, k-1$,
-\begin{align*}
-& P_{\SIBM}(\sigma_i \neq X_i \text{~for all~}  i\in\tilde{\cI} ~ \big|
-\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)  \\
-= & \frac{P_{\SIBM}(\sigma_i \neq X_i \text{~for all~}  i\in\tilde{\cI} ,
-\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)}{P_{\SIBM}(
-\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)} \\
-= & \frac{\sum_{\cI:\tilde{\cI}_j\subseteq\cI_j,
-|\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }
-{\sum_{\cI:|\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }  \\
-\overset{(a)}{=} & \prod_{j=0}^{k-1} \frac{\binom{n/k-|\tilde{\cI}_j|}{u_j -|\tilde{\cI}_j|} }
-{\binom{n/k}{u_j} }
-< \prod_{j=0}^{k-1}\Big(\frac{u_j}{n/k- |\tilde{\cI}_j|} \Big)^{|\tilde{\cI}_j|}
-\\
-< & \Big(\frac{\sum_{j=0}^{k-1} u_j}{n/k- |\tilde{\cI}|} \Big)^{|\tilde{\cI}|}  ,
-\end{align*}
-where equality (a) again follows from Lemma~\ref{lm:cc} below.
-\end{proof}
+\section{Auxiliary propositions used in Section~\ref{sect:struct}}\label{ap:um}
 
 
-
-
-
-
-
-\begin{lemma} \label{lm:cc}
-Let $\cI,\cI'\subseteq[n]\setminus\{i\}$ be two subsets such that $|\cI_j|=|\cI_j'|$ for $j=0,\dots,k-1$. 
-Then $P_{\SIBM}(\sigma=X^{(\sim\cI)}) = P_{\SIBM}(\sigma=X^{(\sim\cI')})$.
-\end{lemma}
-
-\begin{lemma}\label{lem:post_independent}
-Let $p_{ij}=\Pr(\{\{i,j\} \in E(G) \})$ be the prior probability, which equals $\frac{a\log n}{n}$ or $\frac{b\log n}{n}$ depending on $X$.
-The event $\{\{i,j\} \in E(G) \}$ are independent given $\sigma$ and the posterior probability is
-\begin{equation}
-\Pr(\{\{i,j\} \in E(G) \} | \sigma) = \frac{c p_{ij} }{1-p_{ij} + cp_{ij}} \text{ where  } c= \exp\Big((\beta + \frac{\alpha \log n}{n} ) I(\bar{\sigma}_i, \bar{\sigma}_j) \Big)
-\end{equation}
-\end{lemma}
-\begin{proof}
-Let $Y_{ij}$ be a Bernoulli random variable with $\Pr(Y_{ij} = 1) = \Pr(\{\{i,j\} \in E(G)\}) = p_{ij}$. $Y_{ij}$ represents whether there is an edge between node $i$ and $j$.
-The prior distribution for $Y:=\{Y_{ij}\}$ can be written as:
-$$
-\Pr(Y) = \prod_{i,j} p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}
-$$ 
-Using Equation \eqref{eq:isingma}, the posterior probability for $Y| \sigma$ can be written as
-$$
-\Pr(Y|\sigma) = C\prod_{ij} \exp((\beta + \frac{\alpha \log n}{n})I(\bar{\sigma_i}, \bar{\sigma_j} )y_{ij}) \Pr(Y)
-$$
-where $C$ is a constant irrelevant with $Y$.
-We can see from the joint distribution of $Y|\sigma$ that $Y_{ij} | \sigma$ are independent and each marginal distribution has the following form:
-$$
-\Pr(Y_{ij} | \sigma) = C_{ij} \exp((\beta + \frac{\alpha \log n}{n})I(\bar{\sigma_i}, \bar{\sigma_j} )y_{ij}) p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}
-$$
-Using the normalization condition for $Y_{ij} | \sigma $, we can compute $C_{ij} = \frac{1}{1-p_{ij} + p_{ij}c}$. From $\Pr(\{\{i,j\} \in E(G) \} | \sigma) =\Pr(Y_{ij}=1|\sigma)$ the proof is complete.
-\end{proof}
-
-
-\begin{lemma} \label{lm:bmd}
-Let $Y\sim \Binom(n + o(n), a\log(n)/n)$. Then for $r>8$ and large enough $n$, we have
-$$
-P(Y\ge r a \log(n)) < n^{-r} .
-$$
-\end{lemma}
-\section{Auxiliary propositions used in Section~\ref{sect:theta}}\label{ap:um}
 
 We first prove a tight estimate of $P(A^1_i-A^0_i = t\log(n))$ for $t=\Theta(1)$. Note that \eqref{eq:upba} gives an upper bound on $P(A^1_i-A^0_i \ge t\log(n))$ for $t\in [\frac{1}{k}(b-a), 0]$, so it is also an upper bound of $P(A^1_i-A^0 = t\log(n))$. Below we prove that the upper bound in \eqref{eq:upba} is in fact tight up to a $\Theta(1/ \sqrt{\log(n)})$ factor for all $t=\Theta(1)$ such that $t\log(n)$ is an integer.
 
@@ -2557,4 +2453,114 @@ By Equation \ref{eq:tD}, $P(G\in G_1) = 1-o(1)$. The above summation can be furt
 \end{proof}
 \bibliographystyle{plain}
 \bibliography{exportlist}
+
+
+
+
+\section{Auxiliary lemmas used in Section~\ref{sect:direct}}\label{ap:6}
+
+\begin{lemma} \label{lm:bq}
+	For $0<\theta<1$,
+	\begin{align}
+	& P_{\SIBM}(\sigma_i \neq X_i
+	\big| \dist(\sigma,X) \le n^\theta) \le k n^{\theta-1}
+	\quad \text{for all~} i\in[n] , \label{eq:l1}\\
+	& P_{\SIBM}(\sigma_i \neq X_i \text{~for all~}  i\in\tilde{\cI}
+	~\big| \dist(\sigma,X) \le n^\theta) \le \Big(\frac{n^\theta}{n/k - |\tilde{\cI}|}
+	\Big)^{|\tilde{\cI}|}
+	\quad \text{for all~} \tilde{\cI}\subseteq [n] .   \label{eq:l2}
+	\end{align}
+\end{lemma}
+\begin{proof}
+	Define $\dist_j(\sigma,X):=|\{i\in[n]:X_i=\omega^j, \sigma_i \neq X_i\}|$ for $j \in \{0, \dots, k-1\}$. Clearly, $\dist(\sigma,X)=\sum_{j=0}^{k-1} \dist_j(\sigma,X)$.
+	
+	Inequality \eqref{eq:l1} follows immediately from the following equality:
+	$$
+	P_{\SIBM}(\sigma_i \neq X_i |
+	\dist_j(\sigma,X)=u_j,
+	j=0,\dots,k-1) 
+	= k u_r / n \textrm{ where } X_i = \omega^r
+	$$
+	Without loss of generality,
+	we only prove the case of $X_i=1 (r=0)$, and
+	we need the following definition for the proof of this equality:
+	For $\cI\subseteq[n]$, define $\cI_j:=\{i\in\cI:X_i=\omega^j\}$ Then
+	\begin{align*}
+	& P_{\SIBM}(\sigma_i \neq X_i |
+	\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)  \\
+	= & \frac{P_{\SIBM}(\sigma_i \neq X_i ,
+		\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)}
+	{P_{\SIBM}(
+		\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)} \\
+	= & \frac{\sum_{\cI:i\in\cI_0,|\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }
+	{\sum_{\cI: |\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) } \\
+	\overset{(a)}{=} & \frac{\binom{n/k-1}{u_0 -1}}
+	{\binom{n/k}{u_0} }
+	= ku_0/n ,
+	\end{align*}
+	where equality (a) follows from Lemma~\ref{lm:cc} below.
+	
+	Similarly, inequality \eqref{eq:l2} follows from the following inequality:
+	For $u_j\geq |\tilde{\cI}_j|, j=0, \dots, k-1$,
+	\begin{align*}
+	& P_{\SIBM}(\sigma_i \neq X_i \text{~for all~}  i\in\tilde{\cI} ~ \big|
+	\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)  \\
+	= & \frac{P_{\SIBM}(\sigma_i \neq X_i \text{~for all~}  i\in\tilde{\cI} ,
+		\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)}{P_{\SIBM}(
+		\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)} \\
+	= & \frac{\sum_{\cI:\tilde{\cI}_j\subseteq\cI_j,
+			|\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }
+	{\sum_{\cI:|\cI_j|=u_j,j=0,\dots,k-1}P_{\SIBM}(\sigma=X^{(\sim\cI)}) }  \\
+	\overset{(a)}{=} & \prod_{j=0}^{k-1} \frac{\binom{n/k-|\tilde{\cI}_j|}{u_j -|\tilde{\cI}_j|} }
+	{\binom{n/k}{u_j} }
+	< \prod_{j=0}^{k-1}\Big(\frac{u_j}{n/k- |\tilde{\cI}_j|} \Big)^{|\tilde{\cI}_j|}
+	\\
+	< & \Big(\frac{\sum_{j=0}^{k-1} u_j}{n/k- |\tilde{\cI}|} \Big)^{|\tilde{\cI}|}  ,
+	\end{align*}
+	where equality (a) again follows from Lemma~\ref{lm:cc} below.
+\end{proof}
+
+
+
+
+
+
+
+\begin{lemma} \label{lm:cc}
+	Let $\cI,\cI'\subseteq[n]\setminus\{i\}$ be two subsets such that $|\cI_j|=|\cI_j'|$ for $j=0,\dots,k-1$. 
+	Then $P_{\SIBM}(\sigma=X^{(\sim\cI)}) = P_{\SIBM}(\sigma=X^{(\sim\cI')})$.
+\end{lemma}
+
+\begin{lemma}\label{lem:post_independent}
+	Let $p_{ij}=\Pr(\{\{i,j\} \in E(G) \})$ be the prior probability, which equals $\frac{a\log n}{n}$ or $\frac{b\log n}{n}$ depending on $X$.
+	The event $\{\{i,j\} \in E(G) \}$ are independent given $\sigma$ and the posterior probability is
+	\begin{equation}
+	\Pr(\{\{i,j\} \in E(G) \} | \sigma) = \frac{c p_{ij} }{1-p_{ij} + cp_{ij}} \text{ where  } c= \exp\Big((\beta + \frac{\alpha \log n}{n} ) I(\bar{\sigma}_i, \bar{\sigma}_j) \Big)
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	Let $Y_{ij}$ be a Bernoulli random variable with $\Pr(Y_{ij} = 1) = \Pr(\{\{i,j\} \in E(G)\}) = p_{ij}$. $Y_{ij}$ represents whether there is an edge between node $i$ and $j$.
+	The prior distribution for $Y:=\{Y_{ij}\}$ can be written as:
+	$$
+	\Pr(Y) = \prod_{i,j} p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}
+	$$ 
+	Using Equation \eqref{eq:isingma}, the posterior probability for $Y| \sigma$ can be written as
+	$$
+	\Pr(Y|\sigma) = C\prod_{ij} \exp((\beta + \frac{\alpha \log n}{n})I(\bar{\sigma_i}, \bar{\sigma_j} )y_{ij}) \Pr(Y)
+	$$
+	where $C$ is a constant irrelevant with $Y$.
+	We can see from the joint distribution of $Y|\sigma$ that $Y_{ij} | \sigma$ are independent and each marginal distribution has the following form:
+	$$
+	\Pr(Y_{ij} | \sigma) = C_{ij} \exp((\beta + \frac{\alpha \log n}{n})I(\bar{\sigma_i}, \bar{\sigma_j} )y_{ij}) p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}
+	$$
+	Using the normalization condition for $Y_{ij} | \sigma $, we can compute $C_{ij} = \frac{1}{1-p_{ij} + p_{ij}c}$. From $\Pr(\{\{i,j\} \in E(G) \} | \sigma) =\Pr(Y_{ij}=1|\sigma)$ the proof is complete.
+\end{proof}
+
+
+\begin{lemma} \label{lm:bmd}
+	Let $Y\sim \Binom(n + o(n), a\log(n)/n)$. Then for $r>8$ and large enough $n$, we have
+	$$
+	P(Y\ge r a \log(n)) < n^{-r} .
+	$$
+\end{lemma}
 \end{document}
