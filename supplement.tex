@@ -100,4 +100,34 @@ Using the Markov property of $X \to G \to \sigma$, we have Eq. \eqref{eq:13} $\R
 \end{align}
 Since the conditional probability for graph is equal, the proof is complete.
 \end{proof}
+\begin{lemma}
+	Let $m,k$ be integers and $k\geq 2, m\geq 1$, then
+	\begin{align}
+	m - \lfloor {m + 1 \over k} \rfloor & \leq  \lfloor {k - 1 \over k}(m+1) \rfloor \label{eq:m1} \\
+	(k-1) {m + 1 \over k}& \leq  \lfloor {k-1 \over k}(m+1) \rfloor \label{eq:m2}
+	\end{align}
+\end{lemma}
+\begin{proof}
+	For Eq. \eqref{eq:m2} we only need to show
+	\begin{equation}\label{eq:m22}
+	n \lfloor a \rfloor \leq \lfloor n a \rfloor
+	\end{equation}
+	for positive integer $n$ and positive real number $a$.
+	
+	Let $a = \lfloor a \rfloor + \{ a \}$, Eq. \eqref{eq:m22} is equivalent with
+	$n \lfloor a \rfloor \leq \lfloor n \{ a \} \rfloor + n \lfloor a \rfloor$, which is obvious.
+	
+	For Eq. \eqref{eq:m1} we want to show 
+	\begin{align*}
+     &	m - \lfloor {m + 1 \over k} \rfloor  \leq  (k-1)\lfloor {m + 1 \over k} \rfloor + \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor \\
+     \iff & m - k \lfloor {m + 1 \over k} \rfloor \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor \\
+     \iff & m - k ({m + 1 \over k} - \{ {m+1 \over k }\}) \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor  \\
+     \iff & k \{ {m+1 \over k }\} - 1 \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor  \\
+	\end{align*}
+	Since $k \{ {m+1 \over k }\}$ is an integer, the above Equation is further equivalent with
+	$$
+	- 1 \leq \lfloor - \{ {m + 1 \over k }\}\rfloor  
+	$$
+	which is obvious by the definition of the fractional part of a number.
+\end{proof}
 \end{document}
