@@ -2013,7 +2013,29 @@ By assumption we have $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$. Therefor
 \hfill\qed
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
-
+\begin{lemma} \label{lm:qq}
+	Let 
+	$$
+	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+	$$
+	If there is $k$-pair $i_1,\dots, i_k\in[n]$ satisfying the following two conditions: (1) $\sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}$ for all $j\in[m], r \in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k}\} = \{1,\omega, \dots, \omega^{k-1} \}$, then it is not possible to distinguish which permutation $(X_{i_1}, \dots, X_{i_k})$ takes. In other words, conditioning on the samples, the posterior probability of the ground truth being $X$ is the same as that of the ground truth being $X^{(\sim\{I\},v)}$ where $I=\{i_1, \dots, i_k\}$ and $v$ is taken such that $\{X^{(\sim\{I\},v)}_{i_1}, \dots, X^{(\sim\{I\},v)}_{i_k}\} = \{1,\omega, \dots, \omega^{k-1} \}$.
+\end{lemma}
+\begin{proof}
+We only need to show
+\begin{equation}\label{eq:11}
+P(X_i=1, X_{i'} = -1, \sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m]) = P(X_i=-1, X_{i'} = 1, \sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m])
+\end{equation}
+Given $X_j = \bar{X}_j \in \{\pm 1\}$ for $j \neq i,i'$.we have Eq. \eqref{eq:12} $\Rightarrow$ \eqref{eq:11}
+\begin{equation}\label{eq:12}
+P(X_i=1, X_{i'} = -1, X_j = \bar{X}_j,j \neq i,i', \sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m]) = P(X_i=-1, X_{i'} = 1, X_j = -\bar{X}_j,j \neq i,i', \sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m])
+\end{equation}
+Using the Markov property of $X \to G \to \sigma$, we have Eq. \eqref{eq:13} $\Rightarrow$ \eqref{eq:12}
+\begin{align}\label{eq:13}
+&P_{\sigma | G}(\sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m])P(G | X_i=1, X_{i'} = -1, X_j = \bar{X}_j,j \neq i,i') \notag\\
+=&P_{\sigma | G} (\sigma_i^{(j)}= \sigma_{i'}^{(j)}, j\in[m])P(G | X_i=-1, X_{i'} = 1, X_j = -\bar{X}_j,j \neq i,i')
+\end{align}
+Since the conditional probability for graph is equal, the proof is complete.
+\end{proof}
 
 
 \appendix
