@@ -2021,18 +2021,21 @@ By assumption we have $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$. Therefor
 	If there is $k$-pair $i_1,\dots, i_k\in[n]$ satisfying the following two conditions: (1) $\sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}$ for all $j\in[m], r \in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k}\} = \{1,\omega, \dots, \omega^{k-1} \}$, then it is not possible to distinguish which permutation $(X_{i_1}, \dots, X_{i_k})$ takes. In other words, conditioning on the samples, the posterior probability of the ground truth being $X$ is the same as that of the ground truth being $X^{(\sim\{I\},v)}$ where $I=\{i_1, \dots, i_k\}$ and $v$ is taken such that $\{X^{(\sim\{I\},v)}_{i_1}, \dots, X^{(\sim\{I\},v)}_{i_k}\} = \{1,\omega, \dots, \omega^{k-1} \}$.
 \end{lemma}
 \begin{proof}
-We only need to show
+Taking two vectors $\hat{X}_1,\hat{X}_2$ whose elements are from $\{1,\omega, \dots, \omega^{k-1} \}$ such that $|\hat{X}_i|=k$ and each element of $\hat{X}_i$ is different, we only need to show
 \begin{equation}\label{eq:11}
-P(X_i=1, X_{i'} = -1, \sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m]) = P(X_i=-1, X_{i'} = 1, \sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m])
+P((X_{i_1}, \dots, X_{i_k}) = \hat{X}_1, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k]) = P((X_{i_1}, \dots, X_{i_k}) = \hat{X}_2, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k])
 \end{equation}
-Given $X_j = \bar{X}_j \in \{\pm 1\}$ for $j \neq i,i'$.we have Eq. \eqref{eq:12} $\Rightarrow$ \eqref{eq:11}
-\begin{equation}\label{eq:12}
-P(X_i=1, X_{i'} = -1, X_j = \bar{X}_j,j \neq i,i', \sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m]) = P(X_i=-1, X_{i'} = 1, X_j = -\bar{X}_j,j \neq i,i', \sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m])
-\end{equation}
+We can also find a 1-1 mapping $f$ which satisfies $f(\hat{X}_1) = f(\hat{X}_2)$.
+Given $X_j = \bar{X}_j \in W$ for $j \not\in \{i_1, \dots, i_k\}$. 
+We have Eq. \eqref{eq:12} $\Rightarrow$ \eqref{eq:11}
+\begin{align}\label{eq:12}
+&P((X_{i_1}, \dots, X_{i_k}) = \hat{X}_1, X_j = \bar{X}_j,j \not\in \{i_1, \dots, i_k\}, \sigma_i^{(j)}=\sigma_{i'}^{(j)}, j\in[m]) \notag\\
+& = P((X_{i_1}, \dots, X_{i_k}) = \hat{X}_2, X_j = f(\bar{X}_j),j \not\in \{i_1, \dots, i_k\}, \sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m])
+\end{align}
 Using the Markov property of $X \to G \to \sigma$, we have Eq. \eqref{eq:13} $\Rightarrow$ \eqref{eq:12}
 \begin{align}\label{eq:13}
-&P_{\sigma | G}(\sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m])P(G | X_i=1, X_{i'} = -1, X_j = \bar{X}_j,j \neq i,i') \notag\\
-=&P_{\sigma | G} (\sigma_i^{(j)}= \sigma_{i'}^{(j)}, j\in[m])P(G | X_i=-1, X_{i'} = 1, X_j = -\bar{X}_j,j \neq i,i')
+&P_{\sigma | G}(\sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m])P(G | (X_{i_1}, \dots, X_{i_k}) = \hat{X}_1, X_j = \bar{X}_j,j \not\in \{i_1, \dots, i_k\}) \notag\\
+&=P_{\sigma | G} (\sigma_i^{(j)}= \sigma_{i'}^{(j)}, j\in[m])P(G | (X_{i_1}, \dots, X_{i_k}) = \hat{X}_2, X_j = f(\bar{X}_j),j \not\in \{i_1, \dots, i_k\})
 \end{align}
 Since the conditional probability for graph is equal, the proof is complete.
 \end{proof}
