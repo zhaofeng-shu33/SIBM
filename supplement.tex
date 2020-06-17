@@ -160,4 +160,26 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{j=1}^n c_G(
 	$$
 	which is obvious by the definition of the fractional part of a number.
 \end{proof}
+\begin{lemma}
+Let $m,k$ be integers and $k\geq 2, m\geq 1$. then
+$\lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta} \iff m < \frac{k}{k-1} \lfloor \frac{\beta^\ast}{\beta} \rfloor + \frac{1}{k-1}$
+if $\beta^\ast \over \beta$ is not an integer
+while
+$\lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta} \iff  m < \frac{k}{k-1}\lfloor \frac{\beta^\ast}{\beta} \rfloor -1 $
+if $\beta^\ast \over \beta$ is an integer.
+\end{lemma}
+\begin{proof}
+If $\beta^\ast \over \beta$ is not an integer, then
+\begin{align*}
+& \lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta}  \\
+\iff & {(k-1)(m+1) \over k} < \lfloor{\beta^\ast \over \beta}\rfloor + 1 \\
+\iff & m < \frac{k}{k-1} \lfloor \frac{\beta^\ast}{\beta} \rfloor + \frac{1}{k-1}
+\end{align*}
+If  $\beta^\ast \over \beta$ is an integer, then
+\begin{align*}
+& \lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta}  \\
+\iff & {(k-1)(m+1) \over k} < \lfloor{\beta^\ast \over \beta}\rfloor \\
+\iff & m < \frac{k}{k-1} \lfloor \frac{\beta^\ast}{\beta} \rfloor -1
+\end{align*}
+\end{proof}
 \end{document}
