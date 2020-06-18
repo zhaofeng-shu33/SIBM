@@ -123,10 +123,12 @@ The key to prove Equation \eqref{eq:sigmaEqual} lies at the property $\sigma^{(j
 Let $c_G(\sigma, i,j) = (\beta + \frac{\alpha \log n}{n})\sigma_i \sigma_j \mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}$
 and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i,i'\}} c_G(\sigma, j_1, j_2) - c_G(\sigma, i,i'))$
 \begin{align*}
-P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{j=1}^n c_G(\sigma^{(j)}, i,j)+ \sum_{j=1}^n c_G(\sigma^{(j)}, i',j) ) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{j=1}^n c_G(\sigma^{(j)}, i,j)+ \sum_{j=1}^n c_G(\sigma^{(j)}, i',j) ) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, i',j)+ \sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, i,j) ) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), j)+ \sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i'),j) ) \\
+P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(\sigma^{(j)}, i, s)
++ \sum_{s=1}^n c_G(\sigma^{(j)}, i',s) ) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{j=s}^n c_G(\sigma^{(j)}, i, s)
++ \sum_{s=1}^n c_G(\sigma^{(j)}, i',s) ) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, i', s)+ \sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, i, s) ) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), s) + \sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i'), s) ) \\
 & = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{align*}
 \end{proof}

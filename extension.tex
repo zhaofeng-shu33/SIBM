@@ -2018,26 +2018,45 @@ By assumption we have $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$. Therefor
 	$$
 	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
 	$$
-	If there is $k$-pair $i_0,\dots, i_{k}\in[n]$ satisfying the following two conditions: (1) $\sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}$ for all $j\in[m], r \in [k] $ and (2) $\{X_{i_0}, \dots, X_{i_{k}}\} = \{1,\omega, \dots, \omega^{k-1} \}$, then it is not possible to distinguish which permutation $(X_{i_1}, \dots, X_{i_k})$ takes. In other words, conditioning on the samples, the posterior probability of the ground truth being $X$ is the same as that of the ground truth being $X^{(\sim\{I\},v)}$ where $I=\{i_1, \dots, i_k\}$ and $v$ is taken such that $\{X^{(\sim\{I\},v)}_{i_1}, \dots, X^{(\sim I,v)}_{i_k}\} = \{1,\omega, \dots, \omega^{k-1} \}$.
+	If there is $k$-pair $i_0,\dots, i_{k}\in[n]$ satisfying the following two conditions: (1) $\sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}$ for all $j\in[m], r \in [k] $ and (2) $\{X_{i_0}, \dots, X_{i_{k}}\} = \{1,\omega, \dots, \omega^{k-1} \}$, then it is not possible to distinguish which permutation $(X_{i_1}, \dots, X_{i_k})$ takes. In other words, conditioning on the samples, the posterior probability of the ground truth being $X$ is the same as that of the ground truth being $X^{(\sim\{I\},v)}$ where $I=\{i_1, \dots, i_k\}$ and $v$ is taken such that $\{X^{(\sim I, v)}_{i_1}, \dots, X^{(\sim I,v)}_{i_k}\} = \{1,\omega, \dots, \omega^{k-1} \}$.
 \end{lemma}
 \begin{proof}
 Taking a vector $\bar{X}$ which satisfies $\bar{X}_{i_r} = \omega^{r-1}$ for $r\in [k]$. For a vector $v$ such that $v_{1}\cdot \bar{X}_{i_1}, \dots, v_{r} \cdot \bar{X}_{i_k}$ is a permutation of $1, \omega, \dots, \omega^{k-1}$, we only need to show
 \begin{equation}\label{eq:11}
 P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k]) = P(X=\bar{X}^{(\sim I, v)}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k])
 \end{equation}
-We can also find a 1-1 mapping $f$ which satisfies $f(\hat{X}_1) = f(\hat{X}_2)$.
-Given $X_j = \bar{X}_j \in W$ for $j \not\in \{i_1, \dots, i_k\}$. 
-We have Eq. \eqref{eq:12} $\Rightarrow$ \eqref{eq:11}
-\begin{align}\label{eq:12}
-&P((X_{i_1}, \dots, X_{i_k}) = \hat{X}_1, X_j = \bar{X}_j,j \not\in \{i_1, \dots, i_k\}, \sigma_i^{(j)}=\sigma_{i'}^{(j)}, j\in[m]) \notag\\
-& = P((X_{i_1}, \dots, X_{i_k}) = \hat{X}_2, X_j = f(\bar{X}_j),j \not\in \{i_1, \dots, i_k\}, \sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m])
-\end{align}
-Using the Markov property of $X \to G \to \sigma$, we have Eq. \eqref{eq:13} $\Rightarrow$ \eqref{eq:12}
-\begin{align}\label{eq:13}
-&P_{\sigma | G}(\sigma_i^{(j)} = \sigma_{i'}^{(j)}, j\in[m])P(G | (X_{i_1}, \dots, X_{i_k}) = \hat{X}_1, X_j = \bar{X}_j,j \not\in \{i_1, \dots, i_k\}) \notag\\
-&=P_{\sigma | G} (\sigma_i^{(j)}= \sigma_{i'}^{(j)}, j\in[m])P(G | (X_{i_1}, \dots, X_{i_k}) = \hat{X}_2, X_j = f(\bar{X}_j),j \not\in \{i_1, \dots, i_k\})
-\end{align}
-Since the conditional probability for graph is equal, the proof is complete.
+We can also find a 1-1 mapping $\pi$ which satisfies $ \bar{X}_{i_r} = \bar{X}^{(\sim I, v)}_{\pi(i_r)}$. $\pi$ is a permutation restricted on $\{i_1, \dots, i_k\}$ and is identify mapping on other indices.
+Similar to the analysis in the proof of Lemma \ref{lm:cc}, $\pi$ satisfies properties such as
+$\{pi(i), \pi(j)\} \in E(\pi(G)) \iff \{i,j\} \in E(G)$, $Z_G(\alpha, \beta) = Z_{\pi(G)}(\alpha, \beta)$ and
+$$
+P_{\SSBM}(G  | X = \bar{X})=P_{\SSBM}(\pi(G) | X = \bar{X}^{(\sim I,v)})  ,
+$$
+
+Using the Markov property of $X \to G \to \sigma$, we have
+\begin{align*}
+P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k])& = \sum_{G \in \cG_{[n]}} P(X=\bar{X}) P_{\SSBM}(G  | X = \bar{X})\prod_{j=1}^m P_{\sigma | G}(\sigma =\sigma^{(j)})\\
+\end{align*}
+If we can show that 
+\begin{equation}\label{eq:sigmaEqual}
+P_{\sigma | G}(\sigma =\sigma^{(j)}) = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
+\end{equation}
+Then 
+\begin{align*}
+P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k]) &
+= \sum_{G \in \cG_{[n]}} P(X=\bar{X}^{(\sim I,v)})
+P_{\SSBM}(\pi(G)  | X = \bar{X}^{(\sim I,v)})\prod_{j=1}^m P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})\\
+& = P(\bar{X}^{(\sim I,v)}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k])
+\end{align*}
+The key to prove Equation \eqref{eq:sigmaEqual} lies at the property $\sigma^{(j)}_{i_1} = \sigma^{(j)}_{i_r}, r\in [k]$.
+Let $c_G(\sigma, i,j) = (\beta + \frac{\alpha \log n}{n})I(\sigma_i,\sigma_j) \mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}$
+and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i_1, \dots, i_k\}} c_G(\sigma, j_1, j_2) - c_G(\sigma, i,i'))$
+\begin{align*}
+P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_{j=1}^n c_G(\sigma^{(j)}, i_r,j)) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{j=1}^n c_G(\sigma^{(j)}, i,j)+ \sum_{j=1}^n c_G(\sigma^{(j)}, i',j) ) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, i',j)+ \sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, i,j) ) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), j)+ \sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i'),j) ) \\
+& = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
+\end{align*}
 \end{proof}
 \begin{lemma}  \label{lm:cvs}
 	Let $v=(v^{(1)},v^{(2)},\dots,v^{(m)})\in W^m$ be a vector of length $m$ and let $u_r:=|\{i\in[m]:v^{(i)}=\omega^r\}|$ be the number of $\omega^r$'s in $v$ for $r=0,1,\dots, k-1$.
