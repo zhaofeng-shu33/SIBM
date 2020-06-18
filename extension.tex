@@ -2018,12 +2018,12 @@ By assumption we have $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$. Therefor
 	$$
 	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
 	$$
-	If there is $k$-pair $i_1,\dots, i_k\in[n]$ satisfying the following two conditions: (1) $\sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}$ for all $j\in[m], r \in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k}\} = \{1,\omega, \dots, \omega^{k-1} \}$, then it is not possible to distinguish which permutation $(X_{i_1}, \dots, X_{i_k})$ takes. In other words, conditioning on the samples, the posterior probability of the ground truth being $X$ is the same as that of the ground truth being $X^{(\sim\{I\},v)}$ where $I=\{i_1, \dots, i_k\}$ and $v$ is taken such that $\{X^{(\sim\{I\},v)}_{i_1}, \dots, X^{(\sim\{I\},v)}_{i_k}\} = \{1,\omega, \dots, \omega^{k-1} \}$.
+	If there is $k$-pair $i_0,\dots, i_{k}\in[n]$ satisfying the following two conditions: (1) $\sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}$ for all $j\in[m], r \in [k] $ and (2) $\{X_{i_0}, \dots, X_{i_{k}}\} = \{1,\omega, \dots, \omega^{k-1} \}$, then it is not possible to distinguish which permutation $(X_{i_1}, \dots, X_{i_k})$ takes. In other words, conditioning on the samples, the posterior probability of the ground truth being $X$ is the same as that of the ground truth being $X^{(\sim\{I\},v)}$ where $I=\{i_1, \dots, i_k\}$ and $v$ is taken such that $\{X^{(\sim\{I\},v)}_{i_1}, \dots, X^{(\sim I,v)}_{i_k}\} = \{1,\omega, \dots, \omega^{k-1} \}$.
 \end{lemma}
 \begin{proof}
-Taking two vectors $\hat{X}_1,\hat{X}_2$ whose elements are from $\{1,\omega, \dots, \omega^{k-1} \}$ such that $|\hat{X}_i|=k$ and each element of $\hat{X}_i$ is different, we only need to show
+Taking a vector $\bar{X}$ which satisfies $\bar{X}_{i_r} = \omega^{r-1}$ for $r\in [k]$. For a vector $v$ such that $v_{1}\cdot \bar{X}_{i_1}, \dots, v_{r} \cdot \bar{X}_{i_k}$ is a permutation of $1, \omega, \dots, \omega^{k-1}$, we only need to show
 \begin{equation}\label{eq:11}
-P((X_{i_1}, \dots, X_{i_k}) = \hat{X}_1, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k]) = P((X_{i_1}, \dots, X_{i_k}) = \hat{X}_2, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k])
+P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k]) = P(X=\bar{X}^{(\sim I, v)}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k])
 \end{equation}
 We can also find a 1-1 mapping $f$ which satisfies $f(\hat{X}_1) = f(\hat{X}_2)$.
 Given $X_j = \bar{X}_j \in W$ for $j \not\in \{i_1, \dots, i_k\}$. 
@@ -2062,7 +2062,6 @@ Using the above two lemmas, we obtain the following proposition
 	First observe that $m-\lfloor \frac{m+1}{k}  \rfloor \le \lfloor (k-1)\frac{m+1}{k} \rfloor$. If $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta<\beta^\ast$, then $(m-\lfloor \frac{m+1}{k}  \rfloor) \beta<\beta^\ast$.
 	Now pick a vector $v\in\{\pm 1\}^m$ such that it has $\lfloor \frac{m+1}{k} \rfloor$ coordinates being $\omega^r$ for $r=0, \dots, k-2$ and $(m-(k-1)\lfloor \frac{m+1}{k} \rfloor)$ coordinates being $\omega^{k-1}$. Since $(k-1)\lfloor \frac{m+1}{k} \rfloor \leq \lfloor (k-1)\frac{m+1}{k} \rfloor$, by Lemma~\ref{lm:cvs}, with probability $1-o(1)$, $T_r$ is $\omega(1)$ for $r=0, \dots, k-1$. Therefore, we can find $\omega(1)$ pairs of $i_1, \dots, i_k \in[n]$ satisfying the following two conditions: (1) $\sigma_{i_r}^{(j)}=\sigma_{i_1}^{(j)}$ for all $j\in[m], r\in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k} \} = \{1, \omega, \dots, \omega^{k-1} \}$. Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X$ from $X^{(\sim\{I\}, v)}$ for $\omega(1)$ pairs of $i_1, \dots,i_k$. Therefore, the success probability of any recovery algorithm is $o(1)$.
 \end{proof}
-\appendix
 \section{Auxiliary propositions used in Section~\ref{sect:struct}}\label{ap:um}
 
 
@@ -2484,7 +2483,7 @@ By Equation \ref{eq:tD}, $P(G\in G_1) = 1-o(1)$. The above summation can be furt
 	Without loss of generality,
 	we only prove the case of $X_i=1 (r=0)$, and
 	we need the following definition for the proof of this equality:
-	For $\cI\subseteq[n]$, define $\cI_j:=\{i\in\cI:X_i=\omega^j\}$ Then
+	For $\cI\subseteq[n]$, define $\cI_j:=\{i\in\cI:X_i=\omega^j\}$. Then
 	\begin{align*}
 	& P_{\SIBM}(\sigma_i \neq X_i |
 	\dist_j(\sigma, X) = u_j,j=0,\dots, k-1)  \\
@@ -2527,10 +2526,73 @@ By Equation \ref{eq:tD}, $P(G\in G_1) = 1-o(1)$. The above summation can be furt
 
 
 \begin{lemma} \label{lm:cc}
-	Let $\cI,\cI'\subseteq[n]\setminus\{i\}$ be two subsets such that $|\cI_j|=|\cI_j'|$ for $j=0,\dots,k-1$. 
+	Let $\cI,\cI'\subseteq[n]$ be two subsets such that $|\cI_j|=|\cI_j'|$ for $j=0,\dots,k-1$. 
 	Then $P_{\SIBM}(\sigma=X^{(\sim\cI)}) = P_{\SIBM}(\sigma=X^{(\sim\cI')})$.
 \end{lemma}
+\begin{proof}
+Let $\cG_{[n]}$ be the set consisting of all the graphs with vertex set $[n]$.
+A permutation $\pi\in S_n$ on the vertex set $[n]$ also induces a permutation on $\cG_{[n]}$: For $G\in\cG_{[n]}$, define the graph $\pi(G)\in\cG_{[n]}$ as the graph with the edge set $E(\pi(G))$ satisfying that $\{\pi(i),\pi(j)\}\in E(\pi(G))$ if and only if $\{i,j\}\in E(G)$.
+It is easy to see that for any $\pi\in S_n$ and any $G\in\cG_{[n]}$,
+$$
+Z_G(\alpha,\beta)
+=Z_{\pi(G)}(\alpha,\beta),
+$$
+where $Z_G(\alpha,\beta)$ is defined in \eqref{eq:zg}.
+Furthermore, 
+if $X_i=X_{\pi(i)}$ for all $i\in[n]$, then for any graph $G\in\cG_{[n]}$, we have
+$$
+P_{\SSBM}(G)=P_{\SSBM}(\pi(G))  ,
+$$
+where $P_{\SSBM}$ is the distribution given in Definition~\ref{def:SSBM}.
 
+Under the assumptions $|\cI_j|=|\cI_j'|$ for $j=0, \dots, k-1$,
+it is easy to see that there exists a permutation $\pi$ on the vertex set $[n]$ satisfying the following two conditions: 
+(i) $X_i=X_{\pi(i)}$ for all $i\in[n]$; 
+(ii) $\pi(\cI)=\cI'$, i.e., $\pi(i)\in\cI'$ for all $i\in\cI$.
+For such a permutation $\pi$, one can verify that
+$$
+X_i^{(\sim\cI, v)} = X_{\pi(i), v}^{(\sim\pi(\cI), v)}
+= X_{\pi(i)}^{(\sim \cI', v)}
+$$
+for all $i\in[n]$ and vector $v$.
+Therefore,
+\begin{align*}
+& P_{\SIBM}(\sigma=X^{(\sim\cI)})
+=\sum_{v}\sum_{G\in\cG_{[n]}}
+P_{\SSBM}(G) P_{\sigma|G}(\sigma=X^{(\sim\cI, v)}) \\
+= & \sum_{v}\sum_{G\in\cG_{[n]}} P_{\SSBM}(G) \frac{1}{Z_G(\alpha,\beta)}
+\exp\Big(\beta\sum_{\{i,j\}\in E(G)} I(X_i^{(\sim\cI,v)},X_j^{(\sim\cI,v)})
+-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)}  I(X_i^{(\sim\cI,v)},X_j^{(\sim\cI,v)}) \Big)  \\
+= & \sum_{v}\sum_{G\in\cG_{[n]}} P_{\SSBM}(G) \frac{1}{Z_G(\alpha,\beta)}  \\
+& \hspace*{1in}
+\exp\Big(\sum_{\{i,j\}} I(X_i^{(\sim\cI,v)},X_j^{(\sim\cI,v)})
+\Big( \big( \beta+\frac{\alpha\log(n)}{n} \big) \mathbbm{1}[\{i,j\}\in E(G)]
+-\frac{\alpha\log(n)}{n} \Big)
+ \Big)  \\
+= &\sum_v \sum_{G\in\cG_{[n]}} P_{\SSBM}(G) \frac{1}{Z_G(\alpha,\beta)}  \\
+& \hspace*{0.6in}
+\exp\Big(\sum_{\{i,j\}} I(X_{\pi(i)}^{(\sim \cI',v)}, X_{\pi(j)}^{(\sim \cI',v)})
+\Big( \big( \beta+\frac{\alpha\log(n)}{n} \big) \mathbbm{1}[\{\pi(i),\pi(j)\}\in E(\pi(G))]
+-\frac{\alpha\log(n)}{n} \Big)
+ \Big)   \\
+ = &\sum_v  \sum_{G\in\cG_{[n]}} P_{\SSBM}(G) \frac{1}{Z_G(\alpha,\beta)}  \\
+& \hspace*{0.8in}
+\exp\Big(\sum_{\{i,j\}} I(X_i^{(\sim \cI',v)}, X_j^{(\sim \cI',v)})
+\Big( \big( \beta+\frac{\alpha\log(n)}{n} \big) \mathbbm{1}[\{i, j\}\in E(\pi(G))]
+-\frac{\alpha\log(n)}{n} \Big)
+ \Big)   \\
+  = &\sum_v \sum_{G\in\cG_{[n]}} P_{\SSBM}(\pi(G)) \frac{1}{Z_{\pi(G)}(\alpha,\beta)}  \\
+& \hspace*{0.8in}
+\exp\Big(\sum_{\{i,j\}} I(X_i^{(\sim \cI',v)}, X_j^{(\sim \cI',v)})
+\Big( \big( \beta+\frac{\alpha\log(n)}{n} \big) \mathbbm{1}[\{i, j\}\in E(\pi(G))]
+-\frac{\alpha\log(n)}{n} \Big)
+ \Big)  \\
+= & \sum_{G\in\cG_{[n]}}
+P_{\SSBM}(\pi(G)) P_{\pi(G)}(\sigma=X^{(\sim\cI')}) \\
+= & P_{\SIBM}(\sigma=X^{(\sim\cI')}) .
+\end{align*}
+This completes the proof of the lemma.
+\end{proof}
 \begin{lemma}\label{lem:post_independent}
 	Let $p_{ij}=\Pr(\{\{i,j\} \in E(G) \})$ be the prior probability, which equals $\frac{a\log n}{n}$ or $\frac{b\log n}{n}$ depending on $X$.
 	The event $\{\{i,j\} \in E(G) \}$ are independent given $\sigma$ and the posterior probability is
@@ -2563,4 +2625,6 @@ By Equation \ref{eq:tD}, $P(G\in G_1) = 1-o(1)$. The above summation can be furt
 	P(Y\ge r a \log(n)) < n^{-r} .
 	$$
 \end{lemma}
+\appendix
+
 \end{document}
