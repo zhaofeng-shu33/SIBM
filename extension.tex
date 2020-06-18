@@ -2049,12 +2049,12 @@ P_{\SSBM}(\pi(G)  | X = \bar{X}^{(\sim I,v)})\prod_{j=1}^m P_{\sigma | \pi(G)}(\
 \end{align*}
 The key to prove Equation \eqref{eq:sigmaEqual} lies at the property $\sigma^{(j)}_{i_1} = \sigma^{(j)}_{i_r}, r\in [k]$.
 Let $c_G(\sigma, i,j) = (\beta + \frac{\alpha \log n}{n})I(\sigma_i,\sigma_j) \mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}$
-and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i_1, \dots, i_k\}} c_G(\sigma, j_1, j_2) - c_G(\sigma, i,i'))$
+and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i_1, \dots, i_k\}} c_G(\sigma, j_1, j_2) - (k-1)c_G(\sigma, i,i'))$
 \begin{align*}
-P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_{j=1}^n c_G(\sigma^{(j)}, i_r,j)) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{j=1}^n c_G(\sigma^{(j)}, i,j)+ \sum_{j=1}^n c_G(\sigma^{(j)}, i',j) ) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, i',j)+ \sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, i,j) ) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), j)+ \sum_{j=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i'),j) ) \\
+P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_{s=1}^n c_G(\sigma^{(j)}, i_r, s)) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_{s=1}^n c_G(\sigma^{(j)}, i_r, s) ) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i_r), s) ) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, i_r, s) ) \\
 & = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{align*}
 \end{proof}
