@@ -2062,6 +2062,8 @@ Using the above two lemmas, we obtain the following proposition
 	First observe that $m-\lfloor \frac{m+1}{k}  \rfloor \le \lfloor (k-1)\frac{m+1}{k} \rfloor$. If $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta<\beta^\ast$, then $(m-\lfloor \frac{m+1}{k}  \rfloor) \beta<\beta^\ast$.
 	Now pick a vector $v\in\{\pm 1\}^m$ such that it has $\lfloor \frac{m+1}{k} \rfloor$ coordinates being $\omega^r$ for $r=0, \dots, k-2$ and $(m-(k-1)\lfloor \frac{m+1}{k} \rfloor)$ coordinates being $\omega^{k-1}$. Since $(k-1)\lfloor \frac{m+1}{k} \rfloor \leq \lfloor (k-1)\frac{m+1}{k} \rfloor$, by Lemma~\ref{lm:cvs}, with probability $1-o(1)$, $T_r$ is $\omega(1)$ for $r=0, \dots, k-1$. Therefore, we can find $\omega(1)$ pairs of $i_1, \dots, i_k \in[n]$ satisfying the following two conditions: (1) $\sigma_{i_r}^{(j)}=\sigma_{i_1}^{(j)}$ for all $j\in[m], r\in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k} \} = \{1, \omega, \dots, \omega^{k-1} \}$. Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X$ from $X^{(\sim\{I\}, v)}$ for $\omega(1)$ pairs of $i_1, \dots,i_k$. Therefore, the success probability of any recovery algorithm is $o(1)$.
 \end{proof}
+\appendix
+
 \section{Auxiliary propositions used in Section~\ref{sect:struct}}\label{ap:um}
 
 
@@ -2450,8 +2452,7 @@ P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n)
 \end{align*}
 By Equation \ref{eq:tD}, $P(G\in G_1) = 1-o(1)$. The above summation can be further restricted to $t_1 < 0, t_2 < 0$. Thus Lemma \ref{lem:BijG} follows. 
 \end{proof}
-\bibliographystyle{plain}
-\bibliography{exportlist}
+
 
 
 
@@ -2625,6 +2626,6 @@ This completes the proof of the lemma.
 	P(Y\ge r a \log(n)) < n^{-r} .
 	$$
 \end{lemma}
-\appendix
-
+\bibliographystyle{plain}
+\bibliography{exportlist}
 \end{document}
