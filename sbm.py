@@ -1,6 +1,7 @@
 import argparse
 import networkx as nx
 import numpy as np
+from ising import SIBM_metropolis
 def sbm_graph(n, a, b):
     if n % 2 != 0 or a <= b:
         raise ValueError('')
@@ -63,18 +64,21 @@ def get_acc(graph, alg):
     gt = get_ground_truth(graph)
     if alg == 'bisection':
         results = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
+    elif alg == 'metropolis':
+        results = SIBM_metropolis(graph)
     else:
         raise NotImplementedError('')
     return compare(gt, results)
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('--alg', choices=['metropolis', 'bisection'], default='metropolis')
     parser.add_argument('--n', type=int, default=100)
-    parser.add_argument('--a', type=float, default=10)
-    parser.add_argument('--b', type=float, default=8)
+    parser.add_argument('--a', type=float, default=16)
+    parser.add_argument('--b', type=float, default=4)
     parser.add_argument('--draw', type=bool, const=True, nargs='?', default=False)
     args = parser.parse_args()
     graph = sbm_graph(args.n, args.a, args.b)
     if args.draw:
         draw(graph)
-    print(get_acc(graph, 'bisection'))
+    print(get_acc(graph, args.alg))
