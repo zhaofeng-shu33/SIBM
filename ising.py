@@ -5,12 +5,11 @@ to get a sample from Ising distribution
 import numpy as np
 import random
 class SIBM:
-    def __init__(self, graph, a=16, b=4, alpha=3, beta=0.5):
+    def __init__(self, graph, a=16, b=4):
         self.G = graph
-        self._a = a
-        self._b = b
-        self._alpha = alpha
-        self._beta = beta
+        _beta_star = 0.5 * np.log( (a + b - 2 - np.sqrt((a + b - 2)**2 - 4 * a * b))/ (2 * b))
+        self._beta = 0.8 * _beta_star
+        self._alpha = 1.2 * b * self._beta
         self.n = len(self.G.nodes)
         # randomly initiate a configuration
         self.sigma = [1 for i in range(self.n)]
@@ -44,6 +43,6 @@ class SIBM:
         s1 = set([i for i in range(self.n) if self.sigma[i] == -1])
         return (s0, s1)
 
-def SIBM_metropolis(graph, a=16, b=4, alpha=3, beta=0.5, max_iter=40):
-    sibm = SIBM(graph, a=16, b=4, alpha=3, beta=0.5)
+def SIBM_metropolis(graph, a=16, b=4, max_iter=40):
+    sibm = SIBM(graph, a=16, b=4)
     return sibm.metropolis(N=max_iter)
