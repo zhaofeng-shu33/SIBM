@@ -9,7 +9,7 @@ class SIBM:
         self.G = graph
         _beta_star = 0.5 * np.log( (a + b - 2 - np.sqrt((a + b - 2)**2 - 4 * a * b))/ (2 * b))
         self._beta = 0.8 * _beta_star
-        self._alpha = 1.2 * b * self._beta
+        self._alpha = 1.8 * b * self._beta
         self.n = len(self.G.nodes)
         # randomly initiate a configuration
         self.sigma = [1 for i in range(self.n)]
