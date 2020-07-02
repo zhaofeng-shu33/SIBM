@@ -33,6 +33,40 @@ def draw(graph):
     ag.layout()
     ag.draw('build/a.eps')
 
+def get_ground_truth(graph):
+    g0 = set()
+    g1 = set()
+    for n in graph.nodes(data=True):
+        if n[1]['block'] == 0:
+            g0.add(n[0])
+        else:
+            g1.add(n[0])
+    return (g0, g1)
+
+def compare(r0, r1):
+    '''
+    get acc
+    '''
+    total_num = len(r0[0]) + len(r0[1])
+    t0 = r0[0].intersection(r1[0])
+    t1 = r0[1].intersection(r1[1])
+    true_num = len(t0) + len(t1)
+    t00 = r0[0].intersection(r1[1])
+    t11 = r0[1].intersection(r1[0])
+    true_num_2 = len(t00) + len(t11)
+    if true_num > true_num_2:
+        return true_num / total_num
+    else:
+        return true_num_2 / total_num
+
+def get_acc(graph, alg):
+    gt = get_ground_truth(graph)
+    if alg == 'bisection':
+        results = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
+    else:
+        raise NotImplementedError('')
+    return compare(gt, results)
+    
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--n', type=int, default=100)
@@ -43,3 +77,4 @@ if __name__ == '__main__':
     graph = sbm_graph(args.n, args.a, args.b)
     if args.draw:
         draw(graph)
+    print(get_acc(graph, 'bisection'))
