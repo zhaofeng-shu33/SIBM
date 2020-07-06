@@ -60,19 +60,24 @@ def compare(r0, r1):
     else:
         return true_num_2 / total_num
 
-def get_acc(graph, alg):
-    gt = get_ground_truth(graph)
-    if alg == 'bisection':
-        results = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
-    elif alg == 'metropolis':
-        results = SIBM_metropolis(graph)
-    else:
-        raise NotImplementedError('')
-    return compare(gt, results)
-    
+def get_acc(graph, alg, num_of_times=100):
+    acc = 0
+    for i in range(num_of_times):
+        gt = get_ground_truth(graph)
+        if alg == 'bisection':
+            results = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
+        elif alg == 'metropolis':
+            results = SIBM_metropolis(graph)
+        else:
+            raise NotImplementedError('')
+        acc += compare(gt, results)
+    acc /= num_of_times
+    return acc
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--alg', choices=['metropolis', 'bisection'], default='metropolis')
+    parser.add_argument('--repeat', type=int, default=100, help='number of times to generate the SBM graph')
     parser.add_argument('--n', type=int, default=100)
     parser.add_argument('--a', type=float, default=16)
     parser.add_argument('--b', type=float, default=4)
@@ -81,4 +86,4 @@ if __name__ == '__main__':
     graph = sbm_graph(args.n, args.a, args.b)
     if args.draw:
         draw(graph)
-    print(get_acc(graph, args.alg))
+    print(get_acc(graph, args.alg, args.repeat))
