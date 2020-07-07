@@ -1,12 +1,36 @@
 '''using Metropolis algorithm
 to get a sample from Ising distribution
 '''
+import random
 
 import numpy as np
-import random
+from networkx import nx
+
+def estimate_a_b(graph):
+    n = len(graph.nodes)
+    e = len(graph.edges)
+    t = 0
+    for _, v in nx.algorithms.cluster.triangles(graph).items():
+        t += v
+    t /= 3
+    eq_1 = 4 * e / (n * np.log(n))
+    eq_2 = 8 * t / (np.log(n) ** 3)
+    # solve a first
+    coeff = [4 / 3.0, -2 * eq_1, eq_1 ** 2, - eq_2]
+    a = -1
+    for r in np.roots(coeff):
+        if abs(np.imag(r)) < 1e-10:
+            a = np.real(r)
+            break
+    if a > eq_1 or a < eq_1 / 2:
+        raise ValueError('')
+    b = eq_1 - a
+    return (a, b)
+
 class SIBM:
-    def __init__(self, graph, a=16, b=4):
+    def __init__(self, graph):
         self.G = graph
+        a, b = estimate_a_b(graph)
         _beta_star = 0.5 * np.log( (a + b - 2 - np.sqrt((a + b - 2)**2 - 4 * a * b))/ (2 * b))
         self._beta = 0.8 * _beta_star
         self._alpha = 1.8 * b * self._beta
@@ -43,6 +67,6 @@ class SIBM:
         s1 = set([i for i in range(self.n) if self.sigma[i] == -1])
         return (s0, s1)
 
-def SIBM_metropolis(graph, a=16, b=4, max_iter=40):
-    sibm = SIBM(graph, a=16, b=4)
+def SIBM_metropolis(graph, max_iter=40):
+    sibm = SIBM(graph)
     return sibm.metropolis(N=max_iter)
