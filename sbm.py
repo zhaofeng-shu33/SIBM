@@ -62,7 +62,7 @@ def compare(r0, r1):
 
 def get_acc(graph, alg, num_of_times=100):
     acc = 0
-    for i in range(num_of_times):
+    for _ in range(num_of_times):
         gt = get_ground_truth(graph)
         if alg == 'bisection':
             results = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
