@@ -4,7 +4,7 @@
 \usepackage{algorithmic}
 \begin{document}
 	\section{Introduction}
-	\section{Stochastic Ising BlockModel}
+	\section{Stochastic Ising BlockModel}\label{sec:sibm}
 	Let $W=\{1, \omega, \dots, \omega^{k-1}\}$ be a cyclic group with order $k$.
 	Define an Ising model on a graph $G=([n],E(G))$ with parameters $\alpha,\beta>0$
 	as the probability distribution on the configurations $\sigma\in W^n$ such that
@@ -34,8 +34,8 @@
 	
 	From equation \eqref{eq:isingma}, we know that for $k$-state Ising model, the Hamiltonian can be written as:
 	\begin{equation}
-	H(\bar{\sigma}) = \frac{\alpha}{\beta} \frac{\log n}{n} \sum_{\{i,j\}\in E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)
-		- \sum_{\{i,j\}\not\in E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)
+	H(\bar{\sigma}) = \frac{\alpha}{\beta} \frac{\log n}{n} \sum_{\{i,j\}\not\in E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)
+		- \sum_{\{i,j\}\in E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)
 	\end{equation}
 	Suppose one coordinate $\bar{\sigma}_r$ flips to $w^s \cdot \bar{\sigma}_r$, the new state is denoted as $\bar{\sigma}^{(\sim \{r\}, v)}$.
 	Then the change of energy is:
@@ -57,6 +57,7 @@
 		Output: $\hat{X}$
 		\begin{algorithmic}[1]
 			\STATE random initialize $\sigma \in W^n$
+			\WHILE{the iteration time $<N$}
 			\FOR{each node $r$}
 			\STATE random choose a new flipping state $w^s \cdot \sigma_r$
 			\STATE compute $\Delta H(r,s) = H(\bar{\sigma}^{(\sim \{r\}, [w^s])}) - H(\bar{\sigma})$ using Equation \eqref{eq:delta_H}
@@ -69,8 +70,17 @@
 			\ENDIF
 			\ENDIF
 			\ENDFOR
+			\ENDWHILE
 		\end{algorithmic}
 	\end{algorithm}
+	Since the computation of $\Delta H(r,s)$ needs $O(n)$ time. The time complexity of algorithm \ref{alg:m} is $Nn^2$.
+	\section{Parameter Estimation for SBM}
+	In Section \ref{sec:sibm}, we have shown that when $\alpha > b \beta$ and $\beta > \beta^*$. The sample of SIBM aligns with $X$ with probability one
+	as $n\to \infty$. 
+	% conjecture, both alpha and beta cannot be too large, otherwise the convergence of Metropolis sampling is very slow.
+	The critical value $\beta^*$ is a function of $a$ and $b$. Therefore, to give good guarantee of Algorithm \ref{alg:m}, we need to estimate the parameter
+	of $a,b$ before estimating the label of $X$.
+	This estimation is done by counting the edges and triangles of the input graph $G$.
 	\bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
