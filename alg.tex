@@ -1,0 +1,76 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\begin{document}
+	\section{Introduction}
+	\section{Stochastic Ising BlockModel}
+	Let $W=\{1, \omega, \dots, \omega^{k-1}\}$ be a cyclic group with order $k$.
+	Define an Ising model on a graph $G=([n],E(G))$ with parameters $\alpha,\beta>0$
+	as the probability distribution on the configurations $\sigma\in W^n$ such that
+	\begin{equation} \label{eq:isingma}
+	P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
+	\exp\Big(\beta\sum_{\{i,j\}\in E(G)} I(\bar{\sigma}_i ,\bar{\sigma}_j)
+	-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)\Big) ,
+	\end{equation}
+	where the subscript in $P_{\sigma|G}$ indicates that the distribution depends on $G$, and 
+	$Z_G(\alpha,\beta)$
+	is the normalizing constant. The indicator function is defined as
+	$$
+	I(x ,y) = \begin{cases}
+	k-1 & x = y\\
+	-1 & x \neq y
+	\end{cases}
+	$$
+	
+	\section{Metropolis sampling algorithm for SIBM}
+	In this section, we give an algorithm based on SIBM to do community detection tasks.
+	For a SBM with $k-$ communities, in previous section we have shown that the sample of SIBM is the same with the label $X$ up to some permutation. 
+	Therefore, if we can get a sample from SIBM, then we can use this sample as the estimator of $X$.
+	
+	The difficulty is that we cannot generate the sample exactly from its distribution \eqref{eq:isingma}. Therefore, some approximation is
+	necessary. The most common way to generate a Ising sample is using Metropolis sampling \cite{metropolis1953equation}.
+	In this article, we use Metropolis sampling to generate SIBM sample.
+	
+	From equation \eqref{eq:isingma}, we know that for $k$-state Ising model, the Hamiltonian can be written as:
+	\begin{equation}
+	H(\bar{\sigma}) = \frac{\alpha}{\beta} \frac{\log n}{n} \sum_{\{i,j\}\in E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)
+		- \sum_{\{i,j\}\not\in E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)
+	\end{equation}
+	Suppose one coordinate $\bar{\sigma}_r$ flips to $w^s \cdot \bar{\sigma}_r$, the new state is denoted as $\bar{\sigma}^{(\sim \{r\}, v)}$.
+	Then the change of energy is:
+	\begin{equation}\label{eq:delta_H}
+	 H(\bar{\sigma}^{(\sim \{r\}, [\omega^s])}) - H(\bar{\sigma}) = k \sum_{i \in N_r(G)} J_s(\bar{\sigma}_r, \bar{\sigma}_i) - k\frac{\alpha \log n}{\beta n} \sum_{i \in V\backslash N_r(G)} J_s(\bar{\sigma}_r,\bar{\sigma}_i)
+	\end{equation}
+	where $J_s(\sigma_i, \sigma_j)$ is defined as:
+	\begin{equation}
+	J_s(\sigma_i, \sigma_j) = \begin{cases}
+	1 & \sigma_i = \sigma_j \\
+	-1 & \omega^s \sigma_i = \sigma_j \\
+	0 & \textrm {otherwise}
+	\end{cases}
+	\end{equation}
+	The pseudo code of our algorithm is summarized in \ref{alg:m}. This algorithm requires the number of the communities $k$ to be known and the weight parameter $\alpha, \beta$ is given. The iteration time $N$ should also be specified.
+	\begin{algorithm}[H]
+		\caption{Metropolis sampling algorithm for SIBM} \label{alg:m}
+		Inputs: the graph $G$ \\
+		Output: $\hat{X}$
+		\begin{algorithmic}[1]
+			\STATE random initialize $\sigma \in W^n$
+			\FOR{each node $r$}
+			\STATE random choose a new flipping state $w^s \cdot \sigma_r$
+			\STATE compute $\Delta H(r,s) = H(\bar{\sigma}^{(\sim \{r\}, [w^s])}) - H(\bar{\sigma})$ using Equation \eqref{eq:delta_H}
+			\IF{$\Delta H(r,s)<0$}
+			\STATE $\sigma_r \leftarrow w^s \cdot \sigma_r$
+			\ELSE
+			\STATE generate a random number $u$ ranged within $[0,1]$
+			\IF{$u < \exp(-\beta H(r,s))$}
+			\STATE $\sigma_r \leftarrow w^s \cdot \sigma_r$
+			\ENDIF
+			\ENDIF
+			\ENDFOR
+		\end{algorithmic}
+	\end{algorithm}
+	\bibliographystyle{plain}
+	\bibliography{exportlist.bib}
+\end{document}
