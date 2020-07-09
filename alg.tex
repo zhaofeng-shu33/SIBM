@@ -4,6 +4,8 @@
 \usepackage{algorithmic}
 \usepackage{amsthm}
 \newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
 \DeclareMathOperator{\Var}{Var}
 \begin{document}
 	\section{Introduction}
@@ -127,7 +129,7 @@
 	$$
 	Therefore, by the definition of convergence in probability, we have $\frac{T}{n \log n} \to \frac{a}{2}$ as $n\to \infty$.
 \end{proof}
-\begin{lemma}
+\begin{lemma}\label{lem:ER_tr_counting}
 	In an ER graph parameterized by $(n,p)$ and $p=\frac{a\log n}{n}$, the number of triangles is denoted by $T(G)$, then
 	$\frac{T}{(\log n)^3} \to \frac{a^3}{6}$ in probability.
 	% Erdős–Rényi
@@ -149,13 +151,51 @@
 	$$
 	Similar to Lemma \ref{lem:ERT} we can show that the convergence of $\frac{T}{\log^3 n}$ to $\frac{a^3}{6}$.
 \end{proof}
-\begin{lemma}
-	Consider a 2 community SBM$(2n, p, q)$ and count the number of triangles $T$ which has at least one edge connecting two communities.
+\begin{lemma}\label{lem:SBM_tr_counting_cross}
+	Consider a 2 community SBM$(2n, p, q)$ and count the number of triangles $T$ which has a node in $S_1$ and an edge in $S_2$.
 	Then the variance of $T$ is
-	\begin{equation}
-	\Var[T] = 
+	\begin{equation}\label{eq:SBM_tr_counting_cross}
+	\Var[T] = \frac{n^2(n-1)}{2}q^2p + n^2(n-1)(n-2)p^2q^3 +\frac{n^2(n-1)^2}{2}q^4p - \frac{n^2(n-1)(3n-4)}{2}q^4 p^2
 	\end{equation}
 \end{lemma}
+\begin{proof}
+	$T=\sum_{i,j,k} Y_{ijk}$ where the summation is over $i \in S_1$ and $j \in S_2$. Therefore, $E[T] = n\binom{n}{2}pq^2$
+	To compute the variance of $T$ we need to compute $E[T^2] = \sum_{i,j,k}\sum_{i',j',k'} Y_{ijk}Y_{i'j'k'}$.
+	There are 6 cases for $E[Y_{ijk}Y_{i'j'k'}]$
+	\begin{enumerate}
+		\item $\{i,j,k\} = \{i',j',k'\}$ then $E[Y_{ijk}Y_{i'j'k'}] = pq^2$.
+		There are $n\binom{n}{2}$ such terms in the double sum.
+		\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 1 element in common and the element $\in S_1$, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^4$.
+		There are $6n\binom{n}{4}$ such terms in the double sum.
+		\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 1 element in common and the element $\in S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^4$.
+		There are $12\binom{n}{2}\binom{n}{3}$ such terms in the double sum.
+		\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 2 element in common and the two elements are both $\in S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = pq^4$.
+There are $2\binom{n}{2}\binom{n}{2}$ such terms in the double sum.		
+\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 2 element in common and one is in $S_1$, the other is in $S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^3$.
+There are $6n\binom{n}{3}$ such terms in the double sum.		
+\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have 0 element in common, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^4$.
+There are $2\binom{n}{2}\binom{n}{4}$ such terms in the double sum.		
+	\end{enumerate}
+To verify we have covered all cases, note that the sum adds up to $(n\binom{n}{2})^2$:
+% Mathematica Code:
+% Simplify[n^2 (n-1)/2 + 12 Binomial[n,2] Binomial[n,3] + 6 n Binomial[n,4] + Binomial[n,4] Binomial[n,2]*12 + 6 n Binomial[n,3]+ 2 Binomial[n,2]^2]
+$$
+n\binom{n}{2} + 6n\binom{n}{4} + 12\binom{n}{2} \binom{n}{3} + 2(\binom{n}{2})^2 + 6n\binom{n}{3} + 2\binom{n}{2}\binom{n}{4} = \left(n\binom{n}{2}\right)^2
+$$
+\end{proof}
+\begin{theorem}
+	For a SBM$(n, k, p, q)$ where $p=\frac{a\log n}{n}, q = \frac{b\log n}{n}$. The number of triangles is $T$.
+	Then $\frac{T}{(\log n)^3}$ converges to $\frac{1}{k^2}(\frac{a^3}{6} + \frac{k-1}{2}ab^2)$ in probability as $n \to \infty$.
+\end{theorem}
+\begin{proof}
+	We split $T_2$ into two parts, the first is the number of triangles within community $i$, $T_i$. There are $k$ terms of $T_i$.
+	The second is the number of triangles which have one node in community $i$ and one edge in community $j$, $T_{ij}$. There are $k(k-1)$ terms of $T_{ij}$.
+	We only need to show that $\frac{T_i}{\log ^3 n} \to \frac{(a/k)^3}{6}$ and $\frac{T_{ij}}{\log^3 n} \to \frac{1}{2}(a/k)(b/k)^2$.
+	The convergence of $\frac{T_i}{\log ^3 n}$ comes from Lemma \ref{lem:ER_tr_counting}.
+	For $T_{ij}$ we use the conclusion from Lemma \ref{lem:SBM_tr_counting_cross}.
+	We replace $n$ with $n/k$, $p=a\frac{\log n}{n}$, $q=b\frac{\log n}{n}$ in Equation \eqref{eq:SBM_tr_counting_cross}.
+	$\Var[T_{ij}] \sim \frac{ab^2}{2k^3} \log^3 n$. Since 
+\end{proof}
 	\bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
