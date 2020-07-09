@@ -2,9 +2,14 @@
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{amsthm}
+\newtheorem{lemma}{Lemma}
+\DeclareMathOperator{\Var}{Var}
 \begin{document}
 	\section{Introduction}
 	\section{Stochastic Ising BlockModel}\label{sec:sibm}
+	We consider a symmetric SBM model parameterized by $(n, k, p, q)$ where $p=\frac{a\log n}{n}, q=\frac{b\log n }{n}$.
+	
 	Let $W=\{1, \omega, \dots, \omega^{k-1}\}$ be a cyclic group with order $k$.
 	Define an Ising model on a graph $G=([n],E(G))$ with parameters $\alpha,\beta>0$
 	as the probability distribution on the configurations $\sigma\in W^n$ such that
@@ -73,7 +78,7 @@
 			\ENDWHILE
 		\end{algorithmic}
 	\end{algorithm}
-	Since the computation of $\Delta H(r,s)$ needs $O(n)$ time. The time complexity of algorithm \ref{alg:m} is $Nn^2$.
+	Since the computation of $\Delta H(r,s)$ needs $O(n)$ time. The time complexity of Algorithm \ref{alg:m} is $Nn^2$.
 	\section{Parameter Estimation for SBM}
 	In Section \ref{sec:sibm}, we have shown that when $\alpha > b \beta$ and $\beta > \beta^*$. The sample of SIBM aligns with $X$ with probability one
 	as $n\to \infty$. 
@@ -81,6 +86,76 @@
 	The critical value $\beta^*$ is a function of $a$ and $b$. Therefore, to give good guarantee of Algorithm \ref{alg:m}, we need to estimate the parameter
 	of $a,b$ before estimating the label of $X$.
 	This estimation is done by counting the edges and triangles of the input graph $G$.
+	Since the graph is random, the number of edges $T_1$ is also a random variable and its expectation is
+	\begin{equation}
+	E[T_1] = k \frac{n/k(n/k-1)}{2} p + \frac{k(k-1)}{2} (n/k)^2 q \sim \frac{n\log n}{2k} (a + (k-1) b)
+	\end{equation}
+	When $n \to \infty$ by the law of large numbers we can show that $\frac{T_1}{n \log n}$ converges to $\frac{a+(k-1)b}{2k}$ in probability.
+	
+	Similarly, for the number of triangles $T_2$ we can compute its expectation as:
+	\begin{equation}
+	E[T_2] = k \frac{n/k(n/k-1)(n/k-2)}{6}p^3 + 2\frac{k(k-1)}{2}(n/k) \frac{n/k(n/k-1)}{2} pq^2 \sim \frac{(\log n)^3}{k^2}
+	(\frac{a^3}{6} + \frac{k-1}{2}ab^2)
+	\end{equation}
+	When $n$ is large, we can also show that $\frac{T_2}{(\log n)^3}$ converges to $\frac{1}{k^2}
+	(\frac{a^3}{6} + \frac{k-1}{2}ab^2)$. Therefore we can get the equation array about $a$ and $b$:
+	\begin{align}
+	\frac{a+(k-1)b}{2k} & = e_1 \\
+	\frac{1}{k^2}
+	\left(\frac{a^3}{6} + \frac{k-1}{2}ab^2\right) & = e_2
+	\end{align}
+	Solving this equation and use the assumption that $ a > b, 0 < a < e_1$ we can get the unique solution of $(a,b)$.
+	This is our parameter estimation method.
+	\appendix
+	\section{Proofs}
+	\begin{lemma}\label{lem:ERT}
+	In an ER graph parameterized by $(n,p)$ and $p=\frac{a\log n}{n}$, the number of edges is denoted by $T(G)$, then
+	$\frac{T}{n \log n} \to \frac{a}{2}$ in probability.
+	% Erdős–Rényi
+	\end{lemma}
+\begin{proof}
+	Let $X_{ij}$ represents a Bernoulli random variable with parameter $p$. Then $T(G) = \sum_{i,j} X_{ij}$, $X_{ij}$ are i.i.d.
+	$E[T(G)] = \frac{n(n-1)}{2}p = \frac{(n-1)\log n}{2}a$ and $\Var[T(G)] = \frac{n(n-1)}{2} p(1-p) < \frac{(n-1)\log n}{2}$
+	Then by Chebyshev's inequality
+	$$
+	\Pr(\Big|\frac{T}{n \log n } - \frac{a}{2} \frac{n-1}{n}\Big| > \epsilon) \leq \frac{\Var[T /(n \log n )]}{\epsilon^2} < \frac{(n-1)}{2n^2\epsilon^2\log n}
+	$$
+	For a given $\epsilon$, when $n$ is sufficiently large,
+	$$
+	\Pr(\Big|\frac{T}{n \log n } - \frac{a}{2} \Big| > \epsilon) < \Pr(\Big|\frac{T}{n \log n } - \frac{a}{2} \frac{n-1}{n}\Big| > 2\epsilon)
+	\leq \frac{n-1}{8n^2 \epsilon^2 \log n}
+	$$
+	Therefore, by the definition of convergence in probability, we have $\frac{T}{n \log n} \to \frac{a}{2}$ as $n\to \infty$.
+\end{proof}
+\begin{lemma}
+	In an ER graph parameterized by $(n,p)$ and $p=\frac{a\log n}{n}$, the number of triangles is denoted by $T(G)$, then
+	$\frac{T}{(\log n)^3} \to \frac{a^3}{6}$ in probability.
+	% Erdős–Rényi
+\end{lemma}
+\begin{proof}
+	Let $X_{ijk}$ represents a Bernoulli random variable with parameter $p^3$.
+	Then $T(G) = \sum_{i,j,k} X_{ijk}$.
+	It is easy to compute that $E[T] = \binom{n}{3}p^3$.
+	From \cite{holland1977method} we know that
+	% Mordern version: https://stats.stackexchange.com/questions/338267/distribution-and-variance-of-count-of-triangles-in-random-graph
+	$$
+	\Var[T] = \binom{n}{3} p^3 + 12 \binom{n}{4} p^5 + 30 \binom{n}{5} p^6 + 20 \binom{n}{6} p^6 - \binom{n}{3}^2 p^6 = O(\log^3 n)
+	$$
+	Therefore
+	by Chebyshev's inequality
+	$$
+	\Pr(\Big|\frac{T}{\log^3 n } - \frac{a^3}{6} \frac{(n-1)(n-2)}{n^2}\Big| > \epsilon) \leq \frac{\Var[T /\log^3 n ]}{\epsilon^2} 
+	= \frac{1}{\epsilon^2}O(\frac{1}{\log^3 n})
+	$$
+	Similar to Lemma \ref{lem:ERT} we can show that the convergence of $\frac{T}{\log^3 n}$ to $\frac{a^3}{6}$.
+\end{proof}
+\begin{lemma}
+	Consider a 2 community SBM$(2n, p, q)$ and count the number of triangles $T$ which has at least one edge connecting two communities.
+	Then the variance of $T$ is
+	\begin{equation}
+	\Var[T] = 
+	\end{equation}
+\end{lemma}
 	\bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
