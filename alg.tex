@@ -207,7 +207,7 @@ $$
 \end{proof}
 \begin{theorem}
 	For a SBM$(n, k, p, q)$ where $p=\frac{a\log n}{n}, q = \frac{b\log n}{n}$. The number of triangles is $T$.
-	Then $\frac{T}{(\log n)^3}$ converges to $\frac{1}{k^2}(\frac{a^3}{6} + \frac{k-1}{2}ab^2)$ in probability as $n \to \infty$.
+	Then $\frac{T}{(\log n)^3}$ converges to $\frac{1}{k^2}(\frac{a^3}{6} + \frac{k-1}{2}ab^2 + (k-1)(k-2)\frac{b^3}{6} )$ in probability as $n \to \infty$.
 \end{theorem}
 \begin{proof}
 	We split $T$ into three parts, the first is the number of triangles within community $i$, $T_i$. There are $k$ terms of $T_i$.
