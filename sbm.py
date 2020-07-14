@@ -2,6 +2,7 @@ import argparse
 import networkx as nx
 import numpy as np
 from ising import SIBM_metropolis
+from multiprocessing import Queue
 def sbm_graph(n, a, b):
     if n % 2 != 0 or a <= b:
         raise ValueError('')
@@ -60,9 +61,10 @@ def compare(r0, r1):
     else:
         return true_num_2 / total_num
 
-def get_acc(graph, alg, num_of_times=100):
+def acc_task(alg, num_of_times, qu):
     acc = 0
-    for i in range(num_of_times):
+    for _ in range(num_of_times):
+        graph = sbm_graph(args.n, args.a, args.b)
         gt = get_ground_truth(graph)
         if alg == 'bisection':
             results = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
@@ -71,7 +73,25 @@ def get_acc(graph, alg, num_of_times=100):
         else:
             raise NotImplementedError('')
         acc += compare(gt, results)
-        print('it', i)
+    qu.put(acc)
+
+def get_acc(alg, num_of_times=100, multi_thread=1):
+    acc = 0
+    q = Queue()
+    if multi_thread == 1:
+        acc_task(alg, num_of_times, q)
+        acc = q.get()
+    else:
+        from multiprocessing import Process
+        process_list = []        
+        num_of_times_per_process = num_of_times // multi_thread
+        for _ in range(multi_thread):
+            t = Process(target=acc_task, args=(alg, num_of_times_per_process, q))
+            process_list.append(t)
+            t.start()
+        for i in range(multi_thread):
+            process_list[i].join()
+            acc += q.get()
     acc /= num_of_times
     return acc
 
@@ -79,6 +99,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--alg', choices=['metropolis', 'bisection'], default='metropolis')
     parser.add_argument('--repeat', type=int, default=100, help='number of times to generate the SBM graph')
+    parser.add_argument('--multi_thread', type=int, default=1)
     parser.add_argument('--n', type=int, default=100)
     parser.add_argument('--a', type=float, default=16)
     parser.add_argument('--b', type=float, default=4)
@@ -87,4 +108,4 @@ if __name__ == '__main__':
     graph = sbm_graph(args.n, args.a, args.b)
     if args.draw:
         draw(graph)
-    print(get_acc(graph, args.alg, args.repeat))
+    print(get_acc(args.alg, args.repeat, args.multi_thread))
