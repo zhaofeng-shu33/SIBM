@@ -1,6 +1,6 @@
 \documentclass[conference]{IEEEtran}
 \input{macros.tex}
-\title{Community Detection with Ising model}
+\title{Stochastic Ising Block Model for multiple communities}
 \author{%
 	\IEEEauthorblockN{Min Ye, Shao-Lun Huang}
 	\IEEEauthorblockA{DSIT Research Center\\
@@ -24,8 +24,19 @@
 \end{abstract}
 \section{Introduction}
 % first paragraph: short intro to SBM and Ising model
-Ising model is not limited to statistical physics and there has already some works to apply Ising model to investigate the social voting phenomenon \cite{sznajd2000opinion}.
+In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic}. Within SBM, the condition to fully recover community labels has been investigated thoroughly and belongs to some phase transition property \cite{Abbe17}. On the other hand, Ising model is a well-known statistical model in physics which also has some kind of phase translation property \cite{ising1925beitrag}. The particles in Ising model interacts with neighboring particles and change its state.
+Also Ising model is not limited to statistical physics and there has already some works to apply Ising model to investigate the social voting phenomenon \cite{sznajd2000opinion}.
 
+In the original formulation, each particle in Ising model has only two states. Potts extended it to multiple state \cite{potts1952some}. This multiple state Ising model
+corresponds to SBM with multiple communities, thus enabling us to propose a concatenated network model: Stochastic Ising Block Model (SIBM). For 2 community case, there has already been some results on SIBM \cite{ye2020exact}, but little is know for multiple communities case. In this paper, we will give the formulation of SIBM for multiple
+communities. We can generate multiple samples from SIBM, which more or less differs from the original labels, depending on the choice of parameters. Using the generated samples, we focus on the problem of whether it is possible to exactly recover the label in this paper. By inversting the phase translation property for our compose model,
+we can compute the feasible regime of recovery and the corresponding sample complexity.
+
+This paper is divided as follows: In Section \ref{s:Preliminaries} the SIBM is formulated mathematically;
+In Section \ref{s:trans}, the main results are introduced;
+In Section \ref{s:conclusion}, the conclusion is given. Proof sketch of results is provided in the appendix.
+
+% mention the usage of sibm
 \section{Mathematical Model} \label{s:Preliminaries}
 We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $k$ communities and the definition of Ising model with $k$ state (See Definition 4 in \cite{Abbe17}).
 \begin{definition}[SSBM with $k$ communities] \label{def:SSBM}
@@ -116,7 +127,7 @@ and we call $P_{\SIBM}(\hat{X} \in \Gamma)$ the success probability of the recov
 
 As mentioned above, we consider the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefor, if we cannot recover $X$ from $G$, then there is no hope to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
 
-\section{Phase Translation and Sample Complexity of SIBM}
+\section{Phase Translation and Sample Complexity of SIBM}\label{s:trans}
 \vspace*{.1in}
 \noindent{\bf Main Problem:} \emph{For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?}
 
@@ -175,7 +186,7 @@ $$
 P_{\SIBM}(\dist(\sigma^{(i)} \in \Gamma)= \Theta(n^{g(\beta)}) \text{~for all~} i\in[m]) = 1-o(1) .
 $$
 \end{theorem}
-\section{Conclusion}
+\section{Conclusion}\label{s:conclusion}
 
 \appendix
 \section{Sketch of the proof}
