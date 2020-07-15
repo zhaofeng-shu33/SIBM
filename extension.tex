@@ -20,7 +20,7 @@ Let $n$ be a positive even integer, $W= \{1, \omega, \dots, \omega^{k-1}\}$ is a
 From each element $\sigma$ in a symmetric group $S_k$, we can induce a permutation function $f$ on $x=(x_1,\dots,x_n)\in W^n$ as $f(x_i) = \gamma(i)$ ($\gamma$ is a function on $[k]$).
 $x$ and $f(x)$ correspond to the same balanced partition, and the conditional distribution $P(G|X=x)$ is the same as $P(G|X=f(x))$ in the above definition. Therefore, we can only hope to recover $X$ from $G$ up to a global permutation.
 
-In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global sign) from $G$ is possible if and only if $\sqrt{a}-\sqrt{b} > \sqrt{k}$  \cite{abbe2015exact}.
+In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if and only if $\sqrt{a}-\sqrt{b} > \sqrt{k}$  \cite{abbe2015exact}.
  
 Given a partition/labeling $X$ on $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G=([n],E(G))$, Ising model defines a probability distribution on all possible labelings $W^n$ of these $n$ vertices. 
 
@@ -84,7 +84,7 @@ represent all vectors with permutations on $X$.
 
 \begin{definition}[Exact recovery in SIBM]
 Let $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k, p,q,\alpha,\beta,m)$.
-We say that exact recovery is solvable for $\SIBM(n,p,q,\alpha,\beta,m)$ if there is an algorithm that takes $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ as inputs and outputs $\hat{X}=\hat{X}(\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ such that
+We say that exact recovery is solvable for $\SIBM(n,k,p,q,\alpha,\beta,m)$ if there is an algorithm that takes $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ as inputs and outputs $\hat{X}=\hat{X}(\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ such that
 $$
 P_{\SIBM}(\hat{X} \in \Gamma) \to 1
 \text{~~~as~} n\to\infty ,
@@ -108,9 +108,9 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b} \text{~~and~~}
 m^\ast := 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \text{~~~and~~~} \tilde{m} = \frac{k}{k-1}\lfloor \frac{\beta^\ast}{\beta} \rfloor .
 \end{equation}
-{\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
+{\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
 If $\beta^\ast/\beta$ is not an integer and $m < \tilde{m} + \frac{1}{k-1}$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,лб a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
+{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
 \end{theorem}
 Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a  real number.
 When $\alpha>b\beta$ and $\beta^\ast/\beta$ is not an integer,

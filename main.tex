@@ -1,5 +1,19 @@
 \documentclass[conference]{IEEEtran}
-\input{macros.tex}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\newtheorem{theorem}{Theorem}%[section]
+\newtheorem{definition}{Definition}%[section]
+\DeclareMathOperator{\SSBM}{SSBM}
+\DeclareMathOperator{\SIBM}{SIBM}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cG}{\mathcal{G}}
+\usepackage{bbm} % provide mathbbm
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\Binom}{Binom}
+
 \title{Stochastic Ising Block Model for multiple communities}
 \author{%
 	\IEEEauthorblockN{Min Ye, Shao-Lun Huang}
@@ -36,70 +50,47 @@ This paper is divided as follows: In Section \ref{s:Preliminaries} the SIBM is f
 In Section \ref{s:trans}, the main results are introduced;
 In Section \ref{s:conclusion}, the conclusion is given. Proof sketch of results is provided in the appendix.
 
-% mention the usage of sibm
+% notation convetion
+Within this paper, the number of community is denoted by $k$; the number of node is $n$; $m$ is the number of samples; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
+$V=\{1,\dots, n\} =: [n]$;
+the label of each node is a random variable $X_i$; $X_i$ is chosen from $W= \{1, \omega, \dots, \omega^{k-1}\}$ and we further require $W$
+is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applies to $W^n$ element-wisely; the set $\Gamma$ is used to represent all permutation function on $W$ and $\Gamma(\sigma):=\{f(\sigma)| f\in \Gamma\}$ for $\sigma \in W^n$; the indicator function $I(x, y)$ is defined as
+$I(x, y) = k-1 $ when $x=y$ and $I(x,y)=-1$ when $x\neq y$;
+
 \section{Mathematical Model} \label{s:Preliminaries}
-We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $k$ communities and the definition of Ising model with $k$ state (See Definition 4 in \cite{Abbe17}).
+We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $k$ communities \cite{Abbe17} and the definition of Ising model with $k$ state.
 \begin{definition}[SSBM with $k$ communities] \label{def:SSBM}
-Let $n$ be a positive even integer, $W= \{1, \omega, \dots, \omega^{k-1}\}$ is a cyclic group with order $k$ and let $p,q\in[0,1]$ be two real numbers. Let $X=(X_1,\dots,X_n)\in W^n$, and let $G=([n],E(G))$ be an undirected graph with vertex set $[n]$ and edge set $E(G)$. The pair $(X,G)$ is drawn under $\SSBM(n,k,p,q)$ if 
+Let $p,q\in[0,1]$ be two real numbers, $X=(X_1,\dots,X_n)\in W^n$ and $G=([n],E(G))$. The pair $(X,G)$ is drawn under $\SSBM(n,k,p,q)$ if 
+\begin{enumerate}
+\item $X$ is drawn uniformly with the constraint that $|\{v \in [n] : X_v = \omega^i\}| = \frac{n}{k}$;
 
-\noindent
-(i) $X$ is drawn uniformly with the constraint that $|\{v \in [n] : X_v = \omega^i\}| = \frac{n}{k}$;
-
-\noindent
-(ii) the vertices $i$ and $j$ in $G$ are connected with probability $p$ if $X_i=X_j$ and with probability $q$ if $X_i \neq X_j$, independently of other pairs of vertices.
+\item the vertices $i$ and $j$ in $G$ are connected with probability $p$ if $X_i=X_j$ and with probability $q$ if $X_i \neq X_j$, independently of other pairs of vertices.
+\end{enumerate}
 \end{definition}
- 
-From each element $\sigma$ in a symmetric group $S_k$, we can induce a permutation function $f$ on $x=(x_1,\dots,x_n)\in W^n$ as $f(x_i) = \gamma(i)$ ($\gamma$ is a function on $[k]$).
-$x$ and $f(x)$ correspond to the same balanced partition, and the conditional distribution $P(G|X=x)$ is the same as $P(G|X=f(x))$ in the above definition. Therefore, we can only hope to recover $X$ from $G$ up to a global permutation.
+From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x))$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation.
 
-In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global sign) from $G$ is possible if and only if $\sqrt{a}-\sqrt{b} > \sqrt{k}$  \cite{abbe2015exact}.
+In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if and only if $\sqrt{a}-\sqrt{b} > \sqrt{k}$  \cite{abbe2015exact}.
  
 Given a partition/labeling $X$ on $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G=([n],E(G))$, Ising model defines a probability distribution on all possible labelings $W^n$ of these $n$ vertices. 
 
-We define the indicator function $I(x, y)$ as:
-\begin{equation}
-I(x, y) = \begin{cases}
- k-1 & x = y \\
- -1 & x \neq y
-\end{cases}
-\end{equation}
-% A general Ising model without external fields is a probability distribution on the configurations $\{\pm 1\}^n$ such that
-% $$
-% P(\sigma)=\frac{1}{Z}
-% \exp(\sum_{i\neq j} J_{ij} \sigma_i \sigma_j) 
-% \quad\quad
-% \text{for every~}
-% \sigma=(\sigma_1,\dots,\sigma_n) \in \{\pm 1\}^n ,
-% $$
-% where $Z=\sum_{\sigma \in \{\pm 1\}^n} \exp(\sum_{i\neq j} J_{ij} \sigma_i \sigma_j)$ is the normalizing constant.
-% We incorporate the graphical structure of $G$ into the Ising model by setting $J_{ij}=\beta$ for all  $\{i,j\}\in E(G)$ and $J_{ij}=-\alpha\log(n)/n$ for all $\{i,j\}\notin E(G)$, where $\alpha,\beta>0$ are positive constants. 
-% This is summarized in the following definition.
-
  
- \begin{definition}[Ising model]
-Define an Ising model on a graph $G=([n],E(G))$ with parameters $\alpha,\beta>0$ as the probability distribution on the configurations $\sigma\in W^n$ such that\footnote{When there is only one sample, we usually denote it as $\bar{\sigma}$. When there are $m$ (independent) samples, we usually denote them as $\sigma^{(1)},\dots,\sigma^{(m)}$.}
-\begin{equation} \label{eq:isingma}
-P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
-\exp\Big(\beta\sum_{\{i,j\}\in E(G)} I(\bar{\sigma}_i ,\bar{\sigma}_j)
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)\Big) ,
-\end{equation}
-where the subscript in $P_{\sigma|G}$ indicates that the distribution depends on $G$, and 
-\begin{equation}  \label{eq:zg}
-Z_G(\alpha,\beta)=\sum_{\bar{\sigma} \in W^n} \exp\Big(\beta\sum_{\{i,j\}\in E(G)}I(\bar{\sigma}_i, \bar{\sigma}_j)
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j) \Big) 
-\end{equation}
-is the normalizing constant.
+\begin{definition}[Ising model]
+The Ising model on a graph $G=([n],E(G))$ with parameters $\alpha,\beta>0$ is a probability distribution on the configurations $\sigma\in W^n$ such that
+\begin{align} \label{eq:isingma}
+&P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
+\exp\Big(\beta\sum_{\{i,j\}\in E(G)} I(\bar{\sigma}_i ,\bar{\sigma}_j)\notag\\
+&-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)\Big) ,
+\end{align}
+where the subscript in $P_{\sigma|G}$ indicates that the distribution depends on $G$, and
+$Z_G(\alpha,\beta)$ is the normalizing constant for this distribution.
 \end{definition}
 
+By definition of Ising model we also have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$. This symmetric property corresponds with that of SBM.
 
-
-
-
-
-By definition we always have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$ in the Ising model. Next we present our new model, the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,k, p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
+Next we present our new model, the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,k,p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
 
 \begin{definition}[Stochastic Ising Block Model]
-Let $n$ and $m$ be positive integers such that $n$ is even. Let $p,q\in[0,1]$ be two real numbers and let $\alpha,\beta>0$. The triple $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ is drawn under $\SIBM(n,k, p,q,\alpha,\beta,m)$ if
+The triple $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ is drawn under $\SIBM(n,k, p,q,\alpha,\beta,m)$ if
 
 \noindent
 (i) the pair $(X,G)$ is drawn under $\SSBM(n,k, p,q)$;
@@ -111,43 +102,41 @@ Let $n$ and $m$ be positive integers such that $n$ is even. Let $p,q\in[0,1]$ be
 Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently from the Ising model on the {\em same} graph $G$.
 Our objective is to recover the underlying partition (or the ground truth) $X$ from the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$, and we would like to use the smallest possible number of samples to guarantee the exact recovery of $X$ up to a global permutation.
 Below we use the notation $P_{\SIBM}(A):=E_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $E_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the joint distribution of both $\sigma$ and $G$.
-By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f$ is induced from $S_k$. We use the set $\Gamma = \{f_{\gamma}(X) | \gamma \in S_k\}$ to
-represent all vectors with permutations on $X$.
+By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$.
+
 
 \begin{definition}[Exact recovery in SIBM]
-Let $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k, p,q,\alpha,\beta,m)$.
-We say that exact recovery is solvable for $\SIBM(n,p,q,\alpha,\beta,m)$ if there is an algorithm that takes $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ as inputs and outputs $\hat{X}=\hat{X}(\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ such that
+Let $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k,p,q,\alpha,\beta,m)$.
+We say that exact recovery is solvable for $\SIBM(n,k,p,q,\alpha,\beta,m)$ if there is an algorithm that takes $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ as inputs and outputs $\hat{X}=\hat{X}(\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ such that
 $$
-P_{\SIBM}(\hat{X} \in \Gamma) \to 1
+P_{\SIBM}(\hat{X} \in \Gamma(X)) \to 1
 \text{~~~as~} n\to\infty ,
 $$
-and we call $P_{\SIBM}(\hat{X} \in \Gamma)$ the success probability of the recovery/decoding algorithm.
+and we call $P_{\SIBM}(\hat{X} \in \Gamma(X))$ the success probability of the recovery/decoding algorithm.
 \end{definition}
 
-
-As mentioned above, we consider the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefor, if we cannot recover $X$ from $G$, then there is no hope to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
+By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefore, if we cannot recover $X$ from $G$, then there is no hope to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
 
 \section{Phase Translation and Sample Complexity of SIBM}\label{s:trans}
-\vspace*{.1in}
-\noindent{\bf Main Problem:} \emph{For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?}
+Our main Problem is to investigate what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?
 
-\vspace*{.1in}  It is this optimal sample size problem that we address---and resolve---in this paper. 
-Our main results read as follows.
+Our main results are as follows:
 
 \begin{theorem} \label{thm:wt1}
 For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, let
-\begin{equation} \label{eq:defstar}
-\beta^\ast := \frac{1}{k}
-\log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b} \text{~~and~~}
-m^\ast := 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \text{~~~and~~~} \tilde{m} = \frac{k}{k-1}\lfloor \frac{\beta^\ast}{\beta} \rfloor .
-\end{equation}
-{\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
-If $\beta^\ast/\beta$ is not an integer and $m < \tilde{m} + \frac{1}{k-1}$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,лб a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
+\begin{align} \label{eq:defstar}
+&\beta^\ast := \frac{1}{k}
+\log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}  \\
+&m^\ast := 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \text{~~~and~~~} \tilde{m} = \frac{k}{k-1}\lfloor \frac{\beta^\ast}{\beta} \rfloor .
+\end{align}
+{\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
+If $\beta^\ast/\beta$ is not an integer and $m < \tilde{m} + \frac{1}{k-1}$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
 \end{theorem}
-Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a  real number.
+Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a real number.
 When $\alpha>b\beta$ and $\beta^\ast/\beta$ is not an integer,
-the above theorem establishes a sharp recovery threshold $m^\ast$ on the number of samples. It is worth mentioning that the threshold $m^\ast$ does {\em not} depend on the value of the parameter $\alpha$, as long as $\alpha$ satisfies $\alpha>b\beta$.
+the above theorem establishes a sharp recovery threshold $m^\ast$ on the number of samples. It is worth mentioning that the threshold $m^\ast$ does not depend on the value of the parameter $\alpha$, as long as $\alpha$ satisfies $\alpha>b\beta$.
 Below we present an equivalent characterization of the recovery threshold in terms of $\beta$.
 \begin{theorem} \label{thm:wt2}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
@@ -192,7 +181,7 @@ $$
 \section{Sketch of the proof}
 \label{sect:sketch}
 
-In this section, we illustrate the main ideas and explain the important steps in the proof of the main results. The complete proofs are given in Section~\ref{sect:aln}--\ref{sect:converse}.
+In this section, we illustrate the main ideas and explain the important steps in the proof of the main results. The complete proofs are given in arxiv.
 As the first step, we prove that for $a>b>0$, if $\alpha>b\beta$, then all the samples are centered in $\Gamma$ with probability $1-o(1)$; if $\alpha<b\beta$, then all the samples are centered in $\Theta := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k\}$ where $\mathbf{1}_n$ is the all one vector with dimension $n$.
 
 We use the concentration results for adjacency matrices of random graphs with independent edges to prove this. Let $A=A(G)$ be the adjacency matrix of the graph $G$. Then \eqref{eq:isingma} can be written as
@@ -241,17 +230,15 @@ $
 P_{\SIBM} \big(\dist(\sigma,\pm X)< kn/\log^{1/3}(n) \big) = 1- o(1) .
 $
 Therefore the following three statements are equivalent:
-\begin{enumerate}[label=(\arabic*)]
+\begin{enumerate}
 \item $P_{\SIBM}(\sigma\in \Gamma)$ has a sharp transitions from $0$ to $1$ at $\beta^\ast$.
 \item $P_{\SIBM} \big( 1\le \dist(\sigma,\Gamma)< kn/\log^{1/3}(n) \big)$ has a sharp transitions from $1$ to $0$ at $\beta^\ast$.
 \item $\frac{P_{\SIBM} ( 1\le \dist(\sigma, X)< kn/\log^{1/3}(n) )}{P_{\SIBM}(\sigma= X)}$ has a sharp transitions from $\infty$ (or $\omega(1)$) to $0$ at $\beta^\ast$.
 \end{enumerate}
 Statements (2) and (3) are equivalent because $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f$ is a permutation function.
 We will show that the above three statements are further equivalent to
-\begin{enumerate}[label=(\arabic*)]
-\setcounter{enumi}{3}
-  \item  $\frac{P_{\SIBM} ( \dist(\sigma, X) = 1 )}{P_{\SIBM}(\sigma= X)}$ has a sharp transitions from $\infty$ (or $\omega(1)$) to $0$ at $\beta^\ast$.
-\end{enumerate}
+  $\frac{P_{\SIBM} ( \dist(\sigma, X) = 1 )}{P_{\SIBM}(\sigma= X)}$ has a sharp transitions from $\infty$ (or $\omega(1)$) to $0$ at $\beta^\ast$.
+
 We first prove (4) and then show that it is equivalent to statement (3).
 Instead of analyzing $\frac{P_{\SIBM} ( \dist(\sigma, X) = 1 )}{P_{\SIBM}(\sigma= X)}$, we analyze $\frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)}$ for a typical graph $G$.
 
