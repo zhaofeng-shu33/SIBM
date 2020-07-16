@@ -6,15 +6,15 @@ import networkx as nx
 import numpy as np
 from ising import SIBM_metropolis
 
-def sbm_graph(n, a, b):
-    if n % 2 != 0 or a <= b:
+def sbm_graph(n, k, a, b):
+    if n % k != 0 or a <= b:
         raise ValueError('')
-    sizes = [int(n/2), int(n/2)]
+    sizes = [int(n/k) for _ in range(k)]
     _p = np.log(n) * a / n
     _q = np.log(n) * b / n
     if _p > 1 or _q > 1:
         raise ValueError('')
-    p = [[_p, _q], [_q, _p]]
+    p = np.diag(np.ones(k) * (_p - _q)) + _q * np.ones([k, k])
     return nx.generators.community.stochastic_block_model(sizes, p)
 
 def draw(graph):
@@ -68,7 +68,7 @@ def acc_task(alg, params, num_of_times, qu):
     acc = 0
     n, a, b = params
     for _ in range(num_of_times):
-        graph = sbm_graph(n, a, b)
+        graph = sbm_graph(n, 2, a, b)
         gt = get_ground_truth(graph)
         if alg == 'bisection':
             results = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)

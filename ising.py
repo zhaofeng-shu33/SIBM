@@ -7,6 +7,8 @@ import numpy as np
 from networkx import nx
 
 def estimate_a_b(graph):
+    '''for two communities
+    '''
     n = len(graph.nodes)
     e = len(graph.edges)
     t = 0
