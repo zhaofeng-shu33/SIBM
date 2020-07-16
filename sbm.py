@@ -1,8 +1,11 @@
 import argparse
+from multiprocessing import Queue
+from datetime import datetime
+
 import networkx as nx
 import numpy as np
 from ising import SIBM_metropolis
-from multiprocessing import Queue
+
 def sbm_graph(n, a, b):
     if n % 2 != 0 or a <= b:
         raise ValueError('')
@@ -121,4 +124,4 @@ if __name__ == '__main__':
     if args.draw and len(args.a) > 1:
         from matplotlib import pyplot as plt
         plt.plot(args.a, acc_list)
-        plt.show()
+        plt.savefig('build/%s.png' % datetime.now().strftime('acc-a-%H-%M-%S'))
