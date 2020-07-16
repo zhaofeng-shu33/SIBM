@@ -85,6 +85,7 @@ def get_acc(alg, params, num_of_times=100, multi_thread=1, binary=False):
     if multi_thread == 1:
         acc_task(alg, params, num_of_times, q)
         acc = q.get()
+        acc /= num_of_times
     else:
         from multiprocessing import Process
         process_list = []        
@@ -97,7 +98,7 @@ def get_acc(alg, params, num_of_times=100, multi_thread=1, binary=False):
         for i in range(multi_thread):
             process_list[i].join()
             acc += q.get()
-    acc /= num_of_times
+        acc /= (num_of_times_per_process * multi_thread)
     if binary:
         acc = int(acc)
     return acc
