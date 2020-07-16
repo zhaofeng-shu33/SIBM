@@ -55,7 +55,15 @@ Within this paper, the number of community is denoted by $k$; the number of node
 $V=\{1,\dots, n\} =: [n]$;
 the label of each node is a random variable $X_i$; $X_i$ is chosen from $W= \{1, \omega, \dots, \omega^{k-1}\}$ and we further require $W$
 is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applies to $W^n$ element-wisely; the set $\Gamma$ is used to represent all permutation function on $W$ and $\Gamma(\sigma):=\{f(\sigma)| f\in \Gamma\}$ for $\sigma \in W^n$; the indicator function $I(x, y)$ is defined as
-$I(x, y) = k-1 $ when $x=y$ and $I(x,y)=-1$ when $x\neq y$;
+$I(x, y) = k-1 $ when $x=y$ and $I(x,y)=-1$ when $x\neq y$; $g(n) = \Theta(f(n))$ if there exists constant $c_1 < c_2$ such that $c_1 f(n) \leq g(n) \leq c_2 f(n)$
+for large $n$;
+we define the distance of two vectors as:
+\begin{align*}
+\dist(\sigma, X)
+&:=|\{i\in[n]:\sigma_i\neq X_i\}| \textrm{ for } \sigma,X\in W^n \\
+\dist(\sigma,\Gamma(X))
+&:=\min\{\dist(\sigma, f(X)) | f(X) \in \Gamma(X)\}
+\end{align*}
 
 \section{Mathematical Model} \label{s:Preliminaries}
 We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $k$ communities \cite{Abbe17} and the definition of Ising model with $k$ state.
@@ -71,7 +79,7 @@ From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G
 
 In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if and only if $\sqrt{a}-\sqrt{b} > \sqrt{k}$  \cite{abbe2015exact}.
  
-Given a partition/labeling $X$ on $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G=([n],E(G))$, Ising model defines a probability distribution on all possible labelings $W^n$ of these $n$ vertices. 
+Given a partition/labeling $X$ on $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G=([n],E(G))$, Ising model defines a probability distribution on all possible labels $W^n$ of these $n$ vertices. 
 
  
 \begin{definition}[Ising model]
@@ -136,8 +144,13 @@ If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success pro
 {\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
 \end{theorem}
 Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a real number.
-When $\alpha>b\beta$ and $\beta^\ast/\beta$ is not an integer,
-the above theorem establishes a sharp recovery threshold $m^\ast$ on the number of samples. It is worth mentioning that the threshold $m^\ast$ does not depend on the value of the parameter $\alpha$, as long as $\alpha$ satisfies $\alpha>b\beta$.
+When $\alpha > b \beta$,
+the above theorem establishes a recovery threshold
+for the regime of $m \geq m^\ast$ and $m < \tilde{m}$ (approximately) on the number of samples.
+When $k=2$ and $\beta^\ast/\beta$ is not an integer, it can be seen that the threshold is sharp. For general case, there is some gap between $\tilde{m}$ and $m^\ast$
+which Theorem \ref{thm:wt1} does not deal with.
+
+It is worth mentioning that the threshold $m^\ast$ and $\tilde{m}$ does not depend on the value of the parameter $\alpha$, as long as $\alpha$ satisfies $\alpha>b\beta$.
 Below we present an equivalent characterization of the recovery threshold in terms of $\beta$.
 \begin{theorem} \label{thm:wt2}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
@@ -147,15 +160,9 @@ Below we present an equivalent characterization of the recovery threshold in ter
 	$
 	If $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{(k-1)(m+1)}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
 \end{theorem}
-Note that $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$ if and only if $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$, so Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold.
-To introduce the next theorem, we define the distance of two vectors as:
-
-\begin{align*}
-\dist(\sigma, X)
-&:=|\{i\in[n]:\sigma_i\neq X_i\}| \textrm{ for } \sigma,X\in W^n \\
-\dist(\sigma,\Gamma(X))
-&:=\min\{\dist(\sigma, f(X)) | f(X) \in \Gamma(X)\}
-\end{align*}
+Note that $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$ if and only if $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$, so Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold. $\beta$ represents the force of attraction between connected node in the graph. Theorem \ref{thm:wt2} states that
+to recover the label, the attraction force has a minimal threshold which depends on $m, \beta^*$.
+When $m=1$, we have the next theorem:
 
 \begin{theorem}  \label{thm:wt3}
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. Let $m$ be a constant integer that does not grow with $n$.
@@ -173,6 +180,11 @@ $$
 P_{\SIBM}(\dist(\sigma^{(i)}, \Gamma(X))= \Theta(n^{g(\beta)}) \text{~for all~} i\in[m]) = 1-o(1)
 $$
 \end{theorem}
+
+The above theorem established the phase transition property for SIBM model.
+Roughly speaking, the sample $\sigma$ generated from SIBM aligns with $X$ with probability 1 if $\beta > \beta^*$;
+otherwise the sample differs from $X$ with the number of coordinates in $\Theta(n^{g(\beta)})$.
+
 \section{Conclusion}\label{s:conclusion}
 
 \appendix
