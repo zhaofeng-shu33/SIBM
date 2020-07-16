@@ -61,10 +61,11 @@ def compare(r0, r1):
     else:
         return true_num_2 / total_num
 
-def acc_task(alg, num_of_times, qu):
+def acc_task(alg, params, num_of_times, qu):
     acc = 0
+    n, a, b = params
     for _ in range(num_of_times):
-        graph = sbm_graph(args.n, args.a, args.b)
+        graph = sbm_graph(n, a, b)
         gt = get_ground_truth(graph)
         if alg == 'bisection':
             results = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
@@ -75,24 +76,27 @@ def acc_task(alg, num_of_times, qu):
         acc += compare(gt, results)
     qu.put(acc)
 
-def get_acc(alg, num_of_times=100, multi_thread=1):
+def get_acc(alg, params, num_of_times=100, multi_thread=1, binary=False):
     acc = 0
     q = Queue()
     if multi_thread == 1:
-        acc_task(alg, num_of_times, q)
+        acc_task(alg, params, num_of_times, q)
         acc = q.get()
     else:
         from multiprocessing import Process
         process_list = []        
         num_of_times_per_process = num_of_times // multi_thread
         for _ in range(multi_thread):
-            t = Process(target=acc_task, args=(alg, num_of_times_per_process, q))
+            t = Process(target=acc_task,
+                        args=(alg, params, num_of_times_per_process, q))
             process_list.append(t)
             t.start()
         for i in range(multi_thread):
             process_list[i].join()
             acc += q.get()
     acc /= num_of_times
+    if binary:
+        acc = int(acc)
     return acc
 
 if __name__ == '__main__':
@@ -101,11 +105,20 @@ if __name__ == '__main__':
     parser.add_argument('--repeat', type=int, default=100, help='number of times to generate the SBM graph')
     parser.add_argument('--multi_thread', type=int, default=1)
     parser.add_argument('--n', type=int, default=100)
-    parser.add_argument('--a', type=float, default=16)
+    parser.add_argument('--binary', type=bool, const=True, nargs='?', default=False)
+    parser.add_argument('--a', type=float, default=16, nargs='+')
     parser.add_argument('--b', type=float, default=4)
     parser.add_argument('--draw', type=bool, const=True, nargs='?', default=False)
     args = parser.parse_args()
-    graph = sbm_graph(args.n, args.a, args.b)
-    if args.draw:
-        draw(graph)
-    print(get_acc(args.alg, args.repeat, args.multi_thread))
+    if type(args.a) is str:
+        args.a = [args.a]
+    acc_list = []
+    for a in args.a:
+        params = (args.n, a, args.b)
+        acc = get_acc(args.alg, params, args.repeat,
+                    multi_thread=args.multi_thread, binary=args.binary)
+        acc_list.append(acc)
+    if args.draw and len(args.a) > 1:
+        from matplotlib import pyplot as plt
+        plt.plot(args.a, acc_list)
+        plt.show()
