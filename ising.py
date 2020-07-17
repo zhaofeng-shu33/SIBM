@@ -6,7 +6,34 @@ import random
 import numpy as np
 from networkx import nx
 
-def estimate_a_b(graph):
+def estimate_a_b(graph, k=2):
+    '''for multiple communities
+    '''
+    n = len(graph.nodes)
+    e = len(graph.edges)
+    t = 0
+    for _, v in nx.algorithms.cluster.triangles(graph).items():
+        t += v
+    t /= 3
+    eq_1 = e / (n * np.log(n))
+    eq_2 = t / (np.log(n) ** 3)
+    # solve b first
+    coeff_3 = -1 * (k - 1)
+    coeff_2 = 6 * (k - 1) * eq_1
+    coeff_1 = -12 * (k - 1) * (eq_1 ** 2)
+    coeff_0 = 8 * k * (eq_1 ** 3) - 6 * eq_2
+    coeff = [coeff_3, coeff_2, coeff_1, coeff_0]
+    b = -1
+    for r in np.roots(coeff):
+        if abs(np.imag(r)) < 1e-10:
+            b = np.real(r)
+            break
+    a = 2 * k * eq_1 - (k - 1) * b
+    if b < 0 or b > a:
+        raise ValueError('')
+    return (a, b)
+
+def _estimate_a_b(graph):
     '''for two communities
     '''
     n = len(graph.nodes)

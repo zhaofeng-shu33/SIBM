@@ -103,14 +103,23 @@
 	When $n$ is large, we can also show that $\frac{T_2}{(\log n)^3}$ converges to $\frac{1}{k^2}
 	(\frac{a^3}{6} + \frac{k-1}{2}ab^2)$. Therefore we can get the equation array about $a$ and $b$:
 	\begin{align}
-	\frac{a+(k-1)b}{2k} & = e_1 \\
+	\frac{a+(k-1)b}{2k} & = e_1 \label{eq:e_1}\\
 	\frac{1}{k^2}
-	\left(\frac{a^3}{6} + \frac{k-1}{2}ab^2 + (k-1)(k-2)\frac{b^3}{6}\right) & = e_2
-	\end{align}
+	\left(\frac{a^3}{6} + \frac{k-1}{2}ab^2 + (k-1)(k-2)\frac{b^3}{6}\right) & = e_2 \label{eq:e_2}
+	\end{align}	
+	
 	Solving this equation and use the assumption that $ a > b, 0 < a < e_1$ we can get the unique solution of $(a,b)$.
 	This is our parameter estimation method.
 	\appendix
 	\section{Proofs}
+	\begin{lemma}
+		Suppose $e_1, e_2$ is defined from (\ref{eq:e_1}, \ref{eq:e_2}), Then the following equation array has unique solution $x=a, y=b$
+		\begin{align}
+	\frac{x+(k-1)y}{2k} & = e_1 \\
+\frac{1}{k^2}
+\left(\frac{x^3}{6} + \frac{k-1}{2}xy^2 + (k-1)(k-2)\frac{y^3}{6}\right) & = e_2	
+		\end{align}
+	\end{lemma}
 	\begin{lemma}\label{lem:ERT}
 	In an ER graph parameterized by $(n,p)$ and $p=\frac{a\log n}{n}$, the number of edges is denoted by $T(G)$, then
 	$\frac{T}{n \log n} \to \frac{a}{2}$ in probability.
