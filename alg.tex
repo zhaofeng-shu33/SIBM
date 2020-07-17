@@ -2,6 +2,7 @@
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{amssymb}
 \usepackage{amsthm}
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
@@ -120,6 +121,20 @@
 \left(\frac{x^3}{6} + \frac{k-1}{2}xy^2 + (k-1)(k-2)\frac{y^3}{6}\right) & = e_2	
 		\end{align}
 	\end{lemma}
+\begin{proof}
+	Using $x=2ke_1 - (k-1)y$ we can get
+	\begin{equation}
+	g(y): = (k-1)(y^3 - 6 e_1 y^2 + 12 e_1^2 y) + 6 e_2 - 8 k e_1^3 = 0
+	\end{equation}
+	This equation has unique real root since $g(y)$ is increasing on $\mathbb{R}$. $g'(y) = 3(k-1)(y-2e_1)^2 \geq 0 $
+	Next we show the root lies within $(0, 2e_1)$.
+	\begin{align*}
+	g(0) &= \frac{1}{k^2}\left(-3(k-1)(k-2)ab^2 + (k-1)((k-2)-(k-1)^2)b^3\right) < 0 \\
+	g(2e_1) &= 6e_2 - 8e_1^3 = \frac{(k-1)(a-b)^3}{k^3} > 0
+	\end{align*}
+	Therefore, we can get a unique solution $y$ within $(0, 2e_1)$. Since $(a,b)$ is a solution for the equation array. The conclusion follows.
+	
+\end{proof}
 	\begin{lemma}\label{lem:ERT}
 	In an ER graph parameterized by $(n,p)$ and $p=\frac{a\log n}{n}$, the number of edges is denoted by $T(G)$, then
 	$\frac{T}{n \log n} \to \frac{a}{2}$ in probability.
@@ -127,10 +142,10 @@
 	\end{lemma}
 \begin{proof}
 	Let $X_{ij}$ represents a Bernoulli random variable with parameter $p$. Then $T(G) = \sum_{i,j} X_{ij}$, $X_{ij}$ are i.i.d.
-	$E[T(G)] = \frac{n(n-1)}{2}p = \frac{(n-1)\log n}{2}a$ and $\Var[T(G)] = \frac{n(n-1)}{2} p(1-p) < \frac{(n-1)\log n}{2}$
+	$E[T(G)] = \frac{n(n-1)}{2}p = \frac{(n-1)\log n}{2}a$ and $\Var[T(G)] = \frac{n(n-1)}{2} p(1-p) < a\frac{(n-1)\log n}{2}$
 	Then by Chebyshev's inequality
 	$$
-	\Pr(\Big|\frac{T}{n \log n } - \frac{a}{2} \frac{n-1}{n}\Big| > \epsilon) \leq \frac{\Var[T /(n \log n )]}{\epsilon^2} < \frac{(n-1)}{2n^2\epsilon^2\log n}
+	\Pr(\Big|\frac{T}{n \log n } - \frac{a}{2} \frac{n-1}{n}\Big| > \epsilon) \leq \frac{\Var[T /(n \log n )]}{\epsilon^2} < \frac{a(n-1)}{2n^2\epsilon^2\log n}
 	$$
 	For a given $\epsilon$, when $n$ is sufficiently large,
 	$$
