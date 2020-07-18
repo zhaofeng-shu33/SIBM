@@ -194,7 +194,9 @@ to recover SBM.
 \label{sect:sketch}
 
 In this section, we illustrate the main ideas and explain the important steps in the proof of the main results.
-The complete proofs are given in arxiv.
+The complete proofs are given in arxiv. Most proofs are similar with the case for two communities in \cite{ye2020exact}. The difference
+is that we can not use matrix vector product in the general proof and the critical values differ.
+
 As the first step, we prove that for $a>b>0$, if $\alpha>b\beta$, then all the samples are centered in $\Gamma(X)$ with probability $1-o(1)$;
 if $\alpha<b\beta$, then all the samples are centered in $\Theta := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$
 where $\mathbf{1}_n$ is the all one vector with dimension $n$.
@@ -359,7 +361,44 @@ similar the above with some notation extension, and we do not repeat it here. By
 $P_{\SIBM}(\sigma \in \Gamma)=1-o(1)$ when $\beta>\beta^\ast$. Next we move to the case $\beta\le\beta^\ast$.
 
 \subsection{Proof for $\beta\le\beta^\ast$}
-From Equation \ref{eq:mew}, using Markov inequality 
+For each $I$, we introduce a vector $v$ with $\mathrm{dim}(v) = |I|=r$. Each element of $v$ takes from $\{\omega, \omega^2, \omega^{k-1}\}$.
+$X^{(\sim I, v)}$ is defined as flipping $i \in I$ as : $X_i \to v_{\mathrm{index}(i)}\cdot X_i$.
+For example, if $I = {1,3}, n=3, v=(\omega^2, \omega)$ then $X^{(\sim I,v)} = (\omega^2 \cdot X_1, X_2, \omega \cdot X_3)$.
+Then $P_{\sigma|G}(\sigma = X^{(\sim I)})=\sum_{v}P_{\sigma|G}(\sigma = X^{(\sim I,v)})$
+
+By definition,
+$$
+\frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)}
+=\sum_{\cI\subseteq[n],|\cI|=r} \frac{P_{\sigma|G} ( \sigma= X^{(\sim \cI)} )} {P_{\sigma|G}(\sigma= X)} .
+$$
+Similarly to $A_i$ and $A^r_i$, for a set $\cI\subseteq[n]$, we define
+define
+$A_{\cI}=A_{\cI}(G):=|\{i,j\}\in E(G):  \{i, j\} \not\subseteq [n]\setminus\cI, X_j=X_i\}|$ and  
+$B_{\cI,v}=B_{\cI,v}(G):=|\{\{i,j\}\in E(G): \{i, j\} \not\subseteq [n]\setminus\cI, X_j= v_{\mathrm{index}(i)} \cdot X_i\}|$.
+Then by \eqref{eq:isingma} one can show that
+\begin{align*}
+& \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} 
+\le \sum_{v}\exp\Big( k\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI,v}-A_{\cI})\Big)\\
+& = \sum_{v}\exp ( k (\beta + o(1)) (B_{\cI,v}-A_{\cI})
+) 
+\end{align*}
+Since we are only interested in the case $|\cI|<kn/\log^{1/3}(n)=o(n)$,
+by definition we have $A_{\cI}\sim\Binom((\frac{n}{k}-o(n))|\cI|,\frac{a\log(n)}{n})$ and $B_{\cI}\sim\Binom((\frac{n}{k}-o(n))|\cI|,\frac{b\log(n)}{n})$, and they are independent. Therefore,
+\begin{align*}
+&E_G[\exp ( k (\beta +o(1)) (B_{\cI,v}-A_{\cI}) ) ] = 
+\exp\Big(\frac{|\cI|\log(n)}{k} \\
+&( a e^{-k\beta}+b e^{k\beta} -a-b +o(1) )
+\Big) 
+=  n^{|\cI|(g(\beta)-1+o(1))}
+\end{align*}
+As a consequence,
+\begin{align} \label{eq:nn}
+&E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r)}{P_{\sigma|G}(\sigma= X)} \Big]
+\le \sum_{\cI\subseteq[n],|\cI|=r} 
+n^{k (g(\beta)-1+o(1))}\notag\\
+&= \binom{n}{r} (k-1)^r n^{r (g(\beta)-1+o(1))}
+\end{align}
+
 First let us use a tighter bound $\binom{n}{r}<n^r/(r!)$. 
 For $r>n^{g(\beta)+\delta}$, we have
 $
@@ -375,10 +414,12 @@ Taking these into the last inequality of \eqref{eq:nn}, we obtain that for all $
 &< n^{r (g(\beta)+o(1))} /(r!) 
 < (k-1)^rn^{-r(\delta-o(1))} .
 \end{align*}
-This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{g(\beta)+\delta} ) = 1- o(1)$ for any $\delta>0$. Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, we have $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$. This improves upon the upper bound 
-$\dist(\sigma, \Gamma)< kn/\log^{1/3}(n)$ we obtained using spectral method at the beginning of this section.
+This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma(X))<n^{g(\beta)+\delta} ) = 1- o(1)$ for any $\delta>0$.
+Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, we have $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$.
+This improves upon the upper bound 
+$\dist(\sigma, \Gamma(X))< kn/\log^{1/3}(n)$ we obtained using spectral method at the beginning of this section.
 
-More importantly, this allows us to prove a powerful structural result. (All the discussions below are conditioning on the event $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma\backslash\{X\}$.) We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
+More importantly, this allows us to prove a powerful structural result. (All the discussions below are conditioning on the event $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma(X)\backslash\{X\}$.) We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
 Conditioning on the event every vertex has at most $z$ ``bad" neighbors, it is easy to show that $P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1}\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor $\exp(k^2\beta z)$.
 Therefore, $E_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
 We can further prove that $\dist(\sigma,X)$ concentrates around its expectation. Thus we conclude that $\dist(\sigma,X)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
