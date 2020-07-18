@@ -341,13 +341,13 @@ by definition we have $A_{\cI}\sim\Binom((\frac{n}{k}-o(n))|\cI|,\frac{a\log(n)}
  =  n^{|\cI|(g(\beta)-1+o(1))}
 \end{align*}
 As a consequence,
-\begin{align*} \label{eq:nn}
+\begin{align} \label{eq:nn}
 &E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r)}{P_{\sigma|G}(\sigma= X)} \Big]
 \le \sum_{\cI\subseteq[n],|\cI|=r} 
-n^{k (g(\beta)-1+o(1))}\\
+n^{k (g(\beta)-1+o(1))}\notag\\
 &= \binom{n}{r} (k-1)^r n^{r (g(\beta)-1+o(1))}
 < (k-1)^rn^{r (g(\beta)+o(1))}
-\end{align*}
+\end{align}
 Then by Markov inequality, there is a set $\cG^{(r)}$ such that $P(G\in\cG^{(r)})=1-(k-1)^rn^{r g(\beta)/4}$ and for every $G\in\cG^{(r)}$, $\frac{P_{\sigma|G} ( \dist(\sigma, X) = k )}{P_{\sigma|G}(\sigma= X)} \le (k-1)^rn^{r g(\beta)/2}$.
 Let $\cG=\cap_{r=1}^{kn/\log^{1/3}(n)} \cG^{(r)}$. By union bound, we have $P(G\in\cG)>1-\sum_{r=1}^\infty (k-1)^rn^{r g(\beta)/4} = 1-o(1)$. Moreover, for every $G\in\cG$,
 $\frac{P_{\sigma|G} ( 1\le \dist(\sigma, X)< kn/\log^{1/3}(n) )}{P_{\sigma|G}(\sigma= X)} < \sum_{r=1}^\infty (k-1)^rn^{r g(\beta)/2} = o(1)$.
@@ -361,9 +361,9 @@ The analysis in this interval is more delicate. Since $\frac{P_{\sigma|G} ( \dis
 Since $A^r_i-A^0_i$ takes integer value between $-n/k$ and $n/k$,
 we can use indicator functions to write
 \begin{align*}
- \exp (k \beta (A^r_i-A^0_i))
-=  \sum_{t\log(n)=-n/k}^{n/k}
-\mathbbm{1}[A^r_i-A^0_i=t \log(n)] \exp (k\beta t \log(n) ) ,
+& \exp (k \beta (A^r_i-A^0_i))
+= \\  \sum_{t\log(n)=-n/k}^{n/k}
+& \mathbbm{1}[A^r_i-A^0_i=t \log(n)] \exp (k\beta t \log(n) ) ,
 \end{align*}
 where the quantity $t\log(n)$ ranges over all integer values from $-n/k$ to $n/k$ in the summation.
 Define $D(G,t):=|\{i\in[n]:A^r_i-A^0_i= t\log(n)\}|=\sum_{i=1}^n \mathbbm{1}[A^r_i-A^0_i=t \log(n)]$.
@@ -383,16 +383,17 @@ D(G,t) \exp (k\beta t \log(n) ) .
 \end{equation}
 This indicates that there is a ``cut-off" effect at $t>0$, i.e., $D(G,t) \exp (2\beta t \log(n) )=0$ for all positive $t$ with probability $1-o(1)$, although its expectation can be very large, as we will show next.
 Define a function
-$$
-f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big) -\frac{a+b}{k} +1 +k\beta t.
-$$
+\begin{align*}
+&f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big) \\
+&-\frac{a+b}{k} +1 +k\beta t.
+\end{align*}
 Using Chernoff bound, one can show that 
 $$
 E[D(G,t)
 \exp\big(2\beta t \log(n) \big)]
 \le \exp( f_{\beta}(t) \log(n) ) .
 $$
-with probability one (Using a more careful analysis, one can show that this bound is tight up to a $\frac{1}{\sqrt{\log(n)}}$ factor; see Appendix~\ref{ap:um}.)
+with probability one. (Using a more careful analysis, one can show that this bound is tight up to a $\frac{1}{\sqrt{\log(n)}}$ factor.)
 The function $f_{\beta}(t)$ is a concave function and takes maximum value at $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}$, and its maximum value is $f_{\beta}(t^\ast)=\frac{b e^{k\beta}+a e^{-k\beta}}{k}-\frac{a+b}{k}+1
 =g(\beta)$.
 Therefore, if we take expectation on both sides of \eqref{eq:gour}, then the sum on the right-hand side is concentrated on a small neighborhood of $t^\ast$. When $\beta>\frac{1}{2k}\log\frac{a}{b}$, we have $t^\ast>0$. Due to the ``cut-off" effect at $t>0$, we have $D(G,t)=0$ for all $t$ in the neighborhood of $t^\ast$ with probability $1-o(1)$, so the main contribution to the expectation comes from a rare event $G\notin\cG_1$. This explains why the behavior of a typical graph $G$ deviates from the behavior of the expectation.
@@ -405,7 +406,7 @@ and so $\frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)} =o
 $\beta>\frac{1}{2r}\log\frac{a}{b}$.
 The analysis of $\frac{P_{\SIBM} ( \dist(\sigma, X) = r )}{P_{\SIBM}(\sigma= X)}$ for $1\le r<kn/\log^{1/3}(n)$ is
 similar to the analysis in Section~\ref{sect:simreg}, and we do not repeat it here. By now we have given a sketched proof of
-$P_{\SIBM}(\sigma \in \Gamma)=1-o(1)$ when $\beta>\beta^\ast$; see Section~\ref{sect:equal} for a rigorous proof. Next we move to the case $\beta\le\beta^\ast$.
+$P_{\SIBM}(\sigma \in \Gamma)=1-o(1)$ when $\beta>\beta^\ast$. Next we move to the case $\beta\le\beta^\ast$.
 
 \subsection{Proof for $\beta\le\beta^\ast$: Structural results and tight concentration}
 
@@ -418,12 +419,12 @@ r!>(r/e)^r
 =n^{r(g(\beta)+\delta-o(1))} .
 $
 Taking these into the last inequality of \eqref{eq:nn}, we obtain that for all $r>n^{g(\beta)+\delta}$,
-$$
-E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} \Big]
-\le  (k-1)^r\binom{n}{k} n^{k (g(\beta)-1+o(1))}
-< n^{r (g(\beta)+o(1))} /(r!) 
+\begin{align*}
+&E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} \Big]
+\le  (k-1)^r\binom{n}{k} n^{k (g(\beta)-1+o(1))} \\
+&< n^{r (g(\beta)+o(1))} /(r!) 
 < (k-1)^rn^{-r(\delta-o(1))} .
-$$
+\end{align*}
 This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{g(\beta)+\delta} ) = 1- o(1)$ for any $\delta>0$. Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, we have $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$. This improves upon the upper bound 
 $\dist(\sigma, \Gamma)< kn/\log^{1/3}(n)$ we obtained using spectral method at the beginning of this section.
 
@@ -431,15 +432,14 @@ More importantly, this allows us to prove a powerful structural result. (All the
 Conditioning on the event every vertex has at most $z$ ``bad" neighbors, it is easy to show that $P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1}\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor $\exp(k^2\beta z)$.
 Therefore, $E_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
 We can further prove that $\dist(\sigma,X)$ concentrates around its expectation. Thus we conclude that $\dist(\sigma,X)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
-Quite surprisingly, when $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation: For almost all graph $G$, we have $\sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))=(1+o(1))n^{g(\beta)}$; see Proposition~\ref{prop:con} in Section~\ref{sect:struct} for a proof. Combining this with the above analysis, we conclude that $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ when $\beta\le\beta^\ast$. This completes the sketched proof of Theorem~\ref{thm:wt3}.
-See Sections~\ref{sect:theta} and Sections~\ref{sect:struct} for the rigorous proof of the above arguments.
+Quite surprisingly, when $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation: For almost all graph $G$, we have $\sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))=(1+o(1))n^{g(\beta)}$.
+Combining this with the above analysis, we conclude that $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ when $\beta\le\beta^\ast$.
+This completes the sketched proof of Theorem~\ref{thm:wt3}.
 
 \subsection{Multiple sample case: Proof of Theorem~\ref{thm:wt2}}
 \label{sect:multi}
 
-\begin{center}
-	\begin{minipage}{.55\textwidth}
-		\begin{algorithm}[H]
+		\begin{algorithm}
 			\caption{\texttt{LearnSIBM} in $O(n)$ time} \label{alg:ez}
 			Inputs: the samples $\sigma^{(1)},\sigma^{(2)}\dots,\sigma^{(m)}$ \\
 			Output: $\hat{X}$
@@ -453,25 +453,23 @@ See Sections~\ref{sect:theta} and Sections~\ref{sect:struct} for the rigorous pr
 				\Statex \hspace*{-0.3in}
 				{\bf Step 2: Majority vote at each coordinate}
 				\For {i=1,2,\dots,n}
-				\State $g(r) = |\{j | \sigma^{(j)}_i = \omega^r,1\leq j \leq m\}|$ for $ 0 \leq r \leq k-1$
-				\State $\hat{X}_i \gets  \arg\max_r \omega^{g(r)}$
-				\State \Comment{If the max of $g(r)$ is not unique, assign $\hat{X}_i$ randomly to one of \texttt{argmax}}
+				\State $g(r) = |\{j | \sigma^{(j)}_i = \omega^r,1\leq j \leq m\}|$  for $ 0 \leq r \leq k-1$
+				\State $\hat{X}_i \gets w^{r*}$ where $r*=\arg\max_r g(r)$
+			\State\Comment{If the max of $g(r)$ is not unique, assign $\hat{X}_i$ randomly to one of \texttt{argmax}}
 				\EndFor
 				\State Output $\hat{X}$
 			\end{algorithmic}
 		\end{algorithm}
-	\end{minipage}
-\end{center}
-For the multiple-sample case, we prove that the above simple algorithm can recover $X$ with probability $1-o(1)$ if and only if the Maximum Likelihood (ML) algorithm recovers $X$ with probability $1-o(1)$. We already showed that each sample is either very close to $\Gamma$, so after the alignment step in Algorithm~\ref{alg:ez}, all the samples are either simultaneously aligned with one of $\Gamma$. WLOG, we assume all samples are aligned with $X$.
+For the multiple-sample case, we prove that the above simple algorithm can recover $X$ with probability $1-o(1)$ if and only if the Maximum Likelihood (ML) algorithm recovers $X$ with probability $1-o(1)$. We already showed that each sample is either very close to $\Gamma(X)$, so after the alignment step in Algorithm~\ref{alg:ez}, all the samples are either simultaneously aligned with one of $\Gamma(X)$. WLOG, we assume all samples are aligned with $X$.
 By the structural results discussed above, with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)} \neq X_i)$ differs from $\sum_{r=1}^{k-1} \exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$. Since the samples are independent, we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $\sum_{r=1}^{k-1} \exp (k u \beta (A^r_i-A^0_i))$
 by at most a constant factor.
 Here $u\beta$ plays the role of $\beta$ in the single-sample case.
 Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le u-1$, or equivalently, $X_i(\sum_{j=1}^m \sigma_i^{(j)} ) \ge m-2u+2$ for all $i\in[n]$. Let $u=\lfloor \frac{m+1}{2} \rfloor$,
 then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le \lfloor \frac{m-1}{2} \rfloor $ while $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = X_i]
 = m - \lfloor \frac{m-1}{2} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] $
-which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}. See Section~\ref{sect:direct} for a rigorous proof of the above argument.
+which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}.
 
-The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$, also relies on the structural result and it is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case. We refer the readers to Section~\ref{sect:converse} for details.
+The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$, also relies on the structural result and it is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case.
 
 
 \bibliographystyle{IEEEtran}
