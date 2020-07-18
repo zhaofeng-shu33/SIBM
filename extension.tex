@@ -434,7 +434,7 @@ then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le \lfloor \frac
 = m - \lfloor \frac{m-1}{2} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] $
 which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}. See Section~\ref{sect:direct} for a rigorous proof of the above argument.
 
-The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$, also relies on the structural result and it is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case. We refer the readers to Section~\ref{sect:converse} for details.
+The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{(k-1)(m+1)}{k} \rfloor \beta < \beta^\ast$, also relies on the structural result and it is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case. We refer the readers to Section~\ref{sect:converse} for details.
 
 \section{Samples are concentrated around $\Gamma$ or $\Theta$} \label{sect:aln}
 In this section, we show that for $a>b$, if $\alpha>b\beta$, then all the samples produced by $\SIBM(n, k,\linebreak[4]
@@ -1716,6 +1716,54 @@ for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while fo
 	By \eqref{eq:soon} we have $\underline{R}_i =\frac{\underline{C}
 		\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} $, one can see that no matter what values $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ take, the conditional probability of $\underline{S}_i=1$ given these variables is always $\underline{C}
 	\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)$. Therefore, conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $\underline{S}_i$ is independent of $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ and it only depends on $\phi_i$. As a consequence, $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Thus we have verified the three properties above for $\underline{S}_1,\dots, \underline{S}_n$. The arguments for $\overline{S}_1,\dots, \overline{S}_n$ are the same.
+\end{proof}
+For $0<\beta<\beta^\ast$, we have $g(\beta)>0$, so Theorem~\ref{thm:dist} immediately implies that $P_{\SIBM}(\sigma \in \Gamma)=o(1)$. However, when $\beta=\beta^\ast$, we have $g(\beta^\ast)=0$. In this case, Theorem~\ref{thm:dist} tells us that
+$
+P_{\SIBM}(\dist(\sigma,\Gamma) = \Theta(1) ) = 1-o(1) ,
+$
+but this is not sufficient for us to draw any conclusion on $P_{\SIBM}(\sigma \in \Gamma)$.
+Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P_{\SIBM}(\sigma \in \Gamma)$ is bounded away from $1$.
+
+\begin{proposition}  \label{prop:zj}
+	Let $a,b,\alpha> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{2}$ and $\alpha>b\beta^\ast$. Let 
+	$
+	(X,G,\sigma) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta^\ast, 1) .
+	$
+	Then 
+	$$
+	P_{\SIBM}(\sigma \in \Gamma) \le \frac{1}{k}(1+o(1)) .
+	$$
+\end{proposition}
+\begin{proof}
+	We prove an equivalent form
+	$$
+	P_{\SIBM}(\sigma = X | \dist(\sigma, X) \le n/k) \le \frac{1}{k}(1+o(1)) .
+	$$
+	By \eqref{eq:isingma}, we have
+	\begin{align*}
+	\frac{P_{\sigma|G}(\sigma=X^{(\sim i)} )}
+	{P_{\sigma|G}(\sigma=X)}
+	& = \sum_{r=1}^{k-1}\exp\Big(k\big(\beta^\ast+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i)
+	-\frac{2(k-1)\alpha\log(n)}{n} \Big) \\
+	& = (1+o(1))\sum_{r=1}^{k-1} \exp\big(k\beta^\ast (A^r_i-A^0_i) \big)  ,
+	\end{align*}
+	where the last equality holds for almost all $G$ since $|A^r_i-A^0_i|=O(\log(n))$ with probability $1-o(1)$; see Lemma~\ref{lm:bmd} in Appendix~\ref{ap:6}.
+	Take $\cG_{\con}$ from Proposition~\ref{prop:con}. Then for every $G\in\cG_{\con}$,
+	\begin{align*}
+	\frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
+	{P_{\sigma|G}(\sigma=X)}  = (1+o(1)) \sum_{i=1}^n \sum_{r=1}^{k-1}\exp\big(k\beta^\ast (A^r_i-A^0_i) \big)  =k+o(1) .
+	\end{align*}
+	As a consequence, for every $G\in\cG_{\con}$,
+	\begin{align*}
+	P_{\sigma|G} (\sigma= X | \dist(\sigma, X) \le n/k ) <
+	\frac {P_{\sigma|G}(\sigma=X)}
+	{P_{\sigma|G}(\sigma=X)+\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
+	=\frac{1}{k} (1+o(1)) .
+	\end{align*}
+	By Proposition~\ref{prop:con}, $P(G\in\cG_{\con})=1-o(1)$, so
+	$$
+	P_{\SIBM}(\sigma= X | \dist(\sigma, X) \le n/k ) \le \frac{1}{k}(1+o(1)) .
+	$$
 \end{proof}
 \section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
 \label{sect:direct}
