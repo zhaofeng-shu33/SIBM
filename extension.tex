@@ -125,7 +125,8 @@ Below we present an equivalent characterization of the recovery threshold in ter
 	$$
 	If $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{(k-1)(m+1)}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
 \end{theorem}
-Note that $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$ if and only if $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$, so Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold\footnote{We give a proof of the equivalence between the two inequalities: $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$ implies that $\frac{\beta^\ast}{\beta}<\lfloor \frac{m+1}{2} \rfloor$. The smallest integer that is larger than $\frac{\beta^\ast}{\beta}$ is $\lfloor \frac{\beta^\ast}{\beta}\rfloor +1$, so $\lfloor \frac{\beta^\ast}{\beta} \rfloor +1 \le \lfloor \frac{m+1}{2} \rfloor\le \frac{m+1}{2}$, and thus $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$. Now assume $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$, then $\frac{m-1}{2} \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor$. Since the right hand side is an integer, we have $\lfloor \frac{m+1}{2} \rfloor = \lfloor \frac{m-1}{2} \rfloor +1  \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor +1 >\frac{\beta^\ast}{\beta}$.}.
+From Lemma \ref{lem:thm23eq} in the Appendix, Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold.
+
 Notation convention:
 For $\cI \subseteq [n]$, we denote the event $\sigma = X^{(\sim \cI)}$ as $\sigma_i \neq X_i$ for all $i \in \cI$ and $\sigma_i = X_i$ for all $i \not\in \cI$.
 When $\cI$ only contains one element, e.g., $\cI=\{i\}$, we write the event $\sigma = X^{(\sim i)}$ instead of $\sigma = X^{(\sim\{i\})}$.
@@ -2060,7 +2061,7 @@ Since $P(G\in\cG^{(1)}\cap\cG_{\good})=1-o(1)$, we conclude that $P_{\SIBM} \big
 
 By assumption we have $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$. Therefore, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$, we have $\Phi_i\le \lfloor \frac{m-1}{2} \rfloor$ for all $i\in[n]$ with probability $1-o(1)$. As a consequence, after the majority voting step in Algorithm~\ref{alg:ez}, $\hat{X}_i=X_i$ for all $i\in[n]$ with probability $1-o(1)$. This completes the proof of Proposition~\ref{prop:nr}.
 \hfill\qed
-\section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
+\section{Exact recovery is not solvable when $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
 \begin{lemma} \label{lm:qq}
 	Let 
@@ -2078,7 +2079,7 @@ We can also find a 1-1 mapping $\pi$ which satisfies $ \bar{X}_{i_r} = \bar{X}^{
 Similar to the analysis in the proof of Lemma \ref{lm:cc}, $\pi$ satisfies properties such as
 $\{pi(i), \pi(j)\} \in E(\pi(G)) \iff \{i,j\} \in E(G)$, $Z_G(\alpha, \beta) = Z_{\pi(G)}(\alpha, \beta)$ and
 $$
-P_{\SSBM}(G  | X = \bar{X})=P_{\SSBM}(\pi(G) | X = \bar{X}^{(\sim I,v)})  ,
+P_{\SSBM}(G  | X = \bar{X})=P_{\SSBM}(\pi(G) | X = \bar{X}^{(\sim I,v)}),
 $$
 
 Using the Markov property of $X \to G \to \sigma$, we have
@@ -2232,7 +2233,37 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_
 	\text{~for all~} j\in[m]\}$. Combining this with \eqref{eq:ljrc}, we obtain that for every $G\in\cG_{\good}\cap\cG_{\con}$,
 	$T_0=\Theta(n^{g((m-u_0)\beta)})$ with probability $1-o(1)$ conditioning on $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$. Finally, the lemma follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
 \end{proof}
-Using the above two lemmas, we obtain the following proposition
+\begin{lemma}\label{lem:mk}
+	Let $m,k$ be integers and $k\geq 2, m\geq 1$, then
+	\begin{align}
+	m - \lfloor {m + 1 \over k} \rfloor & \leq  \lfloor {k - 1 \over k}(m+1) \rfloor \label{eq:m1} \\
+	(k-1) \lfloor{m + 1 \over k} \rfloor& \leq  \lfloor {k-1 \over k}(m+1) \rfloor \label{eq:m2}
+	\end{align}
+\end{lemma}
+\begin{proof}
+	For Eq. \eqref{eq:m2} we only need to show
+	\begin{equation}\label{eq:m22}
+	n \lfloor a \rfloor \leq \lfloor n a \rfloor
+	\end{equation}
+	for positive integer $n$ and positive real number $a$.
+	
+	Let $a = \lfloor a \rfloor + \{ a \}$, Eq. \eqref{eq:m22} is equivalent with
+	$n \lfloor a \rfloor \leq \lfloor n \{ a \} \rfloor + n \lfloor a \rfloor$, which is obvious.
+	
+	For Eq. \eqref{eq:m1} we want to show 
+	\begin{align*}
+	&	m - \lfloor {m + 1 \over k} \rfloor  \leq  (k-1)\lfloor {m + 1 \over k} \rfloor + \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor \\
+	\iff & m - k \lfloor {m + 1 \over k} \rfloor \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor \\
+	\iff & m - k ({m + 1 \over k} - \{ {m+1 \over k }\}) \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor  \\
+	\iff & k \{ {m+1 \over k }\} - 1 \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor  \\
+	\end{align*}
+	Since $k \{ {m+1 \over k }\}$ is an integer, the above Equation is further equivalent with
+	$$
+	- 1 \leq \lfloor - \{ {m + 1 \over k }\}\rfloor  
+	$$
+	which is obvious by the definition of the fractional part of a number.
+\end{proof}
+Using the above three lemmas, we obtain the following proposition
 \begin{proposition}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
 	Let 
@@ -2242,8 +2273,10 @@ Using the above two lemmas, we obtain the following proposition
 	If $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta<\beta^\ast$, then no algorithm can recover $X$ from the samples with constant success probability, i.e., the success probability of any algorithm is $o(1)$.
 \end{proposition}
 \begin{proof}
-	First observe that $m-\lfloor \frac{m+1}{k}  \rfloor \le \lfloor (k-1)\frac{m+1}{k} \rfloor$. If $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta<\beta^\ast$, then $(m-\lfloor \frac{m+1}{k}  \rfloor) \beta<\beta^\ast$.
-	Now pick a vector $v\in\{\pm 1\}^m$ such that it has $\lfloor \frac{m+1}{k} \rfloor$ coordinates being $\omega^r$ for $r=0, \dots, k-2$ and $(m-(k-1)\lfloor \frac{m+1}{k} \rfloor)$ coordinates being $\omega^{k-1}$. Since $(k-1)\lfloor \frac{m+1}{k} \rfloor \leq \lfloor (k-1)\frac{m+1}{k} \rfloor$, by Lemma~\ref{lm:cvs}, with probability $1-o(1)$, $T_r$ is $\omega(1)$ for $r=0, \dots, k-1$. Therefore, we can find $\omega(1)$ pairs of $i_1, \dots, i_k \in[n]$ satisfying the following two conditions: (1) $\sigma_{i_r}^{(j)}=\sigma_{i_1}^{(j)}$ for all $j\in[m], r\in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k} \} = \{1, \omega, \dots, \omega^{k-1} \}$. Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X$ from $X^{(\sim\{I\}, v)}$ for $\omega(1)$ pairs of $i_1, \dots,i_k$. Therefore, the success probability of any recovery algorithm is $o(1)$.
+	From Lemma \ref{lem:mk} we have $m-\lfloor \frac{m+1}{k}  \rfloor \le \lfloor (k-1)\frac{m+1}{k} \rfloor$. If $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta<\beta^\ast$, then $(m-\lfloor \frac{m+1}{k}  \rfloor) \beta<\beta^\ast$.
+	Now pick a vector $v\in\{\pm 1\}^m$ such that it has $\lfloor \frac{m+1}{k} \rfloor$ coordinates being $\omega^r$ for $r=0, \dots, k-2$ and $(m-(k-1)\lfloor \frac{m+1}{k} \rfloor)$ coordinates being $\omega^{k-1}$.
+	Since $(k-1)\lfloor \frac{m+1}{k} \rfloor \leq \lfloor (k-1)\frac{m+1}{k} \rfloor$ by Lemma~\ref{lem:mk},
+	by Lemma~\ref{lm:cvs}, with probability $1-o(1)$, $T_r$ is $\omega(1)$ for $r=0, \dots, k-1$. Therefore, we can find $\omega(1)$ pairs of $i_1, \dots, i_k \in[n]$ satisfying the following two conditions: (1) $\sigma_{i_r}^{(j)}=\sigma_{i_1}^{(j)}$ for all $j\in[m], r\in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k} \} = \{1, \omega, \dots, \omega^{k-1} \}$. Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X$ from $X^{(\sim\{I\}, v)}$ for $\omega(1)$ pairs of $i_1, \dots,i_k$. Therefore, the success probability of any recovery algorithm is $o(1)$.
 \end{proof}
 \appendix
 
@@ -2809,6 +2842,36 @@ This completes the proof of the lemma.
 	P(Y\ge r a \log(n)) < n^{-r} .
 	$$
 \end{lemma}
+
+\section{Extra Lemmas used in the proof}
+\begin{lemma}\label{lem:thm23eq}
+\begin{align}
+\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast \iff  & m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \label{eq:m2} \\
+\lfloor \frac{(k-1)(m+1)}{k} \rfloor \beta <\beta^\ast  \iff & m < \tilde{m} + \frac{1}{k-1} \textrm{ if } \beta^*/\beta \textrm{ is not an integer } \notag \\
+& m < \tilde{m} -1 \textrm{ if } \beta^*/\beta \textrm{ is an integer } \label{eq:m22}
+\end{align}
+So Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold.
+\end{lemma}
+\begin{proof}
+	First, we give a proof of Equation \eqref{eq:m2}: $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$ implies that $\frac{\beta^\ast}{\beta}<\lfloor \frac{m+1}{2} \rfloor$.
+	The smallest integer that is larger than $\frac{\beta^\ast}{\beta}$ is $\lfloor \frac{\beta^\ast}{\beta}\rfloor +1$, so $\lfloor \frac{\beta^\ast}{\beta} \rfloor +1 \le \lfloor \frac{m+1}{2} \rfloor\le \frac{m+1}{2}$, and thus $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$. Now assume $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$, then $\frac{m-1}{2} \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor$. Since the right hand side is an integer, we have $\lfloor \frac{m+1}{2} \rfloor = \lfloor \frac{m-1}{2} \rfloor +1  \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor +1 >\frac{\beta^\ast}{\beta}$.
+	
+	Secondly, we show Equation \eqref{eq:m22}. If $\beta^\ast \over \beta$ is not an integer, then
+	\begin{align*}
+	& \lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta}  \\
+	\iff & {(k-1)(m+1) \over k} < \lfloor{\beta^\ast \over \beta}\rfloor + 1 \\
+	\iff & m < \frac{k}{k-1} \lfloor \frac{\beta^\ast}{\beta} \rfloor + \frac{1}{k-1}
+	\end{align*}
+	If  $\beta^\ast \over \beta$ is an integer, then
+	\begin{align*}
+	& \lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta}  \\
+	\iff & {(k-1)(m+1) \over k} < \lfloor{\beta^\ast \over \beta}\rfloor \\
+	\iff & m < \frac{k}{k-1} \lfloor \frac{\beta^\ast}{\beta} \rfloor -1
+	\end{align*}
+\end{proof}
 \bibliographystyle{plain}
 \bibliography{exportlist}
+
+
+
 \end{document}

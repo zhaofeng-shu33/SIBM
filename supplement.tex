@@ -132,56 +132,6 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(
 & = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{align*}
 \end{proof}
-\begin{lemma}
-	Let $m,k$ be integers and $k\geq 2, m\geq 1$, then
-	\begin{align}
-	m - \lfloor {m + 1 \over k} \rfloor & \leq  \lfloor {k - 1 \over k}(m+1) \rfloor \label{eq:m1} \\
-	(k-1) {m + 1 \over k}& \leq  \lfloor {k-1 \over k}(m+1) \rfloor \label{eq:m2}
-	\end{align}
-\end{lemma}
-\begin{proof}
-	For Eq. \eqref{eq:m2} we only need to show
-	\begin{equation}\label{eq:m22}
-	n \lfloor a \rfloor \leq \lfloor n a \rfloor
-	\end{equation}
-	for positive integer $n$ and positive real number $a$.
-	
-	Let $a = \lfloor a \rfloor + \{ a \}$, Eq. \eqref{eq:m22} is equivalent with
-	$n \lfloor a \rfloor \leq \lfloor n \{ a \} \rfloor + n \lfloor a \rfloor$, which is obvious.
-	
-	For Eq. \eqref{eq:m1} we want to show 
-	\begin{align*}
-     &	m - \lfloor {m + 1 \over k} \rfloor  \leq  (k-1)\lfloor {m + 1 \over k} \rfloor + \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor \\
-     \iff & m - k \lfloor {m + 1 \over k} \rfloor \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor \\
-     \iff & m - k ({m + 1 \over k} - \{ {m+1 \over k }\}) \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor  \\
-     \iff & k \{ {m+1 \over k }\} - 1 \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor  \\
-	\end{align*}
-	Since $k \{ {m+1 \over k }\}$ is an integer, the above Equation is further equivalent with
-	$$
-	- 1 \leq \lfloor - \{ {m + 1 \over k }\}\rfloor  
-	$$
-	which is obvious by the definition of the fractional part of a number.
-\end{proof}
-\begin{lemma}
-Let $m,k$ be integers and $k\geq 2, m\geq 1$. then
-$\lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta} \iff m < \frac{k}{k-1} \lfloor \frac{\beta^\ast}{\beta} \rfloor + \frac{1}{k-1}$
-if $\beta^\ast \over \beta$ is not an integer
-while
-$\lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta} \iff  m < \frac{k}{k-1}\lfloor \frac{\beta^\ast}{\beta} \rfloor -1 $
-if $\beta^\ast \over \beta$ is an integer.
-\end{lemma}
-\begin{proof}
-If $\beta^\ast \over \beta$ is not an integer, then
-\begin{align*}
-& \lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta}  \\
-\iff & {(k-1)(m+1) \over k} < \lfloor{\beta^\ast \over \beta}\rfloor + 1 \\
-\iff & m < \frac{k}{k-1} \lfloor \frac{\beta^\ast}{\beta} \rfloor + \frac{1}{k-1}
-\end{align*}
-If  $\beta^\ast \over \beta$ is an integer, then
-\begin{align*}
-& \lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta}  \\
-\iff & {(k-1)(m+1) \over k} < \lfloor{\beta^\ast \over \beta}\rfloor \\
-\iff & m < \frac{k}{k-1} \lfloor \frac{\beta^\ast}{\beta} \rfloor -1
-\end{align*}
-\end{proof}
+
+
 \end{document}
