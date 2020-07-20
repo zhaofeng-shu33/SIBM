@@ -148,16 +148,16 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 {\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
 If $\beta^\ast/\beta$ is not an integer and $m < \tilde{m} + \frac{1}{k-1}$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
 If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
+{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$.
 \end{theorem}
 Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a real number.
 When $\alpha > b \beta$,
 the above theorem establishes a recovery threshold
-for the regime of $m \geq m^\ast$ and $m < \tilde{m}$ (approximately) on the number of samples.
-When $k=2$ and $\beta^\ast/\beta$ is not an integer, it can be seen that the threshold is sharp. For general case, there is some gap between $\tilde{m}$ and $m^\ast$
-which Theorem \ref{thm:wt1} does not deal with.
+for the regime of $m \geq m^\ast$ and $m < \tilde{m}$ (approximately) on the number of samples. Since $\tilde{m} < m^*$,
+usually there is some gap between $\tilde{m}$ and $m^\ast$ in which the sample complexity is unknown.
+However, when $k=2$ and $\beta^\ast/\beta$ is not an integer, it can be seen that the threshold is sharp.
 
-It is worth mentioning that the threshold $m^\ast$ and $\tilde{m}$ does not depend on the value of the parameter $\alpha$, as long as $\alpha$ satisfies $\alpha>b\beta$.
+It is worth mentioning that the threshold value $m^\ast$ and $\tilde{m}$ do not depend on the parameter $\alpha$, as long as $\alpha>b\beta$.
 Below we present an equivalent characterization of the recovery threshold in terms of $\beta$.
 \begin{theorem} \label{thm:wt2}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
