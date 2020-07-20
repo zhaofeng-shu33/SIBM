@@ -51,7 +51,7 @@ In Section \ref{s:trans}, the main results are introduced;
 In Section \ref{s:conclusion}, the conclusion is given. Proof sketch of results is provided in the appendix.
 
 % notation convetion
-Within this paper, the number of community is denoted by $k$; the number of node is $n$; $m$ is the number of samples; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
+Within this paper, the number of community is denoted by $k$; the number of node is $n$; $m$ is the number of samples; $\lfloor x \rfloor$ is the floor function of $x$; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
 $V=\{1,\dots, n\} =: [n]$;
 the label of each node is a random variable $X_i$; $X_i$ is chosen from $W= \{1, \omega, \dots, \omega^{k-1}\}$ and we further require $W$
 is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applies to $W^n$ element-wisely; the set $\Gamma$ is used to represent all permutation function on $W$ and $\Gamma(\sigma):=\{f(\sigma)| f\in \Gamma\}$ for $\sigma \in W^n$; the indicator function $I(x, y)$ is defined as
@@ -154,8 +154,8 @@ Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term 
 When $\alpha > b \beta$,
 the above theorem establishes a recovery threshold
 for the regime of $m \geq m^\ast$ and $m < \tilde{m}$ (approximately) on the number of samples. Since $\tilde{m} < m^*$,
-usually there is some gap between $\tilde{m}$ and $m^\ast$ in which the sample complexity is unknown.
-However, when $k=2$ and $\beta^\ast/\beta$ is not an integer, it can be seen that the threshold is sharp.
+When $m \in (\tilde{m}, m^\ast)$, we do not know whether it is possible to recover $X$ or not.
+However, when $k=2$ and $\beta^\ast/\beta$ is not an integer, it can be seen that the threshold is sharp since the interval $(\tilde{m}, m^\ast + \frac{1}{k-1})=\emptyset$.
 
 It is worth mentioning that the threshold value $m^\ast$ and $\tilde{m}$ do not depend on the parameter $\alpha$, as long as $\alpha>b\beta$.
 Below we present an equivalent characterization of the recovery threshold in terms of $\beta$.
@@ -167,7 +167,8 @@ Below we present an equivalent characterization of the recovery threshold in ter
 	$
 	If $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{(k-1)(m+1)}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
 \end{theorem}
-Note that $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$ if and only if $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$, so Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold. $\beta$ represents the force of attraction between connected node in the graph. Theorem \ref{thm:wt2} states that
+Using the property of floor function, we can should that Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} are equivalent when $\alpha > b \beta$.
+$\beta$ represents the force of attraction between connected node in the graph. Theorem \ref{thm:wt2} states that
 to recover the label, the attraction force has a minimal threshold which depends on $m, \beta^*$.
 When $m=1$, we have the next theorem:
 

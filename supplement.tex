@@ -4,7 +4,8 @@
 \author{Feng Zhao}
 \begin{document}
 \maketitle
-In this supplementary material, we give some undocumented proof.
+In this supplementary material, we give some undocumented proof in \cite{ye2020exact}.
+This document is not so useful since we have a general $k$ version. The following lemma assumes $k=2$.
 \begin{lemma}\label{lem:ucBA}
 Let $\cG_1:=\{G:B_i-A_i<0\text{~for all~}i\in[n]\}$. Suppose $i\neq j$, then $P(B_i-A_i + B_j - A_j= t\log(n)~|~G\in\cG_1)= (1+o(1))P(B_i-A_i + B_j - A_j= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
 \end{lemma}
@@ -49,30 +50,7 @@ P(B_i -A_i + B_j - A_j = t\log n)
 \end{align*}
 Since $P(G\in G_1) = 1-o(1)$, the above summation can be further restricted to $t_1 < 0, t_2 < 0$. Thus Lemma \ref{lem:BijG} follows. 
 \end{proof}
-\begin{lemma}\label{lem:post_independent}
-	Let $p_{ij}=\Pr(\{\{i,j\} \in E(G) \})$ be the prior probability, which equals $\frac{a\log n}{n}$ or $\frac{b\log n}{n}$ depending on $X$.
-	The event $\{\{i,j\} \in E(G) \}$ are independent given $\sigma$ and the posterior probability is
-	\begin{equation}
-	\Pr(\{\{i,j\} \in E(G) \} | \sigma) = \frac{c p_{ij} }{1-p_{ij} + cp_{ij}} \text{ where  } c= \exp\Big((\beta + \frac{\alpha \log n}{n} ) I(\bar{\sigma}_i, \bar{\sigma}_j) \Big)
-	\end{equation}
-\end{lemma}
-\begin{proof}
-	Let $Y_{ij}$ be a Bernoulli random variable with $\Pr(Y_{ij} = 1) = \Pr(\{\{i,j\} \in E(G)\}) = p_{ij}$. $Y_{ij}$ represents whether there is an edge between node $i$ and $j$.
-	The prior distribution for $Y:=\{Y_{ij}\}$ can be written as:
-	$$
-	\Pr(Y) = \prod_{i,j} p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}
-	$$ 
-	Using the conditional distribution for $\sigma|G$, the posterior probability for $Y| \sigma$ can be written as
-	$$
-	\Pr(Y|\sigma) = C\prod_{ij} \exp((\beta + \frac{\alpha \log n}{n})I(\bar{\sigma_i}, \bar{\sigma_j} )y_{ij}) \Pr(Y)
-	$$
-	where $C$ is a constant irrelevant with $Y$.
-	We can see from the joint distribution of $Y|\sigma$ that $Y_{ij} | \sigma$ are independent and each marginal distribution has the following form:
-	$$
-	\Pr(Y_{ij} | \sigma) = C_{ij} \exp((\beta + \frac{\alpha \log n}{n})I(\bar{\sigma_i}, \bar{\sigma_j} )y_{ij}) p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}
-	$$
-	Using the normalization condition for $Y_{ij} | \sigma $, we can compute $C_{ij} = \frac{1}{1-p_{ij} + p_{ij}c}$. From $\Pr(\{\{i,j\} \in E(G) \} | \sigma) =\Pr(Y_{ij}=1|\sigma)$ the proof is complete.
-\end{proof}
+
 
 \begin{lemma} \label{lm:qq}
 	Let 
@@ -132,6 +110,14 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(
 & = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{align*}
 \end{proof}
+\begin{thebibliography}{1}
+	
 
+	\bibitem{ye2020exact}
+	Min Ye.
+	\newblock Exact recovery and sharp thresholds of stochastic ising block model,
+	2020.
+	
+\end{thebibliography}
 
 \end{document}
