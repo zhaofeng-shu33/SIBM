@@ -77,7 +77,7 @@ Let $p,q\in[0,1]$ be two real numbers, $X=(X_1,\dots,X_n)\in W^n$ and $G=([n],E(
 \end{definition}
 From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x))$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation.
 
-In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if and only if $\sqrt{a}-\sqrt{b} > \sqrt{k}$  \cite{abbe2015exact}.
+In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and impossible when $\sqrt{a}-\sqrt{b} < \sqrt{k}$ \cite{abbe2015exact}.
  
 Given a partition/labeling $X$ on $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G=([n],E(G))$, Ising model defines a probability distribution on all possible labels $W^n$ of these $n$ vertices. 
 
@@ -86,14 +86,16 @@ Given a partition/labeling $X$ on $n$ vertices, the SBM specifies how to generat
 The Ising model on a graph $G=([n],E(G))$ with parameters $\alpha,\beta>0$ is a probability distribution on the configurations $\sigma\in W^n$ such that
 \begin{align} \label{eq:isingma}
 &P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
-\exp\Big(\beta\sum_{\{i,j\}\in E(G)} I(\bar{\sigma}_i ,\bar{\sigma}_j)\notag\\
+\exp\Big(\beta \sum_{\{i,j\}\in E(G)} I(\bar{\sigma}_i ,\bar{\sigma}_j)\notag\\
 &-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)\Big) ,
 \end{align}
 where the subscript in $P_{\sigma|G}$ indicates that the distribution depends on $G$, and
 $Z_G(\alpha,\beta)$ is the normalizing constant for this distribution.
 \end{definition}
 
-By definition of Ising model we also have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$. This symmetric property corresponds with that of SBM.
+The definition of indicator function $I(x, y)$ is choosen such that the number of summation terms is balanced: $\sum_{\{i,j\}\in E(G)} | I(\bar{\sigma}_i ,\bar{\sigma}_j) | = (\frac{n}{k} - 1)(k-1)$ and $\sum_{\{i,j\}\not\in E(G)} | I(\bar{\sigma}_i ,\bar{\sigma}_j)| = \frac{n}{k} (k-1)$ for each fixed $i$. Therefore, the two
+quantities are approximately equal when $n$ is large.
+%By definition of Ising model we also have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$. This symmetric property corresponds with that of SBM.
 
 Next we present our new model, the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,k,p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
 
