@@ -73,12 +73,12 @@ We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $
 \begin{definition}[SSBM with $k$ communities] \label{def:SSBM}
 Let $0\leq p<q\leq 1$, $X=(X_1,\dots,X_n)\in W^n$ and $G=([n],E(G))$. The pair $(X,G)$ is drawn under $\SSBM(n,k,p,q)$ if 
 \begin{enumerate}
-\item $X$ is drawn uniformly with the constraint that $|\{v \in [n] : X_v = \omega^i\}| = \frac{n}{k}$;
+\item $X$ is drawn uniformly with the constraint that $|\{v \in [n] : X_v = u\}| = \frac{n}{k}$ for $u\in W$;
 
 \item the vertices $i$ and $j$ in $G$ are connected with probability $p$ if $X_i=X_j$ and with probability $q$ if $X_i \neq X_j$, independently of other pairs of vertices.
 \end{enumerate}
 \end{definition}
-From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x)), \forall f \in \Gamma$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation.
+From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x)), \forall f \in \Gamma$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $\Gamma(X)$.
 
 In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ \cite{abbe2015exact}.
  
@@ -111,7 +111,7 @@ The triple $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ is drawn under $\SIBM(n,k
 (i) the pair $(X,G)$ is drawn under $\SSBM(n,k, p,q)$;
 
 \noindent
-(ii) for every $i\in[m]$, each sample $\sigma^{(i)}=(\sigma_1^{(i)},\dots,\sigma_n^{(i)}) \in W^n$ is drawn independently according to the distribution \eqref{eq:isingma}.
+(ii) for every $i\in[m]$, each sample $\sigma^{(i)}=(\sigma_1^{(i)},\dots,\sigma_n^{(i)}) \in W^n$ is drawn independently according to the distribution in Equation \eqref{eq:isingma}.
 \end{definition}
 
 Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently from the Ising model on the {\em same} graph $G$.
@@ -127,7 +127,7 @@ $$
 P_{\SIBM}(\hat{X} \in \Gamma(X)) \to 1
 \text{~~~as~} n\to\infty ,
 $$
-and we call $P_{\SIBM}(\hat{X} \in \Gamma(X))$ the success probability of the recovery/decoding algorithm.
+and we call $P_{\SIBM}(\hat{X} \in \Gamma(X))$ the success probability of the recovery algorithm.
 \end{definition}
 
 By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefore, if we cannot recover $X$ from $G$, then there is no hope to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
