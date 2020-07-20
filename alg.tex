@@ -111,6 +111,38 @@
 	
 	Solving this equation and use the assumption that $ a > b, 0 < a < e_1$ we can get the unique solution of $(a,b)$.
 	This is our parameter estimation method.
+	\section{Connection with Modularity Based Method}
+	To simplify our analysis, we consider $k=2$ in this section. Our conclusion is that for SBM with large $n$, modularity method
+	is a special model of SIBM. The $\alpha, \beta$ are fixed values, which is not optimal for the specific SBM problem. We use theoretical
+	analysis and simulation to verify our declaration.
+
+	Now we compute modularity for SBM$(n,k, a\frac{\log n}{n}, b\frac{\log n}{n})$.
+	The standard formula is
+	\begin{equation}
+	Q = \frac{1}{2m} \sum_{ij} (A_{ij} - \frac{d_i d_j}{2m}) \delta(C_i, C_j)
+	\end{equation}
+	The standard way to do community detection is to maximize the modularity $Q$ using greedy method.
+	Suppose we use $Q$ in the definition of the numerator of Ising model. When $n$ is very large,
+	we have $d_i = \frac{\log n(a+b)}{2}, m = n d_i$. Therefore we have $\beta = \frac{1}{2m}(1-\frac{\log n}{2n}(a+b))
+	\sim \frac{1}{2m}$
+	and $\alpha = \frac{1}{2m}\frac{a+b}{2}$. Since $a>b$. We have $\alpha > b \beta$, which is a necessary condition for finite sample complexity.
+	However, due to the scaling effect, we can not get the conclusion on the critical value $\beta^*$.
+	
+	When $\alpha > b \beta$, we can do an optimization problem:
+	\begin{align}\label{eq:opsig}
+	\max_{\sigma} \,\,& \beta \sum_{\{i,j\} \in E(G)} \sigma_i \sigma_j - \frac{\alpha \log n}{n} \sum_{\{i,j\} \in E(G)} \sigma_i \sigma_j\\
+	s.t. \,\, & \sigma \in \{\pm 1\}^n
+	\end{align}
+	If the above equation can be solved exactly, then the solution is the true label with probability 1 as $n\to \infty$.
+	
+	This fact is easy to show using SIBM theory. we can always scaling the object function such that $\beta > \beta^*$.
+	Then the sample from SIBM is $\pm X$ with probability 1 and it is equivalent to do the above optimization problem.
+	This conclusion also verifies that Modularity maximization method is asymptotic optimal for SBM.
+	
+	For the given optimization problem in Equation \eqref{eq:opsig}, we can let $\beta = 1$ as given for modularity maximization method (we omit the scaling term $\frac{1}{2m}$).
+	Then our condition is $\alpha > b$. The choice of $\alpha$ for modularity method is $\frac{a+b}{2}$. We want to
+	investigate whether this choice is optimal for some approximation solution of modularity maximization.
+	
 	\appendix
 	\section{Proofs}
 	\begin{lemma}
