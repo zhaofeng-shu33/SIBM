@@ -1,10 +1,25 @@
 import argparse
 from multiprocessing import Queue
 from datetime import datetime
+import logging
+import os
 
 import networkx as nx
 import numpy as np
 from ising import SIBM_metropolis
+
+def set_up_log():
+    LOGGING_FILE = 'simulation.log'
+    logFormatter = logging.Formatter('%(asctime)s %(message)s')
+    rootLogger = logging.getLogger()
+    fileHandler = logging.FileHandler(os.path.join('build', LOGGING_FILE))
+    fileHandler.setFormatter(logFormatter)
+    rootLogger.addHandler(fileHandler)
+
+    consoleHandler = logging.StreamHandler()
+    consoleHandler.setFormatter(logFormatter)
+    rootLogger.addHandler(consoleHandler)
+    rootLogger.setLevel(logging.INFO)
 
 def sbm_graph(n, k, a, b):
     if n % k != 0 or a <= b:
@@ -52,6 +67,8 @@ def compare(r0, r1):
     '''
     get acc
     '''
+    if len(r0) != len(r1):
+        return 0
     total_num = len(r0[0]) + len(r0[1])
     t0 = r0[0].intersection(r1[0])
     t1 = r0[1].intersection(r1[1])
@@ -72,6 +89,8 @@ def acc_task(alg, params, num_of_times, qu):
         gt = get_ground_truth(graph)
         if alg == 'bisection':
             results = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
+        elif alg == 'modularity':
+            results = nx.algorithms.community.modularity_max.greedy_modularity_communities(graph)
         elif alg == 'metropolis':
             results = SIBM_metropolis(graph)
         else:
@@ -102,19 +121,24 @@ def get_acc(alg, params, num_of_times=100, multi_thread=1, binary=False):
     if binary:
         acc = int(acc)
     return acc
+def get_phase_transition_interval(a_list, acc_list):
+    for i in range(len(acc_list)):
+        if acc_list[i] < 0.5 and acc_list[i + 1] > 0.5:
+            return (a_list[i], a_list[i + 1])
+    raise ValueError('no interval found')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--alg', choices=['metropolis', 'bisection'], default='metropolis')
+    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'modularity'], default='metropolis')
     parser.add_argument('--repeat', type=int, default=100, help='number of times to generate the SBM graph')
     parser.add_argument('--multi_thread', type=int, default=1)
     parser.add_argument('--n', type=int, default=100)
     parser.add_argument('--binary', type=bool, const=True, nargs='?', default=False)
-    parser.add_argument('--a', type=float, default=16, nargs='+')
-    parser.add_argument('--b', type=float, default=4)
+    parser.add_argument('--a', type=float, default=16.0, nargs='+')
+    parser.add_argument('--b', type=float, default=4.0)
     parser.add_argument('--draw', type=bool, const=True, nargs='?', default=False)
     args = parser.parse_args()
-    if type(args.a) is str:
+    if type(args.a) is float:
         args.a = [args.a]
     acc_list = []
     for a in args.a:
@@ -122,7 +146,13 @@ if __name__ == '__main__':
         acc = get_acc(args.alg, params, args.repeat,
                     multi_thread=args.multi_thread, binary=args.binary)
         acc_list.append(acc)
+    set_up_log()
+    logging.info('n: {0}, repeat: {1}, alg: {2}'.format(args.n, args.repeat, args.alg))
+    if len(acc_list) > 1:
+        get_phase_transition_interval
     if args.draw and len(args.a) > 1:
         from matplotlib import pyplot as plt
         plt.plot(args.a, acc_list)
         plt.savefig('build/%s.png' % datetime.now().strftime('acc-a-%H-%M-%S'))
+    if len(acc_list) == 1:
+        logging.info('a: {0}, b: {1}, acc: {2}'.format(args.a[0], args.b, acc_list[0]))
