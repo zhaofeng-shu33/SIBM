@@ -149,7 +149,8 @@ if __name__ == '__main__':
     set_up_log()
     logging.info('n: {0}, repeat: {1}, alg: {2}'.format(args.n, args.repeat, args.alg))
     if len(acc_list) > 1:
-        get_phase_transition_interval
+        a_left, a_right = get_phase_transition_interval(args.a, acc_list)
+        logging.info('a_L: {0} for acc=0, a_R: {1} for acc=1, b: {2}'.format(a_left, a_right, args.b))
     if args.draw and len(args.a) > 1:
         from matplotlib import pyplot as plt
         plt.plot(args.a, acc_list)
