@@ -2273,7 +2273,7 @@ Using the above three lemmas, we obtain the following proposition
 \end{proposition}
 \begin{proof}
 	From Lemma \ref{lem:mk} we have $m-\lfloor \frac{m+1}{k}  \rfloor \le \lfloor (k-1)\frac{m+1}{k} \rfloor$. If $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta<\beta^\ast$, then $(m-\lfloor \frac{m+1}{k}  \rfloor) \beta<\beta^\ast$.
-	Now pick a vector $v\in\{\pm 1\}^m$ such that it has $\lfloor \frac{m+1}{k} \rfloor$ coordinates being $\omega^r$ for $r=0, \dots, k-2$ and $(m-(k-1)\lfloor \frac{m+1}{k} \rfloor)$ coordinates being $\omega^{k-1}$.
+	Now pick a vector $v\in W^m$ such that it has $\lfloor \frac{m+1}{k} \rfloor$ coordinates being $\omega^r$ for $r=0, \dots, k-2$ and $(m-(k-1)\lfloor \frac{m+1}{k} \rfloor)$ coordinates being $\omega^{k-1}$.
 	Since $(k-1)\lfloor \frac{m+1}{k} \rfloor \leq \lfloor (k-1)\frac{m+1}{k} \rfloor$ by Lemma~\ref{lem:mk},
 	by Lemma~\ref{lm:cvs}, with probability $1-o(1)$, $T_r$ is $\omega(1)$ for $r=0, \dots, k-1$. Therefore, we can find $\omega(1)$ pairs of $i_1, \dots, i_k \in[n]$ satisfying the following two conditions: (1) $\sigma_{i_r}^{(j)}=\sigma_{i_1}^{(j)}$ for all $j\in[m], r\in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k} \} = \{1, \omega, \dots, \omega^{k-1} \}$. Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X$ from $X^{(\sim\{I\}, v)}$ for $\omega(1)$ pairs of $i_1, \dots,i_k$. Therefore, the success probability of any recovery algorithm is $o(1)$.
 \end{proof}
