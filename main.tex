@@ -173,19 +173,19 @@ Using the property of floor function, we can should that Theorem~\ref{thm:wt1} a
 When $m=1$, we have the next theorem:
 
 \begin{theorem}  \label{thm:wt3}
-Let $a,b,\alpha,\beta> 0$ be constants satisfying $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. Let $m$ be a constant integer that does not grow with $n$.
+Let $a,b,\alpha,\beta> 0$ be constants satisfying $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
 Let 
 $
-(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
+(X,G,\{\sigma\}) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,1).
 $
 Define $g(\beta)  := \frac{b e^{k\beta}+a e^{-k\beta}}{k}-\frac{a+b}{k}+1$.
 If $\beta>\beta^\ast$, then
 $$
-P_{\SIBM}(\sigma^{(i)} \in \Gamma(X) \text{~for all~} i\in[m]) = 1-o(1).
+P_{\SIBM}(\sigma \in \Gamma(X)) = 1-o(1).
 $$
 If $\beta\le \beta^\ast$, then
 $$
-P_{\SIBM}(\dist(\sigma^{(i)}, \Gamma(X))= \Theta(n^{g(\beta)}) \text{~for all~} i\in[m]) = 1-o(1)
+P_{\SIBM}(\dist(\sigma, \Gamma(X))= \Theta(n^{g(\beta)})) = 1-o(1)
 $$
 \end{theorem}
 
@@ -274,13 +274,13 @@ A^r_i=A^r_i(G):=|\{j\in[n]\setminus\{i\}:\{i,j\}\in E(G), X_j=\omega^r \cdot X_i
 \end{equation*}
 for $ r=0, \dots, k-1$.
 Then by Equation \eqref{eq:isingma}, we have
-\begin{align*}
+\begin{align}
 &\frac{P_{\sigma|G}(\sigma=X^{(\sim i)} )}
 {P_{\sigma|G}(\sigma=X)}
- = \sum_{r=1}^{k-1}\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \\
+ = \sum_{r=1}^{k-1}\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \nonumber\\
 &-\frac{2(k-1)\alpha\log(n)}{n} \Big) 
- = (1+o(1)) \sum_{r=1}^{k-1}\exp (k \beta(A^r_i-A^0_i))  ,
-\end{align*}
+ = (1+o(1)) \sum_{r=1}^{k-1}\exp (k \beta(A^r_i-A^0_i)) \label{eq:kbetaA}
+\end{align}
 where the second equality holds with high probability because $|A^r_i-A^0_i|=O(\log(n))$ with probability $1-o(1)$.
 By definition,
 $A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$ and $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $r=1,\dots, k-1$, and they are independent. Therefore,
@@ -365,8 +365,8 @@ g(\beta)   & \text{~if~} \beta< \frac{1}{2k}\log\frac{a}{b} \\
 g(\frac{1}{2k}\log\frac{a}{b}) & \text{~if~} \beta\ge \frac{1}{2k}\log\frac{a}{b}
 \end{cases}
 $$
-Now using \eqref{eq:duj} and Markov inequality, we conclude that $\sum_{i=1}^n \exp (k \beta (A^r_i-A^0_i))< n^{\tilde{g}(\beta)/2}$ for almost all $G$,
-and so $\frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)} < n^{\tilde{g}(\beta)/2}$ for almost all $G$. 
+Now using \eqref{eq:duj} and Markov inequality, we conclude that $\sum_{r=1}^{k-1}\sum_{i=1}^n \exp (k \beta (A^r_i-A^0_i))< n^{\tilde{g}(\beta)/2}$ for almost all $G$,
+and so by Equation \eqref{eq:kbetaA}, $\frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)} < n^{\tilde{g}(\beta)/2}$ for almost all $G$. 
 The analysis of $\frac{P_{\SIBM} ( \dist(\sigma, X) = r )}{P_{\SIBM}(\sigma= X)}$ for $1\le r<kn/\log^{1/3}(n)$ is
 similar but with some notation difference, and we do not repeat it here.
 The conclusion is $\frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} < n^{r\tilde{g}(\beta)/2}$ for almost all $G$.
@@ -375,69 +375,14 @@ we can prove
 $P_{\SIBM}(\sigma \in \Gamma)=1-o(1)$ when $\beta>\beta^\ast$ for almost all $G$.
 
 \subsection{Proof for $\beta\le\beta^\ast$}
-For each $I$, we introduce a vector $v$ with $\mathrm{dim}(v) = |I|=r$. Each element of $v$ takes from $\{\omega, \omega^2, \omega^{k-1}\}$.
-$X^{(\sim I, v)}$ is defined as flipping $i \in I$ as : $X_i \to v_{\mathrm{index}(i)}\cdot X_i$.
-For example, if $I = {1,3}, n=3, v=(\omega^2, \omega)$ then $X^{(\sim I,v)} = (\omega^2 \cdot X_1, X_2, \omega \cdot X_3)$.
-Then $P_{\sigma|G}(\sigma = X^{(\sim I)})=\sum_{v}P_{\sigma|G}(\sigma = X^{(\sim I,v)})$
-
-By definition,
-$$
-\frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)}
-=\sum_{\cI\subseteq[n],|\cI|=r} \frac{P_{\sigma|G} ( \sigma= X^{(\sim \cI)} )} {P_{\sigma|G}(\sigma= X)} .
-$$
-Similarly to $A_i$ and $A^r_i$, for a set $\cI\subseteq[n]$, we define
-define
-$A_{\cI}=A_{\cI}(G):=|\{i,j\}\in E(G):  \{i, j\} \not\subseteq [n]\setminus\cI, X_j=X_i\}|$ and  
-$B_{\cI,v}=B_{\cI,v}(G):=|\{\{i,j\}\in E(G): \{i, j\} \not\subseteq [n]\setminus\cI, X_j= v_{\mathrm{index}(i)} \cdot X_i\}|$.
-Then by \eqref{eq:isingma} one can show that
-\begin{align*}
-& \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} 
-\le \sum_{v}\exp\Big( k\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI,v}-A_{\cI})\Big)\\
-& = \sum_{v}\exp ( k (\beta + o(1)) (B_{\cI,v}-A_{\cI})
-) 
-\end{align*}
-Since we are only interested in the case $|\cI|<kn/\log^{1/3}(n)=o(n)$,
-by definition we have $A_{\cI}\sim\Binom((\frac{n}{k}-o(n))|\cI|,\frac{a\log(n)}{n})$ and $B_{\cI}\sim\Binom((\frac{n}{k}-o(n))|\cI|,\frac{b\log(n)}{n})$, and they are independent. Therefore,
-\begin{align*}
-&E_G[\exp ( k (\beta +o(1)) (B_{\cI,v}-A_{\cI}) ) ] = 
-\exp\Big(\frac{|\cI|\log(n)}{k} \\
-&( a e^{-k\beta}+b e^{k\beta} -a-b +o(1) )
-\Big) 
-=  n^{|\cI|(g(\beta)-1+o(1))}
-\end{align*}
-As a consequence,
-\begin{align} \label{eq:nn}
-&E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r)}{P_{\sigma|G}(\sigma= X)} \Big]
-\le \sum_{\cI\subseteq[n],|\cI|=r} 
-n^{k (g(\beta)-1+o(1))}\notag\\
-&= \binom{n}{r} (k-1)^r n^{r (g(\beta)-1+o(1))}
-\end{align}
-
-First let us use a tighter bound $\binom{n}{r}<n^r/(r!)$. 
-For $r>n^{g(\beta)+\delta}$, we have
-$
-r!>(r/e)^r
-=\exp(r\log(r)-r)
->\exp(r(g(\beta)+\delta)\log(n)-r)
-=n^{r(g(\beta)+\delta-o(1))} .
-$
-Taking these into the last inequality of \eqref{eq:nn}, we obtain that for all $r>n^{g(\beta)+\delta}$,
-\begin{align*}
-&E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} \Big]
-\le  (k-1)^r\binom{n}{k} n^{k (g(\beta)-1+o(1))} \\
-&< n^{r (g(\beta)+o(1))} /(r!) 
-< (k-1)^rn^{-r(\delta-o(1))} .
-\end{align*}
-This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma(X))<n^{g(\beta)+\delta} ) = 1- o(1)$ for any $\delta>0$.
-Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, we have $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$.
-This improves upon the upper bound 
-$\dist(\sigma, \Gamma(X))< kn/\log^{1/3}(n)$ we obtained using spectral method at the beginning of this section.
-
-More importantly, this allows us to prove a powerful structural result. (All the discussions below are conditioning on the event $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma(X)\backslash\{X\}$.) We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
+We restrict our discussion on the case $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma(X)\backslash\{X\}$.
+We would show that $P(\dist(\sigma, X) = \Theta(n^{g(\beta)})) = 1 - o(1)$ conditioned on $\dist(\sigma,X)\le n/k$.
+Using some techniques to bound $E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} \Big]$, we can show that $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$.
+This allows us to prove a powerful structural result. We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
 Conditioning on the event every vertex has at most $z$ ``bad" neighbors, it is easy to show that $P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1}\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor $\exp(k^2\beta z)$.
 Therefore, $E_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
 We can further prove that $\dist(\sigma,X)$ concentrates around its expectation. Thus we conclude that $\dist(\sigma,X)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
-Quite surprisingly, when $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation: For almost all graph $G$, we have $\sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))=(1+o(1))n^{g(\beta)}$.
+When $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation: For almost all graph $G$, we have $\sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))=(1+o(1))n^{g(\beta)}$.
 Combining this with the above analysis, we conclude that $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ when $\beta\le\beta^\ast$.
 This completes the sketched proof of Theorem~\ref{thm:wt3}.
 
