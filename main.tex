@@ -374,7 +374,7 @@ Using the union bound,
 we can prove
 $P_{\SIBM}(\sigma \in \Gamma)=1-o(1)$ when $\beta>\beta^\ast$ for almost all $G$.
 
-\subsection{Proof for $\beta\le\beta^\ast$}
+\subsection{Proof for $\beta\le\beta^\ast$}\label{subsect:smaller}
 We restrict our discussion on the case $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma(X)\backslash\{X\}$.
 We would show that $P(\dist(\sigma, X) = \Theta(n^{g(\beta)})) = 1 - o(1)$ conditioned on $\dist(\sigma,X)\le n/k$.
 We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
@@ -409,16 +409,16 @@ This completes the sketched proof of Theorem~\ref{thm:wt3}.
 				\State Output $\hat{X}$
 			\end{algorithmic}
 		\end{algorithm}
-For the multiple-sample case, we prove that the above simple algorithm can recover $X$ with probability $1-o(1)$ if and only if the Maximum Likelihood (ML) algorithm recovers $X$ with probability $1-o(1)$. We already showed that each sample is either very close to $\Gamma(X)$, so after the alignment step in Algorithm~\ref{alg:ez}, all the samples are either simultaneously aligned with one of $\Gamma(X)$. WLOG, we assume all samples are aligned with $X$.
-By the structural results discussed above, with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)} \neq X_i)$ differs from $\sum_{r=1}^{k-1} \exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$. Since the samples are independent, we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $\sum_{r=1}^{k-1} \exp (k u \beta (A^r_i-A^0_i))$
+For the multiple-sample case, we prove that Algorithm \ref{alg:ez} can recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$. We already showed that each sample is very close to $\Gamma(X)$ when $\alpha > b \beta$, so after the alignment step in Algorithm~\ref{alg:ez}, all the samples are simultaneously aligned with the same element from $\Gamma(X)$. We assume all samples are aligned with $X$ in the following analysis.
+From Subsection \ref{subsect:smaller}, with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)} \neq X_i)$ differs from $\sum_{r=1}^{k-1} \exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$. Since the samples are independent, we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $\sum_{r=1}^{k-1} \exp (k u \beta (A^r_i-A^0_i))$
 by at most a constant factor.
 Here $u\beta$ plays the role of $\beta$ in the single-sample case.
-Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le u-1$, or equivalently, $X_i(\sum_{j=1}^m \sigma_i^{(j)} ) \ge m-2u+2$ for all $i\in[n]$. Let $u=\lfloor \frac{m+1}{2} \rfloor$,
+Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le u-1$ for all $i\in[n]$. Let $u=\lfloor \frac{m+1}{2} \rfloor$,
 then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le \lfloor \frac{m-1}{2} \rfloor $ while $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = X_i]
 = m - \lfloor \frac{m-1}{2} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] $
 which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}.
 
-The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{(k-1)(m+1)}{k} \rfloor  \beta < \beta^\ast$, also relies on the structural result and it is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case.
+The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{(k-1)(m+1)}{k} \rfloor  \beta < \beta^\ast$ is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case and can be found in arxiv.
 
 
 \bibliographystyle{IEEEtran}

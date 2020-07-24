@@ -430,7 +430,7 @@ For the multiple-sample case, we prove that the above simple algorithm can recov
 By the structural results discussed above, with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)} \neq X_i)$ differs from $\sum_{r=1}^{k-1} \exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$. Since the samples are independent, we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $\sum_{r=1}^{k-1} \exp (k u \beta (A^r_i-A^0_i))$
 by at most a constant factor.
 Here $u\beta$ plays the role of $\beta$ in the single-sample case.
-Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le u-1$, or equivalently, $X_i(\sum_{j=1}^m \sigma_i^{(j)} ) \ge m-2u+2$ for all $i\in[n]$. Let $u=\lfloor \frac{m+1}{2} \rfloor$,
+Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le u-1$ for all $i\in[n]$. Let $u=\lfloor \frac{m+1}{2} \rfloor$,
 then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le \lfloor \frac{m-1}{2} \rfloor $ while $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = X_i]
 = m - \lfloor \frac{m-1}{2} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] $
 which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}. See Section~\ref{sect:direct} for a rigorous proof of the above argument.
