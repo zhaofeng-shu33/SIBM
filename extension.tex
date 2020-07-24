@@ -155,7 +155,7 @@ $$
 P_{\SIBM}(\dist(\sigma^{(i)}, \Gamma)= \Theta(n^{g(\beta)}) \text{~for all~} i\in[m]) = 1-o(1) .
 $$
 \end{theorem}
-
+One can show that (i) $g(\beta)$ is a strictly decreasing function in $[0,\beta^\ast]$, (ii) $g(0)=1$ and (iii) $g(\beta^\ast)=0$. Therefore, $0<g(\beta)<1$ when $0<\beta<\beta^\ast$. Thus Theorem~\ref{thm:wt3} implies that for all $\beta\le \beta^\ast$, $\dist(\sigma^{(i)},\Gamma)=o(n)$ for all $i\in[m]$. In particular, for $\beta = \beta^\ast$, $\dist(\sigma^{(i)},\Gamma)=\Theta(1)$ for all $i\in[m]$.
 \section{Sketch of the proof}
 \label{sect:sketch}
 
@@ -182,7 +182,6 @@ $$
 P_{\sigma|G}(\sigma=\bar{\sigma})
 = \frac{1}{Z_G(\alpha,\beta)}
 \exp\Big( \frac{1}{2} \sum_{i,j} M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j) + \frac{1}{2} \sum_{i,j}\big(\beta+\frac{\alpha\log(n)}{n} \big)  (A-E[A|X])_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j) 
-  \bar{\sigma}^T 
 \Big)  .
 $$
 One can show that if $\alpha>b\beta$, then the maximizers of $\sum_{i,j} M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j)$ consist of set $\Gamma$, and if $\alpha<b\beta$, then the maximizer set is $\Theta$.
@@ -191,7 +190,7 @@ $\|A-E[A|X]\| = O(\sqrt{\log(n)})$ with probability $1-o(1)$, we can further sho
 $$
 \left|\frac{1}{2} \big(\beta+\frac{\alpha\log(n)}{n} \big)\sum_{i,j} (A-E[A|X])
  I( \bar{\sigma}_i, \bar{\sigma}_j) \right| = O \big( n \sqrt{\log(n)} \big)
-  \text{~~for all~} \bar{\sigma}\in\{\pm 1\}^n  .
+  \text{~~for all~} \bar{\sigma}\in W^n  .
 $$
 This allows us to prove that in both cases (no matter $\alpha>b\beta$ or $\alpha<b\beta$), the Hamming distance between the samples and the maximizers of $\sum_{i,j}  M_{ij}I(\bar{\sigma}_i, \bar{\sigma}_j)$ is upper bounded by $kn/\log^{1/3}(n)=o(n)$.
 More precisely, if $\alpha>b\beta$, then $\dist(\sigma^{(i)},\Gamma )< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$; if $\alpha<b\beta$, then $\dist(\sigma^{(i)}, \Theta)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$; see Proposition~\ref{prop:1} for a rigorous proof.
@@ -205,19 +204,19 @@ Let us analyze the one sample case, i.e., we take $m=1$.
 Theorem~\ref{thm:wt3} implies that $\beta^\ast$ is a sharp threshold for the event $\{\sigma \in \Gamma\}$, i.e., $P_{\SIBM}(\sigma\in \Gamma)=1-o(1)$ if $\beta$ is above this threshold and $P_{\SIBM}(\sigma\in \Gamma)=o(1)$ if $\beta$ is below this threshold.
 We already know that
 $
-P_{\SIBM} \big(\dist(\sigma,\pm X)< kn/\log^{1/3}(n) \big) = 1- o(1) .
+P_{\SIBM} \big(\dist(\sigma, \Gamma)< kn/\log^{1/3}(n) \big) = 1- o(1) .
 $
 Therefore the following three statements are equivalent:
 \begin{enumerate}[label=(\arabic*)]
 \item $P_{\SIBM}(\sigma\in \Gamma)$ has a sharp transitions from $0$ to $1$ at $\beta^\ast$.
-\item $P_{\SIBM} \big( 1\le \dist(\sigma,\Gamma)< kn/\log^{1/3}(n) \big)$ has a sharp transitions from $1$ to $0$ at $\beta^\ast$.
+\item $P_{\SIBM} \big( 1\le \dist(\sigma,\Gamma)< kn/\log^{1/3}(n) \big)$ has a sharp transition from $1$ to $0$ at $\beta^\ast$.
 \item $\frac{P_{\SIBM} ( 1\le \dist(\sigma, X)< kn/\log^{1/3}(n) )}{P_{\SIBM}(\sigma= X)}$ has a sharp transitions from $\infty$ (or $\omega(1)$) to $0$ at $\beta^\ast$.
 \end{enumerate}
 Statements (2) and (3) are equivalent because $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f$ is a permutation function.
 We will show that the above three statements are further equivalent to
 \begin{enumerate}[label=(\arabic*)]
 \setcounter{enumi}{3}
-  \item  $\frac{P_{\SIBM} ( \dist(\sigma, X) = 1 )}{P_{\SIBM}(\sigma= X)}$ has a sharp transitions from $\infty$ (or $\omega(1)$) to $0$ at $\beta^\ast$.
+  \item  $\frac{P_{\SIBM} ( \dist(\sigma, X) = 1 )}{P_{\SIBM}(\sigma= X)}$ has a sharp transition from $\infty$ (or $\omega(1)$) to $0$ at $\beta^\ast$.
 \end{enumerate}
 We first prove (4) and then show that it is equivalent to statement (3).
 Instead of analyzing $\frac{P_{\SIBM} ( \dist(\sigma, X) = 1 )}{P_{\SIBM}(\sigma= X)}$, we analyze $\frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)}$ for a typical graph $G$.
@@ -265,7 +264,7 @@ This at least intuitively explains why $\beta^\ast$ is the threshold. However, i
 Moreover, $g(\beta)$ is an increasing function in the interval $\beta\in(\frac{1}{2k}\log\frac{a}{b}, +\infty)$, so the expectation first decreases in the interval $(0,\frac{1}{2k}\log\frac{a}{b}]$ and then starts increasing. We will prove that there is a ``cut-off" effect when $\beta>\frac{1}{2k}\log\frac{a}{b}$, i.e., although the expectation becomes much larger than $n^{g(\frac{1}{2k}\log\frac{a}{b})}$, for a typical graph $G$, we always have
 $$
 \frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)} 
-= O( n^{g(\frac{1}{4}\log\frac{a}{b})} ) =o(1)
+= O( n^{g(\frac{1}{2k}\log\frac{a}{b})} ) =o(1)
 $$
 whenever $\beta>\frac{1}{2k}\log\frac{a}{b}$.
 Below we divide the proof into three cases: (i) $\beta\in(0,\beta^\ast]$, (ii) $\beta\in(\beta^\ast,\frac{1}{2k}\log\frac{a}{b}]$, and (iii) $\beta\in(\frac{1}{2k}\log\frac{a}{b},+\infty)$.
