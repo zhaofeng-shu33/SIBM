@@ -38,11 +38,11 @@
 \end{abstract}
 \section{Introduction}
 % first paragraph: short intro to SBM and Ising model
-In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{Abbe17}. On the other hand, Ising model is a well-known statistical model in physics which also has some kind of phase translation property \cite{ising1925beitrag}. The particles in Ising model interacts with neighbors and change its state to approach a steady state.
+In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{Abbe17}. On the other hand, Ising model is a well-known statistical model in physics which also has some kind of phase translation property \cite{ising1925beitrag}. The particles in Ising model interact with neighbors and change its state to approach a steady state.
 As a probabilistic model, Ising model is not limited to statistical physics and there has already some works to apply Ising model to investigate the social voting phenomenon \cite{sznajd2000opinion}.
 
 In the original formulation, each particle in Ising model has only two states. Potts extended it to multiple state \cite{potts1952some}. This multiple-state Ising model
-corresponds to SBM with multiple communities, thus enabling us to propose a concatenated network model: Stochastic Ising Block Model (SIBM). For 2 community case, there has already been some results \cite{ye2020exact}, but little is know for multiple communities case. In this paper, we will give the formulation of SIBM on multiple
+corresponds to SBM with multiple communities, thus enabling us to propose a concatenated network model: Stochastic Ising Block Model (SIBM). For 2 community case, there are already some results \cite{ye2020exact}, but little is known for multiple communities case. In this paper, we will give the formulation of SIBM on multiple
 communities. We can generate multiple samples from SIBM, which more or less differ from the original labels, depending on the choice of parameters. Using the generated samples, we focus on the problem of whether it is possible to exactly recover the label. By investigating the phase transition property for our compose model,
 we can compute the feasible regime of parameter for exact recovery and the corresponding sample complexity to accomplish the goal.
 
@@ -98,7 +98,7 @@ $Z_G(\alpha,\beta)$ is the normalizing constant for this distribution.
 
 When $\alpha=0$ and $k=2$, Equation \eqref{eq:isingma} gives the standard definition for Ising Model.
 For our specific problems, $\alpha > 0$ is needed to guarantee that the definition is not concentrated within
-$\Theta$. The definition of indicator function $I(x, y)$ is choosen such that the number of summation terms is balanced: $\sum_{\{i,j\}\in E(G)} | I(\bar{\sigma}_i ,\bar{\sigma}_j) | = (\frac{n}{k} - 1)(k-1)$ and $\sum_{\{i,j\}\not\in E(G)} | I(\bar{\sigma}_i ,\bar{\sigma}_j)| = \frac{n}{k} (k-1)$ for each fixed $i$. Therefore, the two
+$\Theta$. The definition of indicator function $I(x, y)$ is chosen such that the number of summation terms is balanced: $\sum_{\{i,j\}\in E(G)} | I(\bar{\sigma}_i ,\bar{\sigma}_j) | = (\frac{n}{k} - 1)(k-1)$ and $\sum_{\{i,j\}\not\in E(G)} | I(\bar{\sigma}_i ,\bar{\sigma}_j)| = \frac{n}{k} (k-1)$ for each fixed $i$. Therefore, the two
 quantities are approximately equal when $n$ is large.
 %By definition of Ising model we also have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$. This symmetric property corresponds with that of SBM.
 
@@ -167,7 +167,7 @@ Below we present an equivalent characterization of the recovery threshold in ter
 	$
 	If $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{(k-1)(m+1)}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
 \end{theorem}
-Using the property of floor function, we can should that Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} are equivalent when $\alpha > b \beta$.
+Using the property of floor function, we can show that Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} are equivalent when $\alpha > b \beta$.
 %$\beta$ represents the force of attraction between connected node in the graph. Theorem \ref{thm:wt2} states that
 %to recover the label, the attraction force has a minimal threshold which depends on $m, \beta^*$.
 When $m=1$, we have the next theorem:
