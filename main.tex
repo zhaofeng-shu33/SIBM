@@ -1,6 +1,7 @@
 \label{key}\documentclass[conference]{IEEEtran}
 \usepackage{amsthm}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
@@ -38,7 +39,7 @@
 \end{abstract}
 \section{Introduction}
 % first paragraph: short intro to SBM and Ising model
-In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{Abbe17}. On the other hand, Ising model is a well-known statistical model in physics which also has some kind of phase translation property \cite{ising1925beitrag}. The particles in Ising model interact with neighbors and change its state to achieve a steady state.
+In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{Abbe17}. On the other hand, Ising model is a well-known statistical model in physics which also has some kind of phase transition property \cite{ising1925beitrag}. The particles in Ising model interact with neighbors and change its state to achieve a steady state.
 As a probabilistic model, Ising model is not limited to statistical physics and there are already some works to apply Ising model to investigate the social voting phenomenon \cite{sznajd2000opinion}.
 
 In the original formulation, each particle in Ising model has only two states. Potts extended it to multiple states \cite{potts1952some}. This multiple-state Ising model
@@ -132,7 +133,7 @@ and we call $P_{\SIBM}(\hat{X} \in \Gamma(X))$ the success probability of the re
 
 By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefore, if we cannot recover $X$ from $G$, then there is no hope to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
 
-\section{Phase Translation and Sample Complexity of SIBM}\label{s:trans}
+\section{Phase Transition and Sample Complexity of SIBM}\label{s:trans}
 Our main Problem is to investigate what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?
 
 Our main results are as follows:
@@ -140,15 +141,18 @@ Our main results are as follows:
 \begin{theorem} \label{thm:wt1}
 For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, let
 \begin{align} \label{eq:defstar}
-&\beta^\ast := \frac{1}{k}
+&\beta^\ast \triangleq \frac{1}{k}
 \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}  \\
-&m^\ast := 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \text{~~~and~~~}
-\tilde{m} = \frac{k}{k-1}\Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor
+&m^\ast \triangleq 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \text{~~~and~~~}
+\tilde{m} \triangleq \frac{k}{k-1}\Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor
 \end{align}
-{\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
-If $\beta^\ast/\beta$ is not an integer and $m < \tilde{m} + \frac{1}{k-1}$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$.
+\begin{enumerate}
+	\item When $\alpha > b \beta$. If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
+	If $\beta^\ast/\beta$ is not an integer and $m < \tilde{m} + \frac{1}{k-1}$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+	If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+	\item When $\alpha < b \beta$. Exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$.
+\end{enumerate}
+
 \end{theorem}
 Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a real number.
 When $\alpha > b \beta$,
