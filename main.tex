@@ -39,11 +39,11 @@
 \end{abstract}
 \section{Introduction}
 % first paragraph: short intro to SBM and Ising model
-In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{Abbe17}. On the other hand, Ising model is a well-known statistical model in physics which also has some kind of phase transition property \cite{ising1925beitrag}. The particles in Ising model interact with neighbors and change its state to achieve a steady state.
+In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{Abbe17}. Meanwhile, Ising model is a well-known statistical model in physics which also has some kind of phase transition property \cite{ising1925beitrag}. The particles in Ising model interact with neighbors and change its state to achieve a steady state.
 As a probabilistic model, Ising model is not limited to statistical physics and there are already some works to apply Ising model to investigate the social voting phenomenon \cite{sznajd2000opinion}.
 
-In the original formulation, each particle in Ising model has only two states. Potts extended it to multiple states \cite{potts1952some}. This multiple-state Ising model
-corresponds to SBM with multiple communities, thus enabling us to propose a concatenated network model: Stochastic Ising Block Model (SIBM). For 2 community case, there are already some results \cite{ye2020exact}, but little is known for multiple communities case. In this paper, we will give the formulation of SIBM on multiple
+In the original formulation, each particle in Ising model has only two states. Potts extended it to multi-states \cite{potts1952some}. This multiple-state Ising model
+corresponds to SBM with multiple communities, thus enabling us to propose a concatenated network model: Stochastic Ising Block Model (SIBM). For 2-community case, there are already some results \cite{ye2020exact}, but little is known for multiple communities case. In this paper, we will give the formulation of SIBM on multiple
 communities. We can generate multiple samples from SIBM, which more or less differ from the original labels, depending on the choice of parameters. Using the generated samples, we focus on the problem of whether it is possible to exactly recover the label. By investigating the phase transition property for our compose model,
 we can compute the feasible regime of parameters for exact recovery and the corresponding sample complexity to accomplish the recovery goal.
 
@@ -147,10 +147,13 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 \tilde{m} \triangleq \frac{k}{k-1}\Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor
 \end{align}
 \begin{enumerate}
-	\item When $\alpha > b \beta$. If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
-	If $\beta^\ast/\beta$ is not an integer and $m < \tilde{m} + \frac{1}{k-1}$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-	If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-	\item When $\alpha < b \beta$. Exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$.
+	\item We discuss the case when $\alpha > b \beta$:
+	\begin{enumerate}
+	\item If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
+	\item If $\beta^\ast/\beta$ is not an integer and $m < \tilde{m} + \frac{1}{k-1}$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+	\item If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+	\end{enumerate}
+	\item When $\alpha < b \beta$, exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$.
 \end{enumerate}
 
 \end{theorem}
