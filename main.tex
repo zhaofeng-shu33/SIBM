@@ -55,7 +55,7 @@ In Section \ref{s:conclusion}, the conclusion is given. Proof sketch of our main
 Within this paper, the number of community is denoted by $k$; $m$ is the number of samples; $\lfloor x \rfloor$ is the floor function of $x$; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
 $V=\{1,\dots, n\} =: [n]$;
 the label of each node is a random variable $X_i$; $X_i$ is chosen from $W= \{1, \omega, \dots, \omega^{k-1}\}$ and we further require $W$
-is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $\Gamma$ is used to represent all permutation functions on $W$ and $\Gamma(\sigma):=\{f(\sigma)| f\in \Gamma\}$ for $\sigma \in W^n$; the indicator function $I(x, y)$ is defined as
+is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $\Gamma$ is used to represent all permutation functions on $W$ and $\Gamma(\sigma):=\{f(\sigma)| f\in \Gamma\}$ for $\sigma \in W^n$; the function $I(x, y)$ is defined as
 $I(x, y) = k-1 $ when $x=y$, and $I(x,y)=-1$ when $x\neq y$; $g(n) = \Theta(f(n))$ if there exists constant $c_1 < c_2$ such that $c_1 f(n) \leq g(n) \leq c_2 f(n)$
 for large $n$;
 $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$
@@ -99,7 +99,7 @@ $Z_G(\alpha,\beta)$ is the normalizing constant for this distribution.
 
 When $\alpha=0$ and $k=2$, Equation \eqref{eq:isingma} gives the standard definition for Ising Model.
 For our specific problems, $\alpha > 0$ is needed to guarantee that the distribution is not concentrated within
-$\Lambda$. The definition of indicator function $I(x, y)$ is chosen such that the number of summation terms is balanced: $\sum_{\{i,j\}\in E(G)} | I(\bar{\sigma}_i ,\bar{\sigma}_j) | = (\frac{n}{k} - 1)(k-1)$ and $\sum_{\{i,j\}\not\in E(G)} | I(\bar{\sigma}_i ,\bar{\sigma}_j)| = \frac{n}{k} (k-1)$ for each fixed $i$. Therefore, the two
+$\Lambda$. The definition of function $I(x, y)$ is chosen such that the number of summation terms is balanced: $\sum_{\{i,j\}\in E(G)} | I(\bar{\sigma}_i ,\bar{\sigma}_j) | = (\frac{n}{k} - 1)(k-1)$ and $\sum_{\{i,j\}\not\in E(G)} | I(\bar{\sigma}_i ,\bar{\sigma}_j)| = \frac{n}{k} (k-1)$ for each fixed $i$. Therefore, the two
 quantities are approximately equal when $n$ is large.
 %By definition of Ising model we also have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$. This symmetric property corresponds with that of SBM.
 
