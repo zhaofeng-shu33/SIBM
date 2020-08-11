@@ -411,7 +411,7 @@ See Sections~\ref{sect:theta} and Sections~\ref{sect:struct} for the rigorous pr
 				\Statex \hspace*{-0.3in} 
 				{\bf Step 1: Align all the samples with $\sigma^{(1)}$ }
 				\For {$j=2,3,\dots,m$}
-				\State $f=\arg\max_{f_{\gamma}} \sum_{i=1}^n I(f_{\gamma}(\sigma^{(j)}_i), \sigma^{(1)}_i)$
+				\State $f=\arg\min_{f_{\gamma}} d(f_{\gamma}(\sigma^{(j)}), \sigma^{(1)})$
 				\State $\sigma^{(j)} \gets f(\sigma^{(j)})$
 				\EndFor
 				\Statex \hspace*{-0.3in}
@@ -2843,6 +2843,9 @@ This completes the proof of the lemma.
 \end{lemma}
 
 \section{Extra Lemmas used in the proof}
+\begin{lemma}
+	For given $X, W \in W^n$, let $f^*=\arg\min_{f \in \Gamma } d(f(Y), X)$, then $d(X,f^*(Y)) \leq \frac{k-1}{k}n$.
+\end{lemma}
 \begin{lemma}\label{lem:thm23eq}
 \begin{align}
 \lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast \iff  & m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \label{eq:m2} \\
