@@ -2844,8 +2844,19 @@ This completes the proof of the lemma.
 
 \section{Extra Lemmas used in the proof}
 \begin{lemma}
-	For given $X, W \in W^n$, let $f^*=\arg\min_{f \in \Gamma } d(f(Y), X)$, then $d(X,f^*(Y)) \leq \frac{k-1}{k}n$.
+	For given $X, Y \in W^n$, suppose $|\{i | X_i = w^k \}| = \frac{n}{k}$.
+	Let $f^*=\arg\min_{f \in \Gamma } d(f(Y), X)$, then $d(X,f^*(Y)) \leq \frac{k-1}{k}n$.
 \end{lemma}
+\begin{proof}
+	We need to show that there exists a function $g\in \Gamma$ such that $\sum_{i=1}^n \mathbbm{1}[X_i=g(Y)_i] \geq \frac{n}{k}$.
+	Now we construct the required function $g$ as follows:
+	First we define $N_{ij} = |\{s | X_s = w^i, Z_s = w^j\}|$, $(i_1^*,j_1^*) = \arg\max N^{(1)}_{ij}$ and $S^{(1)}_i = \{i_1^*\}, S_j^{(1)}=\{j_1^*\}$.
+	Then we give the recursive definition:
+	$(i_r^*,j_r^*) = \arg\max_{i \not\in S_i^{(r-1)}, j \not\in S_j^{(r-1)}} N_{ij}$ and $S^{(r)}_i = S^{(r-1)}_i \cup \{i_r^*\}, S_j^{(r)}= S_j^{(r-1)}\cup \{j_r^*\}$ for $r=2, \dots, k$.
+	The function $g$ is defined by $g(w^{i_r^*}) = g(w^{j_r^*})$. It is easy to show that $g$ is well-defined and belongs to $\Gamma$.
+	On the other hand, $\sum_{i=1}^n \mathbbm{1}[X_i=g(Y)_i] = \sum_{i=1}^k N_{i_r^*,j_r^*}$.
+	$N_{i_k^*, j_k^*} = \frac{n}{k} - \sum_{r=1, r\neq i_k^*}^k N_{r,j_k^*} = \frac{n}{k} - \sum_{r=1}^{k-1} N_{i^*_r,j_k^*} \geq \frac{n}{k} - \sum_{r=1}^{k-1} N_{i^*_r,j^*_r}$. Therefore,  $\sum_{i=1}^n \mathbbm{1}[X_i=g(Y)_i] \geq \frac{n}{k}$.
+\end{proof}
 \begin{lemma}\label{lem:thm23eq}
 \begin{align}
 \lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast \iff  & m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \label{eq:m2} \\
