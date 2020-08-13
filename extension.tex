@@ -426,7 +426,7 @@ See Sections~\ref{sect:theta} and Sections~\ref{sect:struct} for the rigorous pr
 		\end{algorithm}
 	\end{minipage}
 \end{center}
-For the multiple-sample case, we prove that the above simple algorithm can recover $X$ with probability $1-o(1)$ if and only if the Maximum Likelihood (ML) algorithm recovers $X$ with probability $1-o(1)$. We already showed that each sample is either very close to $\Gamma$, so after the alignment step in Algorithm~\ref{alg:ez}, all the samples are either simultaneously aligned with one of $\Gamma$. WLOG, we assume all samples are aligned with $X$.
+For the multiple-sample case, we prove that the above simple algorithm can recover $X$ with probability $1-o(1)$ if and only if the Maximum Likelihood (ML) algorithm recovers $X$ with probability $1-o(1)$. We already showed that each sample is very close to $\Gamma(X)$, so after the alignment step in Algorithm~\ref{alg:ez}, all the samples are either simultaneously aligned with one of $\Gamma$. WLOG, we assume all samples are aligned with $X$.
 By the structural results discussed above, with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)} \neq X_i)$ differs from $\sum_{r=1}^{k-1} \exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$. Since the samples are independent, we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $\sum_{r=1}^{k-1} \exp (k u \beta (A^r_i-A^0_i))$
 by at most a constant factor.
 Here $u\beta$ plays the role of $\beta$ in the single-sample case.
