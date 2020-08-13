@@ -12,6 +12,7 @@
 \newcommand{\cI}{\mathcal{I}}
 \newcommand{\cG}{\mathcal{G}}
 \usepackage{bbm} % provide mathbbm
+\newcommand{\ind}[2]{ \mathbbm{1}_{#1 = #2} }
 \DeclareMathOperator{\dist}{dist}
 \DeclareMathOperator{\Binom}{Binom}
 
@@ -21,7 +22,7 @@
 	\IEEEauthorblockA{Department of Electronic Engineering\\
 	Tsinghua University\\ 
 	Beijing, China 100084\\
-	Email: zhaof17@mails.tsinghua.edu.cn}	
+	Email: zhaof17@mails.tsinghua.edu.cn}
 	\and
 	\IEEEauthorblockN{Shao-Lun Huang}
 	\IEEEauthorblockA{DSIT Research Center\\
@@ -55,8 +56,8 @@ In Section \ref{s:conclusion}, the conclusion is given. Proof sketch of our main
 Within this paper, the number of community is denoted by $k$; $m$ is the number of samples; $\lfloor x \rfloor$ is the floor function of $x$; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
 $V=\{1,\dots, n\} =: [n]$;
 the label of each node is a random variable $X_i$; $X_i$ is chosen from $W= \{1, \omega, \dots, \omega^{k-1}\}$ and we further require $W$
-is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $\Gamma$ is used to represent all permutation functions on $W$ and $\Gamma(\sigma):=\{f(\sigma)| f\in \Gamma\}$ for $\sigma \in W^n$; the indicator function $\mathbbm{1}_{x=y}$ is defined as
-$\mathbbm{1}_{x=y} = 1 $ when $x=y$, and $\mathbbm{1}_{x=y}=0$ when $x\neq y$; $g(n) = \Theta(f(n))$ if there exists constant $c_1 < c_2$ such that $c_1 f(n) \leq g(n) \leq c_2 f(n)$
+is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $\Gamma$ is used to represent all permutation functions on $W$ and $\Gamma(\sigma):=\{f(\sigma)| f\in \Gamma\}$ for $\sigma \in W^n$; the indicator function $\ind{x}{y}$ is defined as
+$\ind{x}{y} = 1 $ when $x=y$, and $\ind{x}{y}=0$ when $x\neq y$; $g(n) = \Theta(f(n))$ if there exists constant $c_1 < c_2$ such that $c_1 f(n) \leq g(n) \leq c_2 f(n)$
 for large $n$;
 $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$
 where $\mathbf{1}_n$ is the all one vector with dimension $n$;
@@ -90,8 +91,9 @@ Given a labeling $X$ of $n$ vertices, the SBM specifies how to generate a random
 The Ising model on a graph $G=([n],E(G))$ with parameters $\alpha,\beta>0$ is a probability distribution on the configurations $\sigma\in W^n$ such that
 \begin{align} \label{eq:isingma}
 &P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
-\exp\Big(\beta \sum_{\{i,j\}\in E(G)} h(\bar{\sigma}_i, \bar{\sigma}_j)\notag\\
-&-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} h(\bar{\sigma}_i, \bar{\sigma}_j)\Big)
+\exp\Big(\beta \sum_{\{i,j\}\in E(G)} \ind{\bar{\sigma}_i}{\bar{\sigma}_j}\notag\\
+&-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \ind{\bar{\sigma}_i}{\bar{\sigma}_j}
+\Big)
 \end{align}
 where the subscript in $P_{\sigma|G}$ indicates that the distribution depends on $G$, and
 $Z_G(\alpha,\beta)$ is the normalizing constant for this distribution.
@@ -99,8 +101,8 @@ $Z_G(\alpha,\beta)$ is the normalizing constant for this distribution.
 
 When $\alpha=0$ and $k=2$, Equation \eqref{eq:isingma} gives the standard definition for Ising Model.
 For our specific problems, $\alpha > 0$ is needed to guarantee that the distribution is not concentrated within
-$\Lambda$. The definition of function $h(x, y)$ is chosen such that the number of summation terms is balanced: $\sum_{\{i,j\}\in E(G)} | h(\bar{\sigma}_i, \bar{\sigma}_j) | = (\frac{n}{k} - 1)(k-1)$ and $\sum_{\{i,j\}\not\in E(G)} | h(\bar{\sigma}_i, \bar{\sigma}_j)| = \frac{n}{k} (k-1)$ for each fixed $i$. Therefore, the two
-quantities are approximately equal when $n$ is large.
+$\Lambda$. 
+
 %By definition of Ising model we also have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$. This symmetric property corresponds with that of SBM.
 
 Next we present our new model, the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,k,p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
@@ -141,7 +143,7 @@ Our main results are as follows:
 \begin{theorem} \label{thm:wt1}
 For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, let
 \begin{align} \label{eq:defstar}
-&\beta^\ast \triangleq \frac{1}{k}
+&\beta^\ast \triangleq
 \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}  \\
 &m^\ast \triangleq 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \text{~~~and~~~}
 \tilde{m} \triangleq \frac{k}{k-1}\Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor
@@ -185,7 +187,7 @@ Let
 $
 (X,G,\{\sigma\}) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,1).
 $
-Define $g(\beta)  := \frac{b e^{k\beta}+a e^{-k\beta}}{k}-\frac{a+b}{k}+1$.
+Define $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$.
 If $\beta>\beta^\ast$, then
 $$
 P_{\SIBM}(\sigma \in \Gamma(X)) = 1-o(1).
