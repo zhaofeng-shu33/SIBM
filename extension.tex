@@ -1716,7 +1716,7 @@ for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while fo
 	Now condition on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
 	By \eqref{eq:soon} we have $\underline{R}_i =\frac{\underline{C}
 		\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} $, one can see that no matter what values $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ take, the conditional probability of $\underline{S}_i=1$ given these variables is always $\underline{C}
-	\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)$. Therefore, conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $\underline{S}_i$ is independent of $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ and it only depends on $\phi_i$. As a consequence, $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Thus we have verified the three properties above for $\underline{S}_1,\dots, \underline{S}_n$. The arguments for $\overline{S}_1,\dots, \overline{S}_n$ are the same.
+	\sum_{r=1}^{k-1}\exp\big(k\beta (A^r_i-A^0_i) \big)$. Therefore, conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $\underline{S}_i$ is independent of $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ and it only depends on $\phi_i$. As a consequence, $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Thus, we have verified the three properties above for $\underline{S}_1,\dots, \underline{S}_n$. The arguments for $\overline{S}_1,\dots, \overline{S}_n$ are the same.
 \end{proof}
 For $0<\beta<\beta^\ast$, we have $g(\beta)>0$, so Theorem~\ref{thm:dist} immediately implies that $P_{\SIBM}(\sigma \in \Gamma)=o(1)$. However, when $\beta=\beta^\ast$, we have $g(\beta^\ast)=0$. In this case, Theorem~\ref{thm:dist} tells us that
 $
@@ -1726,7 +1726,7 @@ but this is not sufficient for us to draw any conclusion on $P_{\SIBM}(\sigma \i
 Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P_{\SIBM}(\sigma \in \Gamma)$ is bounded away from $1$.
 
 \begin{proposition}  \label{prop:zj}
-	Let $a,b,\alpha> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{2}$ and $\alpha>b\beta^\ast$. Let 
+	Let $a,b,\alpha> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta^\ast$. Let 
 	$
 	(X,G,\sigma) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta^\ast, 1) .
 	$

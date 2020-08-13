@@ -336,57 +336,62 @@ Below we divide the proof into (i) $\beta\in(\beta^\ast,+\infty)$, (ii) $\beta\i
 
 \subsection{Proof for $\beta\in(\beta^*,+\infty)$}
 
-We start with a more careful analysis of $\sum_{i=1}^n \exp (k \beta (A^r_i-A^0_i))$.
+We start with a more careful analysis of $\sum_{i=1}^n \exp ( \beta (A^r_i-A^0_i))$.
 Since $A^r_i-A^0_i$ takes integer value between $-n/k$ and $n/k$,
 we can use indicator functions to write
 \begin{align*}
-& \exp (k \beta (A^r_i-A^0_i))
+& \exp (\beta (A^r_i-A^0_i))
 = \\  \sum_{t\log(n)=-n/k}^{n/k}
-& \mathbbm{1}[A^r_i-A^0_i=t \log(n)] \exp (k\beta t \log(n) ) ,
+& \mathbbm{1}[A^r_i-A^0_i=t \log(n)] \exp (\beta t \log(n) ) ,
 \end{align*}
 where the quantity $t\log(n)$ ranges over all integer values from $-n/k$ to $n/k$ in the summation.
 Define $D(G,t):=|\{i\in[n]:A^r_i-A^0_i= t\log(n)\}|=\sum_{i=1}^n \mathbbm{1}[A^r_i-A^0_i=t \log(n)]$.
 Therefore,
 \begin{equation}  \label{eq:gour}
- \sum_{i=1}^n \exp (k \beta (A^r_i-A^0_i))
+ \sum_{i=1}^n \exp ( \beta (A^r_i-A^0_i))
 =  \sum_{t\log(n)=-n/k}^{n/k}
-D(G,t) \exp (k\beta t \log(n) ) .
+D(G,t) \exp ( \beta t \log(n) ) .
 \end{equation}
 By Chernoff bound, we have $P(A^r_i-A^0_i\ge 0)\le \exp\big(\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)) \big)$.
 Define $\cG_1:=\{G:A^r_i-A^0_i< 0~\forall i\in[n]\}$. Then by union bound, $P(G\notin\cG_1)\le\exp\big(\log(n)(1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)) \big) = o(1)$, where the equality follows from the assumption that $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
 For every $G\in\cG_1$, $D(G,t)=0$ for all $t\ge 0$, and so
 \begin{equation} \label{eq:duj}
- \sum_{i=1}^n \exp (k \beta (A^r_i-A^0_i))
+ \sum_{i=1}^n \exp (\beta (A^r_i-A^0_i))
 =  \sum_{t\log(n)=-n/k}^{-1}
-D(G,t) \exp (k\beta t \log(n) ) .
+D(G,t) \exp ( \beta t \log(n) ) .
 \end{equation}
 Define a function
 \begin{align*}
-&f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big) \\
-&-\frac{a+b}{k} +1 +k\beta t.
+&f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -\frac{a+b}{k} +1 +\beta t  \\
+&-t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big).
 \end{align*}
-Using Chernoff bound, one can show that 
+Using Chernoff bound, one can show that
 $$
 E[D(G,t)
-\exp\big(2\beta t \log(n) \big)]
+\exp\big(\beta t \log(n) \big)]
 \le \exp( f_{\beta}(t) \log(n) ) .
 $$
 with probability one.
-The function $f_{\beta}(t)$ is a concave function and takes maximum value at $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}$, and $f_{\beta}(t^\ast)=\frac{b e^{k\beta}+a e^{-k\beta}}{k}-\frac{a+b}{k}+1
-=g(\beta)$. When $ \beta < \frac{1}{2k} \log \frac{a}{b}$, $t^\ast < 0$
-for such case, if we take expectation on both sides of \eqref{eq:gour}, then the sum on the right-hand side is concentrated on a small neighborhood of $t^\ast$.
-When $ \beta^* < \beta \leq \frac{1}{2k} \log \frac{a}{b}$ from Equation \eqref{eq:duj}, the right-hand is concentrated on the left neighborhood of $0$.
+The function $f_{\beta}(t)$ is a concave function
+and takes maximum value at $t^\ast=\frac{b e^{\beta}-a e^{-\beta}}{k}$,
+and $f_{\beta}(t^\ast)=\frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k} + 1
+=g(\beta)$. When $ \beta^* < \beta < \frac{1}{2} \log \frac{a}{b}$, we have $t^\ast < 0$
+for such case, if we take expectation on both sides of \eqref{eq:gour},
+then the sum on the right-hand side is concentrated on a small neighborhood of $t^\ast$.
+When $\beta >  \frac{1}{2} \log \frac{a}{b}$ from Equation \eqref{eq:duj},
+the right-hand is concentrated on the left neighborhood of $0$.
 Therefore, for $G\in \cG_1$, the sum $E[\sum_{t\log(n)=-n/k}^{n/k}
 D(G,t) \exp (k\beta t \log(n) )]$
 is upper bounded by $O(\log(n))n^{f_{\beta}(0)}$  when $t^\ast>0$ and $O(\log(n))n^{f_{\beta}(t^\ast)}$  when $t^\ast<0$.
-Notice that $f_{\beta}(0)=g(\frac{1}{2k}\log\frac{a}{b})=1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}<0$. To simplify the notation we define
+Notice that $f_{\beta}(0)=g(\frac{1}{2}\log\frac{a}{b})=1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}<0$. To simplify the notation we define
 $$
 \tilde{g}(\beta) = \begin{cases}
-g(\beta)   & \text{~if~} \beta< \frac{1}{2k}\log\frac{a}{b} \\
-g(\frac{1}{2k}\log\frac{a}{b}) & \text{~if~} \beta\ge \frac{1}{2k}\log\frac{a}{b}
+g(\beta)   & \text{~if~} \beta< \frac{1}{2}\log\frac{a}{b} \\
+g(\frac{1}{2} \log\frac{a}{b}) & \text{~if~} \beta\ge \frac{1}{2}\log\frac{a}{b}
 \end{cases}
 $$
-Now using \eqref{eq:duj} and Markov inequality, we conclude that $\sum_{r=1}^{k-1}\sum_{i=1}^n \exp (k \beta (A^r_i-A^0_i))< n^{\tilde{g}(\beta)/2}$ for almost all $G$,
+Now using \eqref{eq:duj} and Markov inequality,
+we conclude that $\sum_{r=1}^{k-1}\sum_{i=1}^n \exp ( \beta (A^r_i-A^0_i))< n^{\tilde{g}(\beta)/2}$ for almost all $G$,
 and so by Equation \eqref{eq:kbetaA}, $\frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)} < n^{\tilde{g}(\beta)/2}$ for almost all $G$. 
 The analysis of $\frac{P_{\SIBM} ( \dist(\sigma, X) = r )}{P_{\SIBM}(\sigma= X)}$ for $1\le r<kn/\log^{1/3}(n)$ is
 similar but with some notation difference, and we do not repeat it here.
@@ -399,11 +404,16 @@ $P_{\SIBM}(\sigma \in \Gamma)=1-o(1)$ when $\beta>\beta^\ast$ for almost all $G$
 We restrict our discussion on the case $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma(X)\backslash\{X\}$.
 We would show that $P(\dist(\sigma, X) = \Theta(n^{g(\beta)})) = 1 - o(1)$ conditioned on $\dist(\sigma,X)\le n/k$.
 We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
-Conditioning on the event every vertex has at most $z$ ``bad" neighbors, which happens with probability $1-o(1)$, it is easy to show that $P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1}\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor $\exp(k^2\beta z)$.
-Therefore, $E_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
-We can further prove that $\dist(\sigma,X)$ concentrates around its expectation. Thus we conclude that $\dist(\sigma,X)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
-When $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation. Then from Equation \eqref{eq:gbetaminus1}, for almost all graph $G$, we have $\sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))=(1+o(1))n^{g(\beta)-1}$.
-Combining this with the above analysis, we conclude that $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ when $\beta\le\beta^\ast$.
+Conditioning on the event every vertex has at most $z$ ``bad" neighbors, which happens with probability $1-o(1)$, it is easy to show that $P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1}\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor. 
+% the factor is $\exp(\beta z)$ ?
+Therefore, $E_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \neq X_i)$ differs from
+$\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
+We can further prove that $\dist(\sigma,X)$ concentrates around its expectation.
+Thus, we conclude that $\dist(\sigma,X)$ differs from
+$\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
+When $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation. Then from Equation \eqref{eq:gbetaminus1}, for almost all graph $G$, we have $\sum_{i=1}^n\exp (\beta (A^r_i-A^0_i))=(1+o(1))n^{g(\beta)-1}$.
+Combining this with the above analysis,
+we conclude that $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ when $\beta\le\beta^\ast$.
 This completes the sketched proof of Theorem~\ref{thm:wt3}.
 
 \subsection{Multiple sample case: Proof of Theorem~\ref{thm:wt2}}
@@ -414,15 +424,15 @@ This completes the sketched proof of Theorem~\ref{thm:wt3}.
 			Inputs: the samples $\sigma^{(1)},\sigma^{(2)}\dots,\sigma^{(m)}$ \\
 			Output: $\hat{X}$
 			\begin{algorithmic}[1]
-				\Statex \hspace*{-0.3in} 
+				\Statex 
 				{\bf Step 1: Align all the samples with $\sigma^{(1)}$ }
 				\For {$j=2,3,\dots,m$}
-				\State $f=\arg\max_{f_{\gamma}} \sum_{i=1}^n h(f_{\gamma}(\sigma^{(j)}_i), \sigma^{(1)}_i)$
-				\State $\sigma^{(j)} \gets f(\sigma^{(j)})$
+				\State $f^* = \arg\max_{f \in \Gamma} \sum_{i=1}^n h(f(\sigma^{(j)}_i), \sigma^{(1)}_i)$
+				\State $\sigma^{(j)} \gets f^*(\sigma^{(j)})$
 				\EndFor
-				\Statex \hspace*{-0.3in}
+				\Statex
 				{\bf Step 2: Majority vote at each coordinate}
-				\For {i=1,2,\dots,n}
+				\For {$i=1,2,\dots,n$}
 				\State $g(r) = |\{j | \sigma^{(j)}_i = \omega^r,1\leq j \leq m\}|$  for $ 0 \leq r \leq k-1$
 				\State $\hat{X}_i \gets w^{r*}$ where $r*=\arg\max_r g(r)$
 			\State\Comment{If the max of $g(r)$ is not unique, assign $\hat{X}_i$ randomly to one of \texttt{argmax}}
@@ -430,8 +440,17 @@ This completes the sketched proof of Theorem~\ref{thm:wt3}.
 				\State Output $\hat{X}$
 			\end{algorithmic}
 		\end{algorithm}
-For the multiple-sample case, we prove that Algorithm \ref{alg:ez} can recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$. We already showed that each sample is very close to $\Gamma(X)$ when $\alpha > b \beta$, so after the alignment step in Algorithm~\ref{alg:ez}, all the samples are simultaneously aligned with the same element from $\Gamma(X)$. We assume all samples are aligned with $X$ in the following analysis.
-From Subsection \ref{subsect:smaller}, with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)} \neq X_i)$ differs from $\sum_{r=1}^{k-1} \exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$. Since the samples are independent, we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $\sum_{r=1}^{k-1} \exp (k u \beta (A^r_i-A^0_i))$
+For the multiple-sample case,
+we prove that Algorithm \ref{alg:ez} can recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$.
+We already showed that each sample is very close to $\Gamma(X)$ when $\alpha > b \beta$,
+so after the alignment step in Algorithm~\ref{alg:ez},
+all the samples are simultaneously aligned with the same element from $\Gamma(X)$.
+We assume all samples are aligned with $X$ in the following analysis.
+From Subsection \ref{subsect:smaller},
+with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)} \neq X_i)$ differs from
+$\sum_{r=1}^{k-1} \exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$.
+Since the samples are independent,
+we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $\sum_{r=1}^{k-1} \exp ( u \beta (A^r_i-A^0_i))$
 by at most a constant factor.
 Here $u\beta$ plays the role of $\beta$ in the single-sample case.
 Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le u-1$ for all $i\in[n]$. Let $u=\lfloor \frac{m+1}{2} \rfloor$,
