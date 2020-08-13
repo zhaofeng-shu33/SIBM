@@ -2016,20 +2016,20 @@ P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
 where we can choose $\theta$ to be any constant in the open interval $(g(\beta), 1)$.
 By Lemma~\ref{lm:et},
 $$
-P_{\sigma|G}(\sigma_i^{(j)} \neq X_i^{(j)} \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} ) 
+P_{\sigma|G}(\sigma_i^{(j)} \neq X_i \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} ) 
 \le \sum_{r=1}^{k-1} \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + kz) \Big)
 $$
 for all $i\in[n]$ and all $j\in[m]$.
 For $i\in[n]$, define 
 $$
-\Phi_i := |\{j\in[m]: \sigma_i^{(j)} \neq X_i^{(j)}\}|
+\Phi_i := |\{j\in[m]: \sigma_i^{(j)} \neq X_i\}|
 $$
-as the number of samples for which $\sigma_i^{(j)} \neq X_i^{(j)}$.
+as the number of samples for which $\sigma_i^{(j)} \neq X_i$.
 For an integer $u\in[m]$, we have
 $$
 \{\Phi_i \ge u\} =
 \bigcup_{\cJ\subseteq[m], |\cJ|=u}
-\{\sigma_i^{(j)} \neq X_i^{(j)} \text{~for all~} j\in \cJ\} .
+\{\sigma_i^{(j)} \neq X_i \text{~for all~} j\in \cJ\} .
 $$
 Therefore, by the union bound,
 \begin{align*}
@@ -2044,7 +2044,7 @@ $$
 Using the union bound, we have
 $$
 P_{\sigma|G} \big(\exists i \text{~s.t.~} \Phi_i \ge u \big) \le 
-C \sum_{r=1}^{k-1}\sum_{i=1}^n \exp\Big(2u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) + o(1) ,
+C \sum_{r=1}^{k-1}\sum_{i=1}^n \exp\Big(ku \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) + o(1) ,
 $$
 where $C:=\binom{m}{u}\exp(k^2u(\beta+\alpha)z)$ is a constant.
 By Proposition \ref{prop:con}, if $\beta>\beta^*$, then there is a set $\cG^{(1)}$ such that (i) $P(G\in \cG^{(1)})=1-o(1)$; (ii) for every $G\in\cG^{(1)}$,
