@@ -41,22 +41,27 @@
 \begin{abstract}
  In this paper, we will combine Stochastic Block Model (SBM) with Ising model and propose Stochastic Ising Block Model (SIBM) on multiple communities.
  We study the exact recovery problem for SIBM and compute the sample complexity for some properly chosen regime.
- Our result leads to the classical exact recovery condition $\sqrt{a} - \sqrt{b} > \sqrt{k}$ for SBM model.
- Besides, SIBM provides some theoretical guarantee for modularity maximization, which is a popular community detection method.
+ Our result leads to the classical exact recovery condition $\sqrt{a} - \sqrt{b} > \sqrt{k}$ for SBM model
+ and provides some theoretical guarantee for the modularity maximization method.
 \end{abstract}
 \section{Introduction}
 % first paragraph: short intro to SBM and Ising model
-In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{Abbe17}. Meanwhile, Ising model is a well-known statistical model in physics which also has some kind of phase transition property \cite{ising1925beitrag}. The particles in Ising model interact with neighbors and change its state to achieve a steady state.
-As a probabilistic model, Ising model is not limited to statistical physics and there are already some works to apply Ising model to investigate the social voting phenomenon \cite{sznajd2000opinion}.
+In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{Abbe17}. Meanwhile, Ising model is a well-known statistical model in physics which has some similarity with SBM \cite{ising1925beitrag}. The nodes with a common edge are more likely to share the same state in Ising model\label{key}.
+As a probabilistic model, Ising model has been applied to investigate the social voting phenomenon \cite{sznajd2000opinion}, further indicating there is some hidden relationship between SBM and Ising model.
 
-In the original formulation, each particle in Ising model has only two states. Potts extended it to multiple states \cite{potts1952some}. This multiple-state Ising model
-corresponds to SBM with multiple communities, thus enabling us to propose a concatenated network model: Stochastic Ising Block Model (SIBM). For 2-community case, there are already some results \cite{ye2020exact}, but little is known for multiple communities case. In this paper, we will give the formulation of SIBM on multiple
-communities. We can generate multiple samples from SIBM, which more or less differ from the original labels, depending on the choice of parameters. Using the generated samples, we focus on the problem of whether it is possible to exactly recover the label. By investigating the phase transition property for our compose model,
-we can compute the feasible regime of parameters for exact recovery and the corresponding sample complexity to accomplish the recovery goal.
+We observe that Ising model generates
+random node labels while SBM generates random graphs, thus enabling us to propose a concatenated network model: Stochastic Ising Block Model (SIBM). SIBM uses SBM to generate
+the graph and then uses the same graph to generate node labels for several times. For 2-community SIBM, there are already some preliminary results \cite{ye2020exact}, but little is known for multiple communities case. We notice that Ising model is not limited to two states and there are already some extension for multiple-state Ising model \cite{potts1952some}. By using multiple-state Ising model, we will give the result of SIBM on multiple communities. 
 
-This paper is divided as follows: In Section \ref{s:Preliminaries} the SIBM is formulated mathematically.
+In this paper, we will investigate SIBM on multiple communities, and focus on the problem of exactly recovery of the node label.
+We will compute the feasible regime of parameters and the sample complexity for exact recovery. Besides, the relationship of SIBM with modularity maximization method
+will also be discussed. 
+
+This paper is divided as follows. In Section \ref{s:Preliminaries} the SIBM is formulated mathematically.
 In Section \ref{s:trans}, the main results are introduced.
-In Section \ref{s:conclusion}, the conclusion is given. Proof sketch of our main results is provided in Appendix.
+In Section \ref{s:cdm}, the relationship between modularity maximization and SIBM is discussed 
+and in Section \ref{s:conclusion} the conclusion is given.
+Proof sketch of our main results is provided in appendix.
 
 % notation convetion
 Within this paper, the number of community is denoted by $k$; $m$ is the number of samples; $\lfloor x \rfloor$ is the floor function of $x$; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
@@ -207,7 +212,7 @@ $$
 The above theorem established the phase transition property for SIBM model.
 Roughly speaking, the sample $\sigma$ generated from SIBM aligns with $X$ with probability 1 if $\beta > \beta^*$;
 otherwise the sample differs from $X$ with the number of coordinates in $\Theta(n^{g(\beta)})$.
-\section{Community Detection Methods}
+\section{Community Detection Methods}\label{s:cdm}
 Modularity maximization is a popular community detection method \cite{clauset2004finding}, which can also be used for recovery of SBM model.
 In this section,
 we show that how the modularity is connected with our SIBM model.
