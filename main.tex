@@ -24,6 +24,12 @@
 	Beijing, China 100084\\
 	Email: zhaof17@mails.tsinghua.edu.cn}
 	\and
+	\IEEEauthorblockN{Min Ye}
+	\IEEEauthorblockA{DSIT Research Center\\
+	Tsinghua-Berkeley Shenzhen Institute\\
+	Shenzhen, China 518055\\
+	Email: yeemmi@sz.tsinghua.edu.cn}
+	\and
 	\IEEEauthorblockN{Shao-Lun Huang}
 	\IEEEauthorblockA{DSIT Research Center\\
 	Tsinghua-Berkeley Shenzhen Institute\\
@@ -202,29 +208,31 @@ The above theorem established the phase transition property for SIBM model.
 Roughly speaking, the sample $\sigma$ generated from SIBM aligns with $X$ with probability 1 if $\beta > \beta^*$;
 otherwise the sample differs from $X$ with the number of coordinates in $\Theta(n^{g(\beta)})$.
 \section{Community Detection Methods}
-modularity maximization is a popular community detection method, which can also be used for recovery of SBM model. In this section,
+Modularity maximization is a popular community detection method \cite{clauset2004finding}, which can also be used for recovery of SBM model.
+In this section,
 we show that how the modularity is connected with our SIBM model.
 
 If we could choose proper $\alpha, \beta$, then from Theorem \ref{thm:wt3} one sample generated from Ising model is enough to
 estimate the original label. This provides a way to do community detection for SBM model.
-To some extend
+To some extent
 SIBM provides the theoretical guarantee for such detection method.
 
 If $\alpha > b \beta$ and $\beta < \beta^*$ then we have $\hat{\sigma} \in \Gamma(X)$ with probability
 one where
-$$
+\begin{equation}\label{eq:hat_sigma}
 \hat{\sigma} := \arg\max_{\bar{\sigma}}\beta \sum_{\{i,j\}\in E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
 -\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
-$$
+\end{equation}
 We consider the modularity of a graph, which is defined by
-$$
-	Q = \frac{1}{2m} \sum_{ij} (A_{ij} - \frac{d_i d_j}{2m}) \delta(C_i, C_j)
-$$
+\begin{equation}\label{eq:Q}
+	Q = \frac{1}{2 |E|} \sum_{ij} (A_{ij} - \frac{d_i d_j}{2 |E|}) \delta(C_i, C_j)
+\end{equation}
+where $d_i$ is the degree of the $i-$th node.
 The standard way to do community detection is to maximize the modularity $Q$ using greedy method.
-Suppose we use $Q$ in the definition of the numerator of Ising model. When $n$ is very large,
-we have $d_i = \frac{\log n(a+b)}{2}, m = \frac{1}{2}n d_i$. Therefore we have $\beta = \frac{1}{2m}(1-\frac{\log n}{2n}(a+b))
-\sim \frac{1}{2m}$
-and $\alpha = \frac{1}{2m}\frac{a+b}{2}$. Since $a>b$. We have $\alpha > b \beta$, which is a necessary condition for finite sample complexity.
+We can show that \eqref{eq:Q} satisfies the recovery constraint asymptotically.
+Indeed, we have $d_i \sim \frac{\log n(a+b)}{2}, |E| \sim \frac{1}{2}n d_i$. Therefore, we have $\beta = \frac{1}{2|E|}(1-\frac{\log n}{2n}(a+b))
+\sim \frac{1}{2|E|}$
+and $\alpha = \frac{1}{2|E|}\frac{a+b}{2}$. Since $a>b$. We have $\alpha > b \beta$, which is a necessary condition for finite sample complexity.
 
 \section{Conclusion}\label{s:conclusion}
 In this paper, we derive the sample complexity for Stochastic Ising Block Model on multiple communities.
@@ -237,6 +245,13 @@ for community detection problems.
 In this section, we illustrate the main ideas and explain the important steps in the proof of the main results.
 The complete proofs are given in arxiv. Most proofs are similar with the case for two communities in \cite{ye2020exact}. The difference
 is that we can not use matrix-vector product now and the critical values differ.
+\subsection{Why $\alpha > b \beta$}
+Intuitively we need $P(\sigma = X) > P(\sigma = \mathbf{1}_n)$ on average to guarantee that the sample is more likely to align with the ground truth label.
+That is to say
+$$
+E_G[\log \frac{P(\sigma = X)}{P(\sigma = \mathbf{1}_n)}] > 0
+$$
+Simplifying the above equation we could get $\alpha > b \beta$ asymptotically as $n\to \infty$.
 
 As the first step, we prove that for $a>b>0$, if $\alpha>b\beta$, then all the samples are centered in $\Gamma(X)$ with probability $1-o(1)$;
 if $\alpha<b\beta$, then all the samples are centered in $\Lambda$.
