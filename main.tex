@@ -243,17 +243,17 @@ for community detection problems.
 \label{sect:sketch}
 
 In this section, we illustrate the main ideas and explain the important steps in the proof of the main results.
-The complete proofs are given in arxiv. Most proofs are similar with the case for two communities in \cite{ye2020exact}. The difference
-is that we can not use matrix-vector product now and the critical values differ.
+Some proof techniques are borrowed from \cite{ye2020exact}, which deals with the case for two communities.
+
 \subsection{Why $\alpha > b \beta$}
 Intuitively we need $P(\sigma = X) > P(\sigma = \mathbf{1}_n)$ on average to guarantee that the sample is more likely to align with the ground truth label.
 That is to say
 $$
-E_G[\log \frac{P(\sigma = X)}{P(\sigma = \mathbf{1}_n)}] > 0
+\mathbb{E}_G[\log \frac{P_{\sigma|G}(\sigma = X)}{P_{\sigma|G}(\sigma = \mathbf{1}_n)}] > 0
 $$
 Simplifying the above equation we could get $\alpha > b \beta$ asymptotically as $n\to \infty$.
 
-As the first step, we prove that for $a>b>0$, if $\alpha>b\beta$, then all the samples are centered in $\Gamma(X)$ with probability $1-o(1)$;
+Below we will show that for $a>b>0$, if $\alpha>b\beta$, then all the samples are centered in $\Gamma(X)$ with probability $1-o(1)$;
 if $\alpha<b\beta$, then all the samples are centered in $\Lambda$.
 
 We use the concentration results for adjacency matrices of random graphs with independent edges to prove this.
@@ -312,7 +312,7 @@ where the second equality holds with high probability because $|A^r_i-A^0_i|=O(\
 
 Therefore, we can estimate the mean value of \eqref{eq:kbetaA}:
 \begin{align}
-&E_G[\exp (\beta (A^r_i-A^0_i))]
+&\mathbb{E}_G[\exp (\beta (A^r_i-A^0_i))]
 =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^{\beta} \Big)^{n/k} \nonumber \\
 &\cdot \Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-\beta} \Big)^{n/k-1}\nonumber\\
 & = 
@@ -376,7 +376,7 @@ Define a function
 \end{align*}
 Using Chernoff bound, one can show that
 $$
-E[D(G,t)
+\mathbb{E}[D(G,t)
 \exp\big(\beta t \log(n) \big)]
 \le \exp( f_{\beta}(t) \log(n) ) .
 $$
@@ -389,7 +389,7 @@ for such case, if we take expectation on both sides of \eqref{eq:gour},
 then the sum on the right-hand side is concentrated on a small neighborhood of $t^\ast$.
 When $\beta >  \frac{1}{2} \log \frac{a}{b}$ from Equation \eqref{eq:duj},
 the right-hand is concentrated on the left neighborhood of $0$.
-Therefore, for $G\in \cG_1$, the sum $E[\sum_{t\log(n)=-n/k}^{n/k}
+Therefore, for $G\in \cG_1$, the sum $\mathbb{E}[\sum_{t\log(n)=-n/k}^{n/k}
 D(G,t) \exp (k\beta t \log(n) )]$
 is upper bounded by $O(\log(n))n^{f_{\beta}(0)}$  when $t^\ast>0$ and $O(\log(n))n^{f_{\beta}(t^\ast)}$  when $t^\ast<0$.
 Notice that $f_{\beta}(0)=g(\frac{1}{2}\log\frac{a}{b})=1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}<0$. To simplify the notation we define
@@ -415,7 +415,7 @@ We would show that $P(\dist(\sigma, X) = \Theta(n^{g(\beta)})) = 1 - o(1)$ condi
 We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
 Conditioning on the event every vertex has at most $z$ ``bad" neighbors, which happens with probability $1-o(1)$, it is easy to show that $P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1}\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor. 
 % the factor is $\exp(\beta z)$ ?
-Therefore, $E_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \neq X_i)$ differs from
+Therefore, $\mathbb{E}_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \neq X_i)$ differs from
 $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
 We can further prove that $\dist(\sigma,X)$ concentrates around its expectation.
 Thus, we conclude that $\dist(\sigma,X)$ differs from
@@ -467,8 +467,7 @@ then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le \lfloor \frac
 = m - \lfloor \frac{m-1}{2} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] $
 which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}.
 
-The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{(k-1)(m+1)}{k} \rfloor  \beta < \beta^\ast$ is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case and can be found in arxiv.
-
+The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{(k-1)(m+1)}{k} \rfloor  \beta < \beta^\ast$ is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case.
 
 \bibliographystyle{IEEEtran}
 \bibliography{exportlist}
