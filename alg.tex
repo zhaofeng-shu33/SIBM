@@ -33,7 +33,7 @@
 	
 	\section{Metropolis sampling algorithm for SIBM}
 	In this section, we give an algorithm based on SIBM to do community detection tasks.
-	For a SBM with $k-$ communities, in previous section we have shown that the sample of SIBM is the same with the label $X$ up to some permutation. 
+	For a SBM with $k-$communities, in previous section we have shown that the sample of SIBM is the same with the label $X$ up to some permutation. 
 	Therefore, if we can get a sample from SIBM, then we can use this sample as the estimator of $X$.
 	
 	The difficulty is that we cannot generate the sample exactly from its distribution \eqref{eq:isingma}. Therefore, some approximation is
@@ -42,13 +42,17 @@
 	
 	From equation \eqref{eq:isingma}, we know that for $k$-state Ising model, the Hamiltonian can be written as:
 	\begin{equation}
-	H(\bar{\sigma}) = \frac{\alpha}{\beta} \frac{\log n}{n} \sum_{\{i,j\}\not\in E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)
-		- \sum_{\{i,j\}\in E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)
+	H(\bar{\sigma}) = \frac{\alpha}{\beta} \frac{\log n}{n} \sum_{\{i,j\}\not\in E(G)} \delta(\bar{\sigma}_i, \bar{\sigma}_j)
+		- \sum_{\{i,j\}\in E(G)} \delta(\bar{\sigma}_i, \bar{\sigma}_j)
 	\end{equation}
+	Note: $\delta$ is the indicator function.
+	
+	Then Ising model generates sample according to $\exp(-\beta H(\bar{\sigma}))$. The physical meaning of $\beta$ is the inverse temperature.
+	
 	Suppose one coordinate $\bar{\sigma}_r$ flips to $w^s \cdot \bar{\sigma}_r$, the new state is denoted as $\bar{\sigma}^{(\sim \{r\}, v)}$.
 	Then the change of energy is:
 	\begin{equation}\label{eq:delta_H}
-	 H(\bar{\sigma}^{(\sim \{r\}, [\omega^s])}) - H(\bar{\sigma}) = k \sum_{i \in N_r(G)} J_s(\bar{\sigma}_r, \bar{\sigma}_i) - k\frac{\alpha \log n}{\beta n} \sum_{i \in V\backslash N_r(G)} J_s(\bar{\sigma}_r,\bar{\sigma}_i)
+	 H(\bar{\sigma}^{(\sim \{r\}, [\omega^s])}) - H(\bar{\sigma}) = \sum_{i \in N_r(G)} J_s(\bar{\sigma}_r, \bar{\sigma}_i) - \frac{\alpha \log n}{\beta n} \sum_{i \in V\backslash N_r(G)} J_s(\bar{\sigma}_r,\bar{\sigma}_i)
 	\end{equation}
 	where $J_s(\sigma_i, \sigma_j)$ is defined as:
 	\begin{equation}
@@ -58,7 +62,9 @@
 	0 & \textrm {otherwise}
 	\end{cases}
 	\end{equation}
-	The pseudo code of our algorithm is summarized in \ref{alg:m}. This algorithm requires the number of the communities $k$ to be known and the weight parameter $\alpha, \beta$ is given. The iteration time $N$ should also be specified.
+	The pseudo code of our algorithm is summarized in \ref{alg:m}. This algorithm requires the number of the communities $k$ to be known and the weight parameter $\frac{\alpha}{\beta}$ is given. We use the annealing techniques (cooling temperature) to increase $\beta$ at each outer loop, thus guarantee that $\beta > \beta^*$
+	if $\epsilon \in (0, 1)$ and $N$ are large. 
+	The maximum iteration time $N$ should also be specified.
 	\begin{algorithm}[H]
 		\caption{Metropolis sampling algorithm for SIBM} \label{alg:m}
 		Inputs: the graph $G$ \\
@@ -78,6 +84,10 @@
 			\ENDIF
 			\ENDIF
 			\ENDFOR
+			\IF{$H(\bar{\sigma})$ does not change}
+			\STATE \textbf{break}
+			\ENDIF
+			\STATE $\beta \leftarrow (1 + \epsilon)\cdot\beta$
 			\ENDWHILE
 		\end{algorithmic}
 	\end{algorithm}

@@ -60,7 +60,7 @@ class SIBM:
     def __init__(self, graph):
         self.G = graph
         a, b = estimate_a_b(graph)
-        _beta_star = 0.5 * np.log( (a + b - 2 - np.sqrt((a + b - 2)**2 - 4 * a * b))/ (2 * b))
+        _beta_star = np.log( (a + b - 2 - np.sqrt((a + b - 2)**2 - 4 * a * b))/ (2 * b))
         self._beta = 1.2 * _beta_star
         self._alpha = 1.8 * b * self._beta
         self.n = len(self.G.nodes)
@@ -70,13 +70,13 @@ class SIBM:
         random.Random().shuffle(nodes)
         for i in range(self.n // 2):
             self.sigma[nodes[i]] = -1
-        self.mixed_param = 2 * self._alpha * np.log(self.n)
+        self.mixed_param = self._alpha * np.log(self.n)
         self.mixed_param /= (self._beta * self.n)
     def get_dH(self, trial_location):
         _sum = 0
         for i in range(self.n):
             if self.G.has_edge(trial_location, i):
-                _sum += 2 * self.sigma[trial_location] * self.sigma[i]
+                _sum += self.sigma[trial_location] * self.sigma[i]
             else:
                 _sum -= self.mixed_param * self.sigma[trial_location] * self.sigma[i]
         return _sum
