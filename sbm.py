@@ -76,9 +76,9 @@ def convert_to_label_list(n, partition):
     return cat
 def acc_task(alg, params, num_of_times, qu):
     acc = 0
-    n, a, b = params
+    n, k, a, b = params
     for _ in range(num_of_times):
-        graph = sbm_graph(n, 2, a, b)
+        graph = sbm_graph(n, k, a, b)
         gt = get_ground_truth(graph)
         if alg == 'bisection':
             results_partition = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
@@ -87,7 +87,7 @@ def acc_task(alg, params, num_of_times, qu):
             results_partition = nx.algorithms.community.modularity_max.greedy_modularity_communities(graph)
             results = convert_to_label_list(n, results_partition)
         elif alg == 'metropolis':
-            results = SIBM_metropolis(graph)
+            results = SIBM_metropolis(graph, k)
         else:
             raise NotImplementedError('')
         acc += compare(gt, results)
@@ -128,6 +128,7 @@ if __name__ == '__main__':
     parser.add_argument('--repeat', type=int, default=100, help='number of times to generate the SBM graph')
     parser.add_argument('--multi_thread', type=int, default=1)
     parser.add_argument('--n', type=int, default=100)
+    parser.add_argument('--k', type=int, default=2)
     parser.add_argument('--binary', type=bool, const=True, nargs='?', default=False)
     parser.add_argument('--a', type=float, default=16.0, nargs='+')
     parser.add_argument('--b', type=float, default=4.0)
@@ -137,7 +138,7 @@ if __name__ == '__main__':
         args.a = [args.a]
     acc_list = []
     for a in args.a:
-        params = (args.n, a, args.b)
+        params = (args.n, args.k, a, args.b)
         acc = get_acc(args.alg, params, args.repeat,
                     multi_thread=args.multi_thread, binary=args.binary)
         acc_list.append(acc)

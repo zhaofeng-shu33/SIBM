@@ -104,6 +104,6 @@ class SIBM:
                         self.sigma[r] = (w_s + self.sigma[r]) % self.k
         return self.sigma
 
-def SIBM_metropolis(graph, max_iter=40):
-    sibm = SIBM(graph)
+def SIBM_metropolis(graph, k=2, max_iter=40):
+    sibm = SIBM(graph, k)
     return sibm.metropolis(N=max_iter)
