@@ -86,9 +86,20 @@ class SIBM:
         for i in range(self.n):
             if self.G.has_edge(trial_location, i):
                 _sum += self._get_Js(self.sigma[trial_location], self.sigma[i], w_s)
-            else:
+            elif trial_location != i:
                 _sum -= self.mixed_param * self._get_Js(self.sigma[trial_location], self.sigma[i], w_s)
         return _sum
+    def _get_Hamiltonian(self):
+        H_value = 0
+        for i in range(self.n):
+            for j in range(i + 1, self.n):
+                if self.sigma[i] != self.sigma[j]:
+                    continue
+                if self.G.has_edge(i, j):
+                    H_value -= 1
+                else:
+                    H_value += self.mixed_param
+        return H_value           
     def metropolis(self, N=40):
         # iterate given rounds
         for _ in range(N):

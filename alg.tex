@@ -52,7 +52,7 @@
 	Suppose one coordinate $\bar{\sigma}_r$ flips to $w^s \cdot \bar{\sigma}_r$, the new state is denoted as $\bar{\sigma}^{(\sim \{r\}, v)}$.
 	Then the change of energy is:
 	\begin{equation}\label{eq:delta_H}
-	 H(\bar{\sigma}^{(\sim \{r\}, [\omega^s])}) - H(\bar{\sigma}) = \sum_{i \in N_r(G)} J_s(\bar{\sigma}_r, \bar{\sigma}_i) - \frac{\alpha \log n}{\beta n} \sum_{i \in V\backslash N_r(G)} J_s(\bar{\sigma}_r,\bar{\sigma}_i)
+	 H(\bar{\sigma}^{(\sim \{r\}, [\omega^s])}) - H(\bar{\sigma}) = \sum_{i \in N_r(G)} J_s(\bar{\sigma}_r, \bar{\sigma}_i) - \frac{\alpha \log n}{\beta n} \sum_{i \in V\backslash N_r(G)\cup\{r\}} J_s(\bar{\sigma}_r,\bar{\sigma}_i)
 	\end{equation}
 	where $J_s(\sigma_i, \sigma_j)$ is defined as:
 	\begin{equation}
@@ -79,7 +79,7 @@
 			\STATE $\sigma_r \leftarrow w^s \cdot \sigma_r$
 			\ELSE
 			\STATE generate a random number $u$ ranged within $[0,1]$
-			\IF{$u < \exp(-\beta H(r,s))$}
+			\IF{$u < \exp(-\beta \Delta H(r,s))$}
 			\STATE $\sigma_r \leftarrow w^s \cdot \sigma_r$
 			\ENDIF
 			\ENDIF
