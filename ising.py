@@ -61,7 +61,7 @@ class SIBM:
         self.G = graph
         self.k = k
         a, b = estimate_a_b(graph, k)
-        _beta_star = np.log( (a + b - k - np.sqrt((a + b - k)**2 - 4 * a * b))/ (2 * b))
+        _beta_star = np.log((a + b - k - np.sqrt((a + b - k)**2 - 4 * a * b))/ (2 * b))
         self._beta = 1.2 * _beta_star
         self._alpha = 1.8 * b * self._beta
         self.n = len(self.G.nodes)

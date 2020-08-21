@@ -20,7 +20,10 @@ def set_up_log():
     consoleHandler = logging.StreamHandler()
     consoleHandler.setFormatter(logFormatter)
     rootLogger.addHandler(consoleHandler)
-    rootLogger.setLevel(logging.INFO)
+    if os.environ.get("LOGLEVEL"):
+        rootLogger.setLevel(os.environ.get("LOGLEVEL"))
+    else:
+        rootLogger.setLevel(logging.INFO)
 
 def sbm_graph(n, k, a, b):
     if n % k != 0 or a <= b:
@@ -88,6 +91,7 @@ def acc_task(alg, params, num_of_times, qu):
             results = convert_to_label_list(n, results_partition)
         elif alg == 'metropolis':
             results = SIBM_metropolis(graph, k)
+            logging.debug(results)
         else:
             raise NotImplementedError('')
         acc += compare(gt, results)
@@ -134,6 +138,7 @@ if __name__ == '__main__':
     parser.add_argument('--b', type=float, default=4.0)
     parser.add_argument('--draw', type=bool, const=True, nargs='?', default=False)
     args = parser.parse_args()
+    set_up_log()
     if type(args.a) is float:
         args.a = [args.a]
     acc_list = []
@@ -142,7 +147,7 @@ if __name__ == '__main__':
         acc = get_acc(args.alg, params, args.repeat,
                     multi_thread=args.multi_thread, binary=args.binary)
         acc_list.append(acc)
-    set_up_log()
+
     logging.info('n: {0}, repeat: {1}, alg: {2}'.format(args.n, args.repeat, args.alg))
     if len(acc_list) > 1:
         a_left, a_right = get_phase_transition_interval(args.a, acc_list)
