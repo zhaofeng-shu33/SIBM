@@ -6,6 +6,7 @@ import os
 
 import networkx as nx
 import numpy as np
+from sklearn import metrics
 from ising import SIBM_metropolis
 
 def set_up_log():
@@ -54,33 +55,25 @@ def draw(graph):
     ag.draw('build/a.eps')
 
 def get_ground_truth(graph):
-    g0 = set()
-    g1 = set()
+    label_list = []
     for n in graph.nodes(data=True):
-        if n[1]['block'] == 0:
-            g0.add(n[0])
-        else:
-            g1.add(n[0])
-    return (g0, g1)
+        label_list.append(n[1]['block'])
+    return label_list
 
-def compare(r0, r1):
+def compare(label_0, label_1):
     '''
-    get acc
+    get acc using adjusted rand index
     '''
-    if len(r0) != len(r1):
-        return 0
-    total_num = len(r0[0]) + len(r0[1])
-    t0 = r0[0].intersection(r1[0])
-    t1 = r0[1].intersection(r1[1])
-    true_num = len(t0) + len(t1)
-    t00 = r0[0].intersection(r1[1])
-    t11 = r0[1].intersection(r1[0])
-    true_num_2 = len(t00) + len(t11)
-    if true_num > true_num_2:
-        return true_num / total_num
-    else:
-        return true_num_2 / total_num
+    return metrics.adjusted_rand_score(label_0, label_1)
 
+def convert_to_label_list(n, partition):
+    cat = [0 for i in range(n)]
+    label_index = 0
+    for i in partition:
+        for j in i:
+            cat[j] = label_index
+        label_index += 1
+    return cat
 def acc_task(alg, params, num_of_times, qu):
     acc = 0
     n, a, b = params
@@ -88,9 +81,11 @@ def acc_task(alg, params, num_of_times, qu):
         graph = sbm_graph(n, 2, a, b)
         gt = get_ground_truth(graph)
         if alg == 'bisection':
-            results = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
+            results_partition = nx.algorithms.community.kernighan_lin.kernighan_lin_bisection(graph)
+            results = convert_to_label_list(n, results_partition)
         elif alg == 'modularity':
-            results = nx.algorithms.community.modularity_max.greedy_modularity_communities(graph)
+            results_partition = nx.algorithms.community.modularity_max.greedy_modularity_communities(graph)
+            results = convert_to_label_list(n, results_partition)
         elif alg == 'metropolis':
             results = SIBM_metropolis(graph)
         else:

@@ -102,11 +102,7 @@ class SIBM:
                     probability = np.exp(- self._beta * delta_H)
                     if np.random.rand() < probability:
                         self.sigma[r] = (w_s + self.sigma[r]) % self.k
-        partition = []
-        for j in range(self.k):
-            s0 = set([i for i in range(self.n) if self.sigma[i] == j])
-            partition.append(s0)
-        return partition
+        return self.sigma
 
 def SIBM_metropolis(graph, max_iter=40):
     sibm = SIBM(graph)
