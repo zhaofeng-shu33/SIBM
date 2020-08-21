@@ -57,10 +57,11 @@ def _estimate_a_b(graph):
     return (a, b)
 
 class SIBM:
-    def __init__(self, graph):
+    def __init__(self, graph, k=2):
         self.G = graph
-        a, b = estimate_a_b(graph)
-        _beta_star = np.log( (a + b - 2 - np.sqrt((a + b - 2)**2 - 4 * a * b))/ (2 * b))
+        self.k = k
+        a, b = estimate_a_b(graph, k)
+        _beta_star = np.log( (a + b - k - np.sqrt((a + b - k)**2 - 4 * a * b))/ (2 * b))
         self._beta = 1.2 * _beta_star
         self._alpha = 1.8 * b * self._beta
         self.n = len(self.G.nodes)
@@ -68,33 +69,44 @@ class SIBM:
         self.sigma = [1 for i in range(self.n)]
         nodes = list(self.G)
         random.Random().shuffle(nodes)
-        for i in range(self.n // 2):
-            self.sigma[nodes[i]] = -1
+        for node_state in range(k):
+            for i in range(self.n // k):
+                self.sigma[nodes[i * k + node_state]] = node_state
         self.mixed_param = self._alpha * np.log(self.n)
         self.mixed_param /= (self._beta * self.n)
-    def get_dH(self, trial_location):
+    def _get_Js(self, sigma_i, sigma_j, w_s):
+        if sigma_i == sigma_j:
+            return 1
+        elif (w_s + sigma_i) % self.k == sigma_j:
+            return -1
+        else:
+            return 0
+    def get_dH(self, trial_location, w_s):
         _sum = 0
         for i in range(self.n):
             if self.G.has_edge(trial_location, i):
-                _sum += self.sigma[trial_location] * self.sigma[i]
+                _sum += self._get_Js(self.sigma[trial_location], self.sigma[i], w_s)
             else:
-                _sum -= self.mixed_param * self.sigma[trial_location] * self.sigma[i]
+                _sum -= self.mixed_param * self._get_Js(self.sigma[trial_location], self.sigma[i], w_s)
         return _sum
     def metropolis(self, N=40):
         # iterate given rounds
         for _ in range(N):
-            # randomly select one vertex to inspect
             for r in range(self.n):
-                delta_H = self.get_dH(r)
+                # randomly select one new flipping state to inspect
+                w_s = random.randint(1, self.k - 1)
+                delta_H = self.get_dH(r, w_s)
                 if delta_H < 0:  # lower energy: flip for sure
-                    self.sigma[r] = -self.sigma[r]
+                    self.sigma[r] = (w_s + self.sigma[r]) % self.k
                 else:  # Higher energy: flip sometimes
                     probability = np.exp(- self._beta * delta_H)
                     if np.random.rand() < probability:
-                        self.sigma[r] = -self.sigma[r]
-        s0 = set([i for i in range(self.n) if self.sigma[i] == 1])
-        s1 = set([i for i in range(self.n) if self.sigma[i] == -1])
-        return (s0, s1)
+                        self.sigma[r] = (w_s + self.sigma[r]) % self.k
+        partition = []
+        for j in range(self.k):
+            s0 = set([i for i in range(self.n) if self.sigma[i] == j])
+            partition.append(s0)
+        return partition
 
 def SIBM_metropolis(graph, max_iter=40):
     sibm = SIBM(graph)
