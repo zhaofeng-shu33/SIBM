@@ -1,0 +1,218 @@
+\begin{thebibliography}{10}
+
+\bibitem{Abbe_Z2SynchJournal}
+E.~Abbe, A.~S. Bandeira, A.~Bracher, and A.~Singer.
+\newblock Decoding binary node labels from censored edge measurements: Phase
+  transition and efficient recovery.
+\newblock {\em available at arXiv:1404.4749 [cs.IT]}, 2014.
+
+\bibitem{Abbe_Z2SynchER}
+E.~Abbe, A.~S. Bandeira, A.~Bracher, and A.~Singer.
+\newblock Linear inverse problems on {E}rd{\H{o}}s-{R}\'enyi graphs:
+  Information-theoretic limits and efficient recovery.
+\newblock {\em IEEE International Symposium on Information Theory (ISIT2014)},
+  to appear, 2014.
+
+\bibitem{abbetoc}
+E.~Abbe and A.~Montanari.
+\newblock Conditional random fields, planted constraint satisfaction and
+  entropy concentration.
+\newblock {\em to appear in the journal {\it Theory of Computing}, available at
+  arXiv:1305.4274v2}.
+
+\bibitem{mixed}
+E.M. Airoldi, D.M. Blei, S.E. Fienberg, and E.P. Xing.
+\newblock Mixed membership stochastic blockmodels.
+\newblock {\em J Mach Learn Res}, 9:1981--2014, 2008.
+
+\bibitem{bickel}
+P.~J. Bickel and A.~Chen.
+\newblock A nonparametric view of network models and newman�girvan and other
+  modularities.
+\newblock {\em Proceedings of the National Academy of Sciences}, 2009.
+
+\bibitem{boppana}
+R.B. Boppana.
+\newblock Eigenvalues and graph bisection: An average-case analysis.
+\newblock {\em In 28th Annual Symposium on Foundations of Computer Science},
+  pages 280--285, 1987.
+
+\bibitem{bui}
+T.N. Bui, S.~Chaudhuri, F.T. Leighton, and M.~Sipser.
+\newblock Graph bisection algorithms with good average case behavior.
+\newblock {\em Combinatorica}, 7(2):171--191, 1987.
+
+\bibitem{carson}
+T.~Carson and R.~l~Impagliazzo.
+\newblock Hill-climbing finds random planted bisections.
+\newblock In {\em Proc. 12th Symposium on Discrete Algorithms (SODA 01), ACM
+  press, 2001}, pages 903--909, 2001.
+
+\bibitem{sbm-algos}
+Y.~Chen, S.~Sanghavi, and H.~Xu.
+\newblock {Clustering Sparse Graphs}.
+\newblock {\em arXiv:1210.3335}, 2012.
+
+\bibitem{choi}
+D.~S. Choi, P.~J. Wolfe, and E.~M. Airoldi.
+\newblock Stochastic blockmodels with a growing number of classes.
+\newblock {\em Biometrika}, 2012.
+
+\bibitem{coja-sbm}
+A.~Coja-oghlan.
+\newblock Graph partitioning via adaptive spectral techniques.
+\newblock {\em Comb. Probab. Comput.}, 19(2):227--284, March 2010.
+
+\bibitem{condon}
+A.~Condon and R.~M. Karp.
+\newblock Algorithms for graph partitioning on the planted partition model.
+\newblock {\em Lecture Notes in Computer Science}, 1671:221--232, 1999.
+
+\bibitem{decelle}
+A.~Decelle, F.~Krzakala, C.~Moore, and L.~Zdeborov\'a.
+\newblock Asymptotic analysis of the stochastic block model for modular
+  networks and its algorithmic applications.
+\newblock {\em Phys.\ Rev.\ E 84, 066106}, 2011.
+
+\bibitem{sbm-book}
+P.~Doreian, V.~Batagelj, and A.~Ferligoj.
+\newblock {\em {Generalized Blockmodeling (Structural Analysis in the Social
+  Sciences)}}.
+\newblock Cambridge University Press, November 2004.
+
+\bibitem{dyer}
+M.E. Dyer and A.M. Frieze.
+\newblock The solution of some random {NP}-hard problems in polynomial expected
+  time.
+\newblock {\em Journal of Algorithms}, 10(4):451 -- 489, 1989.
+
+\bibitem{ER-seminal}
+P.~Erd\H{o}s and A.~R\'{e}nyi.
+\newblock {On random graphs, I}.
+\newblock {\em Publicationes Mathematicae (Debrecen)}, 6:290--297, 1959.
+
+\bibitem{ER2}
+P.~Erd\H{o}s and A.~R\'enyi.
+\newblock On the evolution of random graphs.
+\newblock In {\em Publication of the Mathematical Institute of the Hungarian
+  Academy of Sciences}, pages 17--61, 1960.
+
+\bibitem{sbm3}
+S.~E. Fienberg, M.~M. Meyer, and S.~S. Wasserman.
+\newblock Statistical analysis of multiple sociometric relations, 1985.
+
+\bibitem{MXGoemans_DPWilliamson_1995}
+M.~X. Goemans and D.~P. Williamson.
+\newblock Improved apprximation algorithms for maximum cut and satisfiability
+  problems using semidefine programming.
+\newblock {\em Journal of the Association for Computing Machinery},
+  42:1115--1145, 1995.
+
+\bibitem{airoldi}
+A.~Goldenberg, A.~X. Zheng, S.~E. Fienberg, and E.~M. Airoldi.
+\newblock A survey of statistical network models.
+\newblock {\em Foundations and Trends in Machine Learning}, 2(2):129--233,
+  2010.
+
+\bibitem{prem}
+P.~K. Gopalan and D.~M. Blei.
+\newblock Efficient discovery of overlapping communities in massive networks.
+\newblock {\em Proceedings of the National Academy of Sciences}, 2013.
+
+\bibitem{holland}
+P.~W. Holland, K.~Laskey, and S.~Leinhardt.
+\newblock {Stochastic blockmodels: First steps}.
+\newblock {\em Social Networks}, 5(2):109--137, 1983.
+
+\bibitem{jerrum}
+M.~Jerrum and G.~B. Sorkin.
+\newblock The metropolis algorithm for graph bisection.
+\newblock {\em Discrete Applied Mathematics}, 82(1�3):155 -- 175, 1998.
+
+\bibitem{newman2}
+B.~Karrer and M.~E.~J. Newman.
+\newblock Stochastic blockmodels and community structure in networks.
+\newblock {\em Phys. Rev. E}, 83:016107, Jan 2011.
+
+\bibitem{kumar}
+K.~R. Kumar, P.~Pakzad, A.H. Salavati, and A.~Shokrollahi.
+\newblock Phase transitions for mutual information.
+\newblock In {\em Turbo Codes and Iterative Information Processing (ISTC), 2010
+  6th International Symposium on}, pages 137--141, 2010.
+
+\bibitem{blog:binomial}
+D.~Lipton and K.~Regan.
+\newblock G\"odel�s lost letter and p=np: Bounds on binomial coefficents.
+\newblock 2009.
+
+\bibitem{Massoulie_SBM}
+L.~Massoulie.
+\newblock Community detection thresholds and the weak ramanujan property.
+\newblock {\em Available online at arXiv:1311.3085 [cs.SI]}, December 2013.
+
+\bibitem{mcsherry}
+F.~McSherry.
+\newblock Spectral partitioning of random graphs.
+\newblock In {\em FOCS '01: Proceedings of the 42nd IEEE symposium on
+  Foundations of Computer Science}, page 529, 2001.
+
+\bibitem{mossel-consist}
+E.~Mossel, J.~Neeman, and A.~Sly.
+\newblock Consistency thresholds for binary symmetric block models.
+\newblock {\em Arxiv:arXiv:1407.1591}.
+
+\bibitem{Mossel_SBM1}
+E.~Mossel, J.~Neeman, and A.~Sly.
+\newblock Stochastic block models and reconstruction.
+\newblock {\em Available online at arXiv:1202.1499 [math.PR]}, 2012.
+
+\bibitem{Mossel_SBM2}
+E.~Mossel, J.~Neeman, and A.~Sly.
+\newblock A proof of the block model threshold conjecture.
+\newblock {\em Available online at arXiv:1311.4115 [math.PR]}, January 2014.
+
+\bibitem{rohe}
+K.l Rohe, S.~Chatterjee, and B.~Yu.
+\newblock Spectral clustering and the high-dimensional stochastic blockmodel.
+\newblock {\em The Annals of Statistics}, 39(4):1878--1915, 08 2011.
+
+\bibitem{sbm5}
+T.~A.~B. Snijders and K.~Nowicki.
+\newblock {Estimation and Prediction for Stochastic Blockmodels for Graphs with
+  Latent Block Structure}.
+\newblock {\em Journal of Classification}, 14(1):75--100, January 1997.
+
+\bibitem{snij}
+T.~A.~B. Snijders and K.~Nowicki.
+\newblock {Estimation and Prediction for Stochastic Blockmodels for Graphs with
+  Latent Block Structure}.
+\newblock {\em Journal of Classification}, 14(1):75--100, January 1997.
+
+\bibitem{Tropp:TailBoundsRM}
+J.~A. Tropp.
+\newblock User-friendly tail bounds for sums of random matrices.
+\newblock {\em Found. Comput. Math.}, 12(4):389--434, 2012.
+
+\bibitem{Vu-arxiv}
+V.~Vu.
+\newblock A simple svd algorithm for finding hidden partitions.
+\newblock {\em Available online at arXiv:1404.3918}, April 2014.
+
+\bibitem{sbm4}
+Y.~J. Wang and G.~Y. Wong.
+\newblock {Stochastic blockmodels for directed graphs}.
+\newblock {\em Journal of the American Statistical Association}, pages 8--19,
+  1987.
+
+\bibitem{sbm1}
+H.~C. White, S.~A. Boorman, and R.~L. Breiger.
+\newblock Social structure from multiple networks.
+\newblock {\em American Journal of Sociology}, 81:730--780, 1976.
+
+\bibitem{jiaming}
+J.~Xu, M.~Lelarge, and L.~Massoulie.
+\newblock Edge label inference in generalized stochastic block models: from
+  spectral theory to impossibility results.
+\newblock {\em to appear in Proceedings of COLT 2014}, 2014.
+
+\end{thebibliography}
