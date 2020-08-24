@@ -904,7 +904,7 @@ For $\delta(C)$ small enough (ie C large enough) and $1-f(\alpha,\beta)<0$, (\re
 
 \begin{figure}[h!]
 \begin{center}
- \includegraphics[width=0.45\textwidth]{successprob3_correctaxis.eps}  
+ \includegraphics[width=0.45\textwidth]{successprob3_correctaxis.pdf}  
  %\quad \includegraphics[width=0.45\textwidth]{spectralmethod.eps}
 \caption{
 \label{Figure_Dualcertificate}
@@ -977,8 +977,7 @@ The authors are grateful to Dustin G. Mixon for thoroughly reading a preliminary
 
 \newpage
 \bibliographystyle{plain}
-{\small
-\bibliography{gen,gen2}}
+\input{SBMExact_21.bbl}
 
 %\bibliographystyle{plain}
 %\bibliography{SBM_exact.bib,gen.bin}
@@ -1022,11 +1021,11 @@ Then we have the following results for $T^*(m,p,q,\epsilon)=\max_{\tau>0} V(m,p,
 
 \noindent For $m \in \mathbb{N}$ and $\forall \tau>0$:
 \begin{align}
--\log(T^*(m,p,q,\epsilon)) &\geq \frac{m}{n} \log(n) \cdot g(m,n,\epsilon)- o\left(\frac{m}{n}\log(n)\right)  \forall m \in \mathbb{N} \label{lemma:result1} 
+-\log(T^*(m,p,q,\epsilon)) &\geq \frac{m}{n} \log(n) \cdot g(\alpha,\beta,\epsilon)- o\left(\frac{m}{n}\log(n)\right)  \forall m \in \mathbb{N} \label{lemma:result1} 
 \end{align}
 For $cn\leq m <c'n^{3/2}$ and $\forall \tau>0$:
 \begin{align}
--\log(T^*(m,p,q, \epsilon)) &\leq \frac{m}{n} \log(n) \cdot g(m,n,\epsilon)+o\left(\frac{m}{n}\log(n)\right)  \forall cn\leq m<c'n^{\frac32}  \label{lemma:result2} 
+-\log(T^*(m,p,q, \epsilon)) &\leq \frac{m}{n} \log(n) \cdot g(\alpha,\beta,\epsilon)+o\left(\frac{m}{n}\log(n)\right)  \forall cn\leq m<c'n^{\frac32}  \label{lemma:result2}
 \end{align}
 \end{lemma}
 
@@ -1162,7 +1161,7 @@ We use the result from Lemma 1 with $m=\frac{n}{2}$ and $\epsilon=1/\log \log(n)
 \end{align*}
 Hence 
 \begin{align*}
--\log(T^* \left( \frac{n}{2}, p,q, \epsilon \right) \leq \left(\frac{\alpha +\beta}{2}-\sqrt{\alpha \beta} \right) \log(n) +o(\log(n))
+-\log(T^* \left( \frac{n}{2}, p,q, \delta \right)) \leq \left(\frac{\alpha +\beta}{2}-\sqrt{\alpha \beta} \right) \log(n) +o(\log(n))
 \end{align*}
 and we conclude.
 \end{proof}
