@@ -569,7 +569,7 @@ with probability at least $1-n^{-2r}$.
 
 Define a small neighborhood of $\Xi^*$ as
 $$
-N(\Xi^*) := \{\Xi |\, |\Xi_{i,j} - \Xi_{i,j}| \leq \frac{n}{\log^{1/3} n}, 1\leq i,j\leq 3\}
+N(\Xi^*) := \{\Xi |\, |\Xi_{i,j} - \Xi^*_{i,j}| \leq \frac{n}{\log^{1/3} n}, 1\leq i,j\leq k\}
 $$
 We use the $L_{\infty}$ norm for the matrix.
  When there is only one non-zero term $\frac{n}{k}$ on each row of the matrix $\Xi$, we call this matrix a ''Corner Matrix''.
@@ -2836,7 +2836,7 @@ This completes the proof of the lemma.
 
 
 \begin{lemma} \label{lm:bmd}
-	Let $Y\sim \Binom(n + o(n), a\log(n)/n)$. Then for $r>8$ and large enough $n$, we have
+	Let $Y\sim \Binom(n + o(n), a\log(n)/n)$. Then for $r>8, a \geq 2$ and large enough $n$, we have
 	$$
 	P(Y\ge r a \log(n)) < n^{-r} .
 	$$

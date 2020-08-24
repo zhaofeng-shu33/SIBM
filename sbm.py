@@ -92,7 +92,7 @@ def acc_task(alg, params, num_of_times, qu):
         elif alg == 'metropolis':            
             if logging.getLogger().level == logging.DEBUG:
                 sibm = SIBM(graph, k)
-                results = sibm.metropolis(N=400)
+                results = sibm.metropolis(N=40)
                 h_value = sibm._get_Hamiltonian()
                 logging.debug(results)
                 logging.debug(h_value)
