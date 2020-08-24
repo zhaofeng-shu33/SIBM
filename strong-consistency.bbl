@@ -1,0 +1,159 @@
+\begin{thebibliography}{10}
+
+\bibitem{AbBaHa:14}
+E.~Abbe, A.~S. Bandeira, and G.~Hall.
+\newblock Exact recovery in the stochastic block model.
+\newblock Arxiv 1405.3267.
+
+\bibitem{ACBL:13}
+Arash~A. Amini, Aiyou Chen, Peter~J. Bickel, and Elizaveta Levina.
+\newblock Pseudo-likelihood methods for community detection in large sparse
+  networks.
+\newblock {\em The Annals of Statistics}, 41(4):2097--2122, 08 2013.
+
+\bibitem{BC:09}
+P.J. Bickel and A.~Chen.
+\newblock A nonparametric view of network models and {N}ewman-{G}irvan and
+  other modularities.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  106(50):21068--21073, 2009.
+
+\bibitem{B:87}
+R.B. Boppana.
+\newblock Eigenvalues and graph bisection: An average-case analysis.
+\newblock In {\em 28th Annual Symposium on Foundations of Computer Science},
+  pages 280--285. IEEE, 1987.
+
+\bibitem{BCLS:87}
+T.N. Bui, S.~Chaudhuri, F.T. Leighton, and M.~Sipser.
+\newblock Graph bisection algorithms with good average case behavior.
+\newblock {\em Combinatorica}, 7(2):171--191, 1987.
+
+\bibitem{CI:01}
+T.~Carson and R.~Impagliazzo.
+\newblock Hill-climbing finds random planted bisections.
+\newblock In {\em Twelfth annual ACM-SIAM symposium on Discrete algorithms},
+  pages 903--909. Society for Industrial and Applied Mathematics, 2001.
+
+\bibitem{CO:10}
+A.~Coja-Oghlan.
+\newblock Graph partitioning via adaptive spectral techniques.
+\newblock {\em Combinatorics, Probability and Computing}, 19(02):227--284,
+  2010.
+
+\bibitem{CK:01}
+A.~Condon and R.M. Karp.
+\newblock Algorithms for graph partitioning on the planted partition model.
+\newblock {\em Random Structures and Algorithms}, 18(2):116--140, 2001.
+
+\bibitem{DF:89}
+M.E. Dyer and A.M. Frieze.
+\newblock The solution of some random {NP}-hard problems in polynomial expected
+  time.
+\newblock {\em Journal of Algorithms}, 10(4):451--489, 1989.
+
+\bibitem{ErdosRenyi:61}
+Paul Erd{\H{o}}s and Alfr{\'e}d R{\'e}nyi.
+\newblock On the strength of connectedness of a random graph.
+\newblock {\em Acta Mathematica Hungarica}, 12(1):261--267, 1961.
+
+\bibitem{Harris:60}
+Theodore~E. Harris.
+\newblock A lower bound for the critical probability in a certain percolation
+  process.
+\newblock In {\em Mathematical Proceedings of the Cambridge Philosophical
+  Society}, volume~56, pages 13--20. Cambridge Univ. Press, 1960.
+
+\bibitem{HLL:83}
+P.W. Holland, K.B. Laskey, and S.~Leinhardt.
+\newblock Stochastic blockmodels: First steps.
+\newblock {\em Social Networks}, 5(2):109 -- 137, 1983.
+
+\bibitem{JS:98}
+M.~Jerrum and G.B. Sorkin.
+\newblock The {M}etropolis algorithm for graph bisection.
+\newblock {\em Discrete Applied Mathematics}, 82(1-3):155--175, 1998.
+
+\bibitem{Karp:72}
+R.~Karp.
+\newblock Reducibility among combinatorial problems.
+\newblock In R.~Miller and J.~Thatcher, editors, {\em Complexity of Computer
+  Computations}, pages 85--103. Plenum Press, 1972.
+
+\bibitem{KomlosSzemeredi:83}
+J{\'a}nos Koml{\'o}s and Endre Szemer{\'e}di.
+\newblock Limit distribution for the existence of hamiltonian cycles in a
+  random graph.
+\newblock {\em Discrete Mathematics}, 43(1):55--63, 1983.
+
+\bibitem{KumarKannan:10}
+Amit Kumar and Ravindran Kannan.
+\newblock Clustering with spectral norm and the k-means algorithm.
+\newblock In {\em Foundations of Computer Science (FOCS), 2010 51st Annual IEEE
+  Symposium on}, pages 299--308. IEEE, 2010.
+
+\bibitem{MaMaVi:12}
+Konstantin Makarychev, Yury Makarychev, and Aravindan Vijayaraghavan.
+\newblock Approximation algorithms for semi-random partitioning problems.
+\newblock In {\em Proceedings of the forty-fourth annual ACM symposium on
+  Theory of computing}, pages 367--384. ACM, 2012.
+
+\bibitem{MaMaVi:14}
+Konstantin Makarychev, Yury Makarychev, and Aravindan Vijayaraghavan.
+\newblock Constant factor approximation for balanced cut in the pie model.
+\newblock In {\em Proceedings of the 46th Annual ACM Symposium on Theory of
+  Computing}, pages 41--49. ACM, 2014.
+
+\bibitem{Massoulie:13}
+Laurent Massouli{\'e}.
+\newblock Community detection thresholds and the weak ramanujan property.
+\newblock In {\em Proceedings of the 46th Annual ACM Symposium on Theory of
+  Computing}, pages 694--703. ACM, 2014.
+
+\bibitem{M:01}
+F.~McSherry.
+\newblock Spectral partitioning of random graphs.
+\newblock In {\em 42nd IEEE Symposium on Foundations of Computer Science},
+  pages 529--537. IEEE, 2001.
+
+\bibitem{MoNeSl:14b}
+E.~Mossel, J.~Neeman, and A.~Sly.
+\newblock Belief propagation, robust reconstruction, and optimal recovery of
+  block models (extended abstract).
+\newblock {\em JMLR Workshop and Conference Proceedings (COLT proceedings)},
+  35:1--35, 2014.
+\newblock Winner of best paper award at COLT 2014.
+
+\bibitem{MoNeSl:13}
+E.~Mossel, J.~Neeman, and A.~Sly.
+\newblock Stochastic block models and reconstruction.
+\newblock {\em Probability Theory and Related Fields}, 2014.
+\newblock (to appear).
+
+\bibitem{MoNeSl:14}
+Elchanan Mossel, Joe Neeman, and Allan Sly.
+\newblock A proof of the block model threshold conjecture.
+\newblock (submitted to Combinatorica), 2014.
+
+\bibitem{NadakuditiNewman:12}
+Raj~Rao Nadakuditi and Mark~EJ Newman.
+\newblock Graph spectra and the detectability of community structure in
+  networks.
+\newblock {\em Physical Review Letters}, 108(18):188701, 2012.
+
+\bibitem{Seginer:00}
+Yoav Seginer.
+\newblock The expected norm of random matrices.
+\newblock {\em Combinatorics, Probability and Computing}, 9:149--166, 3 2000.
+
+\bibitem{Vu:07}
+Van~H. Vu.
+\newblock Spectral norm of random matrices.
+\newblock {\em Combinatorica}, 27(6):721--736, 2007.
+
+\bibitem{YunProutiere:14}
+Se-Young Yun and Alexandre Proutiere.
+\newblock Community detection via random and adaptive sampling.
+\newblock {\em arXiv preprint \texttt{arXiv:1402.3072}}, 2014.
+
+\end{thebibliography}
