@@ -2115,7 +2115,7 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_
 	\begin{equation}  \label{eq:rl}
 	T_r:= | \{i\in[n]:(\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v, X_i=\omega^r \} | ,  \\
 	\end{equation}
-	If $(m-u_r)\beta<\beta^\ast$, then $P_{\SIBM}\big(T_r = \Theta(n^{g((m-u_r)\beta)}) \big) = 1-o(1)$.
+	If $u_r\beta<\beta^\ast$ for $r\in \{0,1, \dots, k-1 \} \backslash \{s\}$, then $P_{\SIBM}\big(T_s = \Theta(\sum_{r=0, r\neq s}^{k-1}n^{g(u_r\beta)}) \big) = 1-o(1)$.
 \end{lemma}
 \begin{proof}
 
@@ -2147,13 +2147,13 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_
 	$P_{\sigma|G}(\sigma_i^{(j)} = 1 \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} )$ is near 1, we conclude that
 	\begin{align*}
 	& \underline{C}
-	\sum_{r=1}^{k-1}\exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big) \\
+	\sum_{r=1}^{k-1}\exp\big(k u_r \beta (A^r_i-A^0_i) \big) \\
 	\le
 	& P_{\sigma|G} \big( (\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v ~\big|~ \sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 	\text{~for all~} j\in[m] \big) \\
 	\le & \overline{C}
-	\sum_{r=1}^{k-1}\exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big)
+	\sum_{r=1}^{k-1}\exp\big(k u_r \beta (A^r_i-A^0_i) \big)
 	\end{align*}
 	for all $i\in[n]$, where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
 	Similar to Equation \eqref{eq:soon}. the above equation can be reformulated as follows:
@@ -2163,11 +2163,11 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_
 	\begin{equation} \label{eq:s56}
 	\begin{aligned}
 	& \underline{C}
-	\sum_{r=1}^{k-1}\exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big) \\
+	\sum_{r=1}^{k-1}\exp\big(k u_r  \beta (A^r_i-A^0_i) \big) \\
 	\le
 	& P_{\sigma|G} \big( (\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v ~\big|~ (\sigma_{i'}^{(1)},\dots,\sigma_{i'}^{(m)})= (\bar{\sigma}_{i'}^{(1)},\dots,\bar{\sigma}_{i'}^{(m)}) \text{~for all~} i'\neq i \big) \\
 	\le & \overline{C}
-	\sum_{r=1}^{k-1}\exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big).
+	\sum_{r=1}^{k-1}\exp\big(k u_r  \beta (A^r_i-A^0_i) \big).
 	\end{aligned}
 	\end{equation}
 	Define 
@@ -2185,8 +2185,8 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_
 		\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 		\text{~for all~} j\in[m]\}$,
 		$P(\underline{S}_i=1)=\underline{C}
-		\sum_{r=1}^{k-1}\exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
-		\sum_{r=1}^{k-1}\exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$.
+		\sum_{r=1}^{k-1}\exp\big(k u_r \beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
+		\sum_{r=1}^{k-1}\exp\big(k u_r \beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$.
 	\end{enumerate}
 	The construction of random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ is rather similar to the one at the end of the proof of Theorem~\ref{thm:dist}, and we do not repeat it here. 
 	Define a set $[n]_+:=\{i\in[n]:X_i=1\}$.
@@ -2196,71 +2196,54 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_
 	\text{~for all~} j\in[m]\}$, we have
 	\begin{align*}
 	& E\Big[ \sum_{i\in[n]_+}\underline{S}_i \Big] = \underline{C}
-	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big) , \quad
+	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(k u_r \beta (A^r_i-A^0_i) \big) , \quad
 	\Var \Big(\sum_{i\in[n]_+}\underline{S}_i \Big) \le \underline{C}
-	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big), \\
+	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(k u_r \beta (A^r_i-A^0_i) \big), \\
 	& E \Big[\sum_{i\in[n]_+} \overline{S}_i \Big] = \overline{C}
-	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big), \quad
+	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(k u_r \beta (A^r_i-A^0_i) \big), \quad
 	\Var \Big(\sum_{i\in[n]_+} \overline{S}_i \Big) \le \overline{C}
-	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big) ,
+	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(k u_r \beta (A^r_i-A^0_i) \big) ,
 	\end{align*}
 	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
-	In Proposition~\ref{prop:con}, we have shown that for $(m-u_0)\beta\le \beta^\ast$, there is a set $\cG_{\con}$ such that (i) $P(G \in \cG_{\con}) = 1-o(1)$ and (ii) for every $G\in \cG_{\con}$, 
+	In Proposition~\ref{prop:con}, we have shown that for $ u_r \beta\le \beta^\ast$, there is a set $\cG_{\con}$ such that (i) $P(G \in \cG_{\con}) = 1-o(1)$ and (ii) for every $G\in \cG_{\con}$, 
 	$
-	\sum_{i=1}^n \exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big)
-	=(1+o(1)) n^{g((m-u_0)\beta)} .
+	\sum_{i=1}^n \exp\big(k u_r \beta (A^r_i-A^0_i) \big)
+	=(1+o(1)) n^{g( u_r \beta)} .
 	$
     Since the size of $[n]_0$ is $1/k$ of $[n]$, for every $G\in \cG_{\con}$, 
 	$
-	\sum_{i\in[n]_0} \exp\big(k(m-u_0)\beta (A^r_i-A^0_i) \big)
-	=\Theta (n^{g((m-u_0)\beta)}) .
+	\sum_{i\in[n]_0} \exp\big(ku_r \beta (A^r_i-A^0_i) \big)
+	=\Theta (n^{g(u_r \beta)}) .
 	$
 	Therefore, for every $G\in\cG_{\good}\cap\cG_{\con}$, 
 	\begin{align*}
-	& E \Big[ \sum_{i\in[n]_+}\underline{S}_i \Big] = \Theta(n^{g((m-u_0)\beta)}) , \quad
-	\Var \Big( \sum_{i\in[n]_+}\underline{S}_i \Big) = O(n^{g((m-u_0)\beta)}) , \\
-	& E \Big[ \sum_{i\in[n]_+}\overline{S}_i \Big] = \Theta(n^{g((m-u_0)\beta)}) , \quad
-	\Var \Big( \sum_{i\in[n]_+}\overline{S}_i \Big) = O(n^{g((m-u_0)\beta)}) 
+	& E \Big[ \sum_{i\in[n]_+}\underline{S}_i \Big] = \Theta(\sum_{r=1}^{k-1}n^{g(u_r \beta)}) , \quad
+	\Var \Big( \sum_{i\in[n]_+}\underline{S}_i \Big) = O(\sum_{r=1}^{k-1} n^{g(u_r\beta)}) , \\
+	& E \Big[ \sum_{i\in[n]_+}\overline{S}_i \Big] = \Theta(\sum_{r=1}^{k-1}n^{g(u_r\beta)}) , \quad
+	\Var \Big( \sum_{i\in[n]_+}\overline{S}_i \Big) = O(\sum_{r=1}^{k-1} n^{g(u_r\beta)}) 
 	\end{align*}
 	conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$. Since $g((m-u_0)\beta)> 0$ for all $(m-u_0)\beta< \beta^\ast$, by Chebyshev's inequality we know that both $\sum_{i\in[n]_+}\underline{S}_i=\Theta(n^{g((m-u_0)\beta)})$ and $\sum_{i\in[n]_+}\overline{S}_i=\Theta(n^{g((m-u_0)\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
+	\text{~for all~} j\in[m]\}$. Since $g(u_r\beta)> 0$ for all $u_r\beta< \beta^\ast$, by Chebyshev's inequality we know that both $\sum_{i\in[n]_+}\underline{S}_i=\Theta(\sum_{r=1}^{k-1}n^{g(u_r\beta)})$ and
+	$\sum_{i\in[n]_+}\overline{S}_i=\Theta(\sum_{r=1}^{k-1} n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 	\text{~for all~} j\in[m]\}$.
-	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $T_0=\Theta(n^{g((m-u_0)\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
+	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $T_0=\Theta(\sum_{r=1}^{k-1}n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 	\text{~for all~} j\in[m]\}$. Combining this with \eqref{eq:ljrc}, we obtain that for every $G\in\cG_{\good}\cap\cG_{\con}$,
-	$T_0=\Theta(n^{g((m-u_0)\beta)})$ with probability $1-o(1)$ conditioning on $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$. Finally, the lemma follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
+	$T_0=\Theta(\sum_{r=1}^{k-1} n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$. Finally, the lemma follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
 \end{proof}
 \begin{lemma}\label{lem:mk}
 	Let $m,k$ be integers and $k\geq 2, m\geq 1$, then
-	\begin{align}
-	m - \lfloor {m + 1 \over k} \rfloor & \leq  \lfloor {k - 1 \over k}(m+1) \rfloor \label{eq:m1} \\
-	(k-1) \lfloor{m + 1 \over k} \rfloor& \leq  \lfloor {k-1 \over k}(m+1) \rfloor \label{eq:m2}
-	\end{align}
+	\begin{equation}\label{eq:m1}
+	m  \leq  k \lfloor {m + k -1 \over k} \rfloor 
+	\end{equation}
 \end{lemma}
 \begin{proof}
-	For Eq. \eqref{eq:m2} we only need to show
-	\begin{equation}\label{eq:m22}
-	n \lfloor a \rfloor \leq \lfloor n a \rfloor
-	\end{equation}
-	for positive integer $n$ and positive real number $a$.
-	
-	Let $a = \lfloor a \rfloor + \{ a \}$, Eq. \eqref{eq:m22} is equivalent with
-	$n \lfloor a \rfloor \leq \lfloor n \{ a \} \rfloor + n \lfloor a \rfloor$, which is obvious.
-	
-	For Eq. \eqref{eq:m1} we want to show 
-	\begin{align*}
-	&	m - \lfloor {m + 1 \over k} \rfloor  \leq  (k-1)\lfloor {m + 1 \over k} \rfloor + \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor \\
-	\iff & m - k \lfloor {m + 1 \over k} \rfloor \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor \\
-	\iff & m - k ({m + 1 \over k} - \{ {m+1 \over k }\}) \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor  \\
-	\iff & k \{ {m+1 \over k }\} - 1 \leq \lfloor (k-1) \{ {m + 1 \over k }\}\rfloor  \\
-	\end{align*}
-	Since $k \{ {m+1 \over k }\}$ is an integer, the above Equation is further equivalent with
-	$$
-	- 1 \leq \lfloor - \{ {m + 1 \over k }\}\rfloor  
-	$$
-	which is obvious by the definition of the fractional part of a number.
+   Let $m = kr + t$ where $0\leq t \leq k-1$.
+   Then Equation \eqref{eq:m1} is equivalent with $ t \leq k\lfloor 1 +  \frac{t-1}{k} \rfloor $.
+   When $ t = 0$, we have the equality. For $1\leq t \leq k-1$, we have $t < k \leq k\lfloor 1 +  \frac{t-1}{k} \rfloor$
+   Therefore, Equation \eqref{eq:m1} holds.
 \end{proof}
 Using the above three lemmas, we obtain the following proposition
 \begin{proposition}
@@ -2269,13 +2252,14 @@ Using the above three lemmas, we obtain the following proposition
 	$$
 	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
 	$$
-	If $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta<\beta^\ast$, then no algorithm can recover $X$ from the samples with constant success probability, i.e., the success probability of any algorithm is $o(1)$.
+	If $\lfloor\frac{m+k-1}{k} \rfloor \beta<\beta^\ast$, then no algorithm can recover $X$ from the samples with constant success probability, i.e., the success probability of any algorithm is $o(1)$.
 \end{proposition}
 \begin{proof}
-	From Lemma \ref{lem:mk} we have $m-\lfloor \frac{m+1}{k}  \rfloor \le \lfloor (k-1)\frac{m+1}{k} \rfloor$. If $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta<\beta^\ast$, then $(m-\lfloor \frac{m+1}{k}  \rfloor) \beta<\beta^\ast$.
-	Now pick a vector $v\in W^m$ such that it has $\lfloor \frac{m+1}{k} \rfloor$ coordinates being $\omega^r$ for $r=0, \dots, k-2$ and $(m-(k-1)\lfloor \frac{m+1}{k} \rfloor)$ coordinates being $\omega^{k-1}$.
-	Since $(k-1)\lfloor \frac{m+1}{k} \rfloor \leq \lfloor (k-1)\frac{m+1}{k} \rfloor$ by Lemma~\ref{lem:mk},
-	by Lemma~\ref{lm:cvs}, with probability $1-o(1)$, $T_r$ is $\omega(1)$ for $r=0, \dots, k-1$. Therefore, we can find $\omega(1)$ pairs of $i_1, \dots, i_k \in[n]$ satisfying the following two conditions: (1) $\sigma_{i_r}^{(j)}=\sigma_{i_1}^{(j)}$ for all $j\in[m], r\in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k} \} = \{1, \omega, \dots, \omega^{k-1} \}$. Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X$ from $X^{(\sim\{I\}, v)}$ for $\omega(1)$ pairs of $i_1, \dots,i_k$. Therefore, the success probability of any recovery algorithm is $o(1)$.
+	From Lemma \ref{lem:mk} we have $m-(k-1)\lfloor \frac{m+k-1}{k}  \rfloor \le \lfloor \frac{m+k-1}{k}  \rfloor$. If $\lfloor \frac{m+k-1}{k}  \rfloor\beta<\beta^\ast$, then $(m-(k-1)\lfloor \frac{m+k-1}{k}  \rfloor) \beta<\beta^\ast$.
+	Now pick a vector $v\in W^m$ such that it has $\lfloor \frac{m+k-1}{k} \rfloor$ coordinates being $\omega^r$ for $r=0, \dots, k-2$
+	and $(m-(k-1)\lfloor \frac{m+k-1}{k}  \rfloor)$ coordinates being $\omega^{k-1}$.
+	
+	By Lemma~\ref{lm:cvs}, with probability $1-o(1)$, $T_r$ is $\omega(1)$ for $r=0, \dots, k-1$. Therefore, we can find $\omega(1)$ pairs of $i_1, \dots, i_k \in[n]$ satisfying the following two conditions: (1) $\sigma_{i_r}^{(j)}=\sigma_{i_1}^{(j)}$ for all $j\in[m], r\in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k} \} = \{1, \omega, \dots, \omega^{k-1} \}$. Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X$ from $X^{(\sim\{I\}, v)}$ for $\omega(1)$ pairs of $i_1, \dots,i_k$. Therefore, the success probability of any recovery algorithm is $o(1)$.
 \end{proof}
 \appendix
 
