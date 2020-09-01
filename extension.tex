@@ -107,10 +107,10 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 \begin{equation} \label{eq:defstar}
 \beta^\ast := \frac{1}{k}
 \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b} \text{~~and~~}
-m^\ast := 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \text{~~~and~~~} \tilde{m} = \frac{k}{k-1}\lfloor \frac{\beta^\ast}{\beta} \rfloor .
+m^\ast := k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1  .
 \end{equation}
 {\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
-If $\beta^\ast/\beta$ is not an integer and $m < \tilde{m} + \frac{1}{k-1}$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+If $\beta^\ast/\beta$ is not an integer and $m < m^*$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m < m^* - k$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
 {\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $~\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
 \end{theorem}
 Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a  real number.
@@ -123,7 +123,7 @@ Below we present an equivalent characterization of the recovery threshold in ter
 	$$
 	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
 	$$
-	If $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{(k-1)(m+1)}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
+	If $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{m+k-1}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
 \end{theorem}
 From Lemma \ref{lem:thm23eq} in the Appendix, Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold.
 
@@ -2848,27 +2848,36 @@ This completes the proof of the lemma.
 \end{proof}
 \begin{lemma}\label{lem:thm23eq}
 \begin{align}
-\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast \iff  & m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \label{eq:m2} \\
-\lfloor \frac{(k-1)(m+1)}{k} \rfloor \beta <\beta^\ast  \iff & m < \tilde{m} + \frac{1}{k-1} \textrm{ if } \beta^*/\beta \textrm{ is not an integer } \notag \\
-& m < \tilde{m} -1 \textrm{ if } \beta^*/\beta \textrm{ is an integer } \label{eq:m22}
+\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast \iff  & m\ge k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor + 1 \label{eq:m2} \\
+\lfloor \frac{m+k-1}{k} \rfloor \beta <\beta^\ast  \iff & m <  m^* \textrm{ if } \beta^*/\beta \textrm{ is not an integer } \notag \\
+& m <  m^* - k \textrm{ if } \beta^*/\beta \textrm{ is an integer } \label{eq:m22}
 \end{align}
 So Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold.
 \end{lemma}
 \begin{proof}
-	First, we give a proof of Equation \eqref{eq:m2}: $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$ implies that $\frac{\beta^\ast}{\beta}<\lfloor \frac{m+1}{2} \rfloor$.
-	The smallest integer that is larger than $\frac{\beta^\ast}{\beta}$ is $\lfloor \frac{\beta^\ast}{\beta}\rfloor +1$, so $\lfloor \frac{\beta^\ast}{\beta} \rfloor +1 \le \lfloor \frac{m+1}{2} \rfloor\le \frac{m+1}{2}$, and thus $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$. Now assume $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$, then $\frac{m-1}{2} \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor$. Since the right hand side is an integer, we have $\lfloor \frac{m+1}{2} \rfloor = \lfloor \frac{m-1}{2} \rfloor +1  \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor +1 >\frac{\beta^\ast}{\beta}$.
+	First, we give a proof of Equation \eqref{eq:m2}: $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$
+	implies that $\frac{\beta^\ast}{\beta}<\lfloor \frac{m+k-1}{k} \rfloor$.
+	The smallest integer that is larger than $\frac{\beta^\ast}{\beta}$ is
+	$\lfloor \frac{\beta^\ast}{\beta}\rfloor +1$,
+	so $\lfloor \frac{\beta^\ast}{\beta} \rfloor + 1 \le \lfloor \frac{m+k-1}{k} \rfloor\le \frac{m+k-1}{k}$,
+	and thus $m\ge k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$.
+	Now assume $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$,
+	then $\frac{m-1}{2} \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor$.
+	Since the right hand side is an integer,
+	we have $\lfloor \frac{m+1}{2} \rfloor = \lfloor \frac{m-1}{2} \rfloor +1 
+	\ge \lfloor \frac{\beta^\ast}{\beta} \rfloor +1 >\frac{\beta^\ast}{\beta}$.
 	
 	Secondly, we show Equation \eqref{eq:m22}. If $\beta^\ast \over \beta$ is not an integer, then
 	\begin{align*}
-	& \lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta}  \\
-	\iff & {(k-1)(m+1) \over k} < \lfloor{\beta^\ast \over \beta}\rfloor + 1 \\
-	\iff & m < \frac{k}{k-1} \lfloor \frac{\beta^\ast}{\beta} \rfloor + \frac{1}{k-1}
+	& \lfloor \frac{m+k-1}{k} \rfloor < {\beta^\ast \over \beta}  \\
+	\iff & \frac{m+k-1}{k}  < \lfloor{\beta^\ast \over \beta}\rfloor + 1 \\
+	\iff & m < k \lfloor \frac{\beta^\ast}{\beta} \rfloor  + 1 = m^*
 	\end{align*}
 	If  $\beta^\ast \over \beta$ is an integer, then
 	\begin{align*}
-	& \lfloor {(k-1)(m+1) \over k} \rfloor < {\beta^\ast \over \beta}  \\
-	\iff & {(k-1)(m+1) \over k} < \lfloor{\beta^\ast \over \beta}\rfloor \\
-	\iff & m < \frac{k}{k-1} \lfloor \frac{\beta^\ast}{\beta} \rfloor -1
+	& \lfloor  \frac{m+k-1}{k}  \rfloor < {\beta^\ast \over \beta}  \\
+	\iff & \frac{m+k-1}{k}  < \lfloor{\beta^\ast \over \beta}\rfloor \\
+	\iff & m <  m^* - k
 	\end{align*}
 \end{proof}
 \bibliographystyle{plain}
