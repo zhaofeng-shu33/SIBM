@@ -155,15 +155,14 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 \begin{align} \label{eq:defstar}
 &\beta^\ast \triangleq
 \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}  \\
-&m^\ast \triangleq 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 \text{~~~and~~~}
-\tilde{m} \triangleq \frac{k}{k-1}\Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor
+&m^\ast \triangleq k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 
 \end{align}
 \begin{enumerate}
 	\item We discuss the case when $\alpha > b \beta$:
 	\begin{enumerate}
 	\item If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
-	\item If $\beta^\ast/\beta$ is not an integer and $m < \tilde{m} + \frac{1}{k-1}$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-	\item If $\beta^\ast/\beta$ is an integer and $m < \tilde{m} -1$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+	\item If $\beta^\ast/\beta$ is not an integer and $m < m^\ast$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+	\item If $\beta^\ast/\beta$ is an integer and $m < m^\ast - k$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
 	\end{enumerate}
 	\item When $\alpha < b \beta$, exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$.
 \end{enumerate}
@@ -172,11 +171,11 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a real number.
 When $\alpha > b \beta$,
 the above theorem establishes a recovery threshold
-for the regime of $m \geq m^\ast$ and $m < \tilde{m}$ (approximately) on the number of samples. Since $\tilde{m} < m^*$,
-When $m \in (\tilde{m}, m^\ast)$, we do not know whether it is possible to recover $X$ or not.
-However, when $k=2$ and $\beta^\ast/\beta$ is not an integer, it can be seen that the threshold is sharp since the interval $(\tilde{m}, m^\ast + \frac{1}{k-1})=\emptyset$.
+for the regime of $m \geq m^\ast$ and $m < m^\ast$ (approximately) on the number of samples. Since $\tilde{m} < m^*$,
+When $m \in [m^* - k, m^\ast)$ and $\beta^\ast/\beta$ is an integer, we do not know whether it is possible to recover $X$ or not.
+However, when $\beta^\ast/\beta$ is not an integer, it can be seen that the threshold is sharp.
 
-It is worth mentioning that the threshold values $m^\ast$ and $\tilde{m}$ do not depend on the parameter $\alpha$, as long as $\alpha>b\beta$.
+It is worth mentioning that the threshold value $m^\ast$ does not depend on the parameter $\alpha$, as long as $\alpha>b\beta$.
 Below we present an equivalent characterization of the recovery threshold in terms of $\beta$.
 \begin{theorem} \label{thm:wt2}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
@@ -184,7 +183,9 @@ Below we present an equivalent characterization of the recovery threshold in ter
 	$
 	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
 	$
-	If $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{(k-1)(m+1)}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
+	If $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$,
+	then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$.
+	If $\lfloor \frac{m+k-1}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
 \end{theorem}
 Using the property of floor function, we can show that Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} are equivalent when $\alpha > b \beta$.
 %$\beta$ represents the force of attraction between connected node in the graph. Theorem \ref{thm:wt2} states that
@@ -459,19 +460,22 @@ We already showed that each sample is very close to $\Gamma(X)$ when $\alpha > b
 so after the alignment step in Algorithm~\ref{alg:ez},
 all the samples are simultaneously aligned with the same element from $\Gamma(X)$.
 We assume all samples are aligned with $X$ in the following analysis.
-From Subsection \ref{subsect:smaller},
-with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)} \neq X_i)$ differs from
-$\sum_{r=1}^{k-1} \exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$.
+From subsection \ref{subsect:smaller},
+with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)}  = \omega^r \cdot X_i)$ differs from
+$ \exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$.
 Since the samples are independent,
-we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $\sum_{r=1}^{k-1} \exp ( u \beta (A^r_i-A^0_i))$
+we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)}  = \omega^r \cdot X_i]\ge u)$ differs from
+$ \exp ( u \beta (A^r_i-A^0_i))$
 by at most a constant factor.
 Here $u\beta$ plays the role of $\beta$ in the single-sample case.
-Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le u-1$ for all $i\in[n]$. Let $u=\lfloor \frac{m+1}{2} \rfloor$,
-then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] \le \lfloor \frac{m-1}{2} \rfloor $ while $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = X_i]
-= m - \lfloor \frac{m-1}{2} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i] $
+Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = \omega^r \cdot X_i] \le u-1$ for all $i\in[n]$. Let $u=\lfloor \frac{m+k-1}{k} \rfloor$,
+then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)}  = \omega^r \cdot X_i] \le \lfloor \frac{m-1}{k} \rfloor $
+while $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = X_i]
+= m - (k-1)\lfloor \frac{m-1}{k} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)}  = \omega^r \cdot X_i] $ for $r=1, \dots, k-1$
 which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}.
 
-The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{(k-1)(m+1)}{k} \rfloor  \beta < \beta^\ast$ is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case.
+The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when
+$\lfloor \frac{m+k-1}{k} \rfloor  \beta < \beta^\ast$ is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case.
 
 \bibliographystyle{IEEEtran}
 \bibliography{exportlist}
