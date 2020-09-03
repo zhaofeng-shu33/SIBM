@@ -1034,14 +1034,14 @@ The proof is mainly computational and the main difficulty comes from upperboundi
 
 \begin{align*}
 \log(V(m,p,q,\tau, \epsilon)=\log \binom{m}{(\tau+\epsilon)\frac{m}{n}\log(n)}+\log \binom{m}{\tau\frac{m}{n}\log(n)} +\frac{m}{n}\tau \log(n) \log(pq)\\
-+\frac{m}{n} \epsilon \log(n) \log \left( \frac{q}{1-q}\right)+\left(m -\tau \frac{m}{n}\log(n \right) \log\left((1-p)(1-q)\right)
++\frac{m}{n} \epsilon \log(n) \log \left( \frac{q}{1-q}\right)+\left(m -\tau \frac{m}{n}\log(n) \right) \log\left((1-p)(1-q)\right)
 \end{align*}
 
 In this expression, we replace $p,q$ by their expressions given above and obtain
 \begin{align} \label{expressionV1}
 \log(V(m,p,q,\tau, \epsilon)&=\log \binom{m}{(\tau+\epsilon)\frac{m}{n}\log(n)}+\log \binom{m}{\tau\frac{m}{n}\log(n)} \nonumber\\
 &+\tau \frac{m}{n} \log(n)   \left( \log(\alpha \beta)+2\log \log(n) -2\log(n) \right)\\
-&+\epsilon \frac{m}{n} \log(n) \left( \log(\beta)+\log \log(n) -\log(n) +\beta \frac{\log(n)}{n} \right) \nonumber \\
+&+\epsilon \frac{m}{n} \log(n) \left( \log(\beta)+\log \log(n) -\log(n)  \right) \nonumber \\
 & - \frac{m}{n} \log(n) (\alpha +\beta) + o \left( \frac{m}{n} \log(n) \right) \nonumber
 \end{align}
 
@@ -1082,7 +1082,7 @@ and replacing (\ref{DL1}) in (\ref{binom3}) we get
 \end{align}
 In the same way
 \begin{align} \label{binom5}
-\log \binom{m}{(\tau+\epsilon) \frac{m}{n} \log(n)} \geq \tau \frac{m}{n} \log(n) \left( \log(n)+\log \left( \frac{e}{\tau+\epsilon}\right) -\log \log(n) \right) - o \left( \frac{m}{n} \log(n) \right) 
+\log \binom{m}{(\tau+\epsilon) \frac{m}{n} \log(n)} \geq (\tau + \epsilon) \frac{m}{n} \log(n) \left( \log(n)+\log \left( \frac{e}{\tau+\epsilon}\right) -\log \log(n) \right) - o \left( \frac{m}{n} \log(n) \right) 
 \end{align}
 Now using (\ref{binom4}) and (\ref{binom5}) in (\ref{expressionV1}) we get
 \begin{align} \label{expressionV3}
