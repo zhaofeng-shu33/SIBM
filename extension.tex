@@ -194,7 +194,7 @@ $$
 $$
 This allows us to prove that in both cases (no matter $\alpha>b\beta$ or $\alpha<b\beta$), the Hamming distance between the samples and the maximizers of $\sum_{i,j}  M_{ij}I(\bar{\sigma}_i, \bar{\sigma}_j)$ is upper bounded by $kn/\log^{1/3}(n)=o(n)$.
 More precisely, if $\alpha>b\beta$, then $\dist(\sigma^{(i)},\Gamma )< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$; if $\alpha<b\beta$, then $\dist(\sigma^{(i)}, \Theta)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$; see Proposition~\ref{prop:1} for a rigorous proof.
-In the latter case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples; see Proposition~\ref{prop:ab} for a rigorous proof.
+In the latter case, each sample only takes $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples; see Proposition~\ref{prop:ab} for a rigorous proof.
 
 For the rest of this section, we will focus on the case $\alpha>b\beta$ and establish the sharp threshold on the sample complexity. We first analyze the typical behavior of one sample and explain how to prove Theorem~\ref{thm:wt3}. Then we use the method developed for the one sample case to analyze the distribution of multiple samples, which allows us to prove Theorem~\ref{thm:wt2}. Note that Theorem~\ref{thm:wt1} follows directly from Theorem~\ref{thm:wt2}.
 
@@ -312,7 +312,8 @@ n^{k (g(\beta)-1+o(1))}
 = \binom{n}{r} (k-1)^r n^{r (g(\beta)-1+o(1))}
 < (k-1)^rn^{r (g(\beta)+o(1))} .
 \end{equation}
-Then by Markov inequality, there is a set $\cG^{(r)}$ such that $P(G\in\cG^{(r)})=1-(k-1)^rn^{r g(\beta)/4}$ and for every $G\in\cG^{(r)}$, $\frac{P_{\sigma|G} ( \dist(\sigma, X) = k )}{P_{\sigma|G}(\sigma= X)} \le (k-1)^rn^{r g(\beta)/2}$.
+Then by Markov inequality, there is a set $\cG^{(r)}$ such that $P(G\in\cG^{(r)})=1-(k-1)^rn^{r g(\beta)/4}$ and for every $G\in\cG^{(r)}$,
+$\frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} \le (k-1)^rn^{r g(\beta)/2}$.
 Let $\cG=\cap_{r=1}^{kn/\log^{1/3}(n)} \cG^{(r)}$. By union bound, we have $P(G\in\cG)>1-\sum_{r=1}^\infty (k-1)^rn^{r g(\beta)/4} = 1-o(1)$. Moreover, for every $G\in\cG$,
 $\frac{P_{\sigma|G} ( 1\le \dist(\sigma, X)< kn/\log^{1/3}(n) )}{P_{\sigma|G}(\sigma= X)} < \sum_{r=1}^\infty (k-1)^rn^{r g(\beta)/2} = o(1)$.
 This proves that $\frac{P_{\SIBM} ( 1\le \dist(\sigma, X)< kn/\log^{1/3}(n) )}{P_{\SIBM}(\sigma= X)}=o(1)$, and so $P_{\SIBM}(\sigma \in \Gamma)=1-o(1)$ when $\beta\in(\beta^\ast,\frac{1}{2k}\log\frac{a}{b}]$.

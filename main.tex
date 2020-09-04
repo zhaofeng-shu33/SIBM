@@ -267,8 +267,8 @@ deviation theory to bound the probability of \eqref{eq:Zij}. To be more specific
 \begin{equation}\label{eq:CZij}
 \Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  s \right)\leq \frac{\mathbb{E}[\exp(t Z_{ij})]^{ \frac{k-1}{2k}n^2 }}{\exp(st)}
 \end{equation}
-where $ t > 0$ is chosen to minimize the function on the right hand side of \eqref{eq:CZij}. It follows that
-\begin{equation}
+where $ t  = \log \frac{\alpha}{b\beta} > 0$ is chosen to minimize the function on the right hand side of \eqref{eq:CZij}. It follows that
+\begin{equation}\label{eq:nlogn}
 \Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  s \right)\leq \exp(n\log n  \frac{k-1}{2k} (h_b(\frac{\alpha}{\beta}) + o(1)))
 \end{equation}
 where $h_b(x) = x - b - x \log\frac{x}{b}$. We can verify that $h_b(x) < 0 $ when $ x > b$. That is the condition $\alpha > b \beta$.
@@ -304,13 +304,22 @@ By Chernoff inequality $ \Pr(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_
 \end{align}
 Therefore the probability of event \eqref{eq:betastar} is bounded above by $ (k-1 + o(1)) n^{g(\beta)}$
 where $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$. This $g(\beta)$ is also defined in Theorem~\ref{thm:wt3}.
-The critical value is the zero point of $g(\beta)$, which is exactly
+The critical value is the smallest zero point of $g(\beta)$, which is exactly
 $$
 \beta^* = \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}
 $$
 as given in Theorem~\ref{thm:wt1}.
-When $\beta > \beta^*$ $g(\beta) < 0$ and the necessary condition of exact discovery holds.
+When $\beta > \beta^*$ and $\beta$ is smaller than the larger root, $g(\beta) < 0$ and the necessary condition of exact discovery holds.
+
 \subsection{Why $\alpha > b \beta$ and $\beta > \beta^*$ is sufficient} \label{sect:why}
+To show with probability $1-o(1)$ Ising model generates a sample exactly aligned with $X$, we modify (\ref{eq:1x_e}, \ref{eq:betastar_x}) in the following form:
+\begin{align}
+P_{\sigma | G}(\sigma =  \mathbf{1}_n) & > \exp(-Cn) P_{\sigma | G}(\sigma = X) \label{eq:1x_e}\\
+P_{\sigma | G}(\dist(\sigma, X) = 1) & > n^{g(\beta)/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_x}
+\end{align}
+We choose  $C$ as a positive constant in \eqref{eq:1x_e}. Notice that the decreasing rate in the right hand side of \eqref{eq:nlogn} is $\exp(-n\log n)$.
+Therefore, \eqref{eq:1x_e} holds.
+
 
 Below we will show that for $a>b>0$, if $\alpha>b\beta$, then all the samples are centered in $\Gamma(X)$ with probability $1-o(1)$;
 if $\alpha<b\beta$, then all the samples are centered in $\Lambda$.
