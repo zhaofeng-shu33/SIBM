@@ -314,43 +314,22 @@ When $\beta > \beta^*$ and $\beta$ is smaller than the larger root, $g(\beta) < 
 \subsection{Why $\alpha > b \beta$ and $\beta > \beta^*$ is sufficient} \label{sect:why}
 To show with probability $1-o(1)$ Ising model generates a sample exactly aligned with $X$, we modify (\ref{eq:1x_e}, \ref{eq:betastar_x}) in the following form:
 \begin{align}
-P_{\sigma | G}(\sigma =  \mathbf{1}_n) & > \exp(-Cn) P_{\sigma | G}(\sigma = X) \label{eq:1x_e}\\
+P_{\sigma | G}(\sigma = X ) & > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n) \label{eq:1x_e}\\
 P_{\sigma | G}(\dist(\sigma, X) = 1) & > n^{g(\beta)/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_x}
 \end{align}
 We choose  $C$ as a positive constant in \eqref{eq:1x_e}. Notice that the decreasing rate in the right hand side of \eqref{eq:nlogn} is $\exp(-n\log n)$.
-Therefore, \eqref{eq:1x_e} holds.
+Therefore, \eqref{eq:1x_e} holds when $\alpha < b \beta $.
 
+Generally, when $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}$ and $\bar{\sigma}$
+is nearest to $\mathbf{1}_{n}$ than other $\omega^r \cdot \mathbf{1}_n$, we could show that
+$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
+happens with probability $O(\exp(-n \log^{2/3} n ))$. Thus using union bound 
+$P_{\sigma | G}(\sigma = \bar{\sigma} ) \leq \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
+happens in probability $1-o(1)$ for all such $\bar{\sigma}$.
+Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{1/3} n})=(k-1)\sum_{\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}}\exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)\leq (k-1)k^n \exp(-Cn)$, choose $C> \log k$ to complete the proof.
 
-Below we will show that for $a>b>0$, if $\alpha>b\beta$, then all the samples are centered in $\Gamma(X)$ with probability $1-o(1)$;
-if $\alpha<b\beta$, then all the samples are centered in $\Lambda$.
-We use the concentration results for adjacency matrices of random graphs with independent edges to prove this.
-Let $A$ be the adjacency matrix of the graph $G$, $J_n$ be the all one matrix and $I_n$ be the identity matrix, both of size $n\times n$.
-Define a matrix
-$
-M:= \big(\beta+\frac{\alpha\log(n)}{n} \big) E[A|X]
--\frac{\alpha\log(n)}{n} (J_n-I_n).
-$
-Then we can write \eqref{eq:isingma}
-as
-\begin{align*}
-&P_{\sigma|G}(\sigma=\bar{\sigma})
-= \frac{1}{Z_G(\alpha,\beta)}
-\exp\Big( \frac{1}{2} \sum_{i,j} M_{ij} \ide{\bar{\sigma}_i}{\bar{\sigma}_j} + \\
-& \frac{1}{2} \sum_{i,j}\big(\beta+\frac{\alpha\log(n)}{n} \big)  (A-E[A|X])_{ij} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
-\Big)
-\end{align*}
-One can show that if $\alpha>b\beta$, then the maximizers of $\sum_{i,j} M_{ij} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}$ consist of set $\Gamma(X)$, and if $\alpha<b\beta$, then the maximizer set is $\Lambda$.
-Moreover, \cite{Hajek16} proved the concentration of $A$ around its expectation $E[A|X]$ in the sense that
-the spectral norm $\|A-E[A|X]\| = O(\sqrt{\log(n)})$ with probability $1-o(1)$, we can further show that the error term above is bounded by
-$$
-\left|\frac{1}{2} \big(\beta+\frac{\alpha\log(n)}{n} \big)\sum_{i,j} (A-E[A|X])
-  \ide{\bar{\sigma}_i}{\bar{\sigma}_j} \right| = O \big( n \sqrt{\log(n)} \big)
-$$
-for all $\bar{\sigma}\in W^n$.
-This allows us to prove that in both cases (no matter $\alpha>b\beta$ or $\alpha<b\beta$), the Hamming distance between the samples and the maximizers of $\sum_{i,j}  M_{ij} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}$ is upper bounded by $kn/\log^{1/3}(n)=o(n)$.
-More precisely, if $\alpha>b\beta$, then $\dist(\sigma^{(i)},\Gamma(X) )< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$;
-if $\alpha<b\beta$, then $\dist(\sigma^{(i)}, \Lambda)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$;
-In the latter case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples.
+To summarize, if $\alpha<b\beta$, then $\dist(\sigma^{(i)}, \Lambda)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$;
+In this case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples.
 
 For the rest of this section, we will focus on the case $\alpha>b\beta$ and establish the threshold on the sample complexity. We first analyze the typical behavior of one sample and explain how to prove Theorem~\ref{thm:wt3}. Then we use the method developed for the one sample case to analyze the distribution of multiple samples, which allows us to prove Theorem~\ref{thm:wt2}. Note that Theorem~\ref{thm:wt1} follows directly from Theorem~\ref{thm:wt2}.
 

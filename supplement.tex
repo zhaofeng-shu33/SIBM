@@ -110,6 +110,62 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(
 & = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{align*}
 \end{proof}
+The following lemma assumes a general $k$.
+Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
+\begin{lemma}
+	When $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Show that
+	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
+	happens with probability $O(\exp(-n \log^{2/3} n ))$ where $C$ is an arbitrary constant.
+\end{lemma}
+\begin{proof}
+	Let $n_r = |\{\bar{\sigma}_i = w^r | i\in [n] \}|$. Then $n_0 \geq n_r$ for $r=1, \dots, k-1$.
+	WLOG, suppose $n_0 \geq n_1 \dots \geq n_{k-1}$.
+	We are concerned with the number $N_w = \frac{1}{2}(n(n-1) - \sum_{r=0}^{k-1} n_r(n_r-1))
+	=\frac{1}{2}(n^2 - \sum_{r=0}^{k-1} n_r^2)$.
+	Taking the $\log$ on both sides of $P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$ we can get
+	\begin{equation}\label{eq:small}
+	(\beta + \frac{\alpha \log n}{n}) \sum_{\bar{\sigma}_i  = \bar{\sigma}_j} Z_{ij} \leq \frac{\alpha \log n}{n} N_w + C n
+	\end{equation}
+	
+	Firstly we estimate the order of $N_w$, obviously $N_w \leq \frac{1}{2} n^2$.
+	Using the conclusion in Appendix A of \cite{yixin} we have
+	\begin{equation}
+	\sum_{r=0}^{k-1} n_r^2 \leq
+	\begin{cases}
+	n n_0 & n_0 \leq \frac{n}{2} \\
+	n^2 - 2n_0(n-n_0) & n_0 > \frac{n}{2}
+	\end{cases}
+	\end{equation}
+	We have $n_0 \leq n - \frac{n}{\log^{1/3} n}$ and $n_0 \geq \frac{n}{k}$. When $n_0 > \frac{n}{2}$ we take $n_0 = n - \frac{n}{\log^{1/3} n}$
+	and we have $N_w \geq 2n_0 (n - n_0) = \frac{n^2}{\log^{1/3} n}(1+o(1))$. When $n_0 < \frac{n}{2}$ we take $n_0 = \frac{n}{2}$ such that
+	$N_w \geq \frac{n^2}{4}$. So generally we have $\frac{n^2}{\log^{1/3} n}(1+o(1)) \leq N_w \leq \frac{1}{2}n^2$.
+	The Bernoulli random variables are independent, taking either $Bern(\frac{a\log n}{n})$ or $Bern(\frac{b \log n}{n})$ depending on whether
+	$X_i$ equals to $X_j$.
+	Since $\frac{\log n}{n} N_w$ is dominate than $n$ we neglect inferior terms to rewrite \eqref{eq:small} as
+	\begin{equation}
+		\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n}
+	\end{equation}
+	Let $N_1$ be the number of random variables of $Z_{ij} \sim Bern(\frac{a\log n}{n})$.
+	and $N_2 = N_w - N_1$ is that of $Z_{ij} \sim Bern(\frac{b\log n}{n})$.
+	
+	Using Chernoff Inequality we have
+	\begin{align*}
+	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n})& \leq (E[\exp(-s Z_{ij})])^{N_1} (E[-exp(-s Z_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_w s}{n}) \\
+	&= \exp( \frac{\log n}{n}(\exp(-s)-1)(aN_1 + bN_2)+\frac{\alpha}{\beta} \frac{\log n N_w s}{n}) 
+	\end{align*}
+	Since $s > 0$, we further have
+	\begin{align*}
+		\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n})
+		& \leq \exp( \frac{N_w\log n }{n}(b(\exp(-s)-1)+ \frac{\alpha}{\beta}s)) 
+	\end{align*}
+	Let $h_b(x) = x - b -x\log \frac{x}{b}$, which satisfies $h_b(x) < 0$ for $0<x<b$,
+	and take $s=-\log\frac{\alpha}{b\beta} > 0$, using 
+	$N_w \geq \frac{n^2}{\log^{1/3} n}$ we have
+	\begin{align*}
+\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n})&\leq \exp( N_w \frac{\log n}{n} h_b(\frac{\alpha}{\beta})) \\
+		& \leq \exp (h_b(\frac{\alpha}{\beta}) n \log^{2/3} n )
+	\end{align*}
+\end{proof}
 \begin{thebibliography}{1}
 	
 
@@ -117,7 +173,8 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(
 	Min Ye.
 	\newblock Exact recovery and sharp thresholds of stochastic ising block model,
 	2020.
-	
+	\bibitem{yixin}
+	Chen, Yuxin, Changho Suh, and Andrea J. Goldsmith. "Information recovery from pairwise measurements." *IEEE Transactions on Information Theory* 62.10 (2016): 5881-5905.
 \end{thebibliography}
 
 \end{document}
