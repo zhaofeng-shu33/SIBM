@@ -226,7 +226,7 @@ If $\alpha > b \beta$ and $\beta < \beta^*$ then we have $\hat{\sigma} \in \Gamm
 one where
 \begin{equation}\label{eq:hat_sigma}
 \hat{\sigma} := \arg\max_{\bar{\sigma}}\beta \sum_{\{i,j\}\in E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
+-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j} 
 \end{equation}
 We consider the modularity of a graph, which is defined by
 \begin{equation}\label{eq:Q}
@@ -247,10 +247,34 @@ for community detection problems.
 \section{Sketch of the proof}
 \label{sect:sketch}
 
-In this section, we illustrate the main ideas and explain the important steps in the proof of the main results.
+In this section, we first use Chernoff inequality to compute the threshold value and illustrate the main ideas to prove the bound holds.
 Some proof techniques are borrowed from \cite{ye2020exact}, which deals with the case for two communities.
 
-\subsection{Why $\alpha > b \beta$}
+\subsection{Why threshold $\alpha > b \beta$ and $\beta > \beta^*$}
+To successfully recover the community, a necessary condition is that the probability of following two events converges to zero as $n\to\infty$
+\begin{align}
+P_{\sigma | G}(\sigma =  \mathbf{1}_n) & > P_{\sigma | G}(\sigma = X) \label{eq:1x} \\
+P_{\sigma | G}(\dist(\sigma, X) = 1) & > P_{\sigma | G}(\sigma = X)\label{eq:betastar}
+\end{align}
+For \eqref{eq:1x}, we can treat it as a hypothesis testing problem and derives the error exponent of its Type I error. Therefore, we use log-likilyhood to simplify
+the event expression to:
+\begin{equation}\label{eq:Zij}
+\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} > (\frac{\alpha}{\beta} + o(1)) \frac{\log n}{n} \frac{k-1}{2k}n^2 =: s
+\end{equation}
+% \frac{k-1}{2k}n^2 = \sum_{(i,j)\in E, X_i \neq X_j} 1
+where $Z_{ij}$ i.i.d $\sim Bern(\frac{b\log n }{n})$, which represents the edge existence between different communities. The mean value on the left hand side is $\frac{b \log n }{n} \frac{k-1}{2k}n^2$. Therefore we can use large
+deviation theory to bound the probability of \eqref{eq:Zij}. To be more specific, by Chernoff inequality we have
+\begin{equation}\label{eq:CZij}
+\Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  s \right)\leq \frac{\mathbb{E}[\exp(t Z_{ij})]^{ \frac{k-1}{2k}n^2 }}{\exp(st)}
+\end{equation}
+where $ t > 0$ is chosen to minimize the function on the right hand side of \eqref{eq:CZij}. It follows that
+\begin{equation}
+\Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  s \right)\leq \exp(n\log n  \frac{k-1}{2k} h_b(\frac{\alpha}{\beta}))
+\end{equation}
+where $h_b(x) = x - b - x \log\frac{x}{b}$. We can verify that $h_b(x) < 0 $ when $ x > b$. That is the condition $\alpha > b \beta$.
+
+The procedure to derive $\beta > \beta^*$ from \eqref{eq:betastar} is similar with the above approach:
+
 Intuitively we need $P(\sigma = X) > P(\sigma = \mathbf{1}_n)$ on average to guarantee that the sample is more likely to align with the ground truth label.
 That is to say
 $$
