@@ -7,6 +7,7 @@
 
 \newtheorem{theorem}{Theorem}%[section]
 \newtheorem{definition}{Definition}%[section]
+\newtheorem{lemma}{Lemma}
 \DeclareMathOperator{\SSBM}{SSBM}
 \DeclareMathOperator{\SIBM}{SIBM}
 \newcommand{\cI}{\mathcal{I}}
@@ -331,6 +332,60 @@ Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{1/3} n})=(
 To summarize, if $\alpha<b\beta$, then $\dist(\sigma^{(i)}, \Lambda)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$;
 In this case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples.
 
+We notice that when $\beta$ is large large, $g(\beta) > 0$. Therefore, Equation \eqref{eq:betastar_x} is not satisfied and
+we need more finer control by considering the following event $D_r : = \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) > 1$,
+$\tau = -\frac{(b-a)\log n}{k}$
+\begin{align*}
+\sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) 
+= \sum_{t=-\frac{n}{k}}^{\frac{n}{k}}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) 
+\end{align*}
+we have
+\begin{align*}
+&\Pr(D_r) = 
+\Pr(D_r| A_i^r - A_i^0 \geq 0, \exists i\in [n])
+\Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n])  \\
+&+ \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
+\Pr(  A_i^r - A_i^0  < 0 , \forall i \in [n] ) \\
+&+ \Pr(D_r | \tau < A_i^r - A_i^0  < 0)
+\Pr( \tau < A_i^r - A_i^0  < 0 ) \\
+& \leq \Pr(D_r| A_i^r - A_i^0 \geq 0)
++ \Pr(D_r | A_i^r - A_i^0  < \tau) 
++ \Pr(D_r | \tau < A_i^r - A_i^0  < 0)
+\end{align*}
+\begin{align*}
+&\Pr(D_r | A_i^r - A_i^0  < \tau) \leq \Pr(\sum_{t=-\frac{n}{k}}^{\tau}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) > 1) \\
+& \leq E[(\sum_{t=-\frac{n}{k}}^{\tau}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) ] \\
+& \leq n^{1 + \beta(b-a)/k}
+\end{align*}
+We use the following lemma, which can be proved by standard Chernoff inequality technique:
+\begin{lemma}\label{lem:fb}
+	For $t\in [\frac{1}{k}(b-a), 0]$,
+define a function
+\begin{align*}
+&f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -\frac{a+b}{k} +1 +\beta t  \\
+&-t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big).
+\end{align*}	
+	\begin{align} \label{eq:upba}
+	& P(A^1_i-A^0_i\ge t\log(n))  \notag\\
+	\le &  \exp\Big(\log n \Big(f_{\beta}(t) -\beta t  - 1 + O\big(\frac{\log(n)}{n}\big) \Big)\Big) .
+	\end{align}
+\end{lemma}
+Choosing $t=0$ in Lemma \ref{lem:fb}, we have
+
+Then by union bound we have
+$ \Pr(D_r| A_i^r - A_i^0 \geq 0) \leq $
+\begin{align*}
+\Pr(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_i)) >  1 ) \\
+\end{align*}
+
+where the quantity $t\log(n)$ ranges over all integer values from $-n/k$ to $n/k$ in the summation.
+Define $D_r(G,t):=|\{i\in[n]:A^r_i-A^0_i= t\log(n)\}|=\sum_{i=1}^n \mathbbm{1}[A^r_i-A^0_i=t \log(n)]$.
+Therefore,
+\begin{equation}  \label{eq:gour}
+\sum_{i=1}^n \exp ( \beta (A^r_i-A^0_i))
+=  \sum_{t\log(n)=-n/k}^{n/k}
+D(G,t) \exp ( \beta t \log(n) ) .
+\end{equation}
 For the rest of this section, we will focus on the case $\alpha>b\beta$ and establish the threshold on the sample complexity. We first analyze the typical behavior of one sample and explain how to prove Theorem~\ref{thm:wt3}. Then we use the method developed for the one sample case to analyze the distribution of multiple samples, which allows us to prove Theorem~\ref{thm:wt2}. Note that Theorem~\ref{thm:wt1} follows directly from Theorem~\ref{thm:wt2}.
 
 
@@ -374,21 +429,7 @@ which is Theorem \ref{thm:wt3}.
 \subsection{Proof for $\beta\in(\beta^*,+\infty)$}\label{beta_large}
 
 We start with a more careful analysis of $\sum_{i=1}^n \exp ( \beta (A^r_i-A^0_i))$.
-Since $A^r_i-A^0_i$ takes integer value between $-n/k$ and $n/k$,
-we can use indicator functions to write
-\begin{align*}
-& \exp (\beta (A^r_i-A^0_i))
-= \\  \sum_{t\log(n)=-n/k}^{n/k}
-& \mathbbm{1}[A^r_i-A^0_i=t \log(n)] \exp (\beta t \log(n) ) ,
-\end{align*}
-where the quantity $t\log(n)$ ranges over all integer values from $-n/k$ to $n/k$ in the summation.
-Define $D(G,t):=|\{i\in[n]:A^r_i-A^0_i= t\log(n)\}|=\sum_{i=1}^n \mathbbm{1}[A^r_i-A^0_i=t \log(n)]$.
-Therefore,
-\begin{equation}  \label{eq:gour}
- \sum_{i=1}^n \exp ( \beta (A^r_i-A^0_i))
-=  \sum_{t\log(n)=-n/k}^{n/k}
-D(G,t) \exp ( \beta t \log(n) ) .
-\end{equation}
+
 By Chernoff bound, we have $P(A^r_i-A^0_i\ge 0)\le \exp\big(\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)) \big)$.
 Define $\cG_1:=\{G:A^r_i-A^0_i< 0~\forall i\in[n]\}$. Then by union bound, $P(G\notin\cG_1)\le\exp\big(\log(n)(1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)) \big) = o(1)$, where the equality follows from the assumption that $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
 For every $G\in\cG_1$, $D(G,t)=0$ for all $t\ge 0$, and so
@@ -397,11 +438,7 @@ For every $G\in\cG_1$, $D(G,t)=0$ for all $t\ge 0$, and so
 =  \sum_{t\log(n)=-n/k}^{-1}
 D(G,t) \exp ( \beta t \log(n) ) .
 \end{equation}
-Define a function
-\begin{align*}
-&f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -\frac{a+b}{k} +1 +\beta t  \\
-&-t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big).
-\end{align*}
+
 Using Chernoff bound, one can show that
 $$
 \mathbb{E}[D(G,t)
