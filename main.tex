@@ -248,7 +248,7 @@ for community detection problems.
 \section{Sketch of the proof}
 \label{sect:sketch}
 
-In this section, we first use Chernoff inequality to compute the threshold value and illustrate the main ideas to prove the bound holds.
+In this section, we first use Chernoff inequality to compute the threshold value and illustrate the main ideas to prove Theorem \ref{thm:wt3}.
 Some proof techniques are borrowed from \cite{ye2020exact}, which deals with the case for two communities.
 
 \subsection{Why $\alpha > b \beta$ and $\beta > \beta^*$ is necessary}
@@ -448,7 +448,7 @@ This completes the sketched proof of Theorem~\ref{thm:wt3}.
 			\end{algorithmic}
 		\end{algorithm}
 For the multiple-sample case,
-we prove that Algorithm \ref{alg:ez} can recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$.
+we prove that Algorithm \ref{alg:ez} can recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$.
 We already showed that each sample is very close to $\Gamma(X)$ when $\alpha > b \beta$,
 so after the alignment step in Algorithm~\ref{alg:ez},
 all the samples are simultaneously aligned with the same element from $\Gamma(X)$.
