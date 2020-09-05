@@ -333,11 +333,11 @@ To summarize, if $\alpha<b\beta$, then $\dist(\sigma^{(i)}, \Lambda)< kn/\log^{1
 In this case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples.
 
 We notice that when $\beta$ is large large, $g(\beta) > 0$. Therefore, Equation \eqref{eq:betastar_x} is not satisfied and
-we need more finer control by considering the following event $D_r : = \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) > 1$,
-$\tau = -\frac{(b-a)\log n}{k}$
+we need more finer control by considering the following event $D_r : = \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) > s $,
+$\tau = \frac{(b-a)\log n}{k}$
 \begin{align*}
 \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) 
-= \sum_{t=-\frac{n}{k}}^{\frac{n}{k}}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) 
+= \sum_{t\log n =-\frac{n}{k}}^{\frac{n}{k}}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) 
 \end{align*}
 we have
 \begin{align*}
@@ -346,16 +346,8 @@ we have
 \Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n])  \\
 &+ \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
 \Pr(  A_i^r - A_i^0  < 0 , \forall i \in [n] ) \\
-&+ \Pr(D_r | \tau < A_i^r - A_i^0  < 0)
-\Pr( \tau < A_i^r - A_i^0  < 0 ) \\
-& \leq \Pr(D_r| A_i^r - A_i^0 \geq 0)
-+ \Pr(D_r | A_i^r - A_i^0  < \tau) 
-+ \Pr(D_r | \tau < A_i^r - A_i^0  < 0)
-\end{align*}
-\begin{align*}
-&\Pr(D_r | A_i^r - A_i^0  < \tau) \leq \Pr(\sum_{t=-\frac{n}{k}}^{\tau}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) > 1) \\
-& \leq E[(\sum_{t=-\frac{n}{k}}^{\tau}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) ] \\
-& \leq n^{1 + \beta(b-a)/k}
+& \leq \Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n]) 
++ \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
 \end{align*}
 We use the following lemma, which can be proved by standard Chernoff inequality technique:
 \begin{lemma}\label{lem:fb}
@@ -371,112 +363,49 @@ define a function
 	\end{align}
 \end{lemma}
 Choosing $t=0$ in Lemma \ref{lem:fb}, we have
-
-Then by union bound we have
-$ \Pr(D_r| A_i^r - A_i^0 \geq 0) \leq $
+$\Pr(A^1_i-A^0_i\ge 0 ) \leq \exp(-\log n \frac{(\sqrt{a}-\sqrt{b})^2}{k})$.
+Then
 \begin{align*}
-\Pr(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_i)) >  1 ) \\
+\Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n]) & \leq \sum_{i=1}^n \Pr( A_i^r - A_i^0 \geq 0) \\
+&\leq n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}}
 \end{align*}
-
-where the quantity $t\log(n)$ ranges over all integer values from $-n/k$ to $n/k$ in the summation.
-Define $D_r(G,t):=|\{i\in[n]:A^r_i-A^0_i= t\log(n)\}|=\sum_{i=1}^n \mathbbm{1}[A^r_i-A^0_i=t \log(n)]$.
-Therefore,
-\begin{equation}  \label{eq:gour}
-\sum_{i=1}^n \exp ( \beta (A^r_i-A^0_i))
-=  \sum_{t\log(n)=-n/k}^{n/k}
-D(G,t) \exp ( \beta t \log(n) ) .
-\end{equation}
-For the rest of this section, we will focus on the case $\alpha>b\beta$ and establish the threshold on the sample complexity. We first analyze the typical behavior of one sample and explain how to prove Theorem~\ref{thm:wt3}. Then we use the method developed for the one sample case to analyze the distribution of multiple samples, which allows us to prove Theorem~\ref{thm:wt2}. Note that Theorem~\ref{thm:wt1} follows directly from Theorem~\ref{thm:wt2}.
-
-
-In the above section, by comparing the probability of $P(\sigma = 1)$ with $P(\sigma=X)$ we get the condition $\alpha > b \beta$.
-In this section, we follow the same intuitive approach but consider comparing $P(\dist(\sigma, X) = 1)$ with $P(\sigma = X)$.
-We consider the $i-$th coordinate in which $\sigma_i \neq X_i$. Since each coordinate takes values from $W$, we have $k-1$ cases for this coordinate.
-Let the event $T=\{\sigma_j = X_j, j\neq i, \sigma_i = \omega^r \cdot X_i\}$ and define
-\begin{equation*}
-A^r_i=A^r_i(G):=|\{j\in[n]\setminus\{i\}:\{i,j\}\in E(G), X_j=\omega^r \cdot X_i\} |
-\end{equation*}
-to represent the number of edges whose two nodes differs by $\omega^r$.
-By definition,
-$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$ and $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $r=1,\dots, k-1$, and they are independent.
-
-We then have
-\begin{align}
-&\frac{P_{\sigma|G}(T)}
-{P_{\sigma|G}(\sigma=X)}
-= \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \nonumber\\
-&-\frac{(k-1)\alpha\log(n)}{n} \Big) 
-= (1+o(1)) \exp ( \beta(A^r_i-A^0_i)) \label{eq:kbetaA}
-\end{align}
-where the second equality holds with high probability because $|A^r_i-A^0_i|=O(\log(n))$ with probability $1-o(1)$.
-
-Therefore, we can estimate the mean value of \eqref{eq:kbetaA}:
-
-
-Summing over all $r=1, \dots, k-1$ and $i=1, \dots, n$ we get
-\begin{equation}\label{eq:diff_by_one}
-\mathbb{E}_G[\frac{P_{\sigma|G}(\dist(\sigma, X)=1)}
-{P_{\sigma|G}(\sigma=X)}] = (1+o(1))k n^{g(\beta)}
-\end{equation}
-
-
-From \eqref{eq:diff_by_one} we can see that the mean value decreases when $\beta > \beta^*$. In section \ref{beta_large}, we will show that $\frac{P_{\sigma|G}(\dist(\sigma, X)=1)}{P_{\sigma|G}(\sigma=X)}$ decreases
-in a similar behavior with probability 1 as $n\to \infty$.
-In section \ref{subsect:smaller}, the case $\beta < \beta^*$ will be discussed in detail.
-Combing the results of section \ref{beta_large} and \ref{subsect:smaller}, we can say that
-$P_{\SIBM}(\sigma\in \Gamma(X))$ has a sharp transitions from $0$ to $1$ at $\beta^\ast$,
-which is Theorem \ref{thm:wt3}.
-\subsection{Proof for $\beta\in(\beta^*,+\infty)$}\label{beta_large}
-
-We start with a more careful analysis of $\sum_{i=1}^n \exp ( \beta (A^r_i-A^0_i))$.
-
-By Chernoff bound, we have $P(A^r_i-A^0_i\ge 0)\le \exp\big(\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)) \big)$.
-Define $\cG_1:=\{G:A^r_i-A^0_i< 0~\forall i\in[n]\}$. Then by union bound, $P(G\notin\cG_1)\le\exp\big(\log(n)(1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)) \big) = o(1)$, where the equality follows from the assumption that $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
-For every $G\in\cG_1$, $D(G,t)=0$ for all $t\ge 0$, and so
-\begin{equation} \label{eq:duj}
- \sum_{i=1}^n \exp (\beta (A^r_i-A^0_i))
-=  \sum_{t\log(n)=-n/k}^{-1}
-D(G,t) \exp ( \beta t \log(n) ) .
-\end{equation}
-
-Using Chernoff bound, one can show that
-$$
-\mathbb{E}[D(G,t)
-\exp\big(\beta t \log(n) \big)]
-\le \exp( f_{\beta}(t) \log(n) ) .
-$$
-with probability one.
-The function $f_{\beta}(t)$ is a concave function
-and takes maximum value at $t^\ast=\frac{b e^{\beta}-a e^{-\beta}}{k}$,
-and $f_{\beta}(t^\ast)=\frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k} + 1
-=g(\beta)$. When $ \beta^* < \beta < \frac{1}{2} \log \frac{a}{b}$, we have $t^\ast < 0$
-for such case, if we take expectation on both sides of \eqref{eq:gour},
-then the sum on the right-hand side is concentrated on a small neighborhood of $t^\ast$.
-When $\beta >  \frac{1}{2} \log \frac{a}{b}$ from Equation \eqref{eq:duj},
-the right-hand is concentrated on the left neighborhood of $0$.
-Therefore, for $G\in \cG_1$, the sum $\mathbb{E}[\sum_{t\log(n)=-n/k}^{n/k}
-D(G,t) \exp (k\beta t \log(n) )]$
-is upper bounded by $O(\log(n))n^{f_{\beta}(0)}$  when $t^\ast>0$ and $O(\log(n))n^{f_{\beta}(t^\ast)}$  when $t^\ast<0$.
-Notice that $f_{\beta}(0)=g(\frac{1}{2}\log\frac{a}{b})=1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}<0$. To simplify the notation we define
+For the second term,
+\begin{align*}
+\sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) 
+= \sum_{t\log n =-\frac{n}{k}}^{-1}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) \\
+\leq \sum_{t\log n =\tau}^{-1}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) + n^{1+\beta(b-a)/k}
+\end{align*}
+Therefore
+\begin{align*}
+&\Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n]) \\
+&\leq \Pr(\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n)  > s - n^{1+\beta(b-a)/k} ) \\
+& \leq E[\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n)] / (s - n^{f_{\beta}((b-a)/k)}) \\
+& \leq \frac{a-b}{k}\log n \cdot n^{f_{\beta}(t) + o(1)} / (s - n^{f_{\beta}((b-a)/k)}) \textrm{ from Lemma \ref{lem:fb} }
+\end{align*}
+$f_{\beta}(t)$ can be bounded above by the following lemma, which can be proved using derivative
+techniques:
+\begin{lemma}
+Define
 $$
 \tilde{g}(\beta) = \begin{cases}
 g(\beta)   & \text{~if~} \beta< \frac{1}{2}\log\frac{a}{b} \\
-g(\frac{1}{2} \log\frac{a}{b}) & \text{~if~} \beta\ge \frac{1}{2}\log\frac{a}{b}
+g(\frac{1}{2} \log\frac{a}{b}) = 1 - \frac{(\sqrt{a}-\sqrt{b})^2}{k} & \text{~if~} \beta\ge \frac{1}{2}\log\frac{a}{b}
 \end{cases}
+$$,
+then $f_{\beta}(t) \leq g(\beta)$ for $t\leq 0$.
+\end{lemma}
+At last we choose $s = n^{\tilde{g}(\beta)/2}$
+\begin{align*}
+\Pr( D_r) \leq  n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{\tilde{g}(\beta)/2 + o(1)} \leq 2n^{\tilde{g}(\beta)/4}
+\end{align*}
+Replacing $D_r$ by $\cup_{r=1}^{k-1} D_r$ in the above deduction we could get the same conclusion.
+That is, the probability of event
 $$
-Now using \eqref{eq:duj} and Markov inequality,
-we conclude that $\sum_{r=1}^{k-1}\sum_{i=1}^n \exp ( \beta (A^r_i-A^0_i))< n^{\tilde{g}(\beta)/2}$ for almost all $G$,
-and so by Equation \eqref{eq:kbetaA}, $\frac{P_{\sigma|G} ( \dist(\sigma, X) = 1 )}{P_{\sigma|G}(\sigma= X)} < n^{\tilde{g}(\beta)/2}$ for almost all $G$. 
-The analysis of $\frac{P_{\SIBM} ( \dist(\sigma, X) = r )}{P_{\SIBM}(\sigma= X)}$ for $1\le r<kn/\log^{1/3}(n)$ is
-similar but with some notation difference, and we do not repeat it here.
-The conclusion is $\frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} < n^{r\tilde{g}(\beta)/2}$ for almost all $G$.
-Using the union bound and
-$
-P_{\SIBM} \big(\dist(\sigma,\Gamma(X))< kn/\log^{1/3}(n) \big) = 1- o(1)
-$
-,
-we can prove
-$P_{\SIBM}(\sigma \in \Gamma)=1-o(1)$ when $\beta>\beta^\ast$ for almost all $G$.
+P_{\sigma | G}(\dist(\sigma, X) = 1) > n^{\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_xx}
+$$
+decreases faster than $n^{\tilde{g}(\beta)/4}$.
+Similar techniques shows that $P_{\sigma | G}(\dist(\sigma, X) = m)> n^{m\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)$
+decreases faster than $(k-1)^m n^{m\tilde{g}(\beta)/4}$. Therefore, $P_{\sigma | G}(\dist(\sigma, X) > 1) < n^{\tilde{g}(\beta)/2} = o(1)$ by summing geometric series.
 
 \subsection{Proof for $\beta\le\beta^\ast$}\label{subsect:smaller}
 We restrict our discussion on the case $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma(X)\backslash\{X\}$.
