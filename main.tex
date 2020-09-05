@@ -165,7 +165,7 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 	\item If $\beta^\ast/\beta$ is not an integer and $m < m^\ast$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
 	\item If $\beta^\ast/\beta$ is an integer and $m < m^\ast - k$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
 	\end{enumerate}
-	\item When $\alpha < b \beta$, exact recovery of $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$.
+	\item When $\alpha < b \beta$, it is not solvable for any $m=O(\log^{1/4}(n))$ to exactly recover $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$.
 \end{enumerate}
 
 \end{theorem}
@@ -248,7 +248,8 @@ for community detection problems.
 \section{Sketch of the proof}
 \label{sect:sketch}
 
-In this section, we first use Chernoff inequality to compute the threshold value and illustrate the main ideas to prove Theorem \ref{thm:wt3}.
+In this section, we first use Chernoff inequality to derive the threshold value and illustrate the main ideas to prove Theorem \ref{thm:wt3}.
+Then we consider the recovery condition for multiple samples and prove Theorem \ref{thm:wt2}.
 Some proof techniques are borrowed from \cite{ye2020exact}, which deals with the case for two communities.
 
 \subsection{Why $\alpha > b \beta$ and $\beta > \beta^*$ is necessary}
@@ -313,7 +314,7 @@ as given in Theorem~\ref{thm:wt1}.
 When $\beta > \beta^*$ and $\beta$ is smaller than the larger root, $g(\beta) < 0$ and the necessary condition of exact discovery holds.
 
 \subsection{Why $\alpha > b \beta$ and $\beta > \beta^*$ is sufficient} \label{sect:why}
-To show with probability $1-o(1)$ Ising model generates a sample exactly aligned with $X$, we modify (\ref{eq:1x_e}, \ref{eq:betastar_x}) in the following form:
+ we modify (\ref{eq:1x_e}, \ref{eq:betastar_x}) in the following form:
 \begin{align}
 P_{\sigma | G}(\sigma = X ) & > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n) \label{eq:1x_e}\\
 P_{\sigma | G}(\dist(\sigma, X) = 1) & > n^{g(\beta)/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_x}
@@ -332,59 +333,57 @@ Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{1/3} n})=(
 To summarize, if $\alpha<b\beta$, then $\dist(\sigma^{(i)}, \Lambda)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$;
 In this case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples.
 
-We notice that when $\beta$ is large large, $g(\beta) > 0$. Therefore, Equation \eqref{eq:betastar_x} is not satisfied and
-we need more finer control by considering the following event $D_r : = \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) > s $,
-$\tau = \frac{(b-a)\log n}{k}$
-\begin{align*}
-\sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) 
-= \sum_{t\log n =-\frac{n}{k}}^{\frac{n}{k}}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) 
-\end{align*}
-we have
+We notice that when $\beta$ is large, $g(\beta) > 0$. Therefore, Equation \eqref{eq:betastar_x} is not satisfactory, and
+we need finer control by introducing some extra parameter which we can optimize. To be more specific, let $D_r : = \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) > s$
+and we are going to give an upper bound of $P(D_r)$. We proceed as follows: 
 \begin{align*}
 &\Pr(D_r) = 
 \Pr(D_r| A_i^r - A_i^0 \geq 0, \exists i\in [n])
-\Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n])  \\
+\cdot I_1 \\
 &+ \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
 \Pr(  A_i^r - A_i^0  < 0 , \forall i \in [n] ) \\
-& \leq \Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n]) 
+& \leq I_1
 + \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
 \end{align*}
-We use the following lemma, which can be proved by standard Chernoff inequality technique:
+where $I_1 = \Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n])$.
+To bound the two terms above, we need the following lemma, which can be proved by standard Chernoff inequality techniques:
 \begin{lemma}\label{lem:fb}
 	For $t\in [\frac{1}{k}(b-a), 0]$,
 define a function
 \begin{align*}
 &f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -\frac{a+b}{k} +1 +\beta t  \\
 &-t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big).
-\end{align*}	
-	\begin{align} \label{eq:upba}
-	& P(A^1_i-A^0_i\ge t\log(n))  \notag\\
-	\le &  \exp\Big(\log n \Big(f_{\beta}(t) -\beta t  - 1 + O\big(\frac{\log(n)}{n}\big) \Big)\Big) .
-	\end{align}
+\end{align*}
+It follows that
+\begin{align} \label{eq:upba}
+& P(A^1_i-A^0_i\ge t\log(n))  \notag\\
+\le &  \exp\Big(\log n \Big(f_{\beta}(t) -\beta t  - 1 + O\big(\frac{\log(n)}{n}\big) \Big)\Big) .
+\end{align}
 \end{lemma}
 Choosing $t=0$ in Lemma \ref{lem:fb}, we have
 $\Pr(A^1_i-A^0_i\ge 0 ) \leq \exp(-\log n \frac{(\sqrt{a}-\sqrt{b})^2}{k})$.
 Then
 \begin{align*}
-\Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n]) & \leq \sum_{i=1}^n \Pr( A_i^r - A_i^0 \geq 0) \\
-&\leq n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}}
+I_1 \leq \sum_{i=1}^n \Pr( A_i^r - A_i^0 \geq 0) \leq n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}}
 \end{align*}
 For the second term,
+conditioned on $A_i^r - A_i^0  < 0, \forall i\in [n]$ we have
 \begin{align*}
-\sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) 
-= \sum_{t\log n =-\frac{n}{k}}^{-1}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) \\
-\leq \sum_{t\log n =\tau}^{-1}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n) + n^{1+\beta(b-a)/k}
+&\sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) \\
+& = \sum_{t\log n =-\frac{n}{k}}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t \log n] \exp ( \beta  t\log n)\leq \\ 
+&
+\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t \log n]\exp ( \beta  t\log n) + n^{1+\beta(b-a)/k}
 \end{align*}
-Therefore
+where $\tau =\frac{b-a}{k}\log n$ in short. Therefore
 \begin{align*}
-&\Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n]) \\
-&\leq \Pr(\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n)  > s - n^{1+\beta(b-a)/k} ) \\
-& \leq E[\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n 1[A^r_i - A^0_i]\exp ( \beta  t\log n)] / (s - n^{f_{\beta}((b-a)/k)}) \\
-& \leq \frac{a-b}{k}\log n \cdot n^{f_{\beta}(t) + o(1)} / (s - n^{f_{\beta}((b-a)/k)}) \textrm{ from Lemma \ref{lem:fb} }
+&\Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])  \\
+&\leq\Pr(\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t\log n]\exp ( \beta  t\log n)  > \tilde{s} ) \\
+& \leq \mathbb{E}[\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i= t\log n]\exp ( \beta  t\log n)] /  \tilde{s} \\
+& \leq \frac{a-b}{k}\log n \cdot n^{f_{\beta}(t) + o(1)} / \tilde{s} \textrm{ using Lemma \ref{lem:fb} }
 \end{align*}
-$f_{\beta}(t)$ can be bounded above by the following lemma, which can be proved using derivative
-techniques:
-\begin{lemma}
+where $\tilde{s} = s - n^{1+\beta(b-a)/k}$. 
+The maximization of $f_{\beta}(t)$ is given by the following lemma:
+\begin{lemma}\label{lem:tilde_g}
 Define
 $$
 \tilde{g}(\beta) = \begin{cases}
@@ -394,7 +393,7 @@ g(\frac{1}{2} \log\frac{a}{b}) = 1 - \frac{(\sqrt{a}-\sqrt{b})^2}{k} & \text{~if
 $$,
 then $f_{\beta}(t) \leq g(\beta)$ for $t\leq 0$.
 \end{lemma}
-At last we choose $s = n^{\tilde{g}(\beta)/2}$
+By choosing $s = n^{\tilde{g}(\beta)/2}$ and using Lemma \ref{lem:tilde_g}, we have
 \begin{align*}
 \Pr( D_r) \leq  n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{\tilde{g}(\beta)/2 + o(1)} \leq 2n^{\tilde{g}(\beta)/4}
 \end{align*}
@@ -403,9 +402,9 @@ That is, the probability of event
 $$
 P_{\sigma | G}(\dist(\sigma, X) = 1) > n^{\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_xx}
 $$
-decreases faster than $n^{\tilde{g}(\beta)/4}$.
+decreases faster than $2n^{\tilde{g}(\beta)/4}$.
 Similar techniques shows that $P_{\sigma | G}(\dist(\sigma, X) = m)> n^{m\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)$
-decreases faster than $(k-1)^m n^{m\tilde{g}(\beta)/4}$. Therefore, $P_{\sigma | G}(\dist(\sigma, X) > 1) < n^{\tilde{g}(\beta)/2} = o(1)$ by summing geometric series.
+decreases faster than $2(k-1)^m n^{m\tilde{g}(\beta)/4}$. Therefore, $P_{\sigma | G}(\dist(\sigma, X) > 1) < n^{\tilde{g}(\beta)/2} = o(1)$ by summing geometric series.
 
 \subsection{Proof for $\beta\le\beta^\ast$}\label{subsect:smaller}
 We restrict our discussion on the case $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma(X)\backslash\{X\}$.
