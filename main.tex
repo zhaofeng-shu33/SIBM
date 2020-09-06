@@ -15,7 +15,7 @@
 \usepackage{bbm} % provide mathbbm
 \newcommand{\ide}[2]{ \delta_{#1 #2} }
 \DeclareMathOperator{\dist}{dist}
-\DeclareMathOperator{\Binom}{Binom}
+\DeclareMathOperator{\Binom}{Binomial}
 
 \title{Stochastic Ising Block Model on Multiple Communities}
 \author{%
@@ -258,22 +258,25 @@ To successfully recover the community, a necessary condition is that the probabi
 P_{\sigma | G}(\sigma =  \mathbf{1}_n) & > P_{\sigma | G}(\sigma = X) \label{eq:1x} \\
 P_{\sigma | G}(\dist(\sigma, X) = 1) & > P_{\sigma | G}(\sigma = X)\label{eq:betastar}
 \end{align}
-For \eqref{eq:1x}, we can treat it as a hypothesis testing problem and derives the error exponent of its Type I error. Therefore, we use log-likilyhood to simplify
-the event expression to:
+For \eqref{eq:1x}, we can treat it as a hypothesis testing problem between $\sigma = X$ versus $\sigma = \mathbf{1}_n$.
+The ML algorithm makes Type I error when event \eqref{eq:1x} happens. Therefore, we use log-likelihood to simplify
+\eqref{eq:1x} to:
 \begin{equation}\label{eq:Zij}
-\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} > (\frac{\alpha}{\beta} + o(1)) \frac{\log n}{n} \frac{k-1}{2k}n^2 =: s
+\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} > (\frac{\alpha}{\beta} + o(1)) \frac{\log n}{n} \frac{k-1}{2k}n^2 =: c
 \end{equation}
 % \frac{k-1}{2k}n^2 = \sum_{(i,j)\in E, X_i \neq X_j} 1
-where $Z_{ij}$ i.i.d $\sim Bern(\frac{b\log n }{n})$, which represents the edge existence between different communities. The mean value on the left hand side is $\frac{b \log n }{n} \frac{k-1}{2k}n^2$. Therefore we can use large
+where $Z_{ij}$ i.i.d $\sim \textrm{Bernoulli}(\frac{b\log n }{n})$, which represents the edge existence between different communities. The mean value on the left hand side is $\frac{b \log n }{n} \frac{k-1}{2k}n^2$. Therefore we can use large
 deviation theory to bound the probability of \eqref{eq:Zij}. To be more specific, by Chernoff inequality we have
 \begin{equation}\label{eq:CZij}
-\Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  s \right)\leq \frac{\mathbb{E}[\exp(t Z_{ij})]^{ \frac{k-1}{2k}n^2 }}{\exp(st)}
+\Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  c \right)\leq \frac{\mathbb{E}[\exp(t Z_{ij})]^{ \frac{k-1}{2k}n^2 }}{\exp(ct)}
 \end{equation}
 where $ t  = \log \frac{\alpha}{b\beta} > 0$ is chosen to minimize the function on the right hand side of \eqref{eq:CZij}. It follows that
 \begin{equation}\label{eq:nlogn}
-\Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  s \right)\leq \exp(n\log n  \frac{k-1}{2k} (h_b(\frac{\alpha}{\beta}) + o(1)))
+\Pr(\sum_{\substack{(i,j)\in E \\ X_i \neq X_j}} Z_{ij} >  c )\leq \exp(n\log n  \frac{k-1}{2k} (h_b(\frac{\alpha}{\beta}) + o(1)))
 \end{equation}
-where $h_b(x) = x - b - x \log\frac{x}{b}$. We can verify that $h_b(x) < 0 $ when $ x > b$. That is the condition $\alpha > b \beta$.
+where $h_b(x) = x - b - x \log\frac{x}{b}$. We can verify that $h_b(x) < 0 $ when $ x > b$. The inequality is actually tight,
+therefore $\alpha > b \beta$
+is necessary.
 
 The procedure to derive $\beta > \beta^*$ from \eqref{eq:betastar} is as follows.
 We consider the $i-$th coordinate in which $\sigma_i \neq X_i$ and denote the event $T_{ir}=\{\sigma_i = \omega^r \cdot X_i, \sigma_j = X_j \forall j \neq i\}$.
@@ -306,31 +309,33 @@ By Chernoff inequality $ \Pr(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_
 \end{align}
 Therefore the probability of event \eqref{eq:betastar} is bounded above by $ (k-1 + o(1)) n^{g(\beta)}$
 where $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$. This $g(\beta)$ is also defined in Theorem~\ref{thm:wt3}.
-The critical value is the smallest zero point of $g(\beta)$, which is exactly
+The critical value is the smaller zero point of $g(\beta)$, which is exactly
 $$
 \beta^* = \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}
 $$
-as given in Theorem~\ref{thm:wt1}.
+also given in Theorem~\ref{thm:wt1}.
 When $\beta > \beta^*$ and $\beta$ is smaller than the larger root, $g(\beta) < 0$ and the necessary condition of exact discovery holds.
 
 \subsection{Why $\alpha > b \beta$ and $\beta > \beta^*$ is sufficient} \label{sect:why}
- we modify (\ref{eq:1x_e}, \ref{eq:betastar_x}) in the following form:
+
+The deduction in the last section can be enhanced in the following form:
 \begin{align}
 P_{\sigma | G}(\sigma = X ) & > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n) \label{eq:1x_e}\\
 P_{\sigma | G}(\dist(\sigma, X) = 1) & > n^{g(\beta)/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_x}
 \end{align}
-We choose  $C$ as a positive constant in \eqref{eq:1x_e}. Notice that the decreasing rate in the right hand side of \eqref{eq:nlogn} is $\exp(-n\log n)$.
-Therefore, \eqref{eq:1x_e} holds when $\alpha < b \beta $.
+where $C$ is a positive constant in \eqref{eq:1x_e}. We claim that \eqref{eq:1x_e} holds when $\alpha < b \beta $.
+$\exp(-Cn)$ can be added since the dominant term of decreasing rate is $\exp(-n\log n)$, as shown by \eqref{eq:nlogn}.
 
 Generally, when $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}$ and $\bar{\sigma}$
 is nearest to $\mathbf{1}_{n}$ than other $\omega^r \cdot \mathbf{1}_n$, we could show that
 $P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
-happens with probability $O(\exp(-n \log^{2/3} n ))$. Thus using union bound 
+happens with probability $O(\exp(-n \log^{2/3} n ))$. Using union bound we have
 $P_{\sigma | G}(\sigma = \bar{\sigma} ) \leq \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
 happens in probability $1-o(1)$ for all such $\bar{\sigma}$.
-Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{1/3} n})=(k-1)\sum_{\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}}\exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)\leq (k-1)k^n \exp(-Cn)$, choose $C> \log k$ to complete the proof.
-
-To summarize, if $\alpha<b\beta$, then $\dist(\sigma^{(i)}, \Lambda)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$;
+Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{1/3} n}) \leq
+(k-1)\sum_{\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}}\exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)
+\leq (k-1)k^n \exp(-Cn) = o(2)$ for $C> \log k$, we conclude that
+$\dist(\sigma^{(i)}, \Lambda)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$ if $\alpha<b\beta$.
 In this case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples.
 
 We notice that when $\beta$ is large, $g(\beta) > 0$. Therefore, Equation \eqref{eq:betastar_x} is not satisfactory, and
@@ -390,7 +395,7 @@ $$
 g(\beta)   & \text{~if~} \beta< \frac{1}{2}\log\frac{a}{b} \\
 g(\frac{1}{2} \log\frac{a}{b}) = 1 - \frac{(\sqrt{a}-\sqrt{b})^2}{k} & \text{~if~} \beta\ge \frac{1}{2}\log\frac{a}{b}
 \end{cases}
-$$,
+$$
 then $f_{\beta}(t) \leq g(\beta)$ for $t\leq 0$.
 \end{lemma}
 By choosing $s = n^{\tilde{g}(\beta)/2}$ and using Lemma \ref{lem:tilde_g}, we have
