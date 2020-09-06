@@ -664,30 +664,30 @@ Recall that $F$ is the event of the maximum likelihood estimator not coinciding 
 \]
 then there exists a constant $c>0$ such that
 \begin{equation}\label{eq:with14epsilon_14}
-\p(F) \leq cn^{-\frac14\epsilon}.
+\p(F) \leq cn^{-\epsilon}.
 \end{equation}
 %\end{lemma}
 
 Combining (\ref{eq:outsidelemmaboundpf5_IT_ub}) and (\ref{eq:with14epsilon_14}), we have
 \begin{eqnarray}
-\p(F) & \leq &  \sum_{k=1}^{n/4}  \exp\left[k\left( 2 \log n - 2\log 2k - \left(\frac{1}2-\frac{k}n\right) \left( 4+\epsilon \right) \log n +2\right)\right]\nonumber\\
+\p(F) & \leq &  \sum_{k=1}^{n/4}  \exp\left[k\left( 2 \log n - 2\log 2k - \left(\frac{1}2-\frac{k}n\right) \left( 4+4\epsilon \right) \log n +2\right)\right]\nonumber\\
 %& = &  \sum_{k=1}^{n/4}  \exp\left[k\left( 2 \log n - 2\log 2k -  \left(2-4\frac{k}n+\frac{\epsilon}2-\epsilon\frac{k}n\right)  \log n \right)\right]\nonumber\\
 %& = &  \sum_{k=1}^{n/4}  \exp\left[k\left(  - 2\log 2k +  \left(4\frac{k}n-\frac{\epsilon}2+\epsilon\frac{k}n\right)  \log n \right)\right]\nonumber\\
-& = &  \sum_{k=1}^{n/4}  \exp\left[k\left(  - 2\log 2k +  4\frac{k}n\log n - \left(\frac{1}2-\frac{k}n\right) \epsilon \log n+2 \right)\right]\nonumber\\
-& \leq &  \sum_{k=1}^{n/4}  \exp\left[k\left(  - 2\log 2k +  4\frac{k}n\log n - \frac{1}4\epsilon \log n+2 \right)\right]\\
+& = &  \sum_{k=1}^{n/4}  \exp\left[k\left(  - 2\log 2k +  4\frac{k}n\log n - \left(\frac{1}2-\frac{k}n\right) 4\epsilon \log n+2 \right)\right]\nonumber\\
+& \leq &  \sum_{k=1}^{n/4}  \exp\left[k\left(  - 2\log 2k +  4\frac{k}n\log n - \epsilon \log n+2 \right)\right]\\
 %& = &  \sum_{k=1}^{n/4}  \exp\left[k\left(  - 2\log 2k +  4\frac{k}n\log n  \right)\right]n^{-\frac{1}4\epsilon}\nonumber\\
-& = &  \sum_{k=1}^{n/4} n^{-\frac{k}4\epsilon} \exp\left[-2k\left( \log 2k -  \frac{2k}n\log n +1 \right)\right].\nonumber
+& = &  \sum_{k=1}^{n/4} n^{-k\epsilon} \exp\left[-2k\left( \log 2k -  \frac{2k}n\log n +1 \right)\right].\nonumber
 \end{eqnarray}
 Note that, for sufficiently large $n$, $1\leq k\leq \frac{n}4$ we have
 \[
 \log 2k -  \frac{2k}n\log n \geq \frac13 \log(2k),
 \]
-and $ n^{-\frac{k}4\epsilon} \leq n^{-\frac{1}4\epsilon}$.
+and $ n^{-k\epsilon} \leq n^{-\epsilon}$.
 Hence, for sufficiently large $n$,
 \[
-\p(F) \leq n^{-\frac{1}4\epsilon}\sum_{k=1}^{n/4} \exp\left[-\frac23k\left(\log 2k-3\right)\right],
+\p(F) \leq n^{-\epsilon}\sum_{k=1}^{n/4} \exp\left[-\frac23k\left(\log 2k + 3\right)\right],
 \]
-which, together with the observation that $\sum_{k=1}^{n/4} \exp\left[-\frac23k\left(\log 2k-3\right)\right] = O(1)$, concludes the proof of the theorem.
+which, together with the observation that $\sum_{k=1}^{n/4} \exp\left[-\frac23k\left(\log 2k + 3\right)\right] = O(1)$, concludes the proof of the theorem.
 \end{proof}
 
 
