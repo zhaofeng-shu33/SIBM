@@ -166,6 +166,18 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 		& \leq \exp (h_b(\frac{\alpha}{\beta}) n \log^{2/3} n )
 	\end{align*}
 \end{proof}
+\begin{lemma}
+	For $SSBM(2,n, \frac{a\log n}{n}, \frac{b \log n}{n})$, the exact recovery error rate $P(F)\asymp n^{2-(\sqrt{a} - \sqrt{b})^2}$.
+\end{lemma}
+\begin{proof}
+	We follow Abbe's proof but enhance the inequality \cite{abbe}.
+	Instead of using Equation (16) to scale up. We consider the maximum value of $f(k)= -2\log(2k)
+	+4\frac{k}{n}\log n - (\frac{1}{2}- \frac{k}{n})4\epsilon \log n + 2$.
+	We can verify that the minimum value of $f(k)$ is actually $f(1)$ for $1\leq k \leq \frac{n}{4}$.
+	Therefore we have
+	$ P(F) \leq \sum_{k=1}^{n/4} \exp(kf(1)) \leq \exp(f(1))$ where $f(1) < 0 $ for sufficient large $n$.
+	$\exp(f(1)) = c n^{-2\epsilon}$ and let $\epsilon = \frac{(\sqrt{a}-\sqrt{b})^2}{2} - 1$.
+\end{proof}
 \begin{thebibliography}{1}
 	
 
@@ -175,6 +187,8 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 	2020.
 	\bibitem{yixin}
 	Chen, Yuxin, Changho Suh, and Andrea J. Goldsmith. "Information recovery from pairwise measurements." *IEEE Transactions on Information Theory* 62.10 (2016): 5881-5905.
+	\bibitem{abbe}
+	Abbe, Emmanuel, Afonso S. Bandeira, and Georgina Hall. "Exact recovery in the stochastic block model." *IEEE Transactions on Information Theory* 62.1 (2015): 471-487.
 \end{thebibliography}
 
 \end{document}
