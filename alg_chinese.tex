@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\pagestyle{empty}
+\begin{document}
+
+	\begin{algorithm}[H]
+		\caption{基于 SIBM 的模拟退火算法} \label{alg:m}
+		输入: 图 $G$，最大迭代次数 $N$，退火速率 $\epsilon$ \\
+		输出: $\hat{X}$
+		\begin{algorithmic}[1]
+			\STATE 随机选择初始状态 $\sigma$
+			\WHILE{迭代次数 $<N$}
+			\FOR{图中每个节点 $r$}
+			\STATE 从 $k-1$ 个新的状态中随机选择一个
+			\STATE 计算整个系统新状态与旧状态的能量差 $\Delta H$
+			\IF{$\Delta H <0$}
+			\STATE 第 $r$ 个节点的状态改变到新的状态
+			\ELSE
+			\STATE 产生一个 $[0,1]$ 间的随机数  $u$ 
+			\IF{$u < \exp(-\beta \Delta H )$}
+			\STATE 第 $r$ 个节点的状态改变到新的状态
+			\ENDIF
+			\ENDIF
+			\ENDFOR
+			\IF{$H(\bar{\sigma})$ 不再改变}
+			\STATE \textbf{break}
+			\ENDIF
+			\STATE $\beta \leftarrow (1 + \epsilon)\cdot\beta$
+			\ENDWHILE
+		\end{algorithmic}
+	\end{algorithm}
+\end{document}
