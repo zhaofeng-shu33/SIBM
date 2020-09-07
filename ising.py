@@ -63,7 +63,7 @@ class SIBM:
         a, b = estimate_a_b(graph, k)
         _beta_star = np.log((a + b - k - np.sqrt((a + b - k)**2 - 4 * a * b))/ (2 * b))
         self._beta = 1.2 * _beta_star
-        self._alpha = 1.8 * b * self._beta
+        self._alpha = 13 * b * self._beta
         self.n = len(self.G.nodes)
         # randomly initiate a configuration
         self.sigma = [1 for i in range(self.n)]
