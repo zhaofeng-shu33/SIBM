@@ -36,13 +36,33 @@ def sbm_graph(n, k, a, b):
     p = np.diag(np.ones(k) * (_p - _q)) + _q * np.ones([k, k])
     return nx.generators.community.stochastic_block_model(sizes, p)
 
+def draw_metropolis():
+    ''' demo for Metropolis sampling, run this function with
+        python3 -c "from sbm import draw_metropolis; draw_metropolis()"
+    '''
+    n = 120
+    K = 3
+    a = 9
+    b = 1
+    graph = sbm_graph(n, K, a, b)
+    results = SIBM_metropolis(graph, k=K)
+    for i in range(n):
+        graph.nodes[i]['estimated_block'] = results[i]
+    draw(graph)
+
 def draw(graph):
+    has_estimated_block = graph.nodes[0].get('estimated_block') is not None
     ag = nx.nx_agraph.to_agraph(graph)
+    ag.graph_attr['outputorder'] = 'edgesfirst'
     ag.node_attr['shape'] = 'point'
-    ag.edge_attr['style'] = 'dotted'
-    ag.edge_attr['color'] = 'blue'
+    # ag.edge_attr['style'] = 'dotted'
+    ag.edge_attr['color'] = 'gray'
     ag.edge_attr['penwidth'] = 0.3
-    # ag.write('build/a.dot')
+    # coloring the node according to estimator block
+    if has_estimated_block:
+        color_list = ['red', 'green', 'blue']
+        for n in ag.nodes_iter():
+            n.attr['color'] = color_list[int(n.attr['estimated_block'])]
     # weighting the edges according to block
     for e in ag.edges_iter():
         n1 = ag.get_node(e[0])
