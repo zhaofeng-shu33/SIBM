@@ -206,9 +206,10 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 	\end{align}
 	Therefore, to maximize $\log p (z | \sigma)$ is equivalent to maximize \eqref{eq:kappa_opt_function}
 	with $\kappa = \frac{\log((1-q)/(1-p))}{\log (p / q)}$ with $p=\frac{a}{b\log n}$ and
-	$q = \frac{b\log n}{n}$. After expansion we have $\kappa = (\frac{(a - b)}{\log(a/b)} + o(1))\frac{\log n}{n}$.
+	$q = \frac{b\log n}{n}$. After expansion we have $\kappa_{ML} = (\frac{(a - b)}{\log(a/b)} + o(1))\frac{\log n}{n}$.
 	Notice that the inequality
 	$ \frac{(a - b)}{\log(a/b)}  > b$ holds. This is $\alpha > b \beta$.
+	For Maximum Modularity, we have already $\kappa_{MQ} = \frac{a+b}{2}\frac{\log n}{n} > \kappa_{ML}$.
 \end{proof}
 \begin{proposition}
 	Define the exact error rate as
