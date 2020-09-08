@@ -167,7 +167,7 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 	\end{align*}
 \end{proof}
 \begin{lemma}
-	For $SSBM(2,n, \frac{a\log n}{n}, \frac{b \log n}{n})$, the exact recovery error rate $P(F)\asymp n^{2-(\sqrt{a} - \sqrt{b})^2}$.
+	For $SBM(2,n, \frac{a\log n}{n}, \frac{b \log n}{n})$, the exact recovery error rate $P(F)\asymp n^{2-(\sqrt{a} - \sqrt{b})^2}$ when we know that the ground truth community labels are balanced.If we allow unbalanced ground truth, possibly the rate is $ n^{1-(\sqrt{a} - \sqrt{b})^2/2} $.
 \end{lemma}
 \begin{proof}
 	We follow Abbe's proof but enhance the inequality \cite{abbe}.
@@ -182,6 +182,41 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 	When $\alpha < b \beta $ and $0 < \delta < 1$, it is not solvable for any $m= O(\log^{\delta}(n))$ to
 	exactly recover SIBM$(n,k,a \log(n)/n, b\log(n)/n ,\alpha, \beta, m)$.
 \end{theorem}
+\begin{proposition}
+	The ML is a special case of index optimization algorithm with
+	$\kappa = (\frac{(a - b)}{\log(a/b)} + o(1))\frac{\log n}{n}$.
+	\begin{equation}\label{eq:kappa_opt_function}
+	\max \sum_{(i,j) \in E} \delta_{\sigma_i\sigma_j} - \kappa \sum_{(i,j) \not\in E}  \delta_{\sigma_i\sigma_j} 
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	Let $z_{ij} \in \{0, 1\}$ to represent whether there is an edge between two nodes in a graph. Then
+	$$
+	p(z | \sigma) = \prod_{\sigma_i = \sigma_j} p^{z_{ij}}
+		(1-p)^{1-z_{ij}} \prod_{\sigma_i \neq \sigma_j} q^{z_{ij}}(1-q)^{1-z_{ij}}
+	$$
+	The log-likelyhood is
+	\begin{align}
+	\log p(z | \sigma) &= \log p \sum_{(i,j) \in E} \delta_{\sigma_i\sigma_j}
+	+ \log(1-p) \sum_{(i,j)\in E} \delta_{\sigma_i\sigma_j} 
+	+ \log q \sum_{(i,j) \not\in E} (1-\delta_{\sigma_i\sigma_j})
+	+\log (1-q) \sum_{(i,j) \not\in E} (1-\delta_{\sigma_i\sigma_j}) \\
+	& =C + \log\frac{p}{q} \sum_{(i,j) \in E} \delta_{\sigma_i\sigma_j}
+	-\frac{1-q}{1-p}\sum_{(i,j) \not\in E} \delta_{\sigma_i\sigma_j}
+	\end{align}
+	Therefore, to maximize $\log p (z | \sigma)$ is equivalent to maximize \eqref{eq:kappa_opt_function}
+	with $\kappa = \frac{\log((1-q)/(1-p))}{\log (p / q)}$ with $p=\frac{a}{b\log n}$ and
+	$q = \frac{b\log n}{n}$. After expansion we have $\kappa = (\frac{(a - b)}{\log(a/b)} + o(1))\frac{\log n}{n}$.
+	Notice that the inequality
+	$ \frac{(a - b)}{\log(a/b)}  > b$ holds. This is $\alpha > b \beta$.
+\end{proof}
+\begin{proposition}
+	Define the exact error rate as
+	$r_1(x, \sigma) = \max_{i\in [n]} \delta(x_i \neq \pi(\sigma_i))$.
+	The mis-matched ratio is defined in \cite{zhang} as
+	$ r(x, \sigma) = \frac{1}{n} \sum_{i=1}^n \delta(x_i \neq \pi(\sigma_i))$
+	We then have $ r(x, \sigma) \leq r_1(x, \sigma) \leq n r(x, \sigma)$.
+\end{proposition}
 \begin{thebibliography}{1}
 	
 
@@ -193,6 +228,8 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 	Chen, Yuxin, Changho Suh, and Andrea J. Goldsmith. "Information recovery from pairwise measurements." *IEEE Transactions on Information Theory* 62.10 (2016): 5881-5905.
 	\bibitem{abbe}
 	Abbe, Emmanuel, Afonso S. Bandeira, and Georgina Hall. "Exact recovery in the stochastic block model." *IEEE Transactions on Information Theory* 62.1 (2015): 471-487.
+	\bibitem{zhang}
+	Zhang, Anderson Y., and Harrison H. Zhou. "Minimax rates of community detection in stochastic block models." The Annals of Statistics 44.5 (2016): 2252-2280.
 \end{thebibliography}
 
 \end{document}

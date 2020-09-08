@@ -54,6 +54,7 @@ def draw(graph):
     has_estimated_block = graph.nodes[0].get('estimated_block') is not None
     ag = nx.nx_agraph.to_agraph(graph)
     ag.graph_attr['outputorder'] = 'edgesfirst'
+    ag.graph_attr['bgcolor'] = 'transparent'
     ag.node_attr['shape'] = 'point'
     # ag.edge_attr['style'] = 'dotted'
     ag.edge_attr['color'] = 'gray'
