@@ -40,10 +40,11 @@
 \begin{document}
 \maketitle
 \begin{abstract}
- In this paper, we will combine Stochastic Block Model (SBM) with Ising model and propose Stochastic Ising Block Model (SIBM) on multiple communities.
- We study the exact recovery problem for SIBM and compute the sample complexity for some properly chosen regime.
- Our result leads to the classical exact recovery condition $\sqrt{a} - \sqrt{b} > \sqrt{k}$ for SBM model
- and provides some theoretical guarantee for the modularity maximization method.
+ Recently a composition of Stochastic Block Model (SBM) and Ising model, called SIBM, was proposed for the case
+ of two communities and a sharp threshold on the sample complexity for exact recovery was established.
+ In this paper, we study the SIBM model in the general case of multiple communities and prove a similar sharp
+ threshold phenomena. To achieve this sample complexity, we need modification of the existing recovery algorithm
+ and carry out more detailed analysis for this problem. Finally, we show some connection of SIBM with the modularity maximization method.
 \end{abstract}
 \section{Introduction}
 % first paragraph: short intro to SBM and Ising model
@@ -51,8 +52,9 @@ In network analysis, Stochastic Block Model (SBM) is a commonly used random grap
 As a probabilistic model, Ising model has been applied to investigate the social voting phenomenon \cite{banerjee2008model}, further indicating there is some hidden relationship between SBM and Ising model.
 
 We observe that Ising model generates
-random node labels while SBM generates random graphs, thus enabling us to propose a concatenated network model: Stochastic Ising Block Model (SIBM). SIBM uses SBM to generate
-the graph and then uses the same graph to generate node labels for several times. For 2-community SIBM, there are already some preliminary results \cite{ye2020exact}, but the problem for multiple communities case remains open. We notice that Ising model is not limited to two states and there are already some extension for multiple-state Ising model \cite{potts1952some}. By using multiple-state Ising model, we will give the result of SIBM on multiple communities. 
+random node labels while SBM generates random graphs and there is a concatenated network model called Stochastic Ising Block Model (SIBM) \cite{ye2020exact}. SIBM uses SBM to generate the graph and then uses the same graph to generate node labels for several times. Given SIBM, the sample complexity has been investigated and a sharp threshold conclusion is established. However, this formulation of SIBM is restricted for the case of two communities and the problem for multiple communities case remains open.
+We notice that Ising model is not limited to two states and there are already some extension for multiple-state Ising model \cite{potts1952some}.
+By using multiple-state Ising model, we will give the result of SIBM on multiple communities.
 
 In this paper, we will investigate SIBM on multiple communities, and focus on the problem of exactly recovery of the node label.
 We will compute the feasible regime of parameters and the sample complexity for exact recovery. Besides, the relationship of SIBM with modularity maximization method
@@ -94,7 +96,7 @@ Let $0\leq q<p\leq 1$ and $V=[n]$. The random vector $X=(X_1,\dots,X_n)\in W^n$ 
 \end{definition}
 From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x)), \forall f \in \Gamma$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $\Gamma(X)$.
 
-In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ \cite{abbe2015exact}.
+In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ \cite{abbe2015community}.
  
 Given a labeling $X$ of $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G$, Ising model defines a probability distribution on all possible labels of these $n$ vertices. 
 
@@ -114,6 +116,9 @@ $Z_G(\alpha,\beta)$ is the normalizing constant for this distribution.
 When $\alpha=0$, Equation \eqref{eq:isingma} gives the standard definition for Potts Model \cite{potts1952some}.
 For our specific problems, $\alpha > 0$ is needed to guarantee that the distribution is not concentrated in the neighborhood of $\Lambda$.
 
+In \cite{ye2020exact}, $\bar{\sigma}_i \cdot \bar{\sigma}_j$ is used for $\bar{\sigma}_i \in \{\pm 1\}$ when defining the Ising model with two states.
+Definition \ref{eq:isingma} uses  $\delta_{\bar{\sigma}_i\bar{\sigma}_j}$, which is equivalent to $\bar{\sigma}_i \cdot \bar{\sigma}_j$ when $k=2$ in the sense that $2\delta_{\bar{\sigma}_i\bar{\sigma}_j} - 1 \in \{\pm 1\}$. The scaling factor $2$ only influences the
+critical value of Ising model without changing its general properties.
 %By definition of Ising model we also have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$. This symmetric property corresponds with that of SBM.
 
 Next we present our new model, the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,k,p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
@@ -262,7 +267,8 @@ The standard way to do community detection is to maximize the modularity $Q$ usi
 We can show that \eqref{eq:Q} satisfies the recovery constraint asymptotically.
 Indeed, we have $d_i \sim \frac{\log n(a+b)}{2}, |E| \sim \frac{1}{2}n d_i$. Therefore, we have $\beta = \frac{1}{2|E|}(1-\frac{\log n}{2n}(a+b))
 \sim \frac{1}{2|E|}$
-and $\alpha = \frac{1}{2|E|}\frac{a+b}{2}$. Since $a>b$. We have $\alpha > b \beta$, which is a necessary condition for finite sample complexity.
+and $\alpha = \frac{1}{2|E|}\frac{a+b}{2}$. Since $a>b$. We have $\alpha > b \beta$. That is, asymptotically the modularity maximazation method
+satisfies $\alpha > b\beta$, the necessary condition for finite sample complexity of SIBM.
 
 \section{Conclusion}\label{s:conclusion}
 In this paper, we derive the sample complexity for Stochastic Ising Block Model on multiple communities.
