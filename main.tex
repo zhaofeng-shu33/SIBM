@@ -47,12 +47,12 @@
 \end{abstract}
 \section{Introduction}
 % first paragraph: short intro to SBM and Ising model
-In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{Abbe17}. Meanwhile, Ising model is a well-known statistical model in physics which has some similarity with SBM \cite{ising1925beitrag}. The nodes with a common edge are more likely to share the same state in Ising model\label{key}.
-As a probabilistic model, Ising model has been applied to investigate the social voting phenomenon \cite{sznajd2000opinion}, further indicating there is some hidden relationship between SBM and Ising model.
+In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic, Abbe17}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{abbe2015community, mossel2016}. Meanwhile, Ising model is a well-known statistical model in physics which has some similarity with SBM \cite{ising1925beitrag}. The nodes with a common edge are more likely to share the same state in Ising model\label{key}.
+As a probabilistic model, Ising model has been applied to investigate the social voting phenomenon \cite{banerjee2008model}, further indicating there is some hidden relationship between SBM and Ising model.
 
 We observe that Ising model generates
 random node labels while SBM generates random graphs, thus enabling us to propose a concatenated network model: Stochastic Ising Block Model (SIBM). SIBM uses SBM to generate
-the graph and then uses the same graph to generate node labels for several times. For 2-community SIBM, there are already some preliminary results \cite{ye2020exact}, but little is known for multiple communities case. We notice that Ising model is not limited to two states and there are already some extension for multiple-state Ising model \cite{potts1952some}. By using multiple-state Ising model, we will give the result of SIBM on multiple communities. 
+the graph and then uses the same graph to generate node labels for several times. For 2-community SIBM, there are already some preliminary results \cite{ye2020exact}, but the problem for multiple communities case remains open. We notice that Ising model is not limited to two states and there are already some extension for multiple-state Ising model \cite{potts1952some}. By using multiple-state Ising model, we will give the result of SIBM on multiple communities. 
 
 In this paper, we will investigate SIBM on multiple communities, and focus on the problem of exactly recovery of the node label.
 We will compute the feasible regime of parameters and the sample complexity for exact recovery. Besides, the relationship of SIBM with modularity maximization method
@@ -223,7 +223,7 @@ estimate the original label. This provides a way to do community detection for S
 To some extent
 SIBM provides the theoretical guarantee for such detection method.
 
-If $\alpha > b \beta$ and $\beta < \beta^*$ then we have $\hat{\sigma} \in \Gamma(X)$ with probability
+If $\alpha > b \beta$ and $\beta > \beta^*$ then we have $\hat{\sigma} \in \Gamma(X)$ with probability
 one where
 \begin{equation}\label{eq:hat_sigma}
 \hat{\sigma} := \arg\max_{\bar{\sigma}}\beta \sum_{\{i,j\}\in E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
@@ -292,7 +292,7 @@ $P_{\sigma | G}(\sigma = \bar{\sigma} ) \leq \exp(-Cn) P_{\sigma | G}(\sigma = \
 happens in probability $1-o(1)$ for all such $\bar{\sigma}$.
 Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{1/3} n}) \leq
 (k-1)\sum_{\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}}\exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)
-\leq (k-1)k^n \exp(-Cn) = o(2)$ for $C> \log k$, we conclude that
+\leq (k-1)k^n \exp(-Cn) = o(1)$ for $C> \log k$, we conclude that
 $\dist(\sigma^{(i)}, \Lambda)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$ if $\alpha<b\beta$.
 In this case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples.
 
