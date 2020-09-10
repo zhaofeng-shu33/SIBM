@@ -62,7 +62,7 @@ This paper is divided as follows. In Section \ref{s:Preliminaries} the SIBM is f
 In Section \ref{s:trans}, the main results are introduced.
 In Section \ref{s:cdm}, the relationship between modularity maximization and SIBM is discussed 
 and in Section \ref{s:conclusion} the conclusion is given.
-Proof sketch of our main results is provided in appendix.
+Proof sketch of our main results is provided in the last Section.
 
 % notation convetion
 Within this paper, the number of community is denoted by $k$; $m$ is the number of samples; $\lfloor x \rfloor$ is the floor function of $x$; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
@@ -169,6 +169,30 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 \end{enumerate}
 
 \end{theorem}
+The $O(n)$ times algorithm can actually be written in Algorithm \ref{alg:ez}. It first aligns all samples with the first one $\sigma^{(1)}$ and
+make a majority voting for the label at each node.
+\begin{algorithm}
+	\caption{\texttt{LearnSIBM} in $O(n)$ time} \label{alg:ez}
+	Inputs: the samples $\sigma^{(1)},\sigma^{(2)}\dots,\sigma^{(m)}$ \\
+	Output: $\hat{X}$
+	\begin{algorithmic}[1]
+		\Statex 
+		{\bf Step 1: Align all the samples with $\sigma^{(1)}$ }
+		\For {$j=2,3,\dots,m$}
+		\State $f^* = \arg\max_{f \in \Gamma} \sum_{i=1}^n h(f(\sigma^{(j)}_i), \sigma^{(1)}_i)$
+		\State $\sigma^{(j)} \gets f^*(\sigma^{(j)})$
+		\EndFor
+		\Statex
+		{\bf Step 2: Majority vote at each coordinate}
+		\For {$i=1,2,\dots,n$}
+		\State $g(r) = |\{j | \sigma^{(j)}_i = \omega^r,1\leq j \leq m\}|$  for $ 0 \leq r \leq k-1$
+		\State $\hat{X}_i \gets w^{r*}$ where $r^*=\arg\max_r g(r)$
+		\State\Comment{If the max of $g(r)$ is not unique, assign $\hat{X}_i$ randomly to one of \texttt{argmax}}
+		\EndFor
+		\State Output $\hat{X}$
+	\end{algorithmic}
+\end{algorithm}
+
 Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a real number.
 When $\alpha > b \beta$,
 the above theorem establishes a recovery threshold
@@ -244,7 +268,7 @@ and $\alpha = \frac{1}{2|E|}\frac{a+b}{2}$. Since $a>b$. We have $\alpha > b \be
 In this paper, we derive the sample complexity for Stochastic Ising Block Model on multiple communities.
 Our result shares insights on the relationship of SBM and Ising model and guides the design of efficient algorithms
 for community detection problems.
-\appendix
+%\appendix
 \section{Sketch of the proof}
 \label{sect:sketch}
 
@@ -430,27 +454,7 @@ This completes the sketched proof of Theorem~\ref{thm:wt3}.
 \subsection{Multiple sample case: Proof of Theorem~\ref{thm:wt2}}
 \label{sect:multi}
 
-		\begin{algorithm}
-			\caption{\texttt{LearnSIBM} in $O(n)$ time} \label{alg:ez}
-			Inputs: the samples $\sigma^{(1)},\sigma^{(2)}\dots,\sigma^{(m)}$ \\
-			Output: $\hat{X}$
-			\begin{algorithmic}[1]
-				\Statex 
-				{\bf Step 1: Align all the samples with $\sigma^{(1)}$ }
-				\For {$j=2,3,\dots,m$}
-				\State $f^* = \arg\max_{f \in \Gamma} \sum_{i=1}^n h(f(\sigma^{(j)}_i), \sigma^{(1)}_i)$
-				\State $\sigma^{(j)} \gets f^*(\sigma^{(j)})$
-				\EndFor
-				\Statex
-				{\bf Step 2: Majority vote at each coordinate}
-				\For {$i=1,2,\dots,n$}
-				\State $g(r) = |\{j | \sigma^{(j)}_i = \omega^r,1\leq j \leq m\}|$  for $ 0 \leq r \leq k-1$
-				\State $\hat{X}_i \gets w^{r*}$ where $r*=\arg\max_r g(r)$
-			\State\Comment{If the max of $g(r)$ is not unique, assign $\hat{X}_i$ randomly to one of \texttt{argmax}}
-				\EndFor
-				\State Output $\hat{X}$
-			\end{algorithmic}
-		\end{algorithm}
+
 For the multiple-sample case,
 we prove that Algorithm \ref{alg:ez} can recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$.
 We already showed that each sample is very close to $\Gamma(X)$ when $\alpha > b \beta$,
