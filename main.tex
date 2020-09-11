@@ -69,7 +69,7 @@
 	Throughout this paper, the number of community is denoted by $k$; $m$ is the number of samples; $\lfloor x \rfloor$ is the floor function of $x$; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
 	$V=\{1,\dots, n\} =: [n]$;
 	the label of each node is a random variable $X_i$; $X_i$ is chosen from $W= \{1, \omega, \dots, \omega^{k-1}\}$ and we further require $W$
-	is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $S_k$ is used to represent all permutation functions on $W$ and $S_k(\sigma):=\{f(\sigma)| f\in S_k\}$ for $\sigma \in W^n$; the indicator function $\ide{x}{y}$ is defined as
+	is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $S_k$ is used to represent all permutation functions on $W$ and $S_k(\sigma):=\{f(\sigma)| f\in S_k\}$ for $\sigma \in W^n$; the indicator function $\ide{x}{y}$ or $\delta(x,y)$ is defined as
 	$\ide{x}{y} = 1 $ when $x=y$, and $\ide{x}{y}=0$ when $x\neq y$; $g(n) = \Theta(f(n))$ if there exists constant $c_1 < c_2$ such that $c_1 f(n) \leq g(n) \leq c_2 f(n)$
 	for large $n$;
 	$\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$
@@ -151,7 +151,7 @@
 	By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefore, if we cannot recover $X$ from $G$, it is impossible to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
 	
 	\section{Sample Complexity of SIBM}\label{s:trans}
-	Our main Problem is to investigate what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?
+	Our main problem is to investigate what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?
 	
 	Our main results are as follows:
 	
@@ -174,7 +174,7 @@
 		
 	\end{theorem}
 	The $O(n)$ times algorithm can actually be written in Algorithm \ref{alg:ez}. It first aligns all samples with the first one $\sigma^{(1)}$ and
-	make a majority voting for the label at each node.
+	makes a majority voting for the label at each node.
 	\begin{algorithm}
 		\caption{\texttt{LearnSIBM} in $O(n)$ time} \label{alg:ez}
 		Inputs: the samples $\sigma^{(1)},\sigma^{(2)}\dots,\sigma^{(m)}$ \\
@@ -183,14 +183,14 @@
 			\Statex 
 			{\bf Step 1: Align all the samples with $\sigma^{(1)}$ }
 			\For {$j=2,3,\dots,m$}
-			\State $f^* = \arg\max_{f \in S_k} \sum_{i=1}^n h(f(\sigma^{(j)}_i), \sigma^{(1)}_i)$
+			\State $f^* = \arg\max_{f \in S_k} \sum_{i=1}^n \delta(f(\sigma^{(j)}_i), \sigma^{(1)}_i)$
 			\State $\sigma^{(j)} \gets f^*(\sigma^{(j)})$
 			\EndFor
 			\Statex
 			{\bf Step 2: Majority vote at each coordinate}
 			\For {$i=1,2,\dots,n$}
 			\State $g(r) = |\{j | \sigma^{(j)}_i = \omega^r,1\leq j \leq m\}|$  for $ 0 \leq r \leq k-1$
-			\State $\hat{X}_i \gets w^{r*}$ where $r^*=\arg\max_r g(r)$
+			\State $\hat{X}_i \gets w^{r^*}$ where $r^*=\arg\max_r g(r)$
 			\State\Comment{If the max of $g(r)$ is not unique, assign $\hat{X}_i$ randomly to one of \texttt{argmax}}
 			\EndFor
 			\State Output $\hat{X}$
@@ -247,12 +247,10 @@
 	we show that how the modularity is connected with our SIBM model.
 	
 	If we could choose proper $\alpha, \beta$, then from Theorem \ref{thm:wt3} a single sample generated from Ising model is enough to
-	estimate the original label. This provides a way to do community detection for SBM model.
-	To some extent
-	SIBM provides the theoretical guarantee for such detection method.
-	
-	If $\alpha > b \beta$ and $\beta > \beta^*$ then we have $\hat{\sigma} \in S_k(X)$ with probability
-	one where
+	estimate the original label. This provides a way to make community detection for SBM model.
+
+	To be more specific, we solve the following optimization problem to obtain the detection results while choosing $\alpha > b \beta$ and
+	$\beta > \beta^*$:
 	\begin{equation}\label{eq:hat_sigma}
 	\hat{\sigma} := \arg\max_{\bar{\sigma}}\beta \sum_{\{i,j\}\in E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
 	-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j} 
@@ -261,13 +259,13 @@
 	\begin{equation}\label{eq:Q}
 	Q = \frac{1}{2 |E|} \sum_{ij} (A_{ij} - \frac{d_i d_j}{2 |E|}) \delta(C_i, C_j)
 	\end{equation}
-	where $d_i$ is the degree of the $i-$th node.
-	The standard way to do community detection is to maximize the modularity $Q$ using greedy method.
+	where $d_i$ is the degree of the $i$-th node and $A$ is the adjacency matrix.
+	The standard way to detect communities is to maximize the modularity $Q$ using greedy method.
 	We can show that \eqref{eq:Q} satisfies the recovery constraint asymptotically.
 	Indeed, we have $d_i \sim \frac{\log n(a+b)}{2}, |E| \sim \frac{1}{2}n d_i$. Therefore, we have $\beta = \frac{1}{2|E|}(1-\frac{\log n}{2n}(a+b))
 	\sim \frac{1}{2|E|}$
-	and $\alpha = \frac{1}{2|E|}\frac{a+b}{2}$. Since $a>b$. We have $\alpha > b \beta$. That is, asymptotically the modularity maximazation method
-	satisfies $\alpha > b\beta$, the necessary condition for finite sample complexity of SIBM.
+	and $\alpha = \frac{1}{2|E|}\frac{a+b}{2}$. Since $a>b$, we have $\alpha > b \beta$. That is, asymptotically the modularity maximazation method
+	satisfies $\alpha > b\beta$, which is the necessary condition for finite sample complexity of SIBM.
 	
 	\section{Conclusion}\label{s:conclusion}
 	In this paper, we derive the sample complexity for Stochastic Ising Block Model on multiple communities.
