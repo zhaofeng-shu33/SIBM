@@ -41,10 +41,10 @@
 \maketitle
 \begin{abstract}
  Recently a composition of Stochastic Block Model (SBM) and Ising model, called SIBM, was proposed for the case
- of two communities and a sharp threshold on the sample complexity for exact recovery was established.
+ of two communities and a sharp threshold on the sample complexity for exact recovery problem was established.
  In this paper, we study the SIBM model in the general case of multiple communities and prove a similar sharp
- threshold phenomena. To achieve this sample complexity, we need modification of the existing recovery algorithm
- and carry out more detailed analysis for this problem. Finally, we show some connection of SIBM with the modularity maximization method.
+ threshold phenomena. To achieve this sample complexity, we need modifications of the existing recovery algorithm
+ and carry out more detailed analysis for this problem. Finally, we show some connections of SIBM with the modularity maximization method.
 \end{abstract}
 \section{Introduction}
 % first paragraph: short intro to SBM and Ising model
@@ -52,9 +52,9 @@ In network analysis, Stochastic Block Model (SBM) is a commonly used random grap
 As a probabilistic model, Ising model has been applied to investigate the social voting phenomenon \cite{banerjee2008model}, further indicating there is some hidden relationship between SBM and Ising model.
 
 We observe that Ising model generates
-random node labels while SBM generates random graphs and there is a concatenated network model called Stochastic Ising Block Model (SIBM) \cite{ye2020exact}. SIBM uses SBM to generate the graph and then uses the same graph to generate node labels for several times. Given SIBM, the sample complexity has been investigated and a sharp threshold conclusion is established. However, this formulation of SIBM is restricted for the case of two communities and the problem for multiple communities case remains open.
+random node labels while SBM generates random graphs and there is a concatenated network model called Stochastic Ising Block Model (SIBM) which exploits their relationship \cite{ye2020exact}. SIBM uses SBM to generate the graph and then uses Ising model to generate node labels. Given SIBM, the sample complexity has been investigated and a sharp threshold conclusion is established. However, this formulation of SIBM is restricted for the case of two communities and the problem for multiple communities case remains open.
 We notice that Ising model is not limited to two states and there are already some extension for multiple-state Ising model \cite{potts1952some}.
-By using multiple-state Ising model, we will give the result of SIBM on multiple communities.
+By using multiple-state Ising model, we will give similar result of SIBM on multiple communities.
 
 In this paper, we will investigate SIBM on multiple communities, and focus on the problem of exactly recovery of the node label.
 We will compute the feasible regime of parameters and the sample complexity for exact recovery. Besides, the relationship of SIBM with modularity maximization method
@@ -70,7 +70,7 @@ Proof sketch of our main results is provided in the last Section.
 Within this paper, the number of community is denoted by $k$; $m$ is the number of samples; $\lfloor x \rfloor$ is the floor function of $x$; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
 $V=\{1,\dots, n\} =: [n]$;
 the label of each node is a random variable $X_i$; $X_i$ is chosen from $W= \{1, \omega, \dots, \omega^{k-1}\}$ and we further require $W$
-is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $\Gamma$ is used to represent all permutation functions on $W$ and $\Gamma(\sigma):=\{f(\sigma)| f\in \Gamma\}$ for $\sigma \in W^n$; the indicator function $\ide{x}{y}$ is defined as
+is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $S_k$ is used to represent all permutation functions on $W$ and $S_k(\sigma):=\{f(\sigma)| f\in S_k\}$ for $\sigma \in W^n$; the indicator function $\ide{x}{y}$ is defined as
 $\ide{x}{y} = 1 $ when $x=y$, and $\ide{x}{y}=0$ when $x\neq y$; $g(n) = \Theta(f(n))$ if there exists constant $c_1 < c_2$ such that $c_1 f(n) \leq g(n) \leq c_2 f(n)$
 for large $n$;
 $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$
@@ -94,7 +94,7 @@ Let $0\leq q<p\leq 1$ and $V=[n]$. The random vector $X=(X_1,\dots,X_n)\in W^n$ 
 \item There is an edge of $G$ between the vertices $i$ and $j$ with probability $p$ if $X_i=X_j$ and with probability $q$ if $X_i \neq X_j$; the existence of each edge is independent with each other.
 \end{enumerate}
 \end{definition}
-From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x)), \forall f \in \Gamma$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $\Gamma(X)$.
+From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x)), \forall f \in S_k$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $S_k(X)$.
 
 In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ \cite{abbe2015community}.
  
@@ -121,7 +121,7 @@ Definition \ref{eq:isingma} uses  $\delta_{\bar{\sigma}_i\bar{\sigma}_j}$, which
 critical value of Ising model without changing its general properties.
 %By definition of Ising model we also have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$. This symmetric property corresponds with that of SBM.
 
-Next we present our new model, the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,k,p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
+Next we present the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,k,p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
 
 \begin{definition}[Stochastic Ising Block Model]
 The triple $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ is drawn under $\SIBM(n,k, p,q,\alpha,\beta,m)$ if
@@ -136,17 +136,17 @@ The triple $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ is drawn under $\SIBM(n,k
 Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently from the Ising model on the {\em same} graph $G$.
 Our objective is to recover the underlying partition (or the ground truth) $X$ from the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$, and we would like to use the smallest possible number of samples to guarantee the exact recovery of $X$ up to a global permutation.
 Below we use the notation $P_{\SIBM}(A):=\mathbb{E}_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $\mathbb{E}_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the joint distribution of both $\sigma$ and $G$.
-By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f\in \Gamma$.
+By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f\in S_k$.
 
 
 \begin{definition}[Exact recovery in SIBM]
 Let $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k,p,q,\alpha,\beta,m)$.
 We say that exact recovery is solvable for $\SIBM(n,k,p,q,\alpha,\beta,m)$ if there is an algorithm that takes $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ as inputs and outputs $\hat{X}=\hat{X}(\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ such that
 $$
-P_{\SIBM}(\hat{X} \in \Gamma(X)) \to 1
+P_{\SIBM}(\hat{X} \in S_k(X)) \to 1
 \text{~~~as~} n\to\infty
 $$
-and we call $P_{\SIBM}(\hat{X} \in \Gamma(X))$ the success probability of the recovery algorithm.
+and we call $P_{\SIBM}(\hat{X} \in S_k(X))$ the success probability of the recovery algorithm.
 \end{definition}
 
 By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefore, if we cannot recover $X$ from $G$, it is impossible to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
@@ -184,7 +184,7 @@ make a majority voting for the label at each node.
 		\Statex 
 		{\bf Step 1: Align all the samples with $\sigma^{(1)}$ }
 		\For {$j=2,3,\dots,m$}
-		\State $f^* = \arg\max_{f \in \Gamma} \sum_{i=1}^n h(f(\sigma^{(j)}_i), \sigma^{(1)}_i)$
+		\State $f^* = \arg\max_{f \in S_k} \sum_{i=1}^n h(f(\sigma^{(j)}_i), \sigma^{(1)}_i)$
 		\State $\sigma^{(j)} \gets f^*(\sigma^{(j)})$
 		\EndFor
 		\Statex
@@ -231,11 +231,11 @@ $
 Define $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$.
 If $\beta>\beta^\ast$, then
 $$
-P_{\SIBM}(\sigma \in \Gamma(X)) = 1-o(1).
+P_{\SIBM}(\sigma \in S_k(X)) = 1-o(1).
 $$
 If $\beta\le \beta^\ast$, then $0\leq g(\beta) < 1$ and
 $$
-P_{\SIBM}(\dist(\sigma, \Gamma(X))= \Theta(n^{g(\beta)})) = 1-o(1)
+P_{\SIBM}(\dist(\sigma, S_k(X))= \Theta(n^{g(\beta)})) = 1-o(1)
 $$
 \end{theorem}
 
@@ -247,12 +247,12 @@ Modularity maximization is a popular community detection method \cite{clauset200
 In this section,
 we show that how the modularity is connected with our SIBM model.
 
-If we could choose proper $\alpha, \beta$, then from Theorem \ref{thm:wt3} one sample generated from Ising model is enough to
+If we could choose proper $\alpha, \beta$, then from Theorem \ref{thm:wt3} a single sample generated from Ising model is enough to
 estimate the original label. This provides a way to do community detection for SBM model.
 To some extent
 SIBM provides the theoretical guarantee for such detection method.
 
-If $\alpha > b \beta$ and $\beta > \beta^*$ then we have $\hat{\sigma} \in \Gamma(X)$ with probability
+If $\alpha > b \beta$ and $\beta > \beta^*$ then we have $\hat{\sigma} \in S_k(X)$ with probability
 one where
 \begin{equation}\label{eq:hat_sigma}
 \hat{\sigma} := \arg\max_{\bar{\sigma}}\beta \sum_{\{i,j\}\in E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
@@ -280,7 +280,6 @@ for community detection problems.
 
 In this section, we first use Chernoff inequality to derive the threshold value and illustrate the main ideas to prove Theorem \ref{thm:wt3}.
 Then we consider the recovery condition for multiple samples and prove Theorem \ref{thm:wt2}.
-Some proof techniques are borrowed from \cite{ye2020exact}, which deals with the case for two communities.
 
 \subsection{Why $\alpha > b \beta$}
 To successfully recover the community, a necessary condition is that the probability of the following event converges to zero as $n\to\infty$.
@@ -442,20 +441,7 @@ Similar techniques shows that $P_{\sigma | G}(\dist(\sigma, X) = m)> n^{m\tilde{
 decreases faster than $2(k-1)^m n^{m\tilde{g}(\beta)/4}$. Therefore, $P_{\sigma | G}(\dist(\sigma, X) > 1) < n^{\tilde{g}(\beta)/2} = o(1)$ by summing geometric series.
 
 \subsection{Proof for $\beta\le\beta^\ast$}\label{subsect:smaller}
-We restrict our discussion on the case $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma(X)\backslash\{X\}$.
-We would show that $P(\dist(\sigma, X) = \Theta(n^{g(\beta)})) = 1 - o(1)$ conditioned on $\dist(\sigma,X)\le n/k$.
-We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
-Conditioning on the event every vertex has at most $z$ ``bad" neighbors, which happens with probability $1-o(1)$, it is easy to show that $P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1}\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor. 
-% the factor is $\exp(\beta z)$ ?
-Therefore, $\mathbb{E}_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \neq X_i)$ differs from
-$\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
-We can further prove that $\dist(\sigma,X)$ concentrates around its expectation.
-Thus, we conclude that $\dist(\sigma,X)$ differs from
-$\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
-When $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation. Then from Equation \eqref{eq:gbetaminus1}, for almost all graph $G$, we have $\sum_{i=1}^n\exp (\beta (A^r_i-A^0_i))=(1+o(1))n^{g(\beta)-1}$.
-Combining this with the above analysis,
-we conclude that $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ when $\beta\le\beta^\ast$.
-This completes the sketched proof of Theorem~\ref{thm:wt3}.
+The proof of $\beta\le\beta^\ast$ is similar to that of \cite{ye2020exact} in Section III, D and we omit it here.
 
 \subsection{Multiple sample case: Proof of Theorem~\ref{thm:wt2}}
 \label{sect:multi}
@@ -463,9 +449,9 @@ This completes the sketched proof of Theorem~\ref{thm:wt3}.
 
 For the multiple-sample case,
 we prove that Algorithm \ref{alg:ez} can recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$.
-We already showed that each sample is very close to $\Gamma(X)$ when $\alpha > b \beta$,
+We already showed that each sample is very close to $S_k(X)$ when $\alpha > b \beta$,
 so after the alignment step in Algorithm~\ref{alg:ez},
-all the samples are simultaneously aligned with the same element from $\Gamma(X)$.
+all the samples are simultaneously aligned with the same element from $S_k(X)$.
 We assume all samples are aligned with $X$ in the following analysis.
 From subsection \ref{subsect:smaller},
 with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)}  = \omega^r \cdot X_i)$ differs from
