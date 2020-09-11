@@ -21,455 +21,454 @@
 \author{%
 	\IEEEauthorblockN{Feng Zhao}
 	\IEEEauthorblockA{Department of Electronic Engineering\\
-	Tsinghua University\\ 
-	Beijing, China 100084\\
-	Email: zhaof17@mails.tsinghua.edu.cn}
+		Tsinghua University\\ 
+		Beijing, China 100084\\
+		Email: zhaof17@mails.tsinghua.edu.cn}
 	\and
 	\IEEEauthorblockN{Min Ye}
 	\IEEEauthorblockA{DSIT Research Center\\
-	Tsinghua-Berkeley Shenzhen Institute\\
-	Shenzhen, China 518055\\
-	Email: yeemmi@sz.tsinghua.edu.cn}
+		Tsinghua-Berkeley Shenzhen Institute\\
+		Shenzhen, China 518055\\
+		Email: yeemmi@sz.tsinghua.edu.cn}
 	\and
 	\IEEEauthorblockN{Shao-Lun Huang}
 	\IEEEauthorblockA{DSIT Research Center\\
-	Tsinghua-Berkeley Shenzhen Institute\\
-	Shenzhen, China 518055\\
-	Email: shaolun.huang@sz.tsinghua.edu.cn}
+		Tsinghua-Berkeley Shenzhen Institute\\
+		Shenzhen, China 518055\\
+		Email: shaolun.huang@sz.tsinghua.edu.cn}
 }
 \begin{document}
-\maketitle
-\begin{abstract}
- Recently a composition of Stochastic Block Model (SBM) and Ising model, called SIBM, was proposed for the case
- of two communities and a sharp threshold on the sample complexity for exact recovery problem was established.
- In this paper, we study the SIBM model in the general case of multiple communities and prove a similar sharp
- threshold phenomena. To achieve this sample complexity, we need modifications of the existing recovery algorithm
- and carry out more detailed analysis for this problem. Finally, we show some connections between SIBM and the modularity maximization method.
-\end{abstract}
-\section{Introduction}
-% first paragraph: short intro to SBM and Ising model
-In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic, Abbe17}. For SBM, the condition to fully recover community labels has been investigated thoroughly and some phase transition property has been established \cite{abbe2015community, mossel2016}. Meanwhile, Ising model is a well-known statistical model in physics which has some similarity with SBM \cite{ising1925beitrag}. The nodes with a common edge are more likely to share the same state in Ising model\label{key}.
-As a probabilistic model, Ising model has been applied to investigate the social voting phenomenon \cite{banerjee2008model}, further indicating there is some hidden relationship between SBM and Ising model.
-
-We observe that Ising model generates
-random node labels while SBM generates random graphs and there is a concatenated network model called Stochastic Ising Block Model (SIBM) which exploits their relationship \cite{ye2020exact}. SIBM uses SBM to generate the graph and then uses Ising model to generate node labels. Given SIBM, the sample complexity has been investigated and a sharp threshold conclusion is established. However, this formulation of SIBM is restricted for the case of two communities and the problem for multiple communities case remains open.
-We notice that Ising model is not limited to two states and there are already some extension for multiple-state Ising model \cite{potts1952some}.
-By using multiple-state Ising model, we will give similar result of SIBM on multiple communities.
-
-In this paper, we will investigate SIBM on multiple communities, and focus on the problem of exactly recovery of the node label.
-We will compute the feasible regime of parameters and the sample complexity for exact recovery. Besides, the relationship of SIBM with modularity maximization method
-will also be discussed. 
-
-This paper is divided as follows. In Section \ref{s:Preliminaries} the SIBM is formulated mathematically.
-In Section \ref{s:trans}, the main results are introduced.
-In Section \ref{s:cdm}, the relationship between modularity maximization and SIBM is discussed 
-and in Section \ref{s:conclusion} the conclusion is given.
-Proof sketch of our main results is provided in the last Section.
-
-% notation convetion
-Within this paper, the number of community is denoted by $k$; $m$ is the number of samples; $\lfloor x \rfloor$ is the floor function of $x$; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
-$V=\{1,\dots, n\} =: [n]$;
-the label of each node is a random variable $X_i$; $X_i$ is chosen from $W= \{1, \omega, \dots, \omega^{k-1}\}$ and we further require $W$
-is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $S_k$ is used to represent all permutation functions on $W$ and $S_k(\sigma):=\{f(\sigma)| f\in S_k\}$ for $\sigma \in W^n$; the indicator function $\ide{x}{y}$ is defined as
-$\ide{x}{y} = 1 $ when $x=y$, and $\ide{x}{y}=0$ when $x\neq y$; $g(n) = \Theta(f(n))$ if there exists constant $c_1 < c_2$ such that $c_1 f(n) \leq g(n) \leq c_2 f(n)$
-for large $n$;
-$\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$
-where $\mathbf{1}_n$ is the all one vector with dimension $n$;
-we define the distance of two vectors as:
-$\dist(\sigma, X)
-=|\{i\in[n]:\sigma_i\neq X_i\}| \textrm{ for } \sigma,X\in W^n
-$ and the distance of a vector to a space $S\subseteq W^n$
-as
-$\dist(\sigma,S)
-:=\min\{\dist(\sigma, \sigma') | \sigma' \in S\}
-$.
-
-\section{Mathematical Model} \label{s:Preliminaries}
-We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $k$ communities \cite{Abbe17} and the definition of Ising model with $k$ states.
-\begin{definition}[SSBM with $k$ communities] \label{def:SSBM}
-Let $0\leq q<p\leq 1$ and $V=[n]$. The random vector $X=(X_1,\dots,X_n)\in W^n$ and random graph $G$ are drawn under $\SSBM(n,k,p,q)$ if
-\begin{enumerate}
-\item $X$ is drawn uniformly with the constraint that $|\{v \in [n] : X_v = u\}| = \frac{n}{k}$ for $u\in W$;
-
-\item There is an edge of $G$ between the vertices $i$ and $j$ with probability $p$ if $X_i=X_j$ and with probability $q$ if $X_i \neq X_j$; the existence of each edge is independent with each other.
-\end{enumerate}
-\end{definition}
-From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x)), \forall f \in S_k$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $S_k(X)$.
-
-In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ \cite{abbe2015community}.
- 
-Given a labeling $X$ of $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G$, Ising model defines a probability distribution on all possible labels of these $n$ vertices. 
-
- 
-\begin{definition}[Ising model with $k$ states]
-The Ising model on a graph $G$ with parameters $\alpha,\beta>0$ is a probability distribution on the configurations $\sigma\in W^n$ such that
-\begin{align} \label{eq:isingma}
-&P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
-\exp\Big(\beta \sum_{\{i,j\}\in E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}\notag\\
-&-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
-\Big)
-\end{align}
-where the subscript in $P_{\sigma|G}$ indicates that the distribution depends on $G$, and
-$Z_G(\alpha,\beta)$ is the normalizing constant for this distribution.
-\end{definition}
-
-When $\alpha=0$, Equation \eqref{eq:isingma} gives the standard definition for Potts Model \cite{potts1952some}.
-For our specific problems, $\alpha > 0$ is needed to guarantee that the distribution is not concentrated in the neighborhood of $\Lambda$.
-
-In \cite{ye2020exact}, $\bar{\sigma}_i \cdot \bar{\sigma}_j$ is used for $\bar{\sigma}_i \in \{\pm 1\}$ when defining the Ising model with two states.
-Definition \ref{eq:isingma} uses  $\delta_{\bar{\sigma}_i\bar{\sigma}_j}$, which is equivalent to $\bar{\sigma}_i \cdot \bar{\sigma}_j$ when $k=2$ in the sense that $2\delta_{\bar{\sigma}_i\bar{\sigma}_j} - 1 \in \{\pm 1\}$. The scaling factor $2$ only influences the
-critical value of Ising model without changing its general properties.
-%By definition of Ising model we also have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$. This symmetric property corresponds with that of SBM.
-
-Next we present the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,k,p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
-
-\begin{definition}[Stochastic Ising Block Model]
-The triple $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ is drawn under $\SIBM(n,k, p,q,\alpha,\beta,m)$ if
-
-\noindent
-(i) the pair $(X,G)$ is drawn under $\SSBM(n,k, p,q)$;
-
-\noindent
-(ii) for every $i\in[m]$, each sample $\sigma^{(i)}=(\sigma_1^{(i)},\dots,\sigma_n^{(i)}) \in W^n$ is drawn independently according to the distribution in Equation \eqref{eq:isingma}.
-\end{definition}
-
-Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently from the Ising model on the {\em same} graph $G$.
-Our objective is to recover the underlying partition (or the ground truth) $X$ from the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$, and we would like to use the smallest possible number of samples to guarantee the exact recovery of $X$ up to a global permutation.
-Below we use the notation $P_{\SIBM}(A):=\mathbb{E}_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $\mathbb{E}_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the joint distribution of both $\sigma$ and $G$.
-By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f\in S_k$.
-
-
-\begin{definition}[Exact recovery in SIBM]
-Let $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k,p,q,\alpha,\beta,m)$.
-We say that exact recovery is solvable for $\SIBM(n,k,p,q,\alpha,\beta,m)$ if there is an algorithm that takes $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ as inputs and outputs $\hat{X}=\hat{X}(\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ such that
-$$
-P_{\SIBM}(\hat{X} \in S_k(X)) \to 1
-\text{~~~as~} n\to\infty
-$$
-and we call $P_{\SIBM}(\hat{X} \in S_k(X))$ the success probability of the recovery algorithm.
-\end{definition}
-
-By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefore, if we cannot recover $X$ from $G$, it is impossible to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
-
-\section{Sample Complexity of SIBM}\label{s:trans}
-Our main Problem is to investigate what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?
-
-Our main results are as follows:
-
-\begin{theorem} \label{thm:wt1}
-For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, let
-\begin{align} \label{eq:defstar}
-&\beta^\ast \triangleq
-\log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}  \\
-&m^\ast \triangleq k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 
-\end{align}
-\begin{enumerate}
-	\item We discuss the case when $\alpha > b \beta$:
-	\begin{enumerate}
-	\item If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
-	\item If $\beta^\ast/\beta$ is not an integer and $m < m^\ast$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-	\item If $\beta^\ast/\beta$ is an integer and $m < m^\ast - k$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-	\end{enumerate}
-	\item When $\alpha < b \beta$, it is not solvable for any $m=O(\log^{1/4}(n))$ to exactly recover $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$.
-\end{enumerate}
-
-\end{theorem}
-The $O(n)$ times algorithm can actually be written in Algorithm \ref{alg:ez}. It first aligns all samples with the first one $\sigma^{(1)}$ and
-make a majority voting for the label at each node.
-\begin{algorithm}
-	\caption{\texttt{LearnSIBM} in $O(n)$ time} \label{alg:ez}
-	Inputs: the samples $\sigma^{(1)},\sigma^{(2)}\dots,\sigma^{(m)}$ \\
-	Output: $\hat{X}$
-	\begin{algorithmic}[1]
-		\Statex 
-		{\bf Step 1: Align all the samples with $\sigma^{(1)}$ }
-		\For {$j=2,3,\dots,m$}
-		\State $f^* = \arg\max_{f \in S_k} \sum_{i=1}^n h(f(\sigma^{(j)}_i), \sigma^{(1)}_i)$
-		\State $\sigma^{(j)} \gets f^*(\sigma^{(j)})$
-		\EndFor
-		\Statex
-		{\bf Step 2: Majority vote at each coordinate}
-		\For {$i=1,2,\dots,n$}
-		\State $g(r) = |\{j | \sigma^{(j)}_i = \omega^r,1\leq j \leq m\}|$  for $ 0 \leq r \leq k-1$
-		\State $\hat{X}_i \gets w^{r*}$ where $r^*=\arg\max_r g(r)$
-		\State\Comment{If the max of $g(r)$ is not unique, assign $\hat{X}_i$ randomly to one of \texttt{argmax}}
-		\EndFor
-		\State Output $\hat{X}$
-	\end{algorithmic}
-\end{algorithm}
-
-Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a real number.
-When $\alpha > b \beta$,
-the above theorem establishes a recovery threshold
-for the regime of $m \geq m^\ast$ and $m < m^\ast$ (approximately) on the number of samples. Since $\tilde{m} < m^*$,
-When $m \in [m^* - k, m^\ast)$ and $\beta^\ast/\beta$ is an integer, we do not know whether it is possible to recover $X$ or not.
-However, when $\beta^\ast/\beta$ is not an integer, it can be seen that the threshold is sharp.
-
-It is worth mentioning that the threshold value $m^\ast$ does not depend on the parameter $\alpha$, as long as $\alpha>b\beta$.
-Below we present an equivalent characterization of the recovery threshold in terms of $\beta$.
-\begin{theorem} \label{thm:wt2}
-	Let $a,b,\alpha,\beta> 0$ be constants satisfying $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
-	Let 
-	$
-	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
-	$
-	If $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$,
-	then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$.
-	If $\lfloor \frac{m+k-1}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
-\end{theorem}
-Using the property of floor function, we can show that Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} are equivalent when $\alpha > b \beta$.
-%$\beta$ represents the force of attraction between connected node in the graph. Theorem \ref{thm:wt2} states that
-%to recover the label, the attraction force has a minimal threshold which depends on $m, \beta^*$.
-When $m=1$, we have the next theorem:
-
-\begin{theorem}  \label{thm:wt3}
-Let $a,b,\alpha,\beta> 0$ be constants satisfying $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
-Let 
-$
-(X,G,\{\sigma\}) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,1).
-$
-Define $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$.
-If $\beta>\beta^\ast$, then
-$$
-P_{\SIBM}(\sigma \in S_k(X)) = 1-o(1).
-$$
-If $\beta\le \beta^\ast$, then $0\leq g(\beta) < 1$ and
-$$
-P_{\SIBM}(\dist(\sigma, S_k(X))= \Theta(n^{g(\beta)})) = 1-o(1)
-$$
-\end{theorem}
-
-The above theorem established the phase transition property for SIBM model.
-Roughly speaking, the sample $\sigma$ generated from SIBM aligns with $X$ with probability 1 if $\beta > \beta^*$;
-otherwise the sample differs from $X$ with the number of coordinates in $\Theta(n^{g(\beta)})$.
-\section{Community Detection Methods}\label{s:cdm}
-Modularity maximization is a popular community detection method \cite{clauset2004finding}, which can also be used for recovery of SBM model.
-In this section,
-we show that how the modularity is connected with our SIBM model.
-
-If we could choose proper $\alpha, \beta$, then from Theorem \ref{thm:wt3} a single sample generated from Ising model is enough to
-estimate the original label. This provides a way to do community detection for SBM model.
-To some extent
-SIBM provides the theoretical guarantee for such detection method.
-
-If $\alpha > b \beta$ and $\beta > \beta^*$ then we have $\hat{\sigma} \in S_k(X)$ with probability
-one where
-\begin{equation}\label{eq:hat_sigma}
-\hat{\sigma} := \arg\max_{\bar{\sigma}}\beta \sum_{\{i,j\}\in E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j} 
-\end{equation}
-We consider the modularity of a graph, which is defined by
-\begin{equation}\label{eq:Q}
+	\maketitle
+	\begin{abstract}
+		Recently a composition of Stochastic Block Model (SBM) and Ising model, called SIBM, was proposed for the case
+		of two communities, and a sharp threshold on the sample complexity for exact recovery was established.
+		In this paper, we study the SIBM model in the general case of multiple communities and prove a similar sharp
+		threshold phenomena. We modify an existing recovery algorithm to achieve the threshold
+		and carry out more detailed analysis for this problem. Finally, we show some connections between SIBM and the modularity maximization method.
+	\end{abstract}
+	\section{Introduction}
+	% first paragraph: short intro to SBM and Ising model
+	In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic, Abbe17}. For SBM, the condition on exact recovery of community labels has been studied extensively and the phase transition property has been established \cite{abbe2015community, mossel2016}. Meanwhile, Ising model is a well-known statistical model in physics which has some similarity with SBM \cite{ising1925beitrag}. The nodes with a common edge are more likely to share the same state in Ising model\label{key}.
+	As a probabilistic model, Ising model has been applied to investigate the social voting phenomenon \cite{banerjee2008model}, further indicating there is some hidden relationship between SBM and Ising model.
+	
+	Recently a new model called Stochastic Ising Block Model (SIBM) was proposed in \cite{ye2020exact}. SIBM concatenates SBM and Ising model in the sense that it uses SBM to generate the graph and then uses Ising model to generate node labels. The sample complexity for exact recovery in SIBM was investigated in \cite{ye2020exact} and a sharp threshold was established. However, the formulation of SIBM in \cite{ye2020exact} is restricted for the case of two communities, and the problem for multiple communities case remains open.
+	We notice that Ising model is not limited to two states, 
+	and we use multiple-state Ising model \cite{potts1952some} to obtain similar results of SIBM on multiple communities.
+	
+	In this paper, we  investigate SIBM on multiple communities and focus on the problem of exactly recovery of the node label.
+	We  compute the feasible regime of parameters and the sample complexity for exact recovery. Besides, the relationship between SIBM and modularity maximization method
+	is also discussed. 
+	
+	This paper is organized as follows. In Section \ref{s:Preliminaries}, we formally fomulate the SIBM and the exact recovery problem.
+	In Section \ref{s:trans}, we present the main results.
+	In Section \ref{s:cdm}, the relation between modularity maximization and SIBM is discussed 
+	and Section \ref{s:conclusion} concludes the paper.
+	Proof sketch of our main results is provided in the last Section.
+	
+	% notation convetion
+	Throughout this paper, the number of community is denoted by $k$; $m$ is the number of samples; $\lfloor x \rfloor$ is the floor function of $x$; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
+	$V=\{1,\dots, n\} =: [n]$;
+	the label of each node is a random variable $X_i$; $X_i$ is chosen from $W= \{1, \omega, \dots, \omega^{k-1}\}$ and we further require $W$
+	is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $S_k$ is used to represent all permutation functions on $W$ and $S_k(\sigma):=\{f(\sigma)| f\in S_k\}$ for $\sigma \in W^n$; the indicator function $\ide{x}{y}$ is defined as
+	$\ide{x}{y} = 1 $ when $x=y$, and $\ide{x}{y}=0$ when $x\neq y$; $g(n) = \Theta(f(n))$ if there exists constant $c_1 < c_2$ such that $c_1 f(n) \leq g(n) \leq c_2 f(n)$
+	for large $n$;
+	$\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$
+	where $\mathbf{1}_n$ is the all one vector with dimension $n$;
+	we define the distance of two vectors as:
+	$\dist(\sigma, X)
+	=|\{i\in[n]:\sigma_i\neq X_i\}| \textrm{ for } \sigma,X\in W^n
+	$ and the distance of a vector to a space $S\subseteq W^n$
+	as
+	$\dist(\sigma,S)
+	:=\min\{\dist(\sigma, \sigma') | \sigma' \in S\}
+	$.
+	
+	\section{Mathematical Model} \label{s:Preliminaries}
+	We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $k$ communities \cite{Abbe17} and the definition of Ising model with $k$ states.
+	\begin{definition}[SSBM with $k$ communities] \label{def:SSBM}
+		Let $0\leq q<p\leq 1$ and $V=[n]$. The random vector $X=(X_1,\dots,X_n)\in W^n$ and random graph $G$ are drawn under $\SSBM(n,k,p,q)$ if
+		\begin{enumerate}
+			\item $X$ is drawn uniformly with the constraint that $|\{v \in [n] : X_v = u\}| = \frac{n}{k}$ for $u\in W$;
+			
+			\item There is an edge of $G$ between the vertices $i$ and $j$ with probability $p$ if $X_i=X_j$ and with probability $q$ if $X_i \neq X_j$; the existence of each edge is independent with each other.
+		\end{enumerate}
+	\end{definition}
+	From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x)), \forall f \in S_k$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $S_k(X)$.
+	
+	In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ \cite{abbe2015community}.
+	
+	Given a labeling $X$ of $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G$, Ising model defines a probability distribution on all possible labels of these $n$ vertices. 
+	
+	
+	\begin{definition}[Ising model with $k$ states]
+		The Ising model on a graph $G$ with parameters $\alpha,\beta>0$ is a probability distribution on the configurations $\sigma\in W^n$ such that
+		\begin{align} \label{eq:isingma}
+		&P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
+		\exp\Big(\beta \sum_{\{i,j\}\in E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}\notag\\
+		&-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
+		\Big)
+		\end{align}
+		where the subscript in $P_{\sigma|G}$ indicates that the distribution depends on $G$, and
+		$Z_G(\alpha,\beta)$ is the normalizing constant for this distribution.
+	\end{definition}
+	
+	When $\alpha=0$, Equation \eqref{eq:isingma} gives the standard definition for Potts Model \cite{potts1952some}.
+	For our specific problems, $\alpha > 0$ is needed to guarantee that the distribution is not concentrated in the neighborhood of $\Lambda$.
+	
+	In \cite{ye2020exact}, $\bar{\sigma}_i \cdot \bar{\sigma}_j$ is used for $\bar{\sigma}_i \in \{\pm 1\}$ when defining the Ising model with two states.
+	Definition \ref{eq:isingma} uses  $\delta_{\bar{\sigma}_i\bar{\sigma}_j}$, which is equivalent to $\bar{\sigma}_i \cdot \bar{\sigma}_j$ when $k=2$ in the sense that $2\delta_{\bar{\sigma}_i\bar{\sigma}_j} - 1 \in \{\pm 1\}$. The scaling factor $2$ only influences the
+	critical value of Ising model without changing its general properties.
+	%By definition of Ising model we also have $P_{\sigma|G}(\sigma=\bar{\sigma})=P_{\sigma|G}(\sigma=f(\bar{\sigma}))$. This symmetric property corresponds with that of SBM.
+	
+	Next we present the Stochastic Ising Block Model (SIBM), which can be viewed as a natural composition of the SSBM and the Ising model. In SIBM, we first draw a pair $(X,G)$ under $\SSBM(n,k,p,q)$.  Then we draw $m$ independent samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ from the Ising model on the graph $G$, where $\sigma^{(u)}\in W^n$ for all $u\in[m]$.
+	
+	\begin{definition}[Stochastic Ising Block Model]
+		The triple $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ is drawn under $\SIBM(n,k, p,q,\alpha,\beta,m)$ if
+		
+		\noindent
+		(i) the pair $(X,G)$ is drawn under $\SSBM(n,k, p,q)$;
+		
+		\noindent
+		(ii) for every $i\in[m]$, each sample $\sigma^{(i)}=(\sigma_1^{(i)},\dots,\sigma_n^{(i)}) \in W^n$ is drawn independently according to the distribution in Equation \eqref{eq:isingma}.
+	\end{definition}
+	
+	Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently from the Ising model on the {\em same} graph $G$.
+	Our objective is to recover the underlying partition (or the ground truth) $X$ from the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$, and we would like to use the smallest possible number of samples to guarantee the exact recovery of $X$ up to a global permutation.
+	Below we use the notation $P_{\SIBM}(A):=\mathbb{E}_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $\mathbb{E}_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the joint distribution of both $\sigma$ and $G$.
+	By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f\in S_k$.
+	
+	
+	\begin{definition}[Exact recovery in SIBM]
+		Let $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k,p,q,\alpha,\beta,m)$.
+		We say that exact recovery is solvable for $\SIBM(n,k,p,q,\alpha,\beta,m)$ if there is an algorithm that takes $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ as inputs and outputs $\hat{X}=\hat{X}(\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ such that
+		$$
+		P_{\SIBM}(\hat{X} \in S_k(X)) \to 1
+		\text{~~~as~} n\to\infty
+		$$
+		and we call $P_{\SIBM}(\hat{X} \in S_k(X))$ the success probability of the recovery algorithm.
+	\end{definition}
+	
+	By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefore, if we cannot recover $X$ from $G$, it is impossible to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
+	
+	\section{Sample Complexity of SIBM}\label{s:trans}
+	Our main Problem is to investigate what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?
+	
+	Our main results are as follows:
+	
+	\begin{theorem} \label{thm:wt1}
+		For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, let
+		\begin{align} \label{eq:defstar}
+		&\beta^\ast \triangleq
+		\log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}  \\
+		&m^\ast \triangleq k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1 
+		\end{align}
+		\begin{enumerate}
+			\item We discuss the case when $\alpha > b \beta$:
+			\begin{enumerate}
+				\item If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
+				\item If $\beta^\ast/\beta$ is not an integer and $m < m^\ast$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+				\item If $\beta^\ast/\beta$ is an integer and $m < m^\ast - k$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+			\end{enumerate}
+			\item When $\alpha < b \beta$, it is not solvable for any $m=O(\log^{1/4}(n))$ to exactly recover $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$.
+		\end{enumerate}
+		
+	\end{theorem}
+	The $O(n)$ times algorithm can actually be written in Algorithm \ref{alg:ez}. It first aligns all samples with the first one $\sigma^{(1)}$ and
+	make a majority voting for the label at each node.
+	\begin{algorithm}
+		\caption{\texttt{LearnSIBM} in $O(n)$ time} \label{alg:ez}
+		Inputs: the samples $\sigma^{(1)},\sigma^{(2)}\dots,\sigma^{(m)}$ \\
+		Output: $\hat{X}$
+		\begin{algorithmic}[1]
+			\Statex 
+			{\bf Step 1: Align all the samples with $\sigma^{(1)}$ }
+			\For {$j=2,3,\dots,m$}
+			\State $f^* = \arg\max_{f \in S_k} \sum_{i=1}^n h(f(\sigma^{(j)}_i), \sigma^{(1)}_i)$
+			\State $\sigma^{(j)} \gets f^*(\sigma^{(j)})$
+			\EndFor
+			\Statex
+			{\bf Step 2: Majority vote at each coordinate}
+			\For {$i=1,2,\dots,n$}
+			\State $g(r) = |\{j | \sigma^{(j)}_i = \omega^r,1\leq j \leq m\}|$  for $ 0 \leq r \leq k-1$
+			\State $\hat{X}_i \gets w^{r*}$ where $r^*=\arg\max_r g(r)$
+			\State\Comment{If the max of $g(r)$ is not unique, assign $\hat{X}_i$ randomly to one of \texttt{argmax}}
+			\EndFor
+			\State Output $\hat{X}$
+		\end{algorithmic}
+	\end{algorithm}
+	
+	Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a real number.
+	When $\alpha > b \beta$,
+	the above theorem establishes a recovery threshold
+	for the regime of $m \geq m^\ast$ and $m < m^\ast$ (approximately) on the number of samples. Since $\tilde{m} < m^*$,
+	When $m \in [m^* - k, m^\ast)$ and $\beta^\ast/\beta$ is an integer, we do not know whether it is possible to recover $X$ or not.
+	However, when $\beta^\ast/\beta$ is not an integer, it can be seen that the threshold is sharp.
+	
+	It is worth mentioning that the threshold value $m^\ast$ does not depend on the parameter $\alpha$, as long as $\alpha>b\beta$.
+	Below we present an equivalent characterization of the recovery threshold in terms of $\beta$.
+	\begin{theorem} \label{thm:wt2}
+		Let $a,b,\alpha,\beta> 0$ be constants satisfying $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
+		Let 
+		$
+		(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
+		$
+		If $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$,
+		then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$.
+		If $\lfloor \frac{m+k-1}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
+	\end{theorem}
+	Using the property of floor function, we can show that Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} are equivalent when $\alpha > b \beta$.
+	%$\beta$ represents the force of attraction between connected node in the graph. Theorem \ref{thm:wt2} states that
+	%to recover the label, the attraction force has a minimal threshold which depends on $m, \beta^*$.
+	When $m=1$, we have the next theorem:
+	
+	\begin{theorem}  \label{thm:wt3}
+		Let $a,b,\alpha,\beta> 0$ be constants satisfying $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
+		Let 
+		$
+		(X,G,\{\sigma\}) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,1).
+		$
+		Define $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$.
+		If $\beta>\beta^\ast$, then
+		$$
+		P_{\SIBM}(\sigma \in S_k(X)) = 1-o(1).
+		$$
+		If $\beta\le \beta^\ast$, then $0\leq g(\beta) < 1$ and
+		$$
+		P_{\SIBM}(\dist(\sigma, S_k(X))= \Theta(n^{g(\beta)})) = 1-o(1)
+		$$
+	\end{theorem}
+	
+	The above theorem established the phase transition property for SIBM model.
+	Roughly speaking, the sample $\sigma$ generated from SIBM aligns with $X$ with probability 1 if $\beta > \beta^*$;
+	otherwise the sample differs from $X$ with the number of coordinates in $\Theta(n^{g(\beta)})$.
+	\section{Community Detection Methods}\label{s:cdm}
+	Modularity maximization is a popular community detection method \cite{clauset2004finding}, which can also be used for recovery of SBM model.
+	In this section,
+	we show that how the modularity is connected with our SIBM model.
+	
+	If we could choose proper $\alpha, \beta$, then from Theorem \ref{thm:wt3} a single sample generated from Ising model is enough to
+	estimate the original label. This provides a way to do community detection for SBM model.
+	To some extent
+	SIBM provides the theoretical guarantee for such detection method.
+	
+	If $\alpha > b \beta$ and $\beta > \beta^*$ then we have $\hat{\sigma} \in S_k(X)$ with probability
+	one where
+	\begin{equation}\label{eq:hat_sigma}
+	\hat{\sigma} := \arg\max_{\bar{\sigma}}\beta \sum_{\{i,j\}\in E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j}
+	-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \ide{\bar{\sigma}_i}{\bar{\sigma}_j} 
+	\end{equation}
+	We consider the modularity of a graph, which is defined by
+	\begin{equation}\label{eq:Q}
 	Q = \frac{1}{2 |E|} \sum_{ij} (A_{ij} - \frac{d_i d_j}{2 |E|}) \delta(C_i, C_j)
-\end{equation}
-where $d_i$ is the degree of the $i-$th node.
-The standard way to do community detection is to maximize the modularity $Q$ using greedy method.
-We can show that \eqref{eq:Q} satisfies the recovery constraint asymptotically.
-Indeed, we have $d_i \sim \frac{\log n(a+b)}{2}, |E| \sim \frac{1}{2}n d_i$. Therefore, we have $\beta = \frac{1}{2|E|}(1-\frac{\log n}{2n}(a+b))
-\sim \frac{1}{2|E|}$
-and $\alpha = \frac{1}{2|E|}\frac{a+b}{2}$. Since $a>b$. We have $\alpha > b \beta$. That is, asymptotically the modularity maximazation method
-satisfies $\alpha > b\beta$, the necessary condition for finite sample complexity of SIBM.
-
-\section{Conclusion}\label{s:conclusion}
-In this paper, we derive the sample complexity for Stochastic Ising Block Model on multiple communities.
-Our result shares insights on the relationship of SBM and Ising model and guides the design of efficient algorithms
-for community detection problems.
-%\appendix
-\section{Sketch of the proof}
-\label{sect:sketch}
-
-In this section, we first use Chernoff inequality to derive the threshold value and illustrate the main ideas to prove Theorem \ref{thm:wt3}.
-Then we consider the recovery condition for multiple samples and prove Theorem \ref{thm:wt2}.
-
-\subsection{Why $\alpha > b \beta$}
-To successfully recover the community, a necessary condition is that the probability of the following event converges to zero as $n\to\infty$.
-\begin{align}
-P_{\sigma | G}(\sigma =  \mathbf{1}_n) & > P_{\sigma | G}(\sigma = X) \label{eq:1x}
-\end{align}
-For \eqref{eq:1x}, we can treat it as a hypothesis testing problem between $\sigma = X$ versus $\sigma = \mathbf{1}_n$.
-The ML algorithm makes Type I error when event \eqref{eq:1x} happens. Therefore, we use log-likelihood to simplify
-\eqref{eq:1x} to:
-\begin{equation}\label{eq:Zij}
-\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} > (\frac{\alpha}{\beta} + o(1)) \frac{\log n}{n} \frac{k-1}{2k}n^2 =: c
-\end{equation}
-% \frac{k-1}{2k}n^2 = \sum_{(i,j)\in E, X_i \neq X_j} 1
-where $Z_{ij}$ i.i.d $\sim \textrm{Bernoulli}(\frac{b\log n }{n})$, which represents the edge existence between different communities. The mean value on the left hand side is $\frac{b \log n }{n} \frac{k-1}{2k}n^2$. Therefore we can use large
-deviation theory to bound the probability of \eqref{eq:Zij}. To be more specific, by Chernoff inequality we have
-\begin{equation}\label{eq:CZij}
-\Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  c \right)\leq \frac{\mathbb{E}[\exp(t Z_{ij})]^{ \frac{k-1}{2k}n^2 }}{\exp(ct)}
-\end{equation}
-where $ t  = \log \frac{\alpha}{b\beta} > 0$ is chosen to minimize the function on the right hand side of \eqref{eq:CZij}. It follows that
-\begin{equation}\label{eq:nlogn}
-\Pr(\sum_{\substack{(i,j)\in E \\ X_i \neq X_j}} Z_{ij} >  c )\leq \exp(n\log n  \frac{k-1}{2k} (h_b(\frac{\alpha}{\beta}) + o(1)))
-\end{equation}
-where $h_b(x) = x - b - x \log\frac{x}{b}$. We can verify that $h_b(x) < 0 $ when $ x > b$. The inequality is actually tight,
-therefore $\alpha > b \beta$
-is necessary.
-
-When $\alpha < b \beta$, using the same techniques as above we can show that
-\begin{align}
-P_{\sigma | G}(\sigma = X ) & > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n) \label{eq:1x_e}
-\end{align}
-where $C$ is any positive constant in \eqref{eq:1x_e}.
-$\exp(-Cn)$ can be added since the dominant term of decreasing rate is $\exp(-n\log n)$, as shown by \eqref{eq:nlogn}.
-
-Generally, when $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}$ and $\bar{\sigma}$
-is nearer to $\mathbf{1}_{n}$ than other $\omega^r \cdot \mathbf{1}_n$, we could show that
-$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
-happens with probability $O(\exp(-n \log^{2/3} n ))$. Using union bound we have
-$P_{\sigma | G}(\sigma = \bar{\sigma} ) \leq \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
-happens in probability $1-o(1)$ for all such $\bar{\sigma}$.
-Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{1/3} n}) \leq
-(k-1)\sum_{\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}}\exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)
-\leq (k-1)k^n \exp(-Cn) = o(1)$ for $C> \log k$, we conclude that
-$\dist(\sigma^{(i)}, \Lambda)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$ if $\alpha<b\beta$.
-In this case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples.
-
-\subsection{Why $\beta > \beta^*$} \label{sect:why}
-Similar to the last section, when exact recovery is possible, the probability of the following event should be $o(1)$
-\begin{align}
-P_{\sigma | G}(\dist(\sigma, X) = 1) & > P_{\sigma | G}(\sigma = X)\label{eq:betastar}
-\end{align}
-We consider the $i-$th coordinate in which $\sigma_i \neq X_i$ and denote the event $T_{ir}=\{\sigma_i = \omega^r \cdot X_i, \sigma_j = X_j \forall j \neq i\}$.
-Then $P_{\sigma | G}(\dist(\sigma, X) = 1) = \sum_{i=1}^n\sum_{r=1}^{k-1} P_{\sigma | G}(T_{ir})$.
-We also define
-\begin{equation*}
-A^r_i=A^r_i(G):=|\{j\in[n]\setminus\{i\}:\{i,j\}\in E(G), X_j=\omega^r \cdot X_i\} |
-\end{equation*}
-to represent the number of edges whose two nodes differs by $\omega^r$.
-By definition,
-$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$ and $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $r=1,\dots, k-1$, and they are independent.
-
-We then have
-\begin{align}
-&\frac{P_{\sigma|G}(T_{ir})}
-{P_{\sigma|G}(\sigma=X)}
-= \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \nonumber\\
-&-\frac{(k-1)\alpha\log(n)}{n} \Big) 
-= (1+o(1)) \exp ( \beta(A^r_i-A^0_i))
-\end{align}
-By Chernoff inequality $ \Pr(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_i)) > 1) \leq (k-1)n\mathbb{E}_G[\exp (\beta (A^r_i-A^0_i))] $.
-\begin{align}
-&\mathbb{E}_G[\exp (\beta (A^r_i-A^0_i))]
-=\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^{\beta} \Big)^{n/k} \nonumber \\
-&\cdot \Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-\beta} \Big)^{n/k-1}\nonumber\\
-& = 
-\exp\Big(\frac{\log(n)}{k} ( a e^{-\beta}+b e^{\beta} -a-b )
-+o(1) \Big)\nonumber \\
-& = (1+o(1)) n^{g(\beta)-1} \label{eq:gbetaminus1}
-\end{align}
-Therefore the probability of event \eqref{eq:betastar} is bounded above by $ (k-1 + o(1)) n^{g(\beta)}$
-where $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$. This $g(\beta)$ is also defined in Theorem~\ref{thm:wt3}.
-The critical value is the smaller zero point of $g(\beta)$, which is exactly
-$$
-\beta^* = \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}
-$$
-also given in Theorem~\ref{thm:wt1}.
-When $\beta > \beta^*$ and $\beta$ is smaller than the larger root, $g(\beta) < 0$ and the necessary condition of exact discovery holds.
-
-We notice that when $\beta$ is large, $g(\beta) > 0$. Therefore, Equation \eqref{eq:gbetaminus1} is not satisfactory, and
-we need finer control by introducing some extra parameter which we can optimize. To be more specific, let $D_r : = \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) > s$
-and we are going to give an upper bound of $P(D_r)$. We proceed as follows: 
-\begin{align*}
-&\Pr(D_r) = 
-\Pr(D_r| A_i^r - A_i^0 \geq 0, \exists i\in [n])
-\cdot I_1 \\
-&+ \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
-\Pr(  A_i^r - A_i^0  < 0 , \forall i \in [n] ) \\
-& \leq I_1
-+ \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
-\end{align*}
-where $I_1 = \Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n])$.
-To bound the two terms above, we need the following lemma, which can be proved by standard Chernoff inequality techniques:
-\begin{lemma}\label{lem:fb}
-	For $t\in [\frac{1}{k}(b-a), 0]$,
-define a function
-\begin{align*}
-&f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -\frac{a+b}{k} +1 +\beta t  \\
-&-t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big).
-\end{align*}
-It follows that
-\begin{align} \label{eq:upba}
-& P(A^1_i-A^0_i\ge t\log(n))  \notag\\
-\le &  \exp\Big(\log n \Big(f_{\beta}(t) -\beta t  - 1 + O\big(\frac{\log(n)}{n}\big) \Big)\Big) .
-\end{align}
-\end{lemma}
-Choosing $t=0$ in Lemma \ref{lem:fb}, we have
-$\Pr(A^1_i-A^0_i\ge 0 ) \leq \exp(-\log n \frac{(\sqrt{a}-\sqrt{b})^2}{k})$.
-Then
-\begin{align*}
-I_1 \leq \sum_{i=1}^n \Pr( A_i^r - A_i^0 \geq 0) \leq n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}}
-\end{align*}
-For the second term,
-conditioned on $A_i^r - A_i^0  < 0, \forall i\in [n]$ we have
-\begin{align*}
-&\sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) \\
-& = \sum_{t\log n =-\frac{n}{k}}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t \log n] \exp ( \beta  t\log n)\leq \\ 
-&
-\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t \log n]\exp ( \beta  t\log n) + n^{1+\beta(b-a)/k}
-\end{align*}
-where $\tau =\frac{b-a}{k}\log n$ in short. Therefore
-\begin{align*}
-&\Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])  \\
-&\leq\Pr(\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t\log n]\exp ( \beta  t\log n)  > \tilde{s} ) \\
-& \leq \mathbb{E}[\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i= t\log n]\exp ( \beta  t\log n)] /  \tilde{s} \\
-& \leq \frac{a-b}{k}\log n \cdot n^{f_{\beta}(t) + o(1)} / \tilde{s} \textrm{ using Lemma \ref{lem:fb} }
-\end{align*}
-where $\tilde{s} = s - n^{1+\beta(b-a)/k}$. 
-The maximization of $f_{\beta}(t)$ is given by the following lemma:
-\begin{lemma}\label{lem:tilde_g}
-Define
-$$
-\tilde{g}(\beta) = \begin{cases}
-g(\beta)   & \text{~if~} \beta< \frac{1}{2}\log\frac{a}{b} \\
-g(\frac{1}{2} \log\frac{a}{b}) = 1 - \frac{(\sqrt{a}-\sqrt{b})^2}{k} & \text{~if~} \beta\ge \frac{1}{2}\log\frac{a}{b}
-\end{cases}
-$$
-then $f_{\beta}(t) \leq \tilde{g}(\beta)$ for $t\leq 0$.
-\end{lemma}
-By choosing $s = n^{\tilde{g}(\beta)/2}$ and using Lemma \ref{lem:tilde_g}, we have
-\begin{align*}
-\Pr( D_r) \leq  n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{\tilde{g}(\beta)/2 + o(1)} \leq 2n^{\tilde{g}(\beta)/4}
-\end{align*}
-Replacing $D_r$ by $\cup_{r=1}^{k-1} D_r$ in the above deduction we could get the same conclusion.
-That is, the probability of event
-$$
-P_{\sigma | G}(\dist(\sigma, X) = 1) > n^{\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_xx}
-$$
-decreases faster than $2n^{\tilde{g}(\beta)/4}$.
-Similar techniques shows that $P_{\sigma | G}(\dist(\sigma, X) = m)> n^{m\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)$
-decreases faster than $2(k-1)^m n^{m\tilde{g}(\beta)/4}$. Therefore, $P_{\sigma | G}(\dist(\sigma, X) > 1) < n^{\tilde{g}(\beta)/2} = o(1)$ by summing geometric series.
-
-\subsection{Proof for $\beta\le\beta^\ast$}\label{subsect:smaller}
-The proof of $\beta\le\beta^\ast$ is similar to that of \cite{ye2020exact} in Section III, D and we omit it here.
-
-\subsection{Multiple sample case: Proof of Theorem~\ref{thm:wt2}}
-\label{sect:multi}
-
-
-For the multiple-sample case,
-we prove that Algorithm \ref{alg:ez} can recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$.
-We already showed that each sample is very close to $S_k(X)$ when $\alpha > b \beta$,
-so after the alignment step in Algorithm~\ref{alg:ez},
-all the samples are simultaneously aligned with the same element from $S_k(X)$.
-We assume all samples are aligned with $X$ in the following analysis.
-From subsection \ref{subsect:smaller},
-with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)}  = \omega^r \cdot X_i)$ differs from
-$ \exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$.
-Since the samples are independent,
-we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)}  = \omega^r \cdot X_i]\ge u)$ differs from
-$ \exp ( u \beta (A^r_i-A^0_i))$
-by at most a constant factor.
-Here $u\beta$ plays the role of $\beta$ in the single-sample case.
-Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = \omega^r \cdot X_i] \le u-1$ for all $i\in[n]$. Let $u=\lfloor \frac{m+k-1}{k} \rfloor$,
-then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)}  = \omega^r \cdot X_i] \le \lfloor \frac{m-1}{k} \rfloor $
-while $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = X_i]
-= m - (k-1)\lfloor \frac{m-1}{k} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)}  = \omega^r \cdot X_i] $ for $r=1, \dots, k-1$
-which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}.
-
-The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when
-$\lfloor \frac{m+k-1}{k} \rfloor  \beta < \beta^\ast$ is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case.
-
-\bibliographystyle{IEEEtran}
-\bibliography{exportlist}
+	\end{equation}
+	where $d_i$ is the degree of the $i-$th node.
+	The standard way to do community detection is to maximize the modularity $Q$ using greedy method.
+	We can show that \eqref{eq:Q} satisfies the recovery constraint asymptotically.
+	Indeed, we have $d_i \sim \frac{\log n(a+b)}{2}, |E| \sim \frac{1}{2}n d_i$. Therefore, we have $\beta = \frac{1}{2|E|}(1-\frac{\log n}{2n}(a+b))
+	\sim \frac{1}{2|E|}$
+	and $\alpha = \frac{1}{2|E|}\frac{a+b}{2}$. Since $a>b$. We have $\alpha > b \beta$. That is, asymptotically the modularity maximazation method
+	satisfies $\alpha > b\beta$, the necessary condition for finite sample complexity of SIBM.
+	
+	\section{Conclusion}\label{s:conclusion}
+	In this paper, we derive the sample complexity for Stochastic Ising Block Model on multiple communities.
+	Our result shares insights on the relationship of SBM and Ising model and guides the design of efficient algorithms
+	for community detection problems.
+	%\appendix
+	\section{Sketch of the proof}
+	\label{sect:sketch}
+	
+	In this section, we first use Chernoff inequality to derive the threshold value and illustrate the main ideas to prove Theorem \ref{thm:wt3}.
+	Then we consider the recovery condition for multiple samples and prove Theorem \ref{thm:wt2}.
+	
+	\subsection{Why $\alpha > b \beta$}
+	To successfully recover the community, a necessary condition is that the probability of the following event converges to zero as $n\to\infty$.
+	\begin{align}
+	P_{\sigma | G}(\sigma =  \mathbf{1}_n) & > P_{\sigma | G}(\sigma = X) \label{eq:1x}
+	\end{align}
+	For \eqref{eq:1x}, we can treat it as a hypothesis testing problem between $\sigma = X$ versus $\sigma = \mathbf{1}_n$.
+	The ML algorithm makes Type I error when event \eqref{eq:1x} happens. Therefore, we use log-likelihood to simplify
+	\eqref{eq:1x} to:
+	\begin{equation}\label{eq:Zij}
+	\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} > (\frac{\alpha}{\beta} + o(1)) \frac{\log n}{n} \frac{k-1}{2k}n^2 =: c
+	\end{equation}
+	% \frac{k-1}{2k}n^2 = \sum_{(i,j)\in E, X_i \neq X_j} 1
+	where $Z_{ij}$ i.i.d $\sim \textrm{Bernoulli}(\frac{b\log n }{n})$, which represents the edge existence between different communities. The mean value on the left hand side is $\frac{b \log n }{n} \frac{k-1}{2k}n^2$. Therefore we can use large
+	deviation theory to bound the probability of \eqref{eq:Zij}. To be more specific, by Chernoff inequality we have
+	\begin{equation}\label{eq:CZij}
+	\Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  c \right)\leq \frac{\mathbb{E}[\exp(t Z_{ij})]^{ \frac{k-1}{2k}n^2 }}{\exp(ct)}
+	\end{equation}
+	where $ t  = \log \frac{\alpha}{b\beta} > 0$ is chosen to minimize the function on the right hand side of \eqref{eq:CZij}. It follows that
+	\begin{equation}\label{eq:nlogn}
+	\Pr(\sum_{\substack{(i,j)\in E \\ X_i \neq X_j}} Z_{ij} >  c )\leq \exp(n\log n  \frac{k-1}{2k} (h_b(\frac{\alpha}{\beta}) + o(1)))
+	\end{equation}
+	where $h_b(x) = x - b - x \log\frac{x}{b}$. We can verify that $h_b(x) < 0 $ when $ x > b$. The inequality is actually tight,
+	therefore $\alpha > b \beta$
+	is necessary.
+	
+	When $\alpha < b \beta$, using the same techniques as above we can show that
+	\begin{align}
+	P_{\sigma | G}(\sigma = X ) & > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n) \label{eq:1x_e}
+	\end{align}
+	where $C$ is any positive constant in \eqref{eq:1x_e}.
+	$\exp(-Cn)$ can be added since the dominant term of decreasing rate is $\exp(-n\log n)$, as shown by \eqref{eq:nlogn}.
+	
+	Generally, when $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}$ and $\bar{\sigma}$
+	is nearer to $\mathbf{1}_{n}$ than other $\omega^r \cdot \mathbf{1}_n$, we could show that
+	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
+	happens with probability $O(\exp(-n \log^{2/3} n ))$. Using union bound we have
+	$P_{\sigma | G}(\sigma = \bar{\sigma} ) \leq \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
+	happens in probability $1-o(1)$ for all such $\bar{\sigma}$.
+	Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{1/3} n}) \leq
+	(k-1)\sum_{\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}}\exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)
+	\leq (k-1)k^n \exp(-Cn) = o(1)$ for $C> \log k$, we conclude that
+	$\dist(\sigma^{(i)}, \Lambda)< kn/\log^{1/3}(n)$ for all $i\in[m]$ with probability $1-o(1)$ if $\alpha<b\beta$.
+	In this case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples.
+	
+	\subsection{Why $\beta > \beta^*$} \label{sect:why}
+	Similar to the last section, when exact recovery is possible, the probability of the following event should be $o(1)$
+	\begin{align}
+	P_{\sigma | G}(\dist(\sigma, X) = 1) & > P_{\sigma | G}(\sigma = X)\label{eq:betastar}
+	\end{align}
+	We consider the $i-$th coordinate in which $\sigma_i \neq X_i$ and denote the event $T_{ir}=\{\sigma_i = \omega^r \cdot X_i, \sigma_j = X_j \forall j \neq i\}$.
+	Then $P_{\sigma | G}(\dist(\sigma, X) = 1) = \sum_{i=1}^n\sum_{r=1}^{k-1} P_{\sigma | G}(T_{ir})$.
+	We also define
+	\begin{equation*}
+	A^r_i=A^r_i(G):=|\{j\in[n]\setminus\{i\}:\{i,j\}\in E(G), X_j=\omega^r \cdot X_i\} |
+	\end{equation*}
+	to represent the number of edges whose two nodes differs by $\omega^r$.
+	By definition,
+	$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$ and $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $r=1,\dots, k-1$, and they are independent.
+	
+	We then have
+	\begin{align}
+	&\frac{P_{\sigma|G}(T_{ir})}
+	{P_{\sigma|G}(\sigma=X)}
+	= \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \nonumber\\
+	&-\frac{(k-1)\alpha\log(n)}{n} \Big) 
+	= (1+o(1)) \exp ( \beta(A^r_i-A^0_i))
+	\end{align}
+	By Chernoff inequality $ \Pr(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_i)) > 1) \leq (k-1)n\mathbb{E}_G[\exp (\beta (A^r_i-A^0_i))] $.
+	\begin{align}
+	&\mathbb{E}_G[\exp (\beta (A^r_i-A^0_i))]
+	=\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^{\beta} \Big)^{n/k} \nonumber \\
+	&\cdot \Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-\beta} \Big)^{n/k-1}\nonumber\\
+	& = 
+	\exp\Big(\frac{\log(n)}{k} ( a e^{-\beta}+b e^{\beta} -a-b )
+	+o(1) \Big)\nonumber \\
+	& = (1+o(1)) n^{g(\beta)-1} \label{eq:gbetaminus1}
+	\end{align}
+	Therefore the probability of event \eqref{eq:betastar} is bounded above by $ (k-1 + o(1)) n^{g(\beta)}$
+	where $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$. This $g(\beta)$ is also defined in Theorem~\ref{thm:wt3}.
+	The critical value is the smaller zero point of $g(\beta)$, which is exactly
+	$$
+	\beta^* = \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}
+	$$
+	also given in Theorem~\ref{thm:wt1}.
+	When $\beta > \beta^*$ and $\beta$ is smaller than the larger root, $g(\beta) < 0$ and the necessary condition of exact discovery holds.
+	
+	We notice that when $\beta$ is large, $g(\beta) > 0$. Therefore, Equation \eqref{eq:gbetaminus1} is not satisfactory, and
+	we need finer control by introducing some extra parameter which we can optimize. To be more specific, let $D_r : = \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) > s$
+	and we are going to give an upper bound of $P(D_r)$. We proceed as follows: 
+	\begin{align*}
+	&\Pr(D_r) = 
+	\Pr(D_r| A_i^r - A_i^0 \geq 0, \exists i\in [n])
+	\cdot I_1 \\
+	&+ \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
+	\Pr(  A_i^r - A_i^0  < 0 , \forall i \in [n] ) \\
+	& \leq I_1
+	+ \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
+	\end{align*}
+	where $I_1 = \Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n])$.
+	To bound the two terms above, we need the following lemma, which can be proved by standard Chernoff inequality techniques:
+	\begin{lemma}\label{lem:fb}
+		For $t\in [\frac{1}{k}(b-a), 0]$,
+		define a function
+		\begin{align*}
+		&f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -\frac{a+b}{k} +1 +\beta t  \\
+		&-t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big).
+		\end{align*}
+		It follows that
+		\begin{align} \label{eq:upba}
+		& P(A^1_i-A^0_i\ge t\log(n))  \notag\\
+		\le &  \exp\Big(\log n \Big(f_{\beta}(t) -\beta t  - 1 + O\big(\frac{\log(n)}{n}\big) \Big)\Big) .
+		\end{align}
+	\end{lemma}
+	Choosing $t=0$ in Lemma \ref{lem:fb}, we have
+	$\Pr(A^1_i-A^0_i\ge 0 ) \leq \exp(-\log n \frac{(\sqrt{a}-\sqrt{b})^2}{k})$.
+	Then
+	\begin{align*}
+	I_1 \leq \sum_{i=1}^n \Pr( A_i^r - A_i^0 \geq 0) \leq n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}}
+	\end{align*}
+	For the second term,
+	conditioned on $A_i^r - A_i^0  < 0, \forall i\in [n]$ we have
+	\begin{align*}
+	&\sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) \\
+	& = \sum_{t\log n =-\frac{n}{k}}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t \log n] \exp ( \beta  t\log n)\leq \\ 
+	&
+	\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t \log n]\exp ( \beta  t\log n) + n^{1+\beta(b-a)/k}
+	\end{align*}
+	where $\tau =\frac{b-a}{k}\log n$ in short. Therefore
+	\begin{align*}
+	&\Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])  \\
+	&\leq\Pr(\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t\log n]\exp ( \beta  t\log n)  > \tilde{s} ) \\
+	& \leq \mathbb{E}[\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i= t\log n]\exp ( \beta  t\log n)] /  \tilde{s} \\
+	& \leq \frac{a-b}{k}\log n \cdot n^{f_{\beta}(t) + o(1)} / \tilde{s} \textrm{ using Lemma \ref{lem:fb} }
+	\end{align*}
+	where $\tilde{s} = s - n^{1+\beta(b-a)/k}$. 
+	The maximization of $f_{\beta}(t)$ is given by the following lemma:
+	\begin{lemma}\label{lem:tilde_g}
+		Define
+		$$
+		\tilde{g}(\beta) = \begin{cases}
+		g(\beta)   & \text{~if~} \beta< \frac{1}{2}\log\frac{a}{b} \\
+		g(\frac{1}{2} \log\frac{a}{b}) = 1 - \frac{(\sqrt{a}-\sqrt{b})^2}{k} & \text{~if~} \beta\ge \frac{1}{2}\log\frac{a}{b}
+		\end{cases}
+		$$
+		then $f_{\beta}(t) \leq \tilde{g}(\beta)$ for $t\leq 0$.
+	\end{lemma}
+	By choosing $s = n^{\tilde{g}(\beta)/2}$ and using Lemma \ref{lem:tilde_g}, we have
+	\begin{align*}
+	\Pr( D_r) \leq  n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{\tilde{g}(\beta)/2 + o(1)} \leq 2n^{\tilde{g}(\beta)/4}
+	\end{align*}
+	Replacing $D_r$ by $\cup_{r=1}^{k-1} D_r$ in the above deduction we could get the same conclusion.
+	That is, the probability of event
+	$$
+	P_{\sigma | G}(\dist(\sigma, X) = 1) > n^{\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_xx}
+	$$
+	decreases faster than $2n^{\tilde{g}(\beta)/4}$.
+	Similar techniques shows that $P_{\sigma | G}(\dist(\sigma, X) = m)> n^{m\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)$
+	decreases faster than $2(k-1)^m n^{m\tilde{g}(\beta)/4}$. Therefore, $P_{\sigma | G}(\dist(\sigma, X) > 1) < n^{\tilde{g}(\beta)/2} = o(1)$ by summing geometric series.
+	
+	\subsection{Proof for $\beta\le\beta^\ast$}\label{subsect:smaller}
+	The proof of $\beta\le\beta^\ast$ is similar to that of \cite{ye2020exact} in Section III, D and we omit it here.
+	
+	\subsection{Multiple sample case: Proof of Theorem~\ref{thm:wt2}}
+	\label{sect:multi}
+	
+	
+	For the multiple-sample case,
+	we prove that Algorithm \ref{alg:ez} can recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$.
+	We already showed that each sample is very close to $S_k(X)$ when $\alpha > b \beta$,
+	so after the alignment step in Algorithm~\ref{alg:ez},
+	all the samples are simultaneously aligned with the same element from $S_k(X)$.
+	We assume all samples are aligned with $X$ in the following analysis.
+	From subsection \ref{subsect:smaller},
+	with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)}  = \omega^r \cdot X_i)$ differs from
+	$ \exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$.
+	Since the samples are independent,
+	we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)}  = \omega^r \cdot X_i]\ge u)$ differs from
+	$ \exp ( u \beta (A^r_i-A^0_i))$
+	by at most a constant factor.
+	Here $u\beta$ plays the role of $\beta$ in the single-sample case.
+	Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$ we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = \omega^r \cdot X_i] \le u-1$ for all $i\in[n]$. Let $u=\lfloor \frac{m+k-1}{k} \rfloor$,
+	then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)}  = \omega^r \cdot X_i] \le \lfloor \frac{m-1}{k} \rfloor $
+	while $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = X_i]
+	= m - (k-1)\lfloor \frac{m-1}{k} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)}  = \omega^r \cdot X_i] $ for $r=1, \dots, k-1$
+	which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}.
+	
+	The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when
+	$\lfloor \frac{m+k-1}{k} \rfloor  \beta < \beta^\ast$ is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case.
+	
+	\bibliographystyle{IEEEtran}
+	\bibliography{exportlist}
 \end{document}
