@@ -777,7 +777,7 @@ $
 There is an integer $n_0$ such that for every even integer $n>n_0$ and  every integer $1\le r\le kn/\log^{1/3}(n)$, there is a set $\cG^{(r)}$ for which
 
 \noindent (i)
-$P(G\in\cG^{(r)}) \ge 1- 2(k-1)^r n^{r\tilde{g}(\beta)/8}$ ,
+$P(G\in\cG^{(r)}) \ge 1- 2(k-1)^r n^{r\tilde{g}(\beta)/4}$ ,
 
 \noindent (ii) For every $G\in\cG^{(r)}$,
 $$
@@ -975,13 +975,13 @@ $$
 \sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1} D_r(G,t)
 \exp\big(k\beta t \log(n) \big)
 \le \sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}
- n^{f_{\beta}(t) + \epsilon}
+ n^{f_{\beta}(t) + \frac{3}{2}\epsilon}
 \right\} .
 $$
 Then by Markov inequality,
 \begin{equation} \label{eq:mk}
-P(G\in \cG^r(\epsilon))\ge 1-n^{-(\epsilon-o(1))} >
-1-n^{-\epsilon/2}
+P(G\in \cG^r(\epsilon))\ge 1-n^{-(\frac{3}{2}\epsilon-o(1))} >
+1-n^{-\epsilon}
 \end{equation}
 for large $n$ and positive $\epsilon$.
 Using \eqref{eq:lq}, we obtain that for $G\in\cG_1\cap \bigcap_{r=1}^{k-1}\cG^r(\epsilon)$,
@@ -990,8 +990,8 @@ Using \eqref{eq:lq}, we obtain that for $G\in\cG_1\cap \bigcap_{r=1}^{k-1}\cG^r(
 \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
 {P_{\sigma|G}(\sigma=X)} 
 & \le n(k-1)
-\exp\big(\beta(b-a)\log(n) \big)  + (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \epsilon} \\
-& = (k-1)n^{f_{\beta}((b-a)/k)} + (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \epsilon} ,
+\exp\big(\beta(b-a)\log(n) \big)  + (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \frac{3}{2}\epsilon} \\
+& = (k-1)n^{f_{\beta}((b-a)/k)} + (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \frac{3}{2} \epsilon} ,
 \end{aligned}
 \end{equation}
 where the equality follows from the fact that $f_{\beta}(\frac{1}{k}(b-a))=\beta(b-a)+1$.
@@ -1005,8 +1005,8 @@ $G\in\cG_1\cap\cG(\epsilon)$,
 & \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
 {P_{\sigma|G}(\sigma=X)} 
 \le (k-1)n^{\tilde{g}(\beta)}
-+ (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{\tilde{g}(\beta) + \epsilon}  \\
-& \le (k-1)n^{\tilde{g}(\beta) + \epsilon}
++ (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{\tilde{g}(\beta)  + \frac{3}{2}\epsilon}  \\
+& \le (k-1)n^{\tilde{g}(\beta)  + \frac{3}{2}\epsilon}
 \big(\frac{a-b}{k}\log(n)+1 \big)
 < n^{\tilde{g}(\beta) + 2\epsilon} 
 \end{aligned}
@@ -1024,10 +1024,10 @@ n^{\tilde{g}(\beta) /2} .
 $$
 By \eqref{eq:tD} and \eqref{eq:mk}, 
 $$
-P(G\in\cG^{(1)})\ge 1-(k-1)n^{\tilde{g}(\beta)/8}- (k-1)n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}+o(1)}> 1- 2(k-1)n^{\tilde{g}(\beta)/8},
+P(G\in\cG^{(1)})\ge 1-(k-1)n^{\tilde{g}(\beta)/4}- (k-1)n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}+o(1)}> 1- 2(k-1)n^{\tilde{g}(\beta)/4},
 $$
 where the last inequality follows from the fact that $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}\le
-\tilde{g}(\beta)<\tilde{g}(\beta)/8< 0$.
+\tilde{g}(\beta)<\tilde{g}(\beta)/4< 0$.
 This completes the proof of Proposition~\ref{prop:big} for the special case of $r=1$. 
 Next we prove the two auxiliary lemmas used above.
 \begin{lemma}[Elementary properties of $\beta^\ast$ defined in \eqref{eq:defstar}] \label{lm:ele}
