@@ -284,13 +284,13 @@
 	P_{\sigma | G}(\sigma =  \mathbf{1}_n) & > P_{\sigma | G}(\sigma = X) \label{eq:1x}
 	\end{align}
 	For \eqref{eq:1x}, we can treat it as a hypothesis testing problem between $\sigma = X$ versus $\sigma = \mathbf{1}_n$.
-	The ML algorithm makes Type I error when event \eqref{eq:1x} happens. Therefore, we use log-likelihood to simplify
+	The ML algorithm makes Type I error when event \eqref{eq:1x} happens. We use log-likelihood to simplify
 	\eqref{eq:1x} to:
 	\begin{equation}\label{eq:Zij}
 	\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} > (\frac{\alpha}{\beta} + o(1)) \frac{\log n}{n} \frac{k-1}{2k}n^2 =: c
 	\end{equation}
 	% \frac{k-1}{2k}n^2 = \sum_{(i,j)\in E, X_i \neq X_j} 1
-	where $Z_{ij}$ i.i.d $\sim \textrm{Bernoulli}(\frac{b\log n }{n})$, which represents the edge existence between different communities. The mean value on the left hand side is $\frac{b \log n }{n} \frac{k-1}{2k}n^2$. Therefore we can use large
+	where $Z_{ij}$ i.i.d. $\sim \textrm{Bernoulli}(\frac{b\log n }{n})$, which represents the edge existence between different communities. The mean value on the left hand side is $\frac{b \log n }{n} \frac{k-1}{2k}n^2$. Therefore we can use large
 	deviation theory to bound the probability of \eqref{eq:Zij}. To be more specific, by Chernoff inequality we have
 	\begin{equation}\label{eq:CZij}
 	\Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  c \right)\leq \frac{\mathbb{E}[\exp(t Z_{ij})]^{ \frac{k-1}{2k}n^2 }}{\exp(ct)}
@@ -299,15 +299,14 @@
 	\begin{equation}\label{eq:nlogn}
 	\Pr(\sum_{\substack{(i,j)\in E \\ X_i \neq X_j}} Z_{ij} >  c )\leq \exp(n\log n  \frac{k-1}{2k} (h_b(\frac{\alpha}{\beta}) + o(1)))
 	\end{equation}
-	where $h_b(x) = x - b - x \log\frac{x}{b}$. We can verify that $h_b(x) < 0 $ when $ x > b$. The inequality is actually tight,
-	therefore $\alpha > b \beta$
-	is necessary.
+	where $h_b(x) = x - b - x \log\frac{x}{b}$. We can verify that $h_b(x) < 0 $ when $ x > b$.
+	Therefore, we choose $\alpha > b \beta$	to make \eqref{eq:nlogn} decreases to zero as $n\to\infty$.
 	
 	When $\alpha < b \beta$, using the same techniques as above we can show that
 	\begin{align}
 	P_{\sigma | G}(\sigma = X ) & > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n) \label{eq:1x_e}
 	\end{align}
-	where $C$ is any positive constant in \eqref{eq:1x_e}.
+	where $C$ is any positive constant.
 	$\exp(-Cn)$ can be added since the dominant term of decreasing rate is $\exp(-n\log n)$, as shown by \eqref{eq:nlogn}.
 	
 	Generally, when $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{1/3} n}$ and $\bar{\sigma}$
@@ -323,26 +322,26 @@
 	In this case, each sample only take $\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{1/3}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{1/3}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{1/3}(n)}{\log\log(n)})\ge \Omega(\log^{1/4}(n))$ samples.
 	
 	\subsection{Why $\beta > \beta^*$} \label{sect:why}
-	Similar to the last section, when exact recovery is possible, the probability of the following event should be $o(1)$
+	Similar to the analysis of the last section, when exact recovery is possible, the probability of the following event should be $o(1)$
 	\begin{align}
 	P_{\sigma | G}(\dist(\sigma, X) = 1) & > P_{\sigma | G}(\sigma = X)\label{eq:betastar}
 	\end{align}
-	We consider the $i-$th coordinate in which $\sigma_i \neq X_i$ and denote the event $T_{ir}=\{\sigma_i = \omega^r \cdot X_i, \sigma_j = X_j \forall j \neq i\}$.
+	We consider the $i$-th coordinate in which $\sigma_i \neq X_i$ and denote the event $T_{ir}=\{\sigma_i = \omega^r \cdot X_i, \sigma_j = X_j \forall j \neq i\}$.
 	Then $P_{\sigma | G}(\dist(\sigma, X) = 1) = \sum_{i=1}^n\sum_{r=1}^{k-1} P_{\sigma | G}(T_{ir})$.
 	We also define
 	\begin{equation*}
 	A^r_i=A^r_i(G):=|\{j\in[n]\setminus\{i\}:\{i,j\}\in E(G), X_j=\omega^r \cdot X_i\} |
 	\end{equation*}
-	to represent the number of edges whose two nodes differs by $\omega^r$.
+%	to represent the number of edges connected with $i$ whose two nodes differ by $\omega^r$.
 	By definition,
-	$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$ and $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $r=1,\dots, k-1$, and they are independent.
+	$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$, $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $r=1,\dots, k-1$, and they are independent.
 	
 	We then have
 	\begin{align}
 	&\frac{P_{\sigma|G}(T_{ir})}
 	{P_{\sigma|G}(\sigma=X)}
 	= \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \nonumber\\
-	&-\frac{(k-1)\alpha\log(n)}{n} \Big) 
+	&-\frac{\alpha\log(n)}{n} \Big) 
 	= (1+o(1)) \exp ( \beta(A^r_i-A^0_i))
 	\end{align}
 	By Chernoff inequality $ \Pr(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_i)) > 1) \leq (k-1)n\mathbb{E}_G[\exp (\beta (A^r_i-A^0_i))] $.
@@ -362,10 +361,12 @@
 	\beta^* = \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}
 	$$
 	also given in Theorem~\ref{thm:wt1}.
-	When $\beta > \beta^*$ and $\beta$ is smaller than the larger root, $g(\beta) < 0$ and the necessary condition of exact discovery holds.
+	When $\beta > \beta^*$ and $\beta$ is smaller than the larger root, $g(\beta) < 0$ and the probability of \eqref{eq:betastar} decreases to
+	$0$ as $n\to \infty$.
 	
 	We notice that when $\beta$ is large, $g(\beta) > 0$. Therefore, Equation \eqref{eq:gbetaminus1} is not satisfactory, and
-	we need finer control by introducing some extra parameter which we can optimize. To be more specific, let $D_r : = \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) > s$
+	we need finer control by introducing some extra parameter which we can optimize. To be more specific, let
+	the event $D_r : = \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) > s$
 	and we are going to give an upper bound of $P(D_r)$. We proceed as follows: 
 	\begin{align*}
 	&\Pr(D_r) = 
@@ -431,7 +432,7 @@
 	Replacing $D_r$ by $\cup_{r=1}^{k-1} D_r$ in the above deduction we could get the same conclusion.
 	That is, the probability of event
 	$$
-	P_{\sigma | G}(\dist(\sigma, X) = 1) > n^{\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_xx}
+	P_{\sigma | G}(\dist(\sigma, X) = 1) > n^{\tilde{g}(\beta)/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_xx}
 	$$
 	decreases faster than $2n^{\tilde{g}(\beta)/4}$.
 	Similar techniques shows that $P_{\sigma | G}(\dist(\sigma, X) = m)> n^{m\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)$
