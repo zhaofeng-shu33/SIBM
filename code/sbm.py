@@ -3,11 +3,13 @@ from multiprocessing import Queue
 from datetime import datetime
 import logging
 import os
+import pickle
 
 import networkx as nx
 import numpy as np
 from sklearn import metrics
 from ising import SIBM_metropolis, SIBM
+from sdp import sdp
 
 def set_up_log():
     LOGGING_FILE = 'simulation.log'
@@ -26,8 +28,10 @@ def set_up_log():
         rootLogger.setLevel(logging.INFO)
 
 def sbm_graph(n, k, a, b):
-    if n % k != 0 or a <= b:
-        raise ValueError('')
+    if n % k != 0:
+        raise ValueError('n %k != 0')
+    elif a <= b:
+        raise ValueError('a <= b')
     sizes = [int(n/k) for _ in range(k)]
     _p = np.log(n) * a / n
     _q = np.log(n) * b / n
@@ -100,7 +104,7 @@ def convert_to_label_list(n, partition):
     return cat
 def acc_task(alg, params, num_of_times, qu):
     acc = 0
-    n, k, a, b = params
+    n, k, a, b, binary = params
     for _ in range(num_of_times):
         graph = sbm_graph(n, k, a, b)
         gt = get_ground_truth(graph)
@@ -110,7 +114,9 @@ def acc_task(alg, params, num_of_times, qu):
         elif alg == 'modularity':
             results_partition = nx.algorithms.community.modularity_max.greedy_modularity_communities(graph)
             results = convert_to_label_list(n, results_partition)
-        elif alg == 'metropolis':            
+        elif alg == 'sdp':
+            results = sdp(graph, k)
+        elif alg == 'metropolis':
             if logging.getLogger().level == logging.DEBUG:
                 sibm = SIBM(graph, k)
                 results = sibm.metropolis(N=40)
@@ -121,10 +127,13 @@ def acc_task(alg, params, num_of_times, qu):
                 results = SIBM_metropolis(graph, k)
         else:
             raise NotImplementedError('')
-        acc += compare(gt, results)
+        current_acc = compare(gt, results)
+        if binary:
+            current_acc = int(current_acc)
+        acc += current_acc
     qu.put(acc)
 
-def get_acc(alg, params, num_of_times=100, multi_thread=1, binary=False):
+def get_acc(alg, params, num_of_times=100, multi_thread=1):
     acc = 0
     q = Queue()
     if multi_thread == 1:
@@ -144,44 +153,52 @@ def get_acc(alg, params, num_of_times=100, multi_thread=1, binary=False):
             process_list[i].join()
             acc += q.get()
         acc /= (num_of_times_per_process * multi_thread)
-    if binary:
-        acc = int(acc)
     return acc
-def get_phase_transition_interval(a_list, acc_list):
-    for i in range(len(acc_list)):
-        if acc_list[i] < 0.5 and acc_list[i + 1] > 0.5:
-            return (a_list[i], a_list[i + 1])
-    raise ValueError('no interval found')
+
+def phase_transition_interval(a_list, b_list, acc_list):
+    # save the data in pickle format
+    data = {'a': a_list, 'b': b_list, 'acc_list': acc_list}
+    file_name = datetime.now().strftime('transition-%Y-%m-%d') + '.pickle'
+    with open(os.path.join('build', file_name), 'wb') as f:
+        pickle.dump(data, f)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'modularity'], default='metropolis')
-    parser.add_argument('--repeat', type=int, default=100, help='number of times to generate the SBM graph')
+    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'modularity', 'sdp'], default='metropolis')
+    parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
     parser.add_argument('--multi_thread', type=int, default=1)
     parser.add_argument('--n', type=int, default=100)
     parser.add_argument('--k', type=int, default=2)
     parser.add_argument('--binary', type=bool, const=True, nargs='?', default=False)
     parser.add_argument('--a', type=float, default=16.0, nargs='+')
-    parser.add_argument('--b', type=float, default=4.0)
+    parser.add_argument('--b', type=float, default=4.0, nargs='+')
     parser.add_argument('--draw', type=bool, const=True, nargs='?', default=False)
     args = parser.parse_args()
     set_up_log()
     if type(args.a) is float:
         args.a = [args.a]
+    if type(args.b) is float:
+        args.b = [args.b]
     acc_list = []
+    total_points = len(args.a) * len(args.b)
+    counter = 0
     for a in args.a:
-        params = (args.n, args.k, a, args.b)
-        acc = get_acc(args.alg, params, args.repeat,
-                    multi_thread=args.multi_thread, binary=args.binary)
-        acc_list.append(acc)
-
+        for b in args.b:
+            counter += 1
+            if a <= b:
+                continue
+            params = (args.n, args.k, a, b, args.binary)
+            acc = get_acc(args.alg, params, args.repeat,
+                        multi_thread=args.multi_thread)
+            acc_list.append(acc)
+            if counter % 10 == 0:
+                logging.info('finished %.2f' % (100 * counter / total_points) + '%')
     logging.info('n: {0}, repeat: {1}, alg: {2}'.format(args.n, args.repeat, args.alg))
     if len(acc_list) > 1:
-        a_left, a_right = get_phase_transition_interval(args.a, acc_list)
-        logging.info('a_L: {0} for acc=0, a_R: {1} for acc=1, b: {2}'.format(a_left, a_right, args.b))
+        phase_transition_interval(args.a, args.b, acc_list)
     if args.draw and len(args.a) > 1:
         from matplotlib import pyplot as plt
         plt.plot(args.a, acc_list)
         plt.savefig('build/%s.png' % datetime.now().strftime('acc-a-%H-%M-%S'))
     if len(acc_list) == 1:
-        logging.info('a: {0}, b: {1}, acc: {2}'.format(args.a[0], args.b, acc_list[0]))
+        logging.info('a: {0}, b: {1}, acc: {2}'.format(args.a[0], args.b[0], acc_list[0]))
