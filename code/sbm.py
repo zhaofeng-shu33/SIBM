@@ -27,8 +27,10 @@ def set_up_log():
         rootLogger.setLevel(logging.INFO)
 
 def sbm_graph(n, k, a, b):
-    if n % k != 0 or a <= b:
-        raise ValueError('')
+    if n % k != 0:
+        raise ValueError('n %k != 0')
+    elif a <= b:
+        raise ValueError('a <= b')
     sizes = [int(n/k) for _ in range(k)]
     _p = np.log(n) * a / n
     _q = np.log(n) * b / n
@@ -176,13 +178,19 @@ if __name__ == '__main__':
     if type(args.a) is float:
         args.b = [args.b]
     acc_list = []
+    total_points = len(args.a) * len(args.b)
+    counter = 0
     for a in args.a:
         for b in args.b:
+            counter += 1
+            if a <= b:
+                continue
             params = (args.n, args.k, a, b)
             acc = get_acc(args.alg, params, args.repeat,
                         multi_thread=args.multi_thread, binary=args.binary)
             acc_list.append(acc)
-
+            if counter % 10 == 0:
+                logging.info('finished %.2f\%' % (counter / total_points))
     logging.info('n: {0}, repeat: {1}, alg: {2}'.format(args.n, args.repeat, args.alg))
     if len(acc_list) > 1:
         phase_transition_interval(args.a, args.b, acc_list)
