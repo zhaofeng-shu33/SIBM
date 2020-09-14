@@ -190,7 +190,7 @@ if __name__ == '__main__':
                         multi_thread=args.multi_thread, binary=args.binary)
             acc_list.append(acc)
             if counter % 10 == 0:
-                logging.info('finished %.2f' % (counter / total_points) + '%')
+                logging.info('finished %.2f' % (100 * counter / total_points) + '%')
     logging.info('n: {0}, repeat: {1}, alg: {2}'.format(args.n, args.repeat, args.alg))
     if len(acc_list) > 1:
         phase_transition_interval(args.a, args.b, acc_list)
