@@ -8,7 +8,7 @@ import networkx as nx
 import numpy as np
 from sklearn import metrics
 from ising import SIBM_metropolis, SIBM
-
+from sdp import sdp
 def set_up_log():
     LOGGING_FILE = 'simulation.log'
     logFormatter = logging.Formatter('%(asctime)s %(message)s')
@@ -110,7 +110,9 @@ def acc_task(alg, params, num_of_times, qu):
         elif alg == 'modularity':
             results_partition = nx.algorithms.community.modularity_max.greedy_modularity_communities(graph)
             results = convert_to_label_list(n, results_partition)
-        elif alg == 'metropolis':            
+        elif alg == 'sdp':
+            results = sdp(graph, k)
+        elif alg == 'metropolis':
             if logging.getLogger().level == logging.DEBUG:
                 sibm = SIBM(graph, k)
                 results = sibm.metropolis(N=40)
@@ -155,7 +157,7 @@ def get_phase_transition_interval(a_list, acc_list):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'modularity'], default='metropolis')
+    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'modularity', 'sdp'], default='metropolis')
     parser.add_argument('--repeat', type=int, default=100, help='number of times to generate the SBM graph')
     parser.add_argument('--multi_thread', type=int, default=1)
     parser.add_argument('--n', type=int, default=100)
