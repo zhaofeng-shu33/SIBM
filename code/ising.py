@@ -57,13 +57,18 @@ def _estimate_a_b(graph):
     return (a, b)
 
 class SIBM:
-    def __init__(self, graph, k=2):
+    def __init__(self, graph, k=2, estimate_a_b=True, epsilon=0.0):
         self.G = graph
         self.k = k
-        a, b = estimate_a_b(graph, k)
-        _beta_star = np.log((a + b - k - np.sqrt((a + b - k)**2 - 4 * a * b))/ (2 * b))
-        self._beta = 1.2 * _beta_star
-        self._alpha = 13 * b * self._beta
+        self.epsilon = 0
+        if estimate_a_b:
+            a, b = estimate_a_b(graph, k)
+            _beta_star = np.log((a + b - k - np.sqrt((a + b - k)**2 - 4 * a * b))/ (2 * b))
+            self._beta = 1.2 * _beta_star
+            self._alpha_divide_beta = 13 * b
+        else:
+            self._beta = 1.2
+            self._alpha_divide_beta = 13
         self.n = len(self.G.nodes)
         # randomly initiate a configuration
         self.sigma = [1 for i in range(self.n)]
@@ -72,8 +77,8 @@ class SIBM:
         for node_state in range(k):
             for i in range(self.n // k):
                 self.sigma[nodes[i * k + node_state]] = node_state
-        self.mixed_param = self._alpha * np.log(self.n)
-        self.mixed_param /= (self._beta * self.n)
+        self.mixed_param = self._alpha_divide_beta * np.log(self.n)
+        self.mixed_param /= self.n
     def _get_Js(self, sigma_i, sigma_j, w_s):
         if sigma_i == sigma_j:
             return 1
@@ -113,6 +118,7 @@ class SIBM:
                     probability = np.exp(- self._beta * delta_H)
                     if np.random.rand() < probability:
                         self.sigma[r] = (w_s + self.sigma[r]) % self.k
+            self._beta *= (1 + self.epsilon)
         return self.sigma
 
 def SIBM_metropolis(graph, k=2, max_iter=40):

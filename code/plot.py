@@ -23,7 +23,7 @@ for i in range(len(a_list)):
         matrix[i, j] = acc_list[counter]
         counter += 1
 
-plt.imshow(matrix, cmap='Greys', origin='lower', extent=[b_min, b_max, a_min, a_max])
+plt.imshow(matrix, cmap='Greys_r', origin='lower', extent=[b_min, b_max, a_min, a_max])
 x = np.linspace(b_min, b_max)
 y = (np.sqrt(2) + np.sqrt(x)) ** 2
 plt.plot(x, y, color='red')
