@@ -3,6 +3,7 @@ from multiprocessing import Queue
 from datetime import datetime
 import logging
 import os
+import pickle
 
 import networkx as nx
 import numpy as np
@@ -149,11 +150,13 @@ def get_acc(alg, params, num_of_times=100, multi_thread=1, binary=False):
     if binary:
         acc = int(acc)
     return acc
-def get_phase_transition_interval(a_list, acc_list):
-    for i in range(len(acc_list)):
-        if acc_list[i] < 0.5 and acc_list[i + 1] > 0.5:
-            return (a_list[i], a_list[i + 1])
-    raise ValueError('no interval found')
+
+def phase_transition_interval(a_list, b_list, acc_list):
+    # save the data in pickle format
+    data = {'a': a_list, 'b': b_list, 'acc_list': acc_list}
+    file_name = datetime.now().strftime('transition-%Y-%m-%d') + '.pickle'
+    with open(os.path.join('build', file_name), 'wb') as f:
+        pickle.dump(data, f)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -164,23 +167,25 @@ if __name__ == '__main__':
     parser.add_argument('--k', type=int, default=2)
     parser.add_argument('--binary', type=bool, const=True, nargs='?', default=False)
     parser.add_argument('--a', type=float, default=16.0, nargs='+')
-    parser.add_argument('--b', type=float, default=4.0)
+    parser.add_argument('--b', type=float, default=4.0, nargs='+')
     parser.add_argument('--draw', type=bool, const=True, nargs='?', default=False)
     args = parser.parse_args()
     set_up_log()
     if type(args.a) is float:
         args.a = [args.a]
+    if type(args.a) is float:
+        args.b = [args.b]
     acc_list = []
     for a in args.a:
-        params = (args.n, args.k, a, args.b)
-        acc = get_acc(args.alg, params, args.repeat,
-                    multi_thread=args.multi_thread, binary=args.binary)
-        acc_list.append(acc)
+        for b in args.b:
+            params = (args.n, args.k, a, b)
+            acc = get_acc(args.alg, params, args.repeat,
+                        multi_thread=args.multi_thread, binary=args.binary)
+            acc_list.append(acc)
 
     logging.info('n: {0}, repeat: {1}, alg: {2}'.format(args.n, args.repeat, args.alg))
     if len(acc_list) > 1:
-        a_left, a_right = get_phase_transition_interval(args.a, acc_list)
-        logging.info('a_L: {0} for acc=0, a_R: {1} for acc=1, b: {2}'.format(a_left, a_right, args.b))
+        phase_transition_interval(args.a, args.b, acc_list)
     if args.draw and len(args.a) > 1:
         from matplotlib import pyplot as plt
         plt.plot(args.a, acc_list)
