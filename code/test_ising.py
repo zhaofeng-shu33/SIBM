@@ -3,6 +3,8 @@ import networkx as nx
 from ising import SIBM
 
 def sample_graph():
+    # see Network_Community_Structure.svg for an illustration
+    # of this graph
     G = nx.Graph()
     G.add_edge(0, 1)
     G.add_edge(0, 2)
