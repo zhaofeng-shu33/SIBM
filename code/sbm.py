@@ -10,6 +10,7 @@ import numpy as np
 from sklearn import metrics
 from ising import SIBM_metropolis, SIBM
 from sdp import sdp
+
 def set_up_log():
     LOGGING_FILE = 'simulation.log'
     logFormatter = logging.Formatter('%(asctime)s %(message)s')
@@ -103,7 +104,7 @@ def convert_to_label_list(n, partition):
     return cat
 def acc_task(alg, params, num_of_times, qu):
     acc = 0
-    n, k, a, b = params
+    n, k, a, b, binary = params
     for _ in range(num_of_times):
         graph = sbm_graph(n, k, a, b)
         gt = get_ground_truth(graph)
@@ -126,10 +127,13 @@ def acc_task(alg, params, num_of_times, qu):
                 results = SIBM_metropolis(graph, k)
         else:
             raise NotImplementedError('')
-        acc += compare(gt, results)
+        current_acc = compare(gt, results)
+        if binary:
+            current_acc = int(current_acc)
+        acc += current_acc
     qu.put(acc)
 
-def get_acc(alg, params, num_of_times=100, multi_thread=1, binary=False):
+def get_acc(alg, params, num_of_times=100, multi_thread=1):
     acc = 0
     q = Queue()
     if multi_thread == 1:
@@ -149,8 +153,6 @@ def get_acc(alg, params, num_of_times=100, multi_thread=1, binary=False):
             process_list[i].join()
             acc += q.get()
         acc /= (num_of_times_per_process * multi_thread)
-    if binary:
-        acc = int(acc)
     return acc
 
 def phase_transition_interval(a_list, b_list, acc_list):
@@ -163,7 +165,7 @@ def phase_transition_interval(a_list, b_list, acc_list):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--alg', choices=['metropolis', 'bisection', 'modularity', 'sdp'], default='metropolis')
-    parser.add_argument('--repeat', type=int, default=100, help='number of times to generate the SBM graph')
+    parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
     parser.add_argument('--multi_thread', type=int, default=1)
     parser.add_argument('--n', type=int, default=100)
     parser.add_argument('--k', type=int, default=2)
@@ -175,7 +177,7 @@ if __name__ == '__main__':
     set_up_log()
     if type(args.a) is float:
         args.a = [args.a]
-    if type(args.a) is float:
+    if type(args.b) is float:
         args.b = [args.b]
     acc_list = []
     total_points = len(args.a) * len(args.b)
@@ -185,9 +187,9 @@ if __name__ == '__main__':
             counter += 1
             if a <= b:
                 continue
-            params = (args.n, args.k, a, b)
+            params = (args.n, args.k, a, b, args.binary)
             acc = get_acc(args.alg, params, args.repeat,
-                        multi_thread=args.multi_thread, binary=args.binary)
+                        multi_thread=args.multi_thread)
             acc_list.append(acc)
             if counter % 10 == 0:
                 logging.info('finished %.2f' % (100 * counter / total_points) + '%')
@@ -199,4 +201,4 @@ if __name__ == '__main__':
         plt.plot(args.a, acc_list)
         plt.savefig('build/%s.png' % datetime.now().strftime('acc-a-%H-%M-%S'))
     if len(acc_list) == 1:
-        logging.info('a: {0}, b: {1}, acc: {2}'.format(args.a[0], args.b, acc_list[0]))
+        logging.info('a: {0}, b: {1}, acc: {2}'.format(args.a[0], args.b[0], acc_list[0]))
