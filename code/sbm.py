@@ -114,6 +114,9 @@ def acc_task(alg, params, num_of_times, qu):
         elif alg == 'modularity':
             results_partition = nx.algorithms.community.modularity_max.greedy_modularity_communities(graph)
             results = convert_to_label_list(n, results_partition)
+        elif alg == 'asyn_fluid':
+            results_partition = nx.algorithms.community.asyn_fluid.asyn_fluidc(graph, k)
+            results = convert_to_label_list(n, results_partition)
         elif alg == 'sdp':
             results = sdp(graph, k)
         elif alg == 'metropolis':
@@ -164,7 +167,7 @@ def phase_transition_interval(file_name_prefix, a_list, b_list, acc_list):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'modularity', 'sdp'], default='metropolis')
+    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'asyn_fluid', 'modularity', 'sdp'], default='metropolis')
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
     parser.add_argument('--multi_thread', type=int, default=1)
     parser.add_argument('--n', type=int, default=100)
