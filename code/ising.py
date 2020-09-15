@@ -62,7 +62,10 @@ class SIBM:
         self.k = k
         self.epsilon = 0
         if estimate_a_b_indicator:
-            a, b = estimate_a_b(graph, k)
+            try:
+                a, b = estimate_a_b(graph, k)
+            except ValueError:
+                a, b = k, k
             square_term = (a + b - k)**2 - 4 * a * b
             if square_term > 0:
                 _beta_star = np.log((a + b - k - np.sqrt(square_term)/ (2 * b)))

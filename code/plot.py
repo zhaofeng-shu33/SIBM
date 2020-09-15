@@ -4,6 +4,13 @@ import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 
+def plot_alg_fix_b(alg_list, date):
+    for alg in alg_list:
+        file_name = alg + '-transition-' + date + '.pickle'
+        with open(file_name, 'rb') as f:
+            data = pickle.load(f)
+            plt.plot(data['a'], data['acc_list'], label=alg)
+    plt.show()
 
 def draw_phase_transation(file_name):
     with open(os.path.join('build', file_name), 'rb') as f:
