@@ -155,10 +155,10 @@ def get_acc(alg, params, num_of_times=100, multi_thread=1):
         acc /= (num_of_times_per_process * multi_thread)
     return acc
 
-def phase_transition_interval(a_list, b_list, acc_list):
+def phase_transition_interval(file_name_prefix, a_list, b_list, acc_list):
     # save the data in pickle format
     data = {'a': a_list, 'b': b_list, 'acc_list': acc_list}
-    file_name = datetime.now().strftime('transition-%Y-%m-%d') + '.pickle'
+    file_name = file_name_prefix + '-' + datetime.now().strftime('transition-%Y-%m-%d') + '.pickle'
     with open(os.path.join('build', file_name), 'wb') as f:
         pickle.dump(data, f)
 
@@ -195,7 +195,8 @@ if __name__ == '__main__':
                 logging.info('finished %.2f' % (100 * counter / total_points) + '%')
     logging.info('n: {0}, repeat: {1}, alg: {2}'.format(args.n, args.repeat, args.alg))
     if len(acc_list) > 1:
-        phase_transition_interval(args.a, args.b, acc_list)
+        file_name_prefix = args.alg
+        phase_transition_interval(file_name_prefix, args.a, args.b, acc_list)
     if args.draw and len(args.a) > 1:
         from matplotlib import pyplot as plt
         plt.plot(args.a, acc_list)

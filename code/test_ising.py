@@ -35,5 +35,5 @@ def sample_graph():
 if __name__ == '__main__':
     # demo illustration to use sibm method for general graph
     G = sample_graph()
-    sibm = SIBM(G, k=3, estimate_a_b=False, epsilon=0.1)
+    sibm = SIBM(G, k=3, estimate_a_b_indicator=False, epsilon=0.1)
     print(sibm.metropolis())

@@ -57,15 +57,20 @@ def _estimate_a_b(graph):
     return (a, b)
 
 class SIBM:
-    def __init__(self, graph, k=2, estimate_a_b=True, epsilon=0.0):
+    def __init__(self, graph, k=2, estimate_a_b_indicator=True, epsilon=0.0):
         self.G = graph
         self.k = k
         self.epsilon = 0
-        if estimate_a_b:
+        if estimate_a_b_indicator:
             a, b = estimate_a_b(graph, k)
-            _beta_star = np.log((a + b - k - np.sqrt((a + b - k)**2 - 4 * a * b))/ (2 * b))
-            self._beta = 1.2 * _beta_star
-            self._alpha_divide_beta = 13 * b
+            square_term = (a + b - k)**2 - 4 * a * b
+            if square_term > 0:
+                _beta_star = np.log((a + b - k - np.sqrt(square_term)/ (2 * b)))
+                self._beta = 1.2 * _beta_star
+                self._alpha_divide_beta = 13 * b
+            else:
+                self._beta = 1.2
+                self._alpha_divide_beta = 13
         else:
             self._beta = 1.2
             self._alpha_divide_beta = 13
