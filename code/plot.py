@@ -1,5 +1,6 @@
 import os
 import pickle
+import argparse
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,9 +8,10 @@ import matplotlib.pyplot as plt
 def plot_alg_fix_b(alg_list, date):
     for alg in alg_list:
         file_name = alg + '-transition-' + date + '.pickle'
-        with open(file_name, 'rb') as f:
+        with open(os.path.join('build', file_name), 'rb') as f:
             data = pickle.load(f)
             plt.plot(data['a'], data['acc_list'], label=alg)
+    plt.legend()
     plt.show()
 
 def draw_phase_transation(file_name):
@@ -38,5 +40,13 @@ def draw_phase_transation(file_name):
     plt.show()
 
 if __name__ == '__main__':
-    file_name = 'transition-2020-09-14.pickle'
-    draw_phase_transation(file_name)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--action', choices=['phase_transition',
+        'compare'], default='phase_transition')
+    args = parser.parse_args()
+    if args.action == 'phase_transition':
+        file_name = 'transition-2020-09-14.pickle'
+        draw_phase_transation(file_name)
+    else:
+        plot_alg_fix_b(['sbm', 'metropolis', 'asyn_fluid'],
+            '2020-09-15')
