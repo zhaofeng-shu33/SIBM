@@ -10,10 +10,10 @@ def plot_alg_fix_b(alg_list, date):
         file_name = alg + '-transition-' + date + '.pickle'
         with open(os.path.join('build', file_name), 'rb') as f:
             data = pickle.load(f)
-            plt.plot(data['a'], data['acc_list'], label=alg)
+            plt.plot(data['a'], data['acc_list'], label=alg, linewidth=4)
     plt.legend()
-    plt.xlabel('a')
-    plt.ylabel('score')
+    plt.xlabel('a', size='large')
+    plt.ylabel('score', size='large')
     fig_name = 'transition-b3-' + date + '.svg'
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()

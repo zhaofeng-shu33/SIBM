@@ -196,6 +196,8 @@ if __name__ == '__main__':
             acc_list.append(acc)
             if counter % 10 == 0:
                 logging.info('finished %.2f' % (100 * counter / total_points) + '%')
+            else:
+                logging.debug('finished %.2f' % (100 * counter / total_points) + '%')
     logging.info('n: {0}, repeat: {1}, alg: {2}'.format(args.n, args.repeat, args.alg))
     if len(acc_list) > 1:
         file_name_prefix = args.alg
