@@ -472,7 +472,7 @@ We also define
 If $\p\left(F_A\right)\geq \frac23$ then $\p\left( F \right)\geq \frac13$.
 \end{lemma}
 \begin{proof}
-By symmetry, the probability of a failure in $B$ is also at least $\frac23$ so, by union bound, with probability at least $\frac13$ both failures will happen simultaneously which implies that ML fails.
+By symmetry, the probability of a failure in $B$ is also at least $\frac23$. So, by union bound, with probability at least $\frac13$ both failures will happen simultaneously which implies that ML fails.
 \end{proof}
 
 
@@ -1153,7 +1153,7 @@ Choosing $k = \tau \log(n)$, for $\tau >0$, $k$ is in the range $[0,n/2-\delta]$
 \end{align}
 where ${n/2 \choose  \tau \log(n)}$ is defined as ${n/2 \choose  \lfloor \tau \log(n) \rfloor }$ if $\tau \log(n)$ is not an integer and $\eps=1/\log \log(n)$.\\
 
-We use the result from Lemma 1 with $m=\frac{n}{2}$ and $\epsilon=1/\log \log(n)$ and notice that
+We use the result from Lemma \ref{lemma1} with $m=\frac{n}{2}$ and $\epsilon=1/\log \log(n)$ and notice that
 \begin{align*}
 &\epsilon \log(\beta) = o(1)\\
 &2\sqrt{ \left(\frac{\epsilon}{2} \right)^2+\alpha \beta} =2\sqrt{\alpha \beta} + o(1)\\
