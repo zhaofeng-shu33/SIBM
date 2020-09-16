@@ -12,6 +12,10 @@ def plot_alg_fix_b(alg_list, date):
             data = pickle.load(f)
             plt.plot(data['a'], data['acc_list'], label=alg)
     plt.legend()
+    plt.xlabel('a')
+    plt.ylabel('score')
+    fig_name = 'transition-b3-' + date + '.svg'
+    plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
 
 def draw_phase_transation(file_name):
@@ -48,5 +52,5 @@ if __name__ == '__main__':
         file_name = 'transition-2020-09-14.pickle'
         draw_phase_transation(file_name)
     else:
-        plot_alg_fix_b(['sbm', 'metropolis', 'asyn_fluid'],
-            '2020-09-15')
+        plot_alg_fix_b(['sdp', 'metropolis', 'asyn_fluid'],
+            '2020-09-16')
