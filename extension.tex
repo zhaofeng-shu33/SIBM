@@ -1,11 +1,46 @@
 \documentclass{article}
 \input{macros.tex}
-\title{Extension of Stochastic Ising Block Model to multiple communities}
+\title{Stochastic Ising Block Model on Multiple Communities}
 \author{Feng Zhao}
 \begin{document}
-\maketitle
+	\maketitle
+\begin{abstract}
+	Recently a composition of Stochastic Block Model (SBM) and Ising model, called SIBM, was proposed for the case
+	of two communities, and a sharp threshold on the sample complexity for exact recovery was established.
+	In this paper, we study the SIBM model in the general case of multiple communities and prove a similar sharp
+	threshold phenomena. We modify an existing recovery algorithm to achieve the threshold
+	and carry out more detailed analysis for this problem. Finally, we show some connections between SIBM and the modularity maximization method.
+\end{abstract}
+
 \section{Introduction}
-This work is an extension of \cite{ye2020exact} to multiple communities.
+	In network analysis, Stochastic Block Model (SBM) is a commonly used random graph model, in which the probability of edge existence is higher within the community than between different communities \cite{holland1983stochastic, Abbe17}. For SBM, the condition on exact recovery of community labels has been studied extensively and the phase transition property has been established \cite{abbe2015community, mossel2016}. Meanwhile, Ising model is a well-known statistical model in physics which has some similarity with SBM \cite{ising1925beitrag}. The nodes with a common edge are more likely to share the same state in Ising model\label{key}.
+As a probabilistic model, Ising model has been applied to investigate the social voting phenomenon \cite{banerjee2008model}, further indicating there is some hidden relationship between SBM and Ising model.
+
+Recently a new model called Stochastic Ising Block Model (SIBM) was proposed in \cite{ye2020exact}. SIBM concatenates SBM and Ising model in the sense that it uses SBM to generate the graph and then uses Ising model to generate node labels. The sample complexity for exact recovery in SIBM was investigated in \cite{ye2020exact} and a sharp threshold was established. However, the formulation of SIBM in \cite{ye2020exact} is restricted for the case of two communities, and the problem for multiple communities case remains open.
+We notice that Ising model is not limited to two states, 
+and we use multiple-state Ising model \cite{potts1952some} to obtain similar results of SIBM on multiple communities.
+
+In this paper, we  investigate SIBM on multiple communities and focus on the problem of exactly recovery of the node label.
+We  compute the feasible regime of parameters and the sample complexity for exact recovery. Besides, the relationship between SIBM and the modularity maximization method
+is also discussed. 
+
+	% notation convetion
+Throughout this paper, the number of community is denoted by $k$; $m$ is the number of samples; $\lfloor x \rfloor$ is the floor function of $x$; the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
+$V=\{1,\dots, n\} =: [n]$;
+the label of each node is a random variable $X_i$; $X_i$ is chosen from $W= \{1, \omega, \dots, \omega^{k-1}\}$ and we further require $W$
+is a cyclic group with order $k$; $W^n$ is the n-ary Cartesian power of $W$; $f$ is a permutation function on $W$ and applied to $W^n$ in elementwise way; the set $S_k$ is used to represent all permutation functions on $W$ and $S_k(\sigma):=\{f(\sigma)| f\in S_k\}$ for $\sigma \in W^n$; the indicator function $\delta_{xy}$ or $\delta(x,y)$ is defined as
+$\delta_{xy} = 1 $ when $x=y$, and $\delta_{xy}=0$ when $x\neq y$; $g(n) = \Theta(f(n))$ if there exists constant $c_1 < c_2$ such that $c_1 f(n) \leq g(n) \leq c_2 f(n)$
+for large $n$;
+$\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$
+where $\mathbf{1}_n$ is the all one vector with dimension $n$;
+we define the distance of two vectors as:
+$\dist(\sigma, X)
+=|\{i\in[n]:\sigma_i\neq X_i\}| \textrm{ for } \sigma,X\in W^n
+$ and the distance of a vector to a space $S\subseteq W^n$
+as
+$\dist(\sigma,S)
+:=\min\{\dist(\sigma, \sigma') | \sigma' \in S\}
+$.
 \section{Problem setup and main results} \label{s:Preliminaries}
 We first recall the definition of Symmetric Stochastic Block Model (SSBM) with $k$ communities and the definition of Ising model with $k$ state (See Definition 4 in \cite{Abbe17}).
 \begin{definition}[SSBM with $k$ communities] \label{def:SSBM}
@@ -18,44 +53,23 @@ Let $n$ be a positive even integer, $W= \{1, \omega, \dots, \omega^{k-1}\}$ is a
 (ii) the vertices $i$ and $j$ in $G$ are connected with probability $p$ if $X_i=X_j$ and with probability $q$ if $X_i \neq X_j$, independently of other pairs of vertices.
 \end{definition}
  
-From each element $\sigma$ in a symmetric group $S_k$, we can induce a permutation function $f$ on $x=(x_1,\dots,x_n)\in W^n$ as $f(x_i) = \gamma(i)$ ($\gamma$ is a function on $[k]$).
-$x$ and $f(x)$ correspond to the same balanced partition, and the conditional distribution $P(G|X=x)$ is the same as $P(G|X=f(x))$ in the above definition. Therefore, we can only hope to recover $X$ from $G$ up to a global permutation.
+	From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x)), \forall f \in S_k$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $S_k(X)$.
 
-In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if and only if $\sqrt{a}-\sqrt{b} > \sqrt{k}$  \cite{abbe2015exact}.
- 
-Given a partition/labeling $X$ on $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G=([n],E(G))$, Ising model defines a probability distribution on all possible labelings $W^n$ of these $n$ vertices. 
+In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ \cite{abbe2015community}.
 
-We define the indicator function $I(x, y)$ as:
-\begin{equation}
-I(x, y) = \begin{cases}
- k-1 & x = y \\
- -1 & x \neq y
-\end{cases}
-\end{equation}
-% A general Ising model without external fields is a probability distribution on the configurations $\{\pm 1\}^n$ such that
-% $$
-% P(\sigma)=\frac{1}{Z}
-% \exp(\sum_{i\neq j} J_{ij} \sigma_i \sigma_j) 
-% \quad\quad
-% \text{for every~}
-% \sigma=(\sigma_1,\dots,\sigma_n) \in \{\pm 1\}^n ,
-% $$
-% where $Z=\sum_{\sigma \in \{\pm 1\}^n} \exp(\sum_{i\neq j} J_{ij} \sigma_i \sigma_j)$ is the normalizing constant.
-% We incorporate the graphical structure of $G$ into the Ising model by setting $J_{ij}=\beta$ for all  $\{i,j\}\in E(G)$ and $J_{ij}=-\alpha\log(n)/n$ for all $\{i,j\}\notin E(G)$, where $\alpha,\beta>0$ are positive constants. 
-% This is summarized in the following definition.
+Given a labeling $X$ of $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G$, Ising model defines a probability distribution on all possible labels of these $n$ vertices. 
 
- 
  \begin{definition}[Ising model]
 Define an Ising model on a graph $G=([n],E(G))$ with parameters $\alpha,\beta>0$ as the probability distribution on the configurations $\sigma\in W^n$ such that\footnote{When there is only one sample, we usually denote it as $\bar{\sigma}$. When there are $m$ (independent) samples, we usually denote them as $\sigma^{(1)},\dots,\sigma^{(m)}$.}
 \begin{equation} \label{eq:isingma}
 P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
-\exp\Big(\beta\sum_{\{i,j\}\in E(G)} I(\bar{\sigma}_i ,\bar{\sigma}_j)
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j)\Big) ,
+\exp\Big(\beta\sum_{\{i,j\}\in E(G)} \delta_{\bar{\sigma}_i \bar{\sigma}_j}
+-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \delta_{\bar{\sigma}_i \bar{\sigma}_j} \Big),
 \end{equation}
 where the subscript in $P_{\sigma|G}$ indicates that the distribution depends on $G$, and 
 \begin{equation}  \label{eq:zg}
-Z_G(\alpha,\beta)=\sum_{\bar{\sigma} \in W^n} \exp\Big(\beta\sum_{\{i,j\}\in E(G)}I(\bar{\sigma}_i, \bar{\sigma}_j)
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} I(\bar{\sigma}_i, \bar{\sigma}_j) \Big) 
+Z_G(\alpha,\beta)=\sum_{\bar{\sigma} \in W^n} \exp\Big(\beta\sum_{\{i,j\}\in E(G)}\delta_{\bar{\sigma}_i \bar{\sigma}_j} 
+-\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \delta_{\bar{\sigma}_i \bar{\sigma}_j}  \Big) 
 \end{equation}
 is the normalizing constant.
 \end{definition}
@@ -80,17 +94,16 @@ Let $n$ and $m$ be positive integers such that $n$ is even. Let $p,q\in[0,1]$ be
 Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently from the Ising model on the {\em same} graph $G$.
 Our objective is to recover the underlying partition (or the ground truth) $X$ from the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$, and we would like to use the smallest possible number of samples to guarantee the exact recovery of $X$ up to a global permutation.
 Below we use the notation $P_{\SIBM}(A):=E_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $E_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the joint distribution of both $\sigma$ and $G$.
-By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f$ is induced from $S_k$. We use the set $\Gamma = \{f_{\gamma}(X) | \gamma \in S_k\}$ to
-represent all vectors with permutations on $X$.
+By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f \in S_k$.
 
 \begin{definition}[Exact recovery in SIBM]
 Let $(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k, p,q,\alpha,\beta,m)$.
 We say that exact recovery is solvable for $\SIBM(n,k,p,q,\alpha,\beta,m)$ if there is an algorithm that takes $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ as inputs and outputs $\hat{X}=\hat{X}(\{\sigma^{(1)},\dots,\sigma^{(m)}\})$ such that
 $$
-P_{\SIBM}(\hat{X} \in \Gamma) \to 1
+P_{\SIBM}(\hat{X} \in S_k(X)) \to 1
 \text{~~~as~} n\to\infty ,
 $$
-and we call $P_{\SIBM}(\hat{X} \in \Gamma)$ the success probability of the recovery/decoding algorithm.
+and we call $P_{\SIBM}(\hat{X} \in S_k(X))$ the success probability of the recovery/decoding algorithm.
 \end{definition}
 
 
@@ -105,16 +118,16 @@ Our main results read as follows.
 \begin{theorem} \label{thm:wt1}
 For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, let
 \begin{equation} \label{eq:defstar}
-\beta^\ast := \frac{1}{k}
+\beta^\ast := 
 \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b} \text{~~and~~}
 m^\ast := k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1  .
 \end{equation}
 {\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
 If $\beta^\ast/\beta$ is not an integer and $m < m^*$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m < m^* - k$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $~\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{1/4}(n))$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
+{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $~\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{\delta}(n))$ for given $\delta \in (0, 1)$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
 \end{theorem}
 Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a  real number.
-When $k=2, \alpha>b\beta$ and $\beta^\ast/\beta$ is not an integer,
+When $\alpha>b\beta$ and $\beta^\ast/\beta$ is not an integer,
 the above theorem establishes a sharp recovery threshold $m^\ast$ on the number of samples. It is worth mentioning that the threshold $m^\ast$ do {\em not} depend on the value of the parameter $\alpha$, as long as $\alpha$ satisfies $\alpha>b\beta$.
 Below we present an equivalent characterization of the recovery threshold in terms of $\beta$.
 \begin{theorem} \label{thm:wt2}
@@ -127,35 +140,24 @@ Below we present an equivalent characterization of the recovery threshold in ter
 \end{theorem}
 From Lemma \ref{lem:thm23eq} in the Appendix, Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold.
 
-Notation convention:
-For $\cI \subseteq [n]$, we denote the event $\sigma = X^{(\sim \cI)}$ as $\sigma_i \neq X_i$ for all $i \in \cI$ and $\sigma_i = X_i$ for all $i \not\in \cI$.
-When $\cI$ only contains one element, e.g., $\cI=\{i\}$, we write the event $\sigma = X^{(\sim i)}$ instead of $\sigma = X^{(\sim\{i\})}$.
 
-For $\sigma,X\in W^n$, we define
-$$
-\dist(\sigma, X)
-:=|\{i\in[n]:\sigma_i\neq X_i\}| 
-\quad \text{and} \quad
-\dist(\sigma,\Gamma)
-:=\min\{\dist(\sigma, f(X)) | f(X) \in \Gamma\} .
-$$
 \begin{theorem}  \label{thm:wt3}
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. Let $m$ be a constant integer that does not grow with $n$.
 Let 
 $$
 (X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
 $$
-Define $g(\beta)  := \frac{b e^{k\beta}+a e^{-k\beta}}{k}-\frac{a+b}{k}+1$.
+Define $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$.
 If $\beta>\beta^\ast$, then
 $$
-P_{\SIBM}(\sigma^{(i)} \in \Gamma \text{~for all~} i\in[m]) = 1-o(1).
+P_{\SIBM}(\sigma^{(i)} \in S_k(X) \text{~for all~} i\in[m]) = 1-o(1).
 $$
 If $\beta\le \beta^\ast$, then
 $$
-P_{\SIBM}(\dist(\sigma^{(i)}, \Gamma)= \Theta(n^{g(\beta)}) \text{~for all~} i\in[m]) = 1-o(1) .
+P_{\SIBM}(\dist(\sigma^{(i)}, S_k(X))= \Theta(n^{g(\beta)}) \text{~for all~} i\in[m]) = 1-o(1) .
 $$
 \end{theorem}
-One can show that (i) $g(\beta)$ is a strictly decreasing function in $[0,\beta^\ast]$, (ii) $g(0)=1$ and (iii) $g(\beta^\ast)=0$. Therefore, $0<g(\beta)<1$ when $0<\beta<\beta^\ast$. Thus Theorem~\ref{thm:wt3} implies that for all $\beta\le \beta^\ast$, $\dist(\sigma^{(i)},\Gamma)=o(n)$ for all $i\in[m]$. In particular, for $\beta = \beta^\ast$, $\dist(\sigma^{(i)},\Gamma)=\Theta(1)$ for all $i\in[m]$.
+One can show that (i) $g(\beta)$ is a strictly decreasing function in $[0,\beta^\ast]$, (ii) $g(0)=1$ and (iii) $g(\beta^\ast)=0$. Therefore, $0<g(\beta)<1$ when $0<\beta<\beta^\ast$. Thus Theorem~\ref{thm:wt3} implies that for all $\beta\le \beta^\ast$, $\dist(\sigma^{(i)},S_k(X))=o(n)$ for all $i\in[m]$. In particular, for $\beta = \beta^\ast$, $\dist(\sigma^{(i)},S_k(X))=\Theta(1)$ for all $i\in[m]$.
 \section{Sketch of the proof}
 \label{sect:sketch}
 
@@ -230,6 +232,10 @@ Given the ground truth $X$, a graph $G$ and a vertex $i\in[n]$, define
 \begin{equation*}
 A^r_i=A^r_i(G):=|\{j\in[n]\setminus\{i\}:\{i,j\}\in E(G), X_j=\omega^r \cdot X_i\} |, r=0, \dots, k-1
 \end{equation*}
+Notation convention:
+For $\cI \subseteq [n]$, we denote the event $\sigma = X^{(\sim \cI)}$ as $\sigma_i \neq X_i$ for all $i \in \cI$ and $\sigma_i = X_i$ for all $i \not\in \cI$.
+When $\cI$ only contains one element, e.g., $\cI=\{i\}$, we write the event $\sigma = X^{(\sim i)}$ instead of $\sigma = X^{(\sim\{i\})}$.
+
 Then by \eqref{eq:isingma}, we have
 \begin{align*}
 \frac{P_{\sigma|G}(\sigma=X^{(\sim i)} )}
