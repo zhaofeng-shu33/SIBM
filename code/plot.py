@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 def plot_alg_fix_b(alg_list, date):
     for alg in alg_list:
         file_name = alg + '-transition-' + date + '.pickle'
-        with open(os.path.join('build', file_name), 'rb') as f:
-            data = pickle.load(f)
-            plt.plot(data['a'], data['acc_list'], label=alg, linewidth=4)
+        f = open(os.path.join('build', file_name), 'rb')
+        data = pickle.load(f)
+        plt.plot(data['a'], data['acc_list'], label=alg, linewidth=4)
     plt.legend()
     plt.xlabel('a', size='large')
     plt.ylabel('score', size='large')
@@ -49,8 +49,8 @@ if __name__ == '__main__':
         'compare'], default='phase_transition')
     args = parser.parse_args()
     if args.action == 'phase_transition':
-        file_name = 'transition-2020-09-14.pickle'
+        file_name = 'transition-2020-09-17.pickle'
         draw_phase_transation(file_name)
     else:
         plot_alg_fix_b(['sdp', 'metropolis', 'asyn_fluid'],
-            '2020-09-16')
+            '2020-09-17')
