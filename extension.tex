@@ -556,15 +556,15 @@ P_{\SIBM} \Big(\dist(\sigma^{(i)}, \Lambda)< n/\log^{\delta}(n)
 $$
 \end{proposition}
 \begin{proof}
-We only need to show $P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
+We only need to show $P_{\sigma | G} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n
  \Big) \leq n^{-r}$.
- Let the event $M_1:= P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$.
- Then we have $P(M_1) \leq \exp(-\tau(\alpha, \beta )n \log^{1-\delta} n )$ from Lemma \ref{lem:small}.
+ Let the event $M_1:= \exists \bar{\sigma}, s.t. P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$.
+ Then by union bound, we have $P_{\SIBM}(M_1) \leq k^n\exp(-\tau(\alpha, \beta )n \log^{1-\delta} n )$ from Lemma \ref{lem:small}.
 \begin{align*}
 &P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n \Big) \\
-&\leq 
+&\leq
 P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma')= \mathbf{1}_n, M_1^c\Big) + P(M_1)
 \end{align*}
@@ -592,7 +592,7 @@ P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 	\end{equation}
 	
 	Firstly we estimate the order of $N_w$, obviously $N_w \leq \frac{1}{2} n^2$.
-	Using the conclusion in Appendix A of \cite{yixin} we have
+	Using the conclusion in Appendix A of \cite{chen2016information} we have
 	\begin{equation}
 	\sum_{r=0}^{k-1} n_r^2 \leq
 	\begin{cases}
