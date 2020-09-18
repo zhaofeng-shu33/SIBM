@@ -459,89 +459,8 @@ which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{
 The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+k-1}{k} \rfloor \beta < \beta^\ast$, also relies on the structural result and it is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case. We refer the readers to Section~\ref{sect:converse} for details.
 
 \section{Samples are concentrated around $\Gamma$ or $\Theta$} \label{sect:aln}
-In this section, we show that for $a>b$, if $\alpha>b\beta$, then all the samples produced by $\SIBM(n, k,\linebreak[4]
-a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ are very close to one element from $\Gamma$. More precisely, they differ from the ground truth $\Theta$ in at most $kn/\log^{1/3}(n)$ coordinates.
-On the other hand, if $\alpha<b\beta$, then the samples differ from  $\pm \Theta$ in at most $kn/\log^{1/3}(n)$ coordinates.
-For the latter case, we prove that the number of samples needed for exact recovery of $X$ is at least $\Omega(\log^{1/4}(n))$.
-
-Let $A=A(G)$ be the adjacency matrix of $G$. Then \eqref{eq:isingma} can be written as
-\begin{align*}
-& P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
-\exp\Big(\frac{\beta}{2} \sum_{i,j} A_{ij} I(\bar{\sigma}_i,\bar{\sigma}_j)
--\frac{\alpha\log(n)}{2n} \sum_{i,j} (J_n-I_n-A)_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j)
-\Big)  \\
-= & \frac{1}{Z_G(\alpha,\beta)}
-\exp\Big( \frac{1}{2} \sum_{i,j} \Big( \big(\beta+\frac{\alpha\log(n)}{n} \big) A
--\frac{\alpha\log(n)}{n} (J_n-I_n) \Big)_{ij} I(\bar{\sigma}_i,\bar{\sigma}_j)
-\Big),
-\end{align*}
-where $J_n$ is the all one matrix and $I_n$ is the identity matrix, both of size $n\times n$.
-Conditioned on the ground truth $X$,
-$A-E[A|X]$ is a symmetric matrix whose upper triangular part consists of independent entries. According to Theorem~5 in \cite{Hajek16}, the spectral norm of $A-E[A|X]$ is upper bounded by $O(\sqrt{\log(n)})$.
-\begin{theorem}[Theorem~5 in \cite{Hajek16}] \label{thm:a2}
-For any $r>0$, there exists $c>0$ such that the spectral norm of $A-E[A|X]$ satisfies
-$$
-P\big(\|A-E[A|X]\| \le c\sqrt{\log(n)} \big)\ge 1-n^{-r} .
-$$
-\end{theorem}
-Define a matrix
-$$
-M:= \big(\beta+\frac{\alpha\log(n)}{n} \big) E[A|X]
--\frac{\alpha\log(n)}{n} (J_n-I_n).
-$$
-Then we can further write \eqref{eq:isingma}
-as
-\begin{equation} \label{eq:M}
-P_{\sigma|G}(\sigma=\bar{\sigma})
-= \frac{1}{Z_G(\alpha,\beta)}
-\exp\Big( \frac{1}{2} \sum_{i,j}M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j) + \frac{1}{2}\big(\beta+\frac{\alpha\log(n)}{n} \big)  \sum_{i,j}  (A-E[A|X])_{ij}
- I(\bar{\sigma}_i, \bar{\sigma}_j)  
-\Big)  .
-\end{equation}
-
-
-By definition, all the diagonal entries of $M$ are $0$.
-For $i\neq j$, 
-$$
-M_{ij}=\left\{ 
-\begin{array}{cc}
- \big(a\beta-\alpha+\frac{a\alpha\log(n)}{n} \big) \frac{\log(n)}{n} = a' + O(\frac{\log^2 n}{n^2})
-   & \text{~if~} X_i=X_j \\
-  \big(b\beta-\alpha+\frac{b\alpha\log(n)}{n} \big) \frac{\log(n)}{n} = b' + O(\frac{\log^2 n}{n^2})
-   & \text{~if~} X_i\neq X_j
-\end{array}
-\right. .
-$$
-where $a' =(a\beta - \alpha) \frac{\log n }{n}, b'=(b\beta - \alpha) \frac{\log n}{n}$.
-Given $\bar{\sigma}\in\{1, \omega, \dots, \omega^{k-1}\}^n$, define a $k\times k$ matrix $\Xi$ with 
-$\Xi_{ij} = |\{k \in [n]: X_k = \omega^{i-1}, \sigma_k = \omega^{j-1}\}|$. It can be seen that each row of $\Xi$ sums to $\frac{n}{k}$. Define $Q_{ij} = \sum_{r,s=1, r<s}^k (\Xi_{ir} - \Xi_{is})(\Xi_{jr} - \Xi_{js})$
-Therefore,
-\begin{equation} \label{eq:sMs}
-\begin{aligned}
- \sum_{i,j}M_{ij}I(\bar{\sigma}_i, \bar{\sigma}_j)
-= & a'\sum_{i=1}^k \big( (k-1)(\sum_{r=1}^k \Xi_{ir}^2) - \sum_{r,s=1,r \neq s}^k \Xi_{ir}\Xi_{is} \big) \\
-+ & b'\sum_{i,j=1, i\neq j}^k  \big( (k-1)  (\Xi_{ir} \Xi_{jr}) - \sum_{r,s=1,r \neq s}^k \Xi_{ir}\Xi_{js}  \big) + O(\log^2 n)\\
-= & a' \sum_{i=1}^k Q_{ii} + b' \sum_{i,j=1,i\neq j}^k Q_{ij} + O(\log^2 n ) \\
- = & ( a' - b') \sum_{i=1}^k Q_{ii} + b' \sum_{i,j=1}^k Q_{ij} + O(\log^2 n ) 
-\end{aligned}
-\end{equation}
-Further we have:
-$$
-\sum_{i,j=1}^k Q_{ij} = \sum_{r,s=1, r<s}^k (\sum_{i=1}^k \Xi_{ir} - \sum_{i=1}^k \Xi_{is})^2
-$$
-Therefore, both the coefficients of $(a'-b')$ and $b'$ are non-negative.
-According to \eqref{eq:M}, the configuration $\bar{\sigma}$ that maximizes $\sum_{i,j} M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j)$ is (roughly) the most likely output of the Ising model.
-Since we assume $a>b$, $a'-b' = (a-b) \beta > 0$ and its coefficient term $\sum_{i=1}^k Q_{ii}$ takes maximum when there is only one non-zero term $\frac{n}{k}$ on each row of the matrix $\Xi$. Below we discuss the sign of $b'$.
-
-If $b\beta<\alpha$, then $b' < 0$ and we should let $\sum_{i,j=1}^k Q_{ij} = 0$ to make the whole expression larger. This is equivalent to say the summation of each column of the matrix $\Xi$ are all the same. Combining the two conditions together we can see the maximum value is
-the representation of $S_k$ in $k\times k$ matrix form multiplied by a coefficient $\frac{n}{k}$. And it is further equivalent to the statement $\sigma \in \Gamma$.
-
-If $b\beta>\alpha$, then $b' > 0$ and we should take the maximum value of $\sum_{i,j=1}^k Q_{ij}$ to make the whole expression larger. We can show that in this case, the maximizer is taken when one column of $\Xi$ is $\frac{n}{k}  \mathbf{1}_k$ and other columns are all zero. And it is further equivalent to the statement $\sigma \in \Theta$.
-
-To summarize, if $b\beta<\alpha$, then $\sum_{i,j} M_{ij} I(\bar{\sigma}_i, \bar{\sigma}_j)$ takes maximum at $\sigma \in \Gamma$.
-If $b\beta>\alpha$, then the maximum is at$\sigma \in \Theta$.
-Taking into account the effect of the error term $ \sum_{i,j}  (A-E[A|X])_{ij}
- I(\bar{\sigma}_i, \bar{\sigma}_j)  $ in \eqref{eq:M}, we have the following proposition:
+In this section, we show that for $a>b$, if $\alpha<b\beta$, then the samples differ from  $\Lambda$ in at most $n/\log^{\delta}(n)$ coordinates.
+We prove that the number of samples needed for exact recovery of $X$ is at least $\Omega(\log^{\delta}(n))$.
 
 \begin{proposition} \label{prop:1}
 Let $a>b>0$ and $\alpha,\beta>0$ be constants. Let $m$ be a positive integer that is upper bounded by some polynomial of $n$.
@@ -556,25 +475,23 @@ P_{\SIBM} \Big(\dist(\sigma^{(i)}, \Lambda)< n/\log^{\delta}(n)
 $$
 \end{proposition}
 \begin{proof}
-We only need to show $P_{\sigma | G} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
+We only need to show $P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n
  \Big) \leq n^{-r}$.
- Let the event $M_1:= \exists \bar{\sigma}, s.t. P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$.
- Then by union bound, we have $P_{\SIBM}(M_1) \leq k^n\exp(-\tau(\alpha, \beta )n \log^{1-\delta} n )$ from Lemma \ref{lem:small}.
+ Let the event $M_1:= \exists \bar{\sigma}$ satisfying the condition of Lemma \ref{lem:small}
+  $s.t. P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$.
+ Then by union bound, we have $P_{G}(M_1) \leq k^n\exp(-\tau(\alpha, \beta )n \log^{1-\delta} n )$ from Lemma \ref{lem:small}.
+ 
 \begin{align*}
 &P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n \Big) \\
 &\leq
 P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
-| \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma')= \mathbf{1}_n, M_1^c\Big) + P(M_1)
+| \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma')= \mathbf{1}_n, G \not\in M_1^c\Big) + P_G(M_1) \\
+&\leq \sum_{G \in M_1^c} P(G) k^n \exp(-Cn)P_{\sigma|G}(\sigma=\mathbf{1}_n) + P_G(M_1) \\
+& \leq k^n \exp(-Cn) (1 + o(1)) \leq n^{-r} \textrm{ for } C> \log k
 \end{align*}
 
- Using union bound we have
- $P_{\sigma | G}(\sigma = \bar{\sigma} ) \leq \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
- happens in probability $1-o(1)$ for all such $\bar{\sigma}$.
- Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{\delta} n}) \leq
- (k-1)\sum_{\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}}\exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)
- \leq (k-1)k^n \exp(-Cn) = o(1)$ for $C> \log k$
 \end{proof}
 \begin{lemma}\label{lem:small}
 	When $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Show that
