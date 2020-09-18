@@ -549,148 +549,90 @@ Let
 $$
 (X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n, \alpha,\beta, m) .
 $$
-If $b\beta <\alpha$, then for any (arbitrarily large) $r>0$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
+If $b\beta > \alpha$, then for any (arbitrarily large) $r>0$ and $0<\delta<1$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
 $$
-P_{\SIBM} \Big(\dist(\sigma^{(i)}, \Gamma)< kn/\log^{1/3}(n)
-\text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
-$$
-If $b\beta >\alpha$, then for any (arbitrarily large) $r>0$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
-$$
-P_{\SIBM} \Big(\dist(\sigma^{(i)}, \Theta)< kn/\log^{1/3}(n)
+P_{\SIBM} \Big(\dist(\sigma^{(i)}, \Lambda)< n/\log^{\delta}(n)
 \text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
 $$
 \end{proposition}
 \begin{proof}
-We only prove the case of $b\beta <\alpha$ as the proof of the other case is virtually identical.
-Define
-$$
-\gamma^{r,s}_i = \begin{cases}
-1 & \sigma_i = \omega^r \\
--1 & \sigma_i = \omega^s \\
-0 & \textrm{ otherwise}
-\end{cases}
-$$
-Then we can show that
-$$
-\sum_{i,j} I(\sigma_i, \sigma_j) (A-\mathbb{E}[A|X]) = \sum_{r,s} (\gamma^{r,s})^T (A-\mathbb{E}[A|X])\gamma^{r,s}
-$$
-Since $A-E[A|X]$ is a symmetric matrix,
-$$
-|\bar{\gamma}  (A-E[A|X]) \bar{\gamma}^T|\le
-\|A-E[A|X]\| \bar{\gamma} \bar{\gamma}^T=n \|A-E[A|X]\|
-$$
-for every $\bar{\gamma}\in\{\pm 1\}^n$.
-Therefore, by Theorem~\ref{thm:a2}, for any $r>0$, there is $c>0$ such that
-\begin{equation} \label{eq:cnA}
-\left|\frac{1}{2} \big(\beta+\frac{\alpha\log(n)}{n} \big)\sum_{i,j} I(\sigma_i, \sigma_j) (A-\mathbb{E}[A|X]) 
-\right| \le c\binom{k}{2} n \sqrt{\log(n)}
-  \text{~~for all~} \bar{\sigma}\in W^n
-\end{equation}
-with probability at least $1-n^{-2r}$.
-
-Define a small neighborhood of $\Xi^*$ as
-$$
-N(\Xi^*) := \{\Xi |\, |\Xi_{i,j} - \Xi^*_{i,j}| \leq \frac{n}{\log^{1/3} n}, 1\leq i,j\leq k\}
-$$
-We use the $L_{\infty}$ norm for the matrix.
- When there is only one non-zero term $\frac{n}{k}$ on each row of the matrix $\Xi$, we call this matrix a ''Corner Matrix''.
- We use $\Gamma'$ to denote all corner matrices, then $|\Gamma'|=k^k$ and $\Gamma \subset \Gamma' (|\Gamma| = k!)$. The neighborhood of all corner matrice is denoted by $N(\Gamma')$. Similary we can define $N(\Gamma)$. 
-
-$N(\Gamma)$ consists of $\bar{\sigma}$'s that differ from $\Gamma$ in at most $kn/\log^{1/3}(n)$ coordinates.
-Given a graph $G$ whose adjacency matrix satisfies \eqref{eq:cnA}, we will show that $P_{\sigma|G}(\sigma\notin N(\Gamma))< e^{-n}$. Since $P_{\sigma|G}(\sigma=X)<1$, it suffices to prove that
-$\frac{P_{\sigma|G}(\sigma\notin N(\Gamma))}{P_{\sigma|G}(\sigma=X)}<e^{-n}$. 
-
-Since  $N(\Gamma)^c=N(\Gamma')^c\cup N(\Gamma' \backslash \Gamma)$.
-Next we prove that for every $G$ satisfying \eqref{eq:cnA} and every
-$\bar{\sigma}\in N(\Gamma')^c\cup N(\Gamma' \backslash \Gamma)$, 
-\begin{equation} \label{eq:xmb}
-\frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)}<k^{-n}e^{-n} .
-\end{equation}
-Together with the trivial upper bound $|N(\Gamma')^c\cup N(\Gamma' \backslash \Gamma)|<k^n$, this implies that $\frac{P_{\sigma|G}(\sigma\notin N(\Gamma))}{P_{\sigma|G}(\sigma=X)}<e^{-n}$.
-
-We first prove \eqref{eq:xmb} for $\bar{\sigma}\in N(\Gamma')^c$.
-Observe that $\sigma=X$ corresponds to $\Xi=\frac{n}{k} I_k$. By \eqref{eq:sMs}, we have
-\begin{equation} \label{eq:X}
-\begin{aligned}
-P_{\sigma|G}(\sigma=X) & =\frac{1}{Z_G(\alpha,\beta)}
-\exp\Big(\frac{1}{2} X M X^T + O(n\sqrt{\log(n)}) \Big)  \\
-& =\frac{1}{Z_G(\alpha,\beta)}
-\exp\Big(\frac{(a-b)\beta(k-1)}{2k}n\log(n) + O(n\sqrt{\log(n)}) \Big) .
-\end{aligned}
-\end{equation}
-On the other hand, if $\bar{\sigma}\in N(\Gamma')^c$, using the definition of $\Xi$ we can find an 1-1 correspondence
-between $\bar{\sigma}$ and $\bar{\Xi}$. For $\bar{\Xi}$ we can find one place where 
-$\frac{n}{\log^{1/3} n} < |\bar{\Xi}_{ij}| < \frac{n}{k}- \frac{n}{\log^{1/3} n}$. Then ($Q_{ii}$ is maximized
-when $\bar{\Xi}_{i\cdot} = (\frac{n}{k} - \frac{n}{\log^{1/3} n},\frac{n}{\log^{1/3} n}, 0, \dots, 0)$
-)
-$$
-Q_{ii} < (\frac{n}{k}-\frac{2n}{\log^{1/3} n})^2 + (k-2)\Big( (\frac{n}{k} - \frac{n}{\log^{1/3} n})^2 + (\frac{n}{\log^{1/3} n})^2 \Big)
-$$
-
-$$
-\sum_{r=1}^k Q_{rr} < \frac{k-1}{k}n^2 - \frac{2kn^2}{\log^{1/3} n}
-+O(n^2/\log^{2/3}(n)).
-$$
-Since $b' = b\beta-\alpha<0$ and $\sum_{i,j=1}^k Q_{ij} \geq 0$, by \eqref{eq:sMs} we have
-$$
-\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T  
-\le \frac{(k-1)(a\beta-b\beta)}{2k}n\log(n)
--(a\beta-b\beta)kn\log^{2/3}(n)
-+O(n\log^{1/3}(n)) ,
-$$
-and so
+We only need to show $P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
+| \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n
+ \Big) \leq n^{-r}$.
+ Let the event $M_1:= P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$.
+ Then we have $P(M_1) \leq \exp(-\tau(\alpha, \beta )n \log^{1-\delta} n )$ from Lemma \ref{lem:small}.
 \begin{align*}
-P_{\sigma|G}(\sigma=\bar{\sigma}) \le \frac{1}{Z_G(\alpha,\beta)}
-\exp\Big(\frac{(k-1)(a\beta-b\beta)}{2k}n\log(n) 
--(a\beta-b\beta)kn\log^{2/3}(n)
-+ O(n\sqrt{\log(n)}) \Big) .
+&P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
+| \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n \Big) \\
+&\leq 
+P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
+| \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma')= \mathbf{1}_n, M_1^c\Big) + P(M_1)
 \end{align*}
-Combining this with \eqref{eq:X}, we have
-$$
-\frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)}
-\le \exp\Big(-(a\beta-b\beta)kn\log^{2/3}(n)
-+ O(n\sqrt{\log(n)}) \Big)
-<k^{-n} e^{-n}
-$$
-for all $\bar{\sigma}\in N(\Gamma')^c$ and all $G$ satisfying \eqref{eq:cnA}. 
 
-For $\bar{\sigma}\in N(\Gamma' \backslash \Gamma)$, we can find $r,s$ such that
-$\sum_{i=1}^k \Xi_{ir} \geq \frac{2n}{k} - \frac{2n}{\log^{1/3} n }$ and 
-$\sum_{i=1}^k \Xi_{is} \leq \frac{2n}{\log^{1/3} n }$, Therefore
-$$
-\sum_{i,j=1}^k Q_{ij} \geq (\sum_{i=1}^k \Xi_{ir} - \sum_{i=1}^k \Xi_{is})^2 \geq \frac{n^2}{k^2}
-$$
-for large $n$. Since $b' = b\beta-\alpha<0$, this implies that
-$$
-\frac{1}{2}\sum_{i,j=1}^k Q_{ij}
-\frac{(b\beta-\alpha)\log(n)}{n}
-< - \frac{\alpha-b\beta}{2k^2} n\log(n) ,
-$$
-so
-$$
-\frac{1}{2}\bar{\sigma} M \bar{\sigma}^T  
-\le \frac{(a-b)\beta(k-1)}{2k}n\log(n)
-- \frac{\alpha-b\beta}{2k^2} n\log(n) .
-$$
-Therefore,
-\begin{align*}
-P_{\sigma|G}(\sigma=\bar{\sigma}) \le \frac{1}{Z_G(\alpha,\beta)}
-\exp\Big(\frac{(a-b)\beta(k-1)}{2k}n\log(n) 
--\frac{\alpha-b\beta}{2k^2} n\log(n)
-+ O(n\sqrt{\log(n)}) \Big) .
-\end{align*}
-Combining this with \eqref{eq:X}, we have
-$$
-\frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)}
-\le \exp\Big(-\frac{\alpha-b\beta}{2k^2} n\log(n)
-+ O(n\sqrt{\log(n)}) \Big)
-<k^{-n} e^{-n}
-$$
-for all $\bar{\sigma}\in N(\Gamma' \backslash \Gamma)$ and all $G$ satisfying \eqref{eq:cnA}.
-
-Now we have shown that for a single sample $\sigma$ produced by the SIBM, $P_{\sigma|G}(\sigma\in\Gamma)\ge 1- e^{-n}$ provided that $G$ satisfies \eqref{eq:cnA}. By the union bound, for $m$ independent samples $\sigma^{(1)},\dots,\sigma^{(m)}$ produced by the SIBM, $P_{\sigma|G}(\sigma^{(1)},\dots,\sigma^{(m)}\in\Gamma)\ge 1- m e^{-n}$ provided that $G$ satisfies \eqref{eq:cnA}.
-We also know that $G$ satisfies \eqref{eq:cnA} with probability at least $1-n^{-2r}$, and by assumption $m$ is upper bounded by some polynomial of $n$. Therefore, the overall probability of $\sigma^{(1)},\dots,\sigma^{(m)}\in\Gamma$ is at least $1-n^{-r}$ when $n$ is large enough. This completes the proof of the proposition.
+ Using union bound we have
+ $P_{\sigma | G}(\sigma = \bar{\sigma} ) \leq \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
+ happens in probability $1-o(1)$ for all such $\bar{\sigma}$.
+ Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{\delta} n}) \leq
+ (k-1)\sum_{\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}}\exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)
+ \leq (k-1)k^n \exp(-Cn) = o(1)$ for $C> \log k$
 \end{proof}
+\begin{lemma}\label{lem:small}
+	When $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Show that
+	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
+	happens with probability less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
+\end{lemma}
+\begin{proof}
+	Let $n_r = |\{\bar{\sigma}_i = w^r | i\in [n] \}|$. Then $n_0 \geq n_r$ for $r=1, \dots, k-1$.
+	WLOG, suppose $n_0 \geq n_1 \dots \geq n_{k-1}$.
+	We are concerned with the number $N_w = \frac{1}{2}(n(n-1) - \sum_{r=0}^{k-1} n_r(n_r-1))
+	=\frac{1}{2}(n^2 - \sum_{r=0}^{k-1} n_r^2)$.
+	Taking the $\log$ on both sides of $P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$ we can get
+	\begin{equation}\label{eq:small}
+	(\beta + \frac{\alpha \log n}{n}) \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j} Z_{ij} \leq \frac{\alpha \log n}{n} N_w + C n
+	\end{equation}
+	
+	Firstly we estimate the order of $N_w$, obviously $N_w \leq \frac{1}{2} n^2$.
+	Using the conclusion in Appendix A of \cite{yixin} we have
+	\begin{equation}
+	\sum_{r=0}^{k-1} n_r^2 \leq
+	\begin{cases}
+	n n_0 & n_0 \leq \frac{n}{2} \\
+	n^2 - 2n_0(n-n_0) & n_0 > \frac{n}{2}
+	\end{cases}
+	\end{equation}
+	We have $n_0 \leq n - \frac{n}{\log^{\delta} n}$ and $n_0 \geq \frac{n}{k}$. When $n_0 > \frac{n}{2}$ we take $n_0 = n - \frac{n}{\log^{1/3} n}$
+	and we have $N_w \geq n_0 (n - n_0) = \frac{n^2}{\log^{\delta} n}(1+o(1))$. When $n_0 < \frac{n}{2}$ we take $n_0 = \frac{n}{2}$ such that
+	$N_w \geq \frac{n^2}{4}$. So generally we have $\frac{n^2}{\log^{\delta} n}(1+o(1)) \leq N_w \leq \frac{1}{2}n^2$.
+	The Bernoulli random variables are independent, taking either $Bern(\frac{a\log n}{n})$ or $Bern(\frac{b \log n}{n})$ depending on whether
+	$X_i$ equals to $X_j$.
+	Since $\frac{\log n}{n} N_w$ is dominated than $Cn$ we neglect inferior terms to rewrite \eqref{eq:small} as
+	\begin{equation}
+	\sum_{ \bar{\sigma}_i  \neq \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n}(1+o(1))
+	\end{equation}
+	Let $N_1$ be the number of random variables of $Z_{ij} \sim Bern(\frac{a\log n}{n})$.
+	and $N_2 = N_w - N_1$ is that of $Z_{ij} \sim Bern(\frac{b\log n}{n})$.
+	
+	Using Chernoff Inequality we have
+	\begin{align*}
+	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n})& \leq (E[\exp(-s Z_{ij})])^{N_1} (E[-exp(-s Z_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_w s}{n}(1+o(1))) \\
+	&= \exp( \frac{\log n}{n}(1+o(1))(\exp(-s)-1)(aN_1 + bN_2)+\frac{\alpha}{\beta} \frac{\log n N_w s}{n}(1+o(1)))
+	\end{align*}
+	Since $s > 0$, we further have
+	\begin{align*}
+	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n})
+	& \leq \exp( \frac{N_w\log n }{n}(b(\exp(-s)-1)+ \frac{\alpha}{\beta}s + o(1))) 
+	\end{align*}
+	Let $h_b(x) = x - b -x\log \frac{x}{b}$, which satisfies $h_b(x) < 0$ for $0<x<b$,
+	and take $s=-\log\frac{\alpha}{b\beta} > 0$, using 
+	$N_w \geq \frac{n^2}{\log^{1/3} n}$ we have
+	\begin{align*}
+	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n})&\leq \exp( N_w \frac{\log n}{n} h_b(\frac{\alpha}{\beta})(1+o(1))) \\
+	& \leq \exp (h_b(\frac{\alpha}{\beta}) n \log^{1-\delta} n (1+o(1)))
+	\end{align*}
+\end{proof}
+\begin{lemma}
+	For $SBM(2,n, \frac{a\log n}{n}, \frac{b \log n}{n})$, the exact recovery error rate $P(F)\asymp n^{2-(\sqrt{a} - \sqrt{b})^2}$ when we know that the ground truth community labels are balanced.If we allow unbalanced ground truth, possibly the rate is $ n^{1-(\sqrt{a} - \sqrt{b})^2/2} $.
+\end{lemma}
 \begin{proposition}  \label{prop:ab}
 Let $a>b>0$ and $\alpha,\beta>0$ be constants. Let $m$ be a positive integer that is upper bounded by some polynomial of $n$.
 Let 
