@@ -604,7 +604,7 @@ P_{\sigma|G}(\sigma=X) & =\frac{1}{Z_G(\alpha,\beta)}
 \end{aligned}
 \end{equation}
 On the other hand, if $\bar{\sigma}\in N(\Gamma')^c$, using the definition of $\Xi$ we can find an 1-1 correspondence
-between $\bar{\sigma}$ and $\bar{\Xi}$. For $\bar{\Xi}$ we can find one place where 
+between $\bar{\sigma}$ and $\bar{\Xi}$. For $\bar{\Xi}$ we can find one place (existance) where 
 $\frac{n}{\log^{1/3} n} < |\bar{\Xi}_{ij}| < \frac{n}{k}- \frac{n}{\log^{1/3} n}$. Then ($Q_{ii}$ is maximized
 when $\bar{\Xi}_{i\cdot} = (\frac{n}{k} - \frac{n}{\log^{1/3} n},\frac{n}{\log^{1/3} n}, 0, \dots, 0)$
 )
@@ -613,27 +613,27 @@ Q_{ii} < (\frac{n}{k}-\frac{2n}{\log^{1/3} n})^2 + (k-2)\Big( (\frac{n}{k} - \fr
 $$
 
 $$
-\sum_{r=1}^k Q_{rr} < \frac{k-1}{k}n^2 - \frac{2kn^2}{\log^{1/3} n}
+\sum_{r=1}^k Q_{rr} < Q_{ii} + \frac{n^2}{k^k} = \frac{k-1}{k}n^2 - \frac{2n^2}{\log^{1/3} n}
 +O(n^2/\log^{2/3}(n)).
 $$
 Since $b' = b\beta-\alpha<0$ and $\sum_{i,j=1}^k Q_{ij} \geq 0$, by \eqref{eq:sMs} we have
 $$
 \frac{1}{2}\bar{\sigma} M \bar{\sigma}^T  
 \le \frac{(k-1)(a\beta-b\beta)}{2k}n\log(n)
--(a\beta-b\beta)kn\log^{2/3}(n)
+-(a\beta-b\beta)n\log^{2/3}(n)
 +O(n\log^{1/3}(n)) ,
 $$
 and so
 \begin{align*}
 P_{\sigma|G}(\sigma=\bar{\sigma}) \le \frac{1}{Z_G(\alpha,\beta)}
 \exp\Big(\frac{(k-1)(a\beta-b\beta)}{2k}n\log(n) 
--(a\beta-b\beta)kn\log^{2/3}(n)
+-(a\beta-b\beta)n\log^{2/3}(n)
 + O(n\sqrt{\log(n)}) \Big) .
 \end{align*}
 Combining this with \eqref{eq:X}, we have
 $$
 \frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)}
-\le \exp\Big(-(a\beta-b\beta)kn\log^{2/3}(n)
+\le \exp\Big(-(a\beta-b\beta)n\log^{2/3}(n)
 + O(n\sqrt{\log(n)}) \Big)
 <k^{-n} e^{-n}
 $$
