@@ -404,7 +404,7 @@ The proof of the converse results, i.e., even ML algorithm cannot recover $X$ wi
 
 \section{Samples are concentrated around $S_k(X)$ or $\Lambda$} \label{sect:aln}
 In this section, we show that for $a>b$, if $\alpha<b\beta$, then the samples differ from  $\Lambda$ in at most $n/\log^{\delta}(n)$ coordinates.
-We prove that the number of samples needed for exact recovery of $X$ is at least $\Omega(\log^{\delta}(n))$.
+We prove that the number of samples needed for exact recovery of $X$ is at least $\Omega(\log^{\delta}(n))$. We also show that if $\alpha > b\beta$, then the samples differ from  $S_k(x)$ in at most $n/\log^{\delta}(n)$ coordinates.
 
 \begin{proposition} \label{prop:1}
 Let $a>b>0$ and $\alpha,\beta>0$ be constants. Let $m$ be a positive integer that is upper bounded by some polynomial of $n$.
@@ -412,14 +412,19 @@ Let
 $$
 (X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n, \alpha,\beta, m) .
 $$
-If $b\beta > \alpha$, then for any (arbitrarily large) $r>0$ and $0<\delta<1$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
+If $\alpha < b\beta$, then for any (arbitrarily large) $r>0$ and $0<\delta<1$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
 $$
 P_{\SIBM} \Big(\dist(\sigma^{(i)}, \Lambda)< n/\log^{\delta}(n)
 \text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
 $$
+If $\alpha > b\beta$, then for any (arbitrarily large) $r>0$ and $0<\delta<1$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
+$$
+P_{\SIBM} \Big(\dist(\sigma^{(i)}, S_k(X)) < n/\log^{\delta}(n)
+\text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
+$$
 \end{proposition}
 \begin{proof}
-We only need to show $P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
+For the case $\alpha < b \beta$, we only need to show $P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n
  \Big) \leq n^{-r}$.
  Let the event $M_1:= \exists \bar{\sigma}$ satisfying the condition of Lemma \ref{lem:small}
@@ -435,7 +440,7 @@ P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 &\leq \sum_{G \in M_1^c} P(G) k^n \exp(-Cn)P_{\sigma|G}(\sigma=\mathbf{1}_n) + P_G(M_1) \\
 & \leq k^n \exp(-Cn) (1 + o(1)) \leq n^{-r} \textrm{ for } C> \log k
 \end{align*}
-
+The case $\alpha > b \beta$ can be proved in the same way as above by applying Lemma \ref{lem:sigmaX}.
 \end{proof}
 \begin{lemma}\label{lem:small}
 	$\alpha< b \beta$. When $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Show that
@@ -527,7 +532,7 @@ P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 	for $Z_{ij}$ in the sum $\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim Bern(p)$ and
 	$\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i + \frac{1}{2} I^2_i ]$.
 \end{proof}
-\begin{lemma}
+\begin{lemma}\label{lem:sigmaX}
 		When $\dist(\bar{\sigma}, X) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in S_k(X)} \dist(\bar{\sigma}, \sigma') = X$. Show that
 	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = X)$
 	happens with probability less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
@@ -572,12 +577,14 @@ P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 	
 	Now we use Chernoff bound to process inequality \eqref{eq:BwA}, we can omit $\frac{\alpha \log n}{n}$ on the left hand since it is far smaller than $\beta$:
 	\begin{align*}
-	&\Pr([B_w - A_w] >  \frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n) \leq (E[exp(sZ_{ij})])^{|B_w|}(E[\exp(-sZ_{ij})])^{|A_w|} \exp(-s(\frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n)) \\
+	&\Pr([B_w - A_w] >  \frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n)
+	\leq (E[exp(sZ_{ij})])^{|B_w|}(E[\exp(-sZ_{ij})])^{|A_w|} \exp(-s(\frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n)) \\
 	& =\exp(|B_w|(\frac{b\log n}{n})(e^s -1)) \exp(|A_w|)[\frac{a\log n}{n}] (e^{-s} - 1))\exp(-s(\frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n)) \\
 	\end{align*}
 	Using $|B_w| = N_w + |A_w|$ we can further simplify the exponential term as
 	$$
-	\frac{\log n}{n} [|A_w|(b(e^s -1)+ a(e^{-s} - 1)) + N_w (b(e^s - 1)-s\frac{\alpha}{\beta})]  + s \frac{C}{\beta}n
+	\frac{\log n}{n} [|A_w|(b(e^s -1)+ a(e^{-s} - 1)) +
+	N_w (b(e^s - 1)-s\frac{\alpha}{\beta})]  + s \frac{C}{\beta}n
 	$$
 	Now we investigate the function $g_1(s) = b(e^s -1)+ a(e^{-s} - 1)$ and $g_2(s) = b(e^s - 1)-s\frac{\alpha}{\beta}$,
 	both takes zero values at $0$ and $g_1'(s) = (be^s - ae^{-s}), g_2'(s) = be^s -\frac{\alpha}{\beta}$.
@@ -585,9 +592,6 @@ P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 	To compensate the influence of the term $sCn/\beta$ we only need to make sure that the order of $\frac{\log n}{n} \min\{|A_w|, N_w\}$ is larger than $n$.
 	This corresponds to the two conditions we have used.
 \end{proof}
-\begin{lemma}
-	For $SBM(2,n, \frac{a\log n}{n}, \frac{b \log n}{n})$, the exact recovery error rate $P(F)\asymp n^{2-(\sqrt{a} - \sqrt{b})^2}$ when we know that the ground truth community labels are balanced.If we allow unbalanced ground truth, possibly the rate is $ n^{1-(\sqrt{a} - \sqrt{b})^2/2} $.
-\end{lemma}
 
 \begin{proposition}  \label{prop:ab}
 Let $a>b>0$ and $\alpha,\beta>0$ be constants. Let $m$ be a positive integer that is upper bounded by some polynomial of $n$.
