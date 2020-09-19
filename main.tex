@@ -326,7 +326,7 @@
 	\begin{align}
 	P_{\sigma | G}(\dist(\sigma, X) = 1) & > P_{\sigma | G}(\sigma = X)\label{eq:betastar}
 	\end{align}
-	We consider the $i$-th coordinate in which $\sigma_i \neq X_i$ and denote the event $T_{ir}=\{\sigma_i = \omega^r \cdot X_i, \sigma_j = X_j \forall j \neq i\}$.
+	We consider the $i$-th coordinate in which $\sigma_i \neq X_i$ and denote the event $T_{ir}=\{\sigma_i = \omega^r \cdot X_i, \sigma_j = X_j \,\forall j \neq i\}$.
 	Then $P_{\sigma | G}(\dist(\sigma, X) = 1) = \sum_{i=1}^n\sum_{r=1}^{k-1} P_{\sigma | G}(T_{ir})$.
 	We also define
 	\begin{equation*}
@@ -434,7 +434,7 @@
 	$$
 	P_{\sigma | G}(\dist(\sigma, X) = 1) > n^{\tilde{g}(\beta)/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_xx}
 	$$
-	decreases faster than $2n^{\tilde{g}(\beta)/4}$.
+	decreases faster than $2(k-1)n^{\tilde{g}(\beta)/4}$.
 	Similar techniques shows that $P_{\sigma | G}(\dist(\sigma, X) = m)> n^{m\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)$
 	decreases faster than $2(k-1)^m n^{m\tilde{g}(\beta)/4}$. Therefore, $P_{\sigma | G}(\dist(\sigma, X) > 1) < n^{\tilde{g}(\beta)/2} = o(1)$ by summing geometric series.
 	
