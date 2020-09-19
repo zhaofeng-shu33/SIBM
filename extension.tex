@@ -438,12 +438,12 @@ P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 
 \end{proof}
 \begin{lemma}\label{lem:small}
-	When $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Show that
+	$\alpha< b \beta$. When $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Show that
 	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
 	happens with probability less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
 \end{lemma}
 \begin{proof}
-	Let $n_r = |\{\bar{\sigma}_i = w^r | i\in [n] \}|$. Then $n_0 \geq n_r$ for $r=1, \dots, k-1$.
+	Let $n_r = |\{\bar{\sigma}_i = w^r | i\in [n] \}|$. Then $n_0 \geq n_r$ for $r=1, \dots, k-1$ since  $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$.
 	WLOG, suppose $n_0 \geq n_1 \dots \geq n_{k-1}$.
 	We are concerned with the number $N_w = \frac{1}{2}(n(n-1) - \sum_{r=0}^{k-1} n_r(n_r-1))
 	=\frac{1}{2}(n^2 - \sum_{r=0}^{k-1} n_r^2)$.
@@ -491,16 +491,16 @@ P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 	& \leq \exp (h_b(\frac{\alpha}{\beta}) n \log^{1-\delta} n (1+o(1)))
 	\end{align*}
 \end{proof}
-\begin{lemma}
+\begin{lemma}\label{lem:minus}
 	For SSBM$(n,k,p,q)$, suppose the ground truth label is $X$ while $\bar{\sigma}$ differs from $X$ in $I$ coordinate.
 	Let $I_{ij} = |\{r\in [n] | X_r = w^i, \sigma_r = w^j \}$ for $i\neq j$ and $I_{ii} = 0$.
 	Then
 	$$\frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)} = \exp((\beta + \frac{\alpha \log n}{n})[B_w - A_w] - \frac{\alpha \log n}{n} N_w)$$
 	where 
 	\begin{align}
-	N_w &= \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 \\
-	B_w & \sim Binom(\frac{n}{k}I + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i) , q)\\
-	A_w & \sim Binom(\frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  I^2_i, p)
+	N_w &= \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 \label{eq:N_w} \\
+	B_w & \sim Binom(\frac{n}{k}I + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
+	A_w & \sim Binom(\frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
 	\end{align}
 	We write the row sum $I_i = \sum_{j=0}^{k-1} I_{ij}$ and column sum $I'_i = \sum_{j=0}^{k-1} I_{ji}$.
 \end{lemma}
@@ -526,6 +526,64 @@ P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 	$\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i' + \frac{1}{2} I'^2_i ]$;
 	for $Z_{ij}$ in the sum $\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim Bern(p)$ and
 	$\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i + \frac{1}{2} I^2_i ]$.
+\end{proof}
+\begin{lemma}
+		When $\dist(\bar{\sigma}, X) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in S_k(X)} \dist(\bar{\sigma}, \sigma') = X$. Show that
+	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = X)$
+	happens with probability less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
+\end{lemma}
+\begin{proof}
+	Using Lemma \ref{lem:minus} we only need to consider the event:
+	\begin{equation}\label{eq:BwA}
+	(\beta + \frac{\alpha \log n}{n})[B_w - A_w] >  \frac{\alpha \log n}{n} N_w  - Cn
+	\end{equation}
+	We divide the cases for $\bar{\sigma}$ to two cases:
+	\begin{enumerate}
+		\item $\exists i\neq j$ s.t. $\frac{1}{k(k-1)}\frac{n}{\log^{\delta} n} \leq I_{ij} \leq \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$
+		\item $\exists i \neq j$ s.t. $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ and $I_{ji} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$
+	\end{enumerate}
+	If we have $\sigma = \bar{\sigma}$ which belongs to neither of the above two cases, then from condition 1 we have
+	$I_{ij} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ or $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
+	Since $\sum_{i,j} I_{ij} = I \geq \frac{n}{\log^{\delta} n}$ there should exist $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
+	Under such condition, if $I_{ji} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
+	Let $X'$ be the vector which exchanges value of $w^i$ with $w^j$ in $X$. We consider
+	\begin{align*}
+	\dist(\bar{\sigma}, X') - \dist(\bar{\sigma}, X) &= |\{ r \in [n]|X=w^i, \bar{\sigma}_r \neq w^j \}| + |\{ r \in [n]|X=w^j, \bar{\sigma}_r \neq w^i \}| \\
+	&-|\{ r \in [n]|X=w^i, \bar{\sigma}_r \neq w^i \}| - |\{ r \in [n]|X=w^j, \bar{\sigma}_r \neq w^j \}| \\
+	& = \frac{n}{k} - I_{ij} +  \frac{n}{k} - I_{ji} - I_i - I_j \\
+	& < \frac{2}{k(k-1)}\frac{n}{\log^{\delta} n} - I_i - I_j < 0
+	\end{align*}
+	which contracts with that $\bar{\sigma}$ is nearest to $X$.
+	Therefore, we should have $I_{ji} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
+	Now the $(i, j)$ pair satisfies condition 2, which contracts with $\bar{\sigma}$ belongs to neither of the two conditions.
+	
+	Under condition 1, we can get a lower bound on $|A_w|$ from \eqref{eq:A_w}. Let $I'_{ij} = I_{ij}$ for $i\neq j$ and
+	$I'_{ii} = \frac{n}{k} - I_i$. Then we can simply $|A_w|$ as:
+	\begin{align*}
+	A_w &= \frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}) \\
+	&= \frac{n^2}{2k} - \frac{1}{2} \sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij}
+	\end{align*}
+	We further have $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{n}{k} - I_{ij})^2 + I^2_{ij}$ where
+	$I_{ij}$ satisfies condition 1. Therefore $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2
+	+ (\frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{k} - \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
+	As a result, $A_w \geq \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
+	
+	Under condition 2, we can get a lower bound on $N_w$ from \eqref{eq:N_w}: $N_w \geq \frac{1}{2}(\frac{n}{k} - \frac{2}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{k^2}(1+o(1))$.
+	
+	Now we use Chernoff bound to process inequality \eqref{eq:BwA}, we can omit $\frac{\alpha \log n}{n}$ on the left hand since it is far smaller than $\beta$:
+	\begin{align*}
+	&\Pr([B_w - A_w] >  \frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n) \leq (E[exp(sZ_{ij})])^{|B_w|}(E[\exp(-sZ_{ij})])^{|A_w|} \exp(-s(\frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n)) \\
+	& =\exp(|B_w|(\frac{b\log n}{n})(e^s -1)) \exp(|A_w|)[\frac{a\log n}{n}] (e^{-s} - 1))\exp(-s(\frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n)) \\
+	\end{align*}
+	Using $|B_w| = N_w + |A_w|$ we can further simplify the exponential term as
+	$$
+	\frac{\log n}{n} [|A_w|(b(e^s -1)+ a(e^{-s} - 1)) + N_w (b(e^s - 1)-s\frac{\alpha}{\beta})]  + s \frac{C}{\beta}n
+	$$
+	Now we investigate the function $g_1(s) = b(e^s -1)+ a(e^{-s} - 1)$ and $g_2(s) = b(e^s - 1)-s\frac{\alpha}{\beta}$,
+	both takes zero values at $0$ and $g_1'(s) = (be^s - ae^{-s}), g_2'(s) = be^s -\frac{\alpha}{\beta}$.
+	Therefore $g_1'(0) = b-a<0, g_2'(0) = b - \frac{\alpha}{\beta} < 0$ and we can choose $0<s^*$ such that $g_1(s^*) < 0,g_2(s^*) < 0$.
+	To compensate the influence of the term $sCn/\beta$ we only need to make sure that the order of $\frac{\log n}{n} \min\{|A_w|, N_w\}$ is larger than $n$.
+	This corresponds to the two conditions we have used.
 \end{proof}
 \begin{lemma}
 	For $SBM(2,n, \frac{a\log n}{n}, \frac{b \log n}{n})$, the exact recovery error rate $P(F)\asymp n^{2-(\sqrt{a} - \sqrt{b})^2}$ when we know that the ground truth community labels are balanced.If we allow unbalanced ground truth, possibly the rate is $ n^{1-(\sqrt{a} - \sqrt{b})^2/2} $.
