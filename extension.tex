@@ -450,14 +450,14 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 \begin{proof}
 	Let $n_r = |\{\bar{\sigma}_i = w^r | i\in [n] \}|$. Then $n_0 \geq n_r$ for $r=1, \dots, k-1$ since  $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$.
 	WLOG, suppose $n_0 \geq n_1 \dots \geq n_{k-1}$.
-	We are concerned with the number $N_w = \frac{1}{2}(n(n-1) - \sum_{r=0}^{k-1} n_r(n_r-1))
+	We are concerned with the number $N_{\bar{\sigma}} = \frac{1}{2}(n(n-1) - \sum_{r=0}^{k-1} n_r(n_r-1))
 	=\frac{1}{2}(n^2 - \sum_{r=0}^{k-1} n_r^2)$.
 	Taking the $\log$ on both sides of $P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$ we can get
 	\begin{equation}\label{eq:small}
-	(\beta + \frac{\alpha \log n}{n}) \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j} Z_{ij} \leq \frac{\alpha \log n}{n} N_w + C n
+	(\beta + \frac{\alpha \log n}{n}) \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j} Z_{ij} \leq \frac{\alpha \log n}{n} N_{\bar{\sigma}} + C n
 	\end{equation}
 	
-	Firstly we estimate the order of $N_w$, obviously $N_w \leq \frac{1}{2} n^2$.
+	Firstly we estimate the order of $N_{\bar{\sigma}}$, obviously $N_{\bar{\sigma}} \leq \frac{1}{2} n^2$.
 	Using the conclusion in Appendix A of \cite{chen2016information} we have
 	\begin{equation}
 	\sum_{r=0}^{k-1} n_r^2 \leq
@@ -467,32 +467,32 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	\end{cases}
 	\end{equation}
 	We have $n_0 \leq n - \frac{n}{\log^{\delta} n}$ and $n_0 \geq \frac{n}{k}$. When $n_0 > \frac{n}{2}$ we take $n_0 = n - \frac{n}{\log^{1/3} n}$
-	and we have $N_w \geq n_0 (n - n_0) = \frac{n^2}{\log^{\delta} n}(1+o(1))$. When $n_0 < \frac{n}{2}$ we take $n_0 = \frac{n}{2}$ such that
-	$N_w \geq \frac{n^2}{4}$. So generally we have $\frac{n^2}{\log^{\delta} n}(1+o(1)) \leq N_w \leq \frac{1}{2}n^2$.
+	and we have $N_{\bar{\sigma}} \geq n_0 (n - n_0) = \frac{n^2}{\log^{\delta} n}(1+o(1))$. When $n_0 < \frac{n}{2}$ we take $n_0 = \frac{n}{2}$ such that
+	$N_{\bar{\sigma}} \geq \frac{n^2}{4}$. So generally we have $\frac{n^2}{\log^{\delta} n}(1+o(1)) \leq N_{\bar{\sigma}} \leq \frac{1}{2}n^2$.
 	The Bernoulli random variables are independent, taking either $Bern(\frac{a\log n}{n})$ or $Bern(\frac{b \log n}{n})$ depending on whether
 	$X_i$ equals to $X_j$.
-	Since $\frac{\log n}{n} N_w$ is dominated than $Cn$ we neglect inferior terms to rewrite \eqref{eq:small} as
+	Since $\frac{\log n}{n} N_{\bar{\sigma}}$ is dominated than $Cn$ we neglect inferior terms to rewrite \eqref{eq:small} as
 	\begin{equation}
-	\sum_{ \bar{\sigma}_i  \neq \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n}(1+o(1))
+	\sum_{ \bar{\sigma}_i  \neq \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n}(1+o(1))
 	\end{equation}
 	Let $N_1$ be the number of random variables of $Z_{ij} \sim Bern(\frac{a\log n}{n})$.
-	and $N_2 = N_w - N_1$ is that of $Z_{ij} \sim Bern(\frac{b\log n}{n})$.
+	and $N_2 = N_{\bar{\sigma}} - N_1$ is that of $Z_{ij} \sim Bern(\frac{b\log n}{n})$.
 	
 	Using Chernoff Inequality we have
 	\begin{align*}
-	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n})& \leq (E[\exp(-s Z_{ij})])^{N_1} (E[-exp(-s Z_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_w s}{n}(1+o(1))) \\
-	&= \exp( \frac{\log n}{n}(1+o(1))(\exp(-s)-1)(aN_1 + bN_2)+\frac{\alpha}{\beta} \frac{\log n N_w s}{n}(1+o(1)))
+	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})& \leq (E[\exp(-s Z_{ij})])^{N_1} (E[-exp(-s Z_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1))) \\
+	&= \exp( \frac{\log n}{n}(1+o(1))(\exp(-s)-1)(aN_1 + bN_2)+\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1)))
 	\end{align*}
 	Since $s > 0$, we further have
 	\begin{align*}
-	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n})
-	& \leq \exp( \frac{N_w\log n }{n}(b(\exp(-s)-1)+ \frac{\alpha}{\beta}s + o(1))) 
+	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})
+	& \leq \exp( \frac{N_{\bar{\sigma}}\log n }{n}(b(\exp(-s)-1)+ \frac{\alpha}{\beta}s + o(1))) 
 	\end{align*}
 	Let $h_b(x) = x - b -x\log \frac{x}{b}$, which satisfies $h_b(x) < 0$ for $0<x<b$,
 	and take $s=-\log\frac{\alpha}{b\beta} > 0$, using 
-	$N_w \geq \frac{n^2}{\log^{1/3} n}$ we have
+	$N_{\bar{\sigma}} \geq \frac{n^2}{\log^{1/3} n}$ we have
 	\begin{align*}
-	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_w}{n})&\leq \exp( N_w \frac{\log n}{n} h_b(\frac{\alpha}{\beta})(1+o(1))) \\
+	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})&\leq \exp( N_{\bar{\sigma}} \frac{\log n}{n} h_b(\frac{\alpha}{\beta})(1+o(1))) \\
 	& \leq \exp (h_b(\frac{\alpha}{\beta}) n \log^{1-\delta} n (1+o(1)))
 	\end{align*}
 \end{proof}
@@ -500,12 +500,14 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	For SSBM$(n,k,p,q)$, suppose the ground truth label is $X$ while $\bar{\sigma}$ differs from $X$ in $I$ coordinate.
 	Let $I_{ij} = |\{r\in [n] | X_r = w^i, \sigma_r = w^j \}$ for $i\neq j$ and $I_{ii} = 0$.
 	Then
-	$$\frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)} = \exp((\beta + \frac{\alpha \log n}{n})[B_w - A_w] - \frac{\alpha \log n}{n} N_w)$$
+	\begin{equation}\label{eq:general_expansion}
+\frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)} = \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] - \frac{\alpha \log n}{n} N_{\bar{\sigma}})
+\end{equation}
 	where 
 	\begin{align}
-	N_w &= \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 \label{eq:N_w} \\
-	B_w & \sim Binom(\frac{n}{k}I + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
-	A_w & \sim Binom(\frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
+	N_{\bar{\sigma}} &= \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 \label{eq:N_w} \\
+	B_{\bar{\sigma}} & \sim Binom(\frac{n}{k}I + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
+	A_{\bar{\sigma}} & \sim Binom(\frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
 	\end{align}
 	We write the row sum $I_i = \sum_{j=0}^{k-1} I_{ij}$ and column sum $I'_i = \sum_{j=0}^{k-1} I_{ji}$.
 \end{lemma}
@@ -526,7 +528,7 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	\sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1 &= \frac{1}{2} \sum_{i=0}^{k-1} (\frac{n}{k} - I_i + I_i') ( \frac{n}{k} - 1 - I_i + I_i')
 	\end{align*}
 	Therefore, we get
-	$N_w = \sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1  -\sum_{X_i = X_j} 1 = \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 $.
+	$N_{\bar{\sigma}} = \sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1  -\sum_{X_i = X_j} 1 = \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 $.
 	On the other hand, for $Z_{ij}$ in the sum $\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim Bern(q)$ and
 	$\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i' + \frac{1}{2} I'^2_i ]$;
 	for $Z_{ij}$ in the sum $\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim Bern(p)$ and
@@ -540,7 +542,7 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 \begin{proof}
 	Using Lemma \ref{lem:minus} we only need to consider the event:
 	\begin{equation}\label{eq:BwA}
-	(\beta + \frac{\alpha \log n}{n})[B_w - A_w] >  \frac{\alpha \log n}{n} N_w  - Cn
+	(\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] >  \frac{\alpha \log n}{n} N_{\bar{\sigma}}  - Cn
 	\end{equation}
 	We divide the cases for $\bar{\sigma}$ to two cases:
 	\begin{enumerate}
@@ -562,34 +564,34 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	Therefore, we should have $I_{ji} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
 	Now the $(i, j)$ pair satisfies condition 2, which contracts with $\bar{\sigma}$ belongs to neither of the two conditions.
 	
-	Under condition 1, we can get a lower bound on $|A_w|$ from \eqref{eq:A_w}. Let $I'_{ij} = I_{ij}$ for $i\neq j$ and
-	$I'_{ii} = \frac{n}{k} - I_i$. Then we can simply $|A_w|$ as:
+	Under condition 1, we can get a lower bound on $|A_{\bar{\sigma}}|$ from \eqref{eq:A_w}. Let $I'_{ij} = I_{ij}$ for $i\neq j$ and
+	$I'_{ii} = \frac{n}{k} - I_i$. Then we can simply $|A_{\bar{\sigma}}|$ as:
 	\begin{align*}
-	A_w &= \frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}) \\
+	A_{\bar{\sigma}} &= \frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}) \\
 	&= \frac{n^2}{2k} - \frac{1}{2} \sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij}
 	\end{align*}
 	We further have $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{n}{k} - I_{ij})^2 + I^2_{ij}$ where
 	$I_{ij}$ satisfies condition 1. Therefore $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2
 	+ (\frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{k} - \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
-	As a result, $A_w \geq \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
+	As a result, $A_{\bar{\sigma}} \geq \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
 	
-	Under condition 2, we can get a lower bound on $N_w$ from \eqref{eq:N_w}: $N_w \geq \frac{1}{2}(\frac{n}{k} - \frac{2}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{k^2}(1+o(1))$.
+	Under condition 2, we can get a lower bound on $N_{\bar{\sigma}}$ from \eqref{eq:N_w}: $N_{\bar{\sigma}} \geq \frac{1}{2}(\frac{n}{k} - \frac{2}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{k^2}(1+o(1))$.
 	
 	Now we use Chernoff bound to process inequality \eqref{eq:BwA}, we can omit $\frac{\alpha \log n}{n}$ on the left hand since it is far smaller than $\beta$:
 	\begin{align*}
-	&\Pr([B_w - A_w] >  \frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n)
-	\leq (E[exp(sZ_{ij})])^{|B_w|}(E[\exp(-sZ_{ij})])^{|A_w|} \exp(-s(\frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n)) \\
-	& =\exp(|B_w|(\frac{b\log n}{n})(e^s -1)) \exp(|A_w|)[\frac{a\log n}{n}] (e^{-s} - 1))\exp(-s(\frac{\alpha \log n}{\beta n} N_w  - \frac{C}{\beta}n)) \\
+	&\Pr([B_{\bar{\sigma}} - A_{\bar{\sigma}}] >  \frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)
+	\leq (E[exp(sZ_{ij})])^{|B_{\bar{\sigma}}|}(E[\exp(-sZ_{ij})])^{|A_{\bar{\sigma}}|} \exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
+	& =\exp(|B_{\bar{\sigma}}|(\frac{b\log n}{n})(e^s -1)) \exp(|A_{\bar{\sigma}}|)[\frac{a\log n}{n}] (e^{-s} - 1))\exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
 	\end{align*}
-	Using $|B_w| = N_w + |A_w|$ we can further simplify the exponential term as
+	Using $|B_{\bar{\sigma}}| = N_{\bar{\sigma}} + |A_{\bar{\sigma}}|$ we can further simplify the exponential term as
 	$$
-	\frac{\log n}{n} [|A_w|(b(e^s -1)+ a(e^{-s} - 1)) +
-	N_w (b(e^s - 1)-s\frac{\alpha}{\beta})]  + s \frac{C}{\beta}n
+	\frac{\log n}{n} [|A_{\bar{\sigma}}|(b(e^s -1)+ a(e^{-s} - 1)) +
+	N_{\bar{\sigma}} (b(e^s - 1)-s\frac{\alpha}{\beta})]  + s \frac{C}{\beta}n
 	$$
 	Now we investigate the function $g_1(s) = b(e^s -1)+ a(e^{-s} - 1)$ and $g_2(s) = b(e^s - 1)-s\frac{\alpha}{\beta}$,
 	both takes zero values at $0$ and $g_1'(s) = (be^s - ae^{-s}), g_2'(s) = be^s -\frac{\alpha}{\beta}$.
 	Therefore $g_1'(0) = b-a<0, g_2'(0) = b - \frac{\alpha}{\beta} < 0$ and we can choose $0<s^*$ such that $g_1(s^*) < 0,g_2(s^*) < 0$.
-	To compensate the influence of the term $sCn/\beta$ we only need to make sure that the order of $\frac{\log n}{n} \min\{|A_w|, N_w\}$ is larger than $n$.
+	To compensate the influence of the term $sCn/\beta$ we only need to make sure that the order of $\frac{\log n}{n} \min\{|A_{\bar{\sigma}}|, N_{\bar{\sigma}}\}$ is larger than $n$.
 	This corresponds to the two conditions we have used.
 \end{proof}
 
@@ -631,7 +633,7 @@ $$
 Taking $s=\log\log(n)$ into this bound, we obtain that $\log_k T=O(\frac{\log\log(n)}{\log^{\delta}(n)} n)$.
 \end{proof}
 
-\section{$\sigma \in \Gamma$ with probability $1-o(1)$ when $\beta>\beta^\ast$} \label{sect:equal}
+\section{$\sigma \in S_k(X)$ with probability $1-o(1)$ when $\beta>\beta^\ast$} \label{sect:equal}
 
 Recall the definition of $\beta^\ast$ in \eqref{eq:defstar}.
 \begin{proposition} \label{prop:tt}
@@ -693,15 +695,15 @@ Let
 $
 (X,G,\sigma) \sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
 $
-There is an integer $n_0$ such that for every even integer $n>n_0$ and  every integer $1\le r\le kn/\log^{1/3}(n)$, there is a set $\cG^{(r)}$ for which
+There is an integer $n_0$ such that for every even integer $n>n_0$ and  every integer $1\le r\le n/\log^{\delta}(n)$,
+there is a set $\cG^{(r)}$ for which
 
 \noindent (i)
-$P(G\in\cG^{(r)}) \ge 1- 2(k-1)^r n^{r\tilde{g}(\beta)/8}$ ,
+$P(G\in\cG^{(r)}) \ge 1- 2(k-1)^r n^{r\tilde{g}(\beta)/4}$ ,
 
 \noindent (ii) For every $G\in\cG^{(r)}$,
 $$
-\sum_{\cI\subseteq[n],|\cI|=r}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+\frac{P_{\sigma|G}(\dist(\sigma, X)=r)}
 {P_{\sigma|G}(\sigma=X)} <
 n^{r \tilde{g}(\beta) /2} .
 $$
@@ -730,561 +732,17 @@ where the last equality follows from $\tilde{g}(\beta)<0$. Moreover, for every $
 n^{r \tilde{g}(\beta) /2}
 < \frac{n^{\tilde{g}(\beta)/2}}{1-n^{\tilde{g}(\beta)/2}} =o(1) .
 \end{align*}
-Thus we have shown that Proposition~\ref{prop:tt} is implied by Proposition~\ref{prop:big}. In the rest of this section, we will prove the latter proposition. In Section~\ref{sect:k=1}, we will prove Proposition~\ref{prop:big} for the special case of $r=1$ to illustrate the basic idea of the proof. Then we prove Proposition~\ref{prop:big} for general $k$ in Section~\ref{sect:gen}.
-
-
-\subsection{Proof of Proposition~\ref{prop:big} for $r=1$} \label{sect:k=1}
-
-Given the ground truth $X$, a graph $G$ and a vertex $i\in[n]$, define
-\begin{equation} \label{eq:defAB}
-A^r_i=A^r_i(G):=\{j\in[n]\setminus\{i\}:\{i,j\}\in E(G), X_j= \omega^r \cdot X_i\} 
-\end{equation}
-Next we give an upper bound on $P(A^1_i-A^0_i\ge t\log(n))$ for $t\in [\frac{1}{k}(b-a), 0]$. We take the left boundary to be $\frac{1}{k}(b-a)$ because $\frac{E[A^1_i-A^0_i]}{\log(n)}\to\frac{1}{k}(b-a)$ as $n\to\infty$.
-\begin{proposition}  \label{prop:cher}
-For $t\in [\frac{1}{k}(b-a), 0]$,
-\begin{equation} \label{eq:upba}
-\begin{aligned}
-& P(A^1_i-A^0_i\ge t\log(n))  \\
-\le &  \exp\Big(\frac{\log(n)}{k}
-\Big(\sqrt{k^2t^2+4ab} -kt\log\frac{\sqrt{k^2t^2+4ab}+kt}{2b} -a-b + O\big(\frac{\log(n)}{n}\big) \Big)\Big) .
-\end{aligned}
-\end{equation}
-\end{proposition}
-
+Thus we have shown that Proposition~\ref{prop:tt} is implied by Proposition~\ref{prop:big}. In the rest of this section, we will prove the latter proposition.
 \begin{proof}
-When $t=\frac{1}{k}(b-a)$, the right-hand side of \eqref{eq:upba} is equal to $1$, so we only need to prove \eqref{eq:upba} for $t\in (\frac{1}{k}(b-a), 0]$.
-By definition,
-$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$ and $A^1_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$, and they are independent.
-The moment generating function of $A^1_i-A^0_i$ is
-\begin{align*}
-E[e^{s(A^1_i-A^0_i)}]
-& =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{n/k}
-\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n/k-1}  \\
-& = 
-\exp\Big(\frac{\log(n)}{k} \Big( b e^s-b +O\big(\frac{\log(n)}{n}\big) \Big)\Big)
-\exp\Big(\frac{\log(n)}{k} \Big( a e^{-s}-a + O\big(\frac{\log(n)}{n}\big) \Big) \Big)
- \\
-& = 
-\exp\Big(\frac{\log(n)}{k} \Big( a e^{-s}+b e^s-a-b + O\big(\frac{\log(n)}{n}\big) \Big)\Big) ,
-\end{align*}
-where we use the Taylor expansion $\log(1+x)=x+O(x^2)$ to obtain the second equality.
-By Chernoff bound, for any $s>0$, we have
-\begin{equation} \label{eq:mmd}
-\begin{aligned}
-& P(A^1_i-A^0_i\ge t\log(n))\le
-\frac{E[e^{s(A^1_i-A^0_i)}]}{e^{st\log(n)}}  \\
- \le & \exp\Big(\frac{\log(n)}{k} \Big( a e^{-s}+b e^s -kst -a-b + O\big(\frac{\log(n)}{n}\big) \Big)\Big)  .
- \end{aligned}
-\end{equation}
-Let $h(s):=a e^{-s}+be^s-kst$. We want to find $\min_{s>0} h(s)$ to plug into the above upper bound. Since 
-$h'(s)=-ae^{-s}+be^s-kt$ and 
-$f''(s)=ae^{-s}+be^s>0$, $f(s)$ is a convex function and takes global minimum at $s^\ast$ such that $h'(s^\ast)=0$. Next we show that $s^\ast>0$ for all $t>\frac{1}{k}(b-a)$, so $\min_{s>0}h(s)=h(s^\ast)$. Indeed, this follows directly from the facts that $h'(0)=b-a-kt<0=h'(s^\ast)$ and that $h'(s)$ is an increasing function. Taking $s^\ast=\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b)$ into \eqref{eq:mmd}, we obtain \eqref{eq:upba} for all $t\in(\frac{1}{2}(b-a), 0]$ and large enough $n$.
+Using \eqref{eq:general_expansion}, we write
+$$
+\frac{P_{\sigma|G}(\dist(\sigma, X)=r)}
+{P_{\sigma|G}(\sigma=X)} = \sum_{\dist(\bar{\sigma}, X)=r} 
+\frac{P_{\sigma|G}(\sigma=\bar{\sigma})}
+{P_{\sigma|G}(\sigma=X)}=
+\sum_{\dist(\bar{\sigma}, X)=r} 
+$$
 \end{proof}
-
-Note that $A^r_i$ are functions of the underlying graph $G$.
-Given a graph $G$, define 
-$$
-\tilde{D}_r(G):=|\{i\in[n]:A^r_i- A^0_i\ge 0\}|
-\text{~~and~~}
-\tilde{D}_{ri}(G):=\mathbbm{1}[A^r_i- A^0_i\ge 0] ,
-$$
-where $\mathbbm{1}[\cdot]$ is the indicator function. Then
-$\tilde{D}_r(G)=\sum_{i=1}^n \tilde{D}_{ri}(G)$ and
-$$
-E[\tilde{D}_r(G)]=\sum_{i=1}^n E[\tilde{D}_{ri}(G)]
-=\sum_{i=1}^n P( A^r_i- A^0_i\ge 0).
-$$
-Taking $t=0$ into \eqref{eq:upba}, we have
-$P(A^r_i- A^0_i\ge 0)\le \exp\big(\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)) \big)$. Therefore,
-$$
-E[\tilde{D}_r(G)]\le n \exp\Big(\log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1) \big) \Big)
-= n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)}.
-$$
-By Markov inequality,
-\begin{equation} \label{eq:tD}
-P\big(\tilde{D}_r(G)=0 \big) = 1-
-P\big(\tilde{D}_r(G)\ge 1\big) \ge 1- E[\tilde{D}_r(G)]
-\ge 1- n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)} .
-\end{equation}
-Since $\sqrt{a}-\sqrt{b} > \sqrt{k}$, we have
-$P\big(\tilde{D}(G)=0 \big)= 1-o(1)$.
-
-
-Next we calculate the ratio
-$$
-\frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
-{P_{\sigma|G}(\sigma=X)} .
-$$
-By \eqref{eq:isingma}, we have
-\begin{align*}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim i)} )}
-{P_{\sigma|G}(\sigma=X)}
-& = \sum_{r=1}^{k-1}\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i)
--\frac{2(k-1)\alpha\log(n)}{n} \Big) \\
-& \le \sum_{r=1}^{k-1}\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \Big)  .
-\end{align*}
-Since $A^r_i-A^0_i$ takes integer value between $-n/k$ and $n/k$,
-we can use indicator functions to write
-\begin{align*}
-& \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \Big) \\
-= & \sum_{t\log(n)=-n/k}^{n/k}
-\mathbbm{1}[A^r_i-A^0_i=t \log(n)] \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big) ,
-\end{align*}
-where the quantity $t\log(n)$ ranges over all integer values from $-n/k$ to $n/k$ in the summation on the second line.
-Define $D_r(G,t):=|\{i\in[n]:A^r_i-A^0_i= t\log(n)\}|$ and notice that $D_r(G,t)=\sum_{i=1}^n \mathbbm{1}[A^r_i-A^0_i=t \log(n)]$.
-Therefore,
-\begin{equation}  \label{eq:fd}
-\begin{aligned}
- & \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
-{P_{\sigma|G}(\sigma=X)}
-\le \sum_{i=1}^n \sum_{r=1}^{k-1} \exp\Big(2\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \Big) \\
-= & \sum_{i=1}^n\sum_{r=1}^{k-1}
-\hspace*{0.05in}
-\sum_{t\log(n)=-n/k}^{n/k}
-\mathbbm{1}[A^r_i-A^0_i=t \log(n)] \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big) \\
-= & \sum_{r=1}^{k-1}\sum_{t\log(n)=-n/k}^{n/k}
-D_r(G,t) \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big)
-\end{aligned}
-\end{equation}
-Define a set 
-$$
-\cG_1:=\bigcap_{r=1}^{k-1} \{G:\tilde{D}_r(G)=0\}.
-$$
-By \eqref{eq:tD}, $P(G\in\cG_1)= 1-o(1)$. By definition of $\tilde{D}_r(G)$, $G\in\cG_1$ implies that $D_r(G,t)=0$ for all $t\ge 0$ and $r=1,\dots,k-1$. Therefore, for $G\in\cG_1$, we have
-\begin{equation} \label{eq:lq}
-\begin{aligned}
-& \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
-{P_{\sigma|G}(\sigma=X)}
-\le \sum_{r=1}^{k-1}\sum_{t\log(n)=-n/k}^{-1}
-D_r(G,t) \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t \log(n) \Big)   \\
-\overset{(a)}{\le} & \sum_{r=1}^{k-1}\sum_{t\log(n)=-n/k}^{-1}
-D_r(G,t) \exp\big(k\beta t \log(n) \big) \\
-= & \sum_{r=1}^{k-1}\sum_{t\log(n)=-n/k}^{\lfloor\frac{b-a}{k}\log(n) \rfloor} D_r(G,t)
-\exp\big(k\beta t \log(n) \big)  +  \sum_{r=1}^{k-1}\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1} D_r(G,t)
-\exp\big(k\beta t \log(n) \big) \\
-\le &  \sum_{r=1}^{k-1}\sum_{t\log(n)=-n/k}^{\lfloor\frac{b-a}{k}\log(n) \rfloor} D_r(G,t)
-\exp\big(\beta(b-a)\log(n) \big)  +  \sum_{r=1}^{k-1}\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1} D_r(G,t)
-\exp\big(k\beta t \log(n) \big)  \\
-\overset{(b)}{\le} & n(k-1)
-\exp\big(\beta(b-a)\log(n) \big)  + \sum_{r=1}^{k-1}\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1} D_r(G,t)
-\exp\big(k\beta t \log(n) \big) ,
-\end{aligned}
-\end{equation}
-where inequality $(a)$ holds because $t\log(n)$ only takes negative values in the summation, and inequality $(b)$ follows from the trivial upper bound
-$\sum_{t\log(n)=-n/k}^{\lfloor\frac{b-a}{k}\log(n) \rfloor} D_r(G,t)\le n$.
-Define a function
-\begin{equation} \label{eq:gt}
-f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big) -\frac{a+b}{k} +1 +k\beta t.
-\end{equation}
-Then for $t\in [\frac{1}{k}(b-a), 0]$, we have 
-\begin{align*}
-& E[D_r(G, t)
-\exp\big(k\beta t \log(n) \big)] \\
-= & \sum_{i=1}^n E[\mathbbm{1}[A^r_i-A^0_i =t \log(n)]] \exp\big(k\beta t \log(n) \big) \\
-= & \sum_{i=1}^n P\big(A^r_i-A^0_i=t \log(n) \big) \exp\big(k\beta t \log(n) \big) \\
-\le & \sum_{i=1}^n P\big(A^r_i-A^0_i \ge t \log(n) \big) \exp\big(k\beta t \log(n) \big) \\
-\le &  \sum_{i=1}^n \exp\Big(\log(n)
-\Big(\frac{1}{k}\sqrt{k^2t^2+4ab} -t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big) -\frac{a+b}{k} +k\beta t +o(1)\Big)\Big) \\
-= &  n^{f_{\beta}(t) +o(1)} ,
-\end{align*}
-where the second inequality follows from \eqref{eq:upba}.
-For $\epsilon>0$, define a set
-$$
-\cG^r(\epsilon):=\left\{
-\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1} D_r(G,t)
-\exp\big(k\beta t \log(n) \big)
-\le \sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}
- n^{f_{\beta}(t) + \epsilon}
-\right\} .
-$$
-Then by Markov inequality,
-\begin{equation} \label{eq:mk}
-P(G\in \cG^r(\epsilon))\ge 1-n^{-(\epsilon-o(1))} >
-1-n^{-\epsilon/2}
-\end{equation}
-for large $n$ and positive $\epsilon$.
-Using \eqref{eq:lq}, we obtain that for $G\in\cG_1\cap \bigcap_{r=1}^{k-1}\cG^r(\epsilon)$,
-\begin{equation}  \label{eq:zz}
-\begin{aligned}
-\frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
-{P_{\sigma|G}(\sigma=X)} 
-& \le n(k-1)
-\exp\big(\beta(b-a)\log(n) \big)  + (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \epsilon} \\
-& = (k-1)n^{f_{\beta}((b-a)/k)} + (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{f_{\beta}(t) + \epsilon} ,
-\end{aligned}
-\end{equation}
-where the equality follows from the fact that $f_{\beta}(\frac{1}{k}(b-a))=\beta(b-a)+1$.
-Recall the definitions of the functions $g(\beta)$ and $\tilde{g}(\beta)$ in \eqref{eq:gbt}.
-By Lemma~\ref{lm:tus} below, we have
-$f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
-Combining this with \eqref{eq:zz}, we obtain that for
-$G\in\cG_1\cap\cG(\epsilon)$,
-\begin{equation} \label{eq:lh}
-\begin{aligned}
-& \frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
-{P_{\sigma|G}(\sigma=X)} 
-\le (k-1)n^{\tilde{g}(\beta)}
-+ (k-1)\sum_{t\log(n)=\lceil\frac{b-a}{k}\log(n) \rceil}^{-1}  n^{\tilde{g}(\beta) + \epsilon}  \\
-& \le (k-1)n^{\tilde{g}(\beta) + \epsilon}
-\big(\frac{a-b}{k}\log(n)+1 \big)
-< n^{\tilde{g}(\beta) + 2\epsilon} 
-\end{aligned}
-\end{equation}
-for large $n$ and positive $\epsilon$.
-Let $\epsilon=-\tilde{g}(\beta)/4>0$ and define
-$$
-\cG^{(1)}:=\cG_1\cap \bigcap_{r=1}^{k-1}\cG(-\tilde{g}(\beta)/4) .
-$$
-By \eqref{eq:lh}, for $G\in\cG^{(1)}$ we have
-$$
-\frac{\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
-{P_{\sigma|G}(\sigma=X)} <
-n^{\tilde{g}(\beta) /2} .
-$$
-By \eqref{eq:tD} and \eqref{eq:mk}, 
-$$
-P(G\in\cG^{(1)})\ge 1-(k-1)n^{\tilde{g}(\beta)/8}- (k-1)n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}+o(1)}> 1- 2(k-1)n^{\tilde{g}(\beta)/8},
-$$
-where the last inequality follows from the fact that $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}\le
-\tilde{g}(\beta)<\tilde{g}(\beta)/8< 0$.
-This completes the proof of Proposition~\ref{prop:big} for the special case of $r=1$. 
-Next we prove the two auxiliary lemmas used above.
-\begin{lemma}[Elementary properties of $\beta^\ast$ defined in \eqref{eq:defstar}] \label{lm:ele}
-Let $g(\beta)$ and $\tilde{g}(\beta)$ be the functions defined in \eqref{eq:gbt}. Assume that $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
-Then,
-
-\begin{enumerate}[label=(\roman*)]
-\item The equation $g(\beta) = 0$ has two roots, and the smaller one of them is $\beta^\ast$.
-
-\item Denote the other root as $\beta'$. Then
-$\beta^\ast< \frac{1}{2k}\log\frac{a}{b} <\beta'$.
-
-\item $g(\beta)<0$ for all $\beta^\ast< \beta \le \frac{1}{2k}\log\frac{a}{b}$.
-
-\item $\tilde{g}(\beta)<0$ for all $\beta>\beta^\ast$.
-
-\item $\tilde{g}(\beta)$ is a decreasing function in $[0,+\infty)$. 
-
-\item $\tilde{g}(\beta)<1$ for all $\beta>0$.
-\end{enumerate}
-\end{lemma}
-\begin{proof}
-{\bf Proof of (i)}:
-We write $x=e^{k\beta}$. Then $g(\beta)=0$ can be written as $bx^2-(a+b-k)x+a=0$. This quadratic equation has two roots if and only if $(a+b-k)^2-4ab>0$, which is guaranteed by the assumption $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
-The two roots of $bx^2-(a+b-k)x+a=0$ are
-$x^\ast=\frac{a+b-k - \sqrt{(a+b-k)^2-4ab}}{2b}$ and $x'=\frac{a+b-k + \sqrt{(a+b-k)^2-4ab}}{2b}$.
-Therefore, $\beta^\ast=\frac{1}{k}\log(x^\ast)$ and $\beta'=\frac{1}{k}\log(x')$.
-{\bf Proof of (ii)}:
-Since $x^\ast x'=\frac{a}{b}=(\sqrt{\frac{a}{b}})^2$, we have $x^\ast<\sqrt{\frac{a}{b}}<x'$, so $\beta^\ast< \frac{1}{2k}\log\frac{a}{b} <\beta'$.
-{\bf Proof of (iii)}:
-Since $b>0$, $bx^2-(a+b-k)x+a<0$ if and only if $x^\ast<x<x'$. Therefore, $g(\beta)<0$ if and only if $\beta^\ast< \beta <\beta'$. This implies (iii). 
-{\bf Proof of (iv)}: (iv) follows directly from (iii).
-{\bf Proof of (v)}: $g'(\beta)=b e^{k\beta} - a e^{-k\beta}$, so $g'(\beta)<0$ for $0\le \beta<\frac{1}{2k}\log\frac{a}{b}$, and $g(\beta)$ takes minimum value at $\beta=\frac{1}{2k}\log\frac{a}{b}$. This implies (v).
-{\bf Proof of (vi)}: (vi) follows directly from (v) and the fact that $\tilde{g}(0)=1$.
-\end{proof}
-
-
-
-
-
-
-
-
-
-\begin{lemma} \label{lm:tus}
-Let $f_{\beta}(t)$ be the function defined in \eqref{eq:gt}. If $a>b>0$, then $f_{\beta}(t)\le \tilde{g}(\beta)$ for all $t\le 0$.
-If $\sqrt{a}-\sqrt{b}>\sqrt{k}$
-and $\beta>\beta^\ast$, then we further have $f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
-\end{lemma}
-\begin{proof}
-The first and second derivatives are
-$f_{\beta}'(t)=
--\log(\sqrt{k^2 t^2+4ab}+kt)+\log(2b) +k\beta$ and $f_{\beta}''(t)=-\frac{k}{\sqrt{k^2 t^2+4ab}}<0$.
-Therefore $f_{\beta}(t)$ is a concave function and takes global maximum at $t^\ast$ such that $f_{\beta}'(t^\ast)=0$.
-Simple calculation shows that 
-$$
-t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k} \quad \text{~and~} \quad
-f_{\beta}(t^\ast)=\frac{b e^{k\beta}+a e^{-k\beta}}{k}-\frac{a+b}{k}+1
-=g(\beta) .
-$$
-We divide the proof into two cases. {\bf Case 1}: If $\beta\ge \frac{1}{2k}\log\frac{a}{b}$, then $t^\ast\ge 0$. Since $f_{\beta}(t)$ is an increasing function for $t\le t^\ast$, we have $f_{\beta}(t)\le f_{\beta}(0)=1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}= \tilde{g}(\beta)$ for all $t\le 0$.
-{\bf Case 2}: If $\beta< \frac{1}{2k}\log\frac{a}{b}$, then we simply use the global maximum $f_{\beta}(t^\ast)$ to upper bound $f_{\beta}(t)$, i.e., $f_{\beta}(t)\le f_{\beta}(t^\ast)=g(\beta)$ for all $t$.
-Combining these two cases, we have $f_{\beta}(t)\le \tilde{g}(\beta)$ for all $t\le 0$ as long as $a>b>0$.
-If $\sqrt{a}-\sqrt{b}>\sqrt{k}$ and $\beta>\beta^\ast$, then by property (iv) of Lemma~\ref{lm:ele} we further have $f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
-\end{proof}
-\subsection{Proof of Proposition~\ref{prop:big} for general $r$} \label{sect:gen}
-We want to bound the ratio
-$$
-\sum_{\cI\subseteq[n]:|\cI|=r}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)}
-$$
-for all $r\le kn/\log^{1/3}(n)$.
-To that end,
-for $\cI\subseteq[n]$ and an index vector $v$ of $\cI$,
-define the different parts of $\cI$ as
-$$
-\cI_j:=\{i\in\cI:X_i= \omega^j\}, j=0, 1, \dots, k-1 \text{ and } \cI_{j_1,j_2}:=\{i\in\cI:X_i= \omega^{j_1}, v_{\mathrm{index}(i)} = \omega^{j_2}\}
-$$
-and define 
-$$
-\nabla \cI:=\{\{i,j\}: \{i,j\} \not\subseteq [n]\setminus\cI\} .
-$$
-We further define
-$$
-\nabla\cI_+:=\{\{i,j\}\in\nabla\cI:X_i=X_j\}
-\quad \text{and} \quad
-\nabla\cI_v:=\{\{i,j\}\in\nabla\cI:X_j= v_{\mathrm{index}(i)} \cdot X_i\}.
-$$
-Then 
-\begin{equation} \label{eq:partial}
-\begin{aligned}
-& |\nabla\cI_+|=\sum_{j=0}^{k-1}\Big(|\cI_j|(\frac{n}{k}-|\cI_j|) + \frac{|\cI_j| (|\cI_j|-1)}{2}\Big)
-=\frac{n}{k}|\cI|- \frac{1}{2}\sum_{j=0}^{k-1}|\cI_j|(|\cI_j|+1) , \\
-& |\nabla\cI_v|=\sum_{j_1}^{k-1}\sum_{j_2=1}^{k-1}|\cI_{j_1, j_2}|\frac{n}{k} =\frac{n}{k}|\cI|
-.
-\end{aligned}
-\end{equation}
-Given a graph $G$,
-define
-\begin{align*}
-& A_{\cI}=A_{\cI}(G):=|\{\{i,j\}\in\nabla\cI\cap E(G):X_i=X_j\}| ,  \\
-& B_{\cI,v}=B_{\cI,v}(G):=|\{\{i,j\}\in\nabla\cI\cap E(G):X_j= v_{\mathrm{index}(i)} \cdot X_i\}| .
-\end{align*}
-
-
-
-
-\begin{proposition}
-For $t\in [\frac{1}{k}(b-a), 0]$
-and $|\cI|\le kn/\log^{1/3}(n),v$
-\begin{equation} \label{eq:upmpt}
-\begin{aligned}
-& P(B_{\cI,v}-A_{\cI}\ge t|\cI|\log(n))  \\
-\le & \exp\Big(|\cI|\log(n)
-\Big(\frac{1}{k}\sqrt{k^2 t^2 + 4ab} -t\big(\log(\sqrt{k^2 t^2 + 4ab}+t)-\log(2b) \big) -\frac{a+b}{k} 
-+ O(\log^{-1/3}(n)) \Big)\Big) .
-\end{aligned}
-\end{equation}
-\end{proposition}
-\begin{proof}
-By definition, $A_{\cI}\sim\Binom(|\nabla\cI_+|,\frac{a\log(n)}{n})$ and $B_{\cI,v}\sim\Binom(|\nabla\cI_v|,\frac{b\log(n)}{n})$, and they are independent. For $s>0$, the moment generating function of $B_{\cI,v}-A_{\cI}$ for $|\cI|\le kn/\log^{1/3}(n)$ can be bounded from above as follows:
-\begin{align*}
-& E[e^{s(B_{\cI,v}-A_{\cI})}] \\
-& =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{n|\cI|/k
-}
-\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n |\cI|/k-\frac{1}{2}\sum_{j=0}^{k-1}(|\cI_j|+1)|\cI_j| }  \\
-& \le 
-\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{n|\cI|/k}
-\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n |\cI|/k-|\cI|^2}
- \\
-& \le
-\exp\Big(\frac{|\cI|\log(n)}{k}(a e^{-s}+b e^s-a-b +\frac{ka|\cI|}{n})
-+|\cI|O(\frac{\log^2(n)}{n})\Big) \\
-& =
-\exp\Big(\frac{|\cI|\log(n)}{k}(a e^{-s}+b e^s-a-b +
-O(\log^{-1/3}(n))) \Big),
-\end{align*}
-where the first inequality follows from $1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s>1$ and $1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s}<1$; in the second inequality we use the Taylor expansion $\log(1+x)=x+O(x^2)$; the last equality follows from the assumption that $|\cI|\le kn/\log^{1/3}(n)$.
-By Chernoff bound, for $s>0$, we have
-\begin{align*} 
-& P(B_{\cI,v}-A_{\cI}\ge t|{\cI}|\log(n))\le
-\frac{E[e^{s(B_{\cI,v}-A_{\cI})}]}{e^{st|{\cI}|\log(n)}}  \\
-\le & \exp\Big(\frac{{\cI}\log(n)}{k} \big(a e^{-s}+b e^s -kst -a-b
- + O(\log^{-1/3}(n)) \big)\Big)  .
-\end{align*}
-The rest of the proof is to find $s^\ast$ to minimize $a e^{-s}+b e^s -kst$ and take $s^\ast$ into the above bound. This is exactly the same as the proof of \eqref{eq:upba}, and we do not repeat it here.
-\end{proof}
-
-
-Given a graph $G$, define 
-$$
-\tilde{D}^{(r,v)}(G):=|\{\cI\subseteq[n],|\cI|=r:B_{\cI,v}- A_{\cI}\ge 0\}|
-\text{~~and~~}
-\tilde{D}^v_{\cI}(G):=\mathbbm{1}[B_{\cI,v}-A_{\cI}\ge 0] .
-$$
- Then
-$\tilde{D}^{(r,v)}(G)=\sum_{\cI\subseteq[n],|\cI|=r} \tilde{D}^v_{\cI}(G)$ and
-$$
-E[\tilde{D}^{(r, v)}(G)]=\sum_{\cI\subseteq[n],|\cI|=r} E[\tilde{D}^v_{\cI}(G)]
-=\sum_{\cI\subseteq[n],|\cI|=r} P(B_{\cI,v}- A_{\cI}\ge 0).
-$$
-Taking $t=0$ into \eqref{eq:upmpt}, we have
-$P(B_{\cI,v}- A_{\cI}\ge 0)\le \exp\big(|\cI|\log(n)(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) ) \big)$. Therefore,
-\begin{align*}
-& E[\tilde{D}^{(r,v)}(G)]\le \binom{n}{r} \exp\Big(r \log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) \big) \Big) \\
-\le & n^r \exp\Big(r \log(n)\big(-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) \big) \Big)
-= n^{r( 1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) )}.
-\end{align*}
-By Markov inequality,
-\begin{equation} \label{eq:Dk}
-P\big(\tilde{D}^{(r,v)}(G)=0 \big) = 1-
-P\big(\tilde{D}^{(r,v)}(G)\ge 1\big) \ge 1- E[\tilde{D}^{(r,v)}(G)]
-\ge 1-  n^{r (1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) )} .
-\end{equation}
-Since $\sqrt{a}-\sqrt{b} > \sqrt{k}$, we have
-$P\big(\tilde{D}^{(r,v)}(G)=0 \big)= 1-o(1)$.
-
-
-By \eqref{eq:isingma}, we have
-\begin{equation} \label{eq:ts}
-\begin{aligned}
-& \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI, v)})}{P_{\sigma|G}(\sigma=X)} \\
-= &\exp\Big(\beta\sum_{\{i,j\}\in E(G)} (I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)})
--I(X_i,X_j))
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} (I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)})
--I(X_i,X_j)) \Big) \\
-=& \exp\Big((\beta+ \frac{\alpha \log(n)}{n})\sum_{\{i,j\}\in E(G) \cap \nabla \cI} (I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)})
--I(X_i,X_j))
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\} \in \nabla \cI}  (I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)})
--I(X_i,X_j))\Big) \\
-\overset{(a)}{=}  & \exp\Big( k(\beta+ \frac{\alpha \log(n)}{n})( B_{\cI,v} - A_{\cI})
--\frac{k\alpha\log(n)}{n} \big( |\nabla \cI_v | - | \nabla \cI_+ | \big)\Big) \\
-\overset{(b)}{=} & \exp\Big( k\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI,v}-A_{\cI})
-- \frac{k\alpha\log(n)}{2n}\sum_{j=0}^{k-1} | \cI_j | ( |\cI_j| + 1)
-\Big) \\
-\le & \exp\Big( k\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI,v}-A_{\cI})
-\Big) ,
-\end{aligned}
-\end{equation}
-where $(a)$ follows from the fact that:
-\begin{align*}
-\sum_{\{i,j\}\in E(G) \cap \nabla \cI} I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)}) &= (k-1) B_{\cI, v} - \sum_{v'\neq v} B_{\cI, v'} - A_{\cI} \\
-\sum_{\{i,j\}\in E(G) \cap \nabla \cI} I(X_i, X_j) &= (k-1)A_{\cI} - \sum_{v'} B_{\cI, v'} \\
-\sum_{\{i,j\}\in \nabla \cI} I(X_i^{(\sim\cI, v)}, X_j^{(\sim\cI, v)}) &= (k-1) |\nabla I_v| - \sum_{v'\neq v} | \nabla I_{v'}| - | \nabla I_{+}| \\
-\sum_{\{i,j\}\in \nabla \cI} I(X_i, X_j) &= (k-1) | \nabla I_{+} | - \sum_{v'} | \nabla I_{v'} |
-\end{align*}
-and $(b)$ follows from \eqref{eq:partial}.
-Since $B_{\cI,v}-A_{\cI}$ takes integer value between $-|\cI|n/k$ and $|\cI|n/k$,
-we can use indicator functions to write
-\begin{align*}
-& \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI,v}-A_{\cI}) \Big) \\
-= & \sum_{t|\cI|\log(n)=-|\cI|n/k}^{|\cI|n/k}
-\mathbbm{1}[B_{\cI}-A_{\cI}=t|\cI| \log(n)] \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t|\cI| \log(n) \Big) ,
-\end{align*}
-where the quantity $t|\cI|\log(n)$ ranges over all integer values from $-|\cI|n/k$ to $|\cI|n/k$ in the summation on the second line.
-Define $D^{(r,v)}(G,t):=|\{\cI\subseteq[n],|\cI|=r: B_{\cI,v}-A_{\cI}= tr\log(n)\}|$ and
-notice that $D^{(r,v)}(G,t)=\sum_{\cI\subseteq[n],|\cI|=r} \mathbbm{1}[B_{\cI,v}-A_{\cI}= tr\log(n)]$.
-Therefore,
-\begin{align*}
- & \sum_{\cI\subseteq[n],|\cI|=r}
- \frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
-{P_{\sigma|G}(\sigma=X)}
-\le \sum_{\cI\subseteq[n],|\cI|=r, v} \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (B_{\cI, v}-A_{\cI}) \Big) \\
-= & \sum_{\cI\subseteq[n],|\cI|=r, v}
-\hspace*{0.05in}
-\sum_{tr\log(n)=-rn/k}^{rn/k}
-\mathbbm{1}[B_{\cI,v}-A_{\cI}=tr \log(n)] \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) tr \log(n) \Big) \\
-= & \sum_{v}\sum_{tr\log(n)=-rn/k}^{rn/k}
-D^{(r.v)}(G,t) \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t r\log(n) \Big)
-\end{align*}
-Define a set 
-\begin{equation} \label{eq:g1k}
-\cG_1^{(r)}:=\bigcap_{v \in \{\omega, \dots, \omega^{k-1}\}^r}\{G:\tilde{D}^{(r,v)}(G)=0\}.
-\end{equation}
-By \eqref{eq:Dk}, $P(G\in\cG_1^{(r)})= 1-o(1)$. By definition of $\tilde{D}^{(r,v)}(G)$,
-$G\in\cG_1^{(r)}$ implies that $D^{(r,v)}(G,t)=0$ for all $t\ge 0$.
-Therefore, for $G\in\cG_1^{(r)}$, we have
-\begin{equation} \label{eq:bk}
-\begin{aligned}
-& \sum_{\cI\subseteq[n],|\cI|=r}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
-{P_{\sigma|G}(\sigma=X)} \\
-\le & \sum_{v}\sum_{tr\log(n)=-rn/k}^{-1}
-D^{(r,v)}(G,t) \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) t r \log(n) \Big)   \\
-\overset{(a)}{\le} & \sum_v\sum_{tr\log(n)=-rn/k}^{-1}
-D^{(r,v)}(G,t) \exp\big(k\beta t r \log(n) \big) \\
-= & \sum_v \sum_{tr\log(n)=-rn/k}^{\lfloor\frac{b-a}{k}r\log(n) \rfloor} D^{(r,v)}(G,t) \exp\big(k\beta t r \log(n) \big) \\
-& \hspace*{1.5in} + \sum_v \sum_{tr\log(n)=\lceil\frac{b-a}{k}r\log(n) \rceil}^{-1} D^{(r,v)}(G,t) \exp\big(k\beta t r \log(n) \big) \\
-\le & \sum_v\sum_{tr\log(n)=-rn/k}^{\lfloor\frac{b-a}{k}r\log(n) \rfloor} D^{(r,v)}(G,t)
-\exp\big(\beta(b-a)r\log(n) \big) \\
-& \hspace*{1.5in} +\sum_v \sum_{tr\log(n)=\lceil\frac{b-a}{k}r\log(n) \rceil}^{-1} D^{(r,v)}(G,t) \exp\big(k\beta t r \log(n) \big)  \\
-\overset{(b)}{\le} & (k-1)^r\binom{n}{k}
-\exp\big(\beta(b-a) r \log(n) \big)  + \sum_v \sum_{tr\log(n)=\lceil\frac{b-a}{k}r\log(n) \rceil}^{-1} D^{(r,v)}(G,t) \exp\big(k\beta t r \log(n) \big),
-\end{aligned}
-\end{equation}
-where inequality $(a)$ holds because $tk\log(n)$ only takes negative values in the summation, and inequality $(b)$ follows from the trivial upper bound
-$\sum_{tr\log(n)=-rn/k}^{\lfloor\frac{b-a}{k}r\log(n) \rfloor} D^{(r,v)}(G,t)\le \binom{n}{r}$.
-
-
-
-
-Recall the function $f_{\beta}(t)$ defined in \eqref{eq:gt}.
-Then for $t\in [\frac{1}{k}(b-a), 0]$, we have 
-\begin{align*}
-& E[D^{(r,v)}(G,t) \exp\big(k\beta t r \log(n) \big)] \\
-= & \sum_{\cI\subseteq[n],|\cI|=r} E[\mathbbm{1}[B_{\cI,v}-A_{\cI}=t r \log(n)]] \exp\big(k\beta t r \log(n) \big) \\
-= & \sum_{\cI\subseteq[n],|\cI|=r} P\big(B_{\cI,v}-A_{\cI}=t r \log(n) \big) \exp\big(k\beta t r \log(n) \big) \\
-\le & \sum_{\cI\subseteq[n],|\cI|=r} P\big(B_{\cI,v}-A_{\cI} \ge t r \log(n) \big) \exp\big(k\beta t r \log(n) \big) \\
-\le &  \sum_{\cI\subseteq[n],|\cI|=r} \exp\Big( r \log(n)
-\Big(\frac{1}{k}\sqrt{k^2t^2+4ab} -t\big(\log(\sqrt{k^2t^2+4ab}+t)-\log(2b) \big) -\frac{a+b}{k} +k\beta t +o(1) \Big)\Big) \\
-= & \binom{n}{r} n^{r(f_{\beta}(t)-1+o(1))} ,
-\end{align*}
-where the second inequality follows from \eqref{eq:upmpt}.
-For $\epsilon>0$, define a set
-\begin{equation} \label{eq:gep}
-\begin{aligned}
-\cG^{(r,v)}(\epsilon):=\left\{
-\sum_{tr\log(n)=\lceil\frac{b-a}{k}r\log(n) \rceil}^{-1} D^{(r,v)}(G,t) \exp  \big(k\beta t r \log(n) \big) \hspace*{1.5in} \right. \\
-\left.
- \le  \sum_{tr\log(n)=\lceil\frac{b-a}{k}r\log(n) \rceil}^{-1}
-\binom{n}{r} n^{r(f_{\beta}(t)-1+\epsilon)}
-\right\} .
-\end{aligned}
-\end{equation}
-Then by Markov inequality,
-\begin{equation} \label{eq:Gk}
-P(G\in \cG^{(r,v)}(\epsilon))\ge 1-n^{-r(\epsilon-o(1))} >1-n^{-r\epsilon/2}
-\end{equation}
-for large $n$ and positive $\epsilon$.
-Using \eqref{eq:bk}, we obtain that for $G\in\cG_1^{(r)}\cap \bigcap_{v} \cG^{(r,v)}(\epsilon)$,
-\begin{equation}  \label{eq:3l}
-\begin{aligned}
-& \sum_{\cI\subseteq[n],|\cI|=r}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
-{P_{\sigma|G}(\sigma=X)}  \\
-\le & (k-1)^r\binom{n}{k}
-\exp\big(\beta(b-a) r \log(n) \big)  + \sum_v\sum_{tr\log(n)=\lceil\frac{b-a}{k}r\log(n) \rceil}^{-1}
-\binom{n}{r} n^{r(f_{\beta}(t)-1+\epsilon)} \\
-= & (k-1)^r\binom{n}{r} n^{r(f_{\beta}((b-a)/k)-1)} + (k-1)^r\sum_{tr\log(n)=\lceil\frac{b-a}{k}r\log(n) \rceil}^{-1}
-\binom{n}{r} n^{r(f_{\beta}(t)-1+\epsilon)} ,
-\end{aligned}
-\end{equation}
-where the equality follows from the fact that $f_{\beta}(\frac{1}{k}(b-a))=\beta(b-a)+1$.
-Recall the function $\tilde{g}(\beta)$ defined in \eqref{eq:gbt}, and recall from  Lemma~\ref{lm:tus} that
-$f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
-Using this in \eqref{eq:3l} together with the fact $\binom{n}{r}<n^r$, we obtain that for
-$G\in\cG_1^{(r)}\cap \bigcap_{v} \cG^{(r,v)}(\epsilon)$,
-\begin{equation} \label{eq:wuh}
-\begin{aligned}
-& \sum_{\cI\subseteq[n],|\cI|=r}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
-{P_{\sigma|G}(\sigma=X)} 
-\le (k-1)^rn^{k\tilde{g}(\beta)}
-+ (k-1)^r\sum_{tr\log(n)=\lceil\frac{b-a}{k}r\log(n) \rceil}^{-1}  n^{r(\tilde{g}(\beta) + \epsilon)}  \\
-& \le(k-1)^r n^{r(\tilde{g}(\beta) + \epsilon)}
-\Big(\frac{a-b}{k}\log(n^r)+1 \Big)
-< n^{r(\tilde{g}(\beta) + 2\epsilon)} 
-\end{aligned}
-\end{equation}
-for large $n$ and positive $\epsilon$.
-Let $\epsilon=-\tilde{g}(\beta)/4>0$ and define
-$$
-\cG^{(r)}:=\cG_1^{(r)}\cap \bigcap_{v} \cG^{(r,v)}(-\tilde{g}(\beta)/4) .
-$$
-By \eqref{eq:wuh}, for $G\in\cG^{(r)}$ we have
-$$
-\sum_{\cI\subseteq[n],|\cI|=k}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
-{P_{\sigma|G}(\sigma=X)} <
-n^{r \tilde{g}(\beta) /2} .
-$$
-By \eqref{eq:Dk}, \eqref{eq:g1k} and \eqref{eq:Gk}, 
-$$
-P(G\in\cG^{(r)})\ge 1-(k-1)^rn^{r\tilde{g}(\beta)/8}- (k-1)^rn^{r (1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) )}> 1- 2(k-1)^r n^{k\tilde{g}(\beta)/8},
-$$
-where the last inequality follows from the fact that $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}\le
-\tilde{g}(\beta)<\tilde{g}(\beta)/8< 0$.
-
 \section{Samples differ from $\Gamma$ in $O(n^{\theta})$ coordinates for some $\theta<1$ when $\beta\le\beta^\ast$}
 \label{sect:theta}
 
