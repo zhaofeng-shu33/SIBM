@@ -695,7 +695,7 @@ Let
 $
 (X,G,\sigma) \sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
 $
-There is an integer $n_0$ such that for every even integer $n>n_0$ and  every integer $1\le r\le n/\log^{\delta}(n)$,
+There is an integer $n_0$ such that for every even integer $n>n_0$ and  every integer $1\le r \le n/\log^{\delta}(n)$,
 there is a set $\cG^{(r)}$ for which
 
 \noindent (i)
@@ -740,9 +740,65 @@ $$
 {P_{\sigma|G}(\sigma=X)} = \sum_{\dist(\bar{\sigma}, X)=r} 
 \frac{P_{\sigma|G}(\sigma=\bar{\sigma})}
 {P_{\sigma|G}(\sigma=X)}=
-\sum_{\dist(\bar{\sigma}, X)=r} 
+\sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] - \frac{\alpha \log n}{n} N_{\bar{\sigma}})
 $$
+Let $\bar{W} = \{w, \dots, w^{k-1}\}$, and we consider the event
+$$
+D(v, s): \sum_{\bar{\sigma}_{i_j} = v_j \cdot X_{i_j}, j=1,\dots, r} \exp((\beta + \frac{\alpha \log n}{n}) [B_{\bar{\sigma}} - A_{\bar{\sigma}}]) > s
+$$
+where $v \in \bar{W}^r$ and the number of summed term in $D(v, s)$ is $\binom{n}{r}$.
+
+Following the main idea in Section \ref{sect:why}, we consider an enhanced conclusion of Lemma \ref{lem:fb}.
+\begin{lemma}
+	For $t\in [\frac{1}{k}(b-a), 0]$
+	and $|\cI|\le kn/\log^{1/3}(n),v$
+	\begin{equation} \label{eq:upmpt}
+	\begin{aligned}
+	& P(B_{\cI,v}-A_{\cI}\ge t|\cI|\log(n))  \\
+	\le & \exp\Big(|\cI|\log(n)
+	\Big(\frac{1}{k}\sqrt{k^2 t^2 + 4ab} -t\big(\log(\sqrt{k^2 t^2 + 4ab}+t)-\log(2b) \big) -\frac{a+b}{k} 
+	+ O(\log^{-1/3}(n)) \Big)\Big) .
+	\end{aligned}
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	By definition, $A_{\cI}\sim\Binom(|\nabla\cI_+|,\frac{a\log(n)}{n})$ and $B_{\cI,v}\sim\Binom(|\nabla\cI_v|,\frac{b\log(n)}{n})$, and they are independent. For $s>0$, the moment generating function of $B_{\cI,v}-A_{\cI}$ for $|\cI|\le kn/\log^{1/3}(n)$ can be bounded from above as follows:
+	\begin{align*}
+	& E[e^{s(B_{\cI,v}-A_{\cI})}] \\
+	& =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{n|\cI|/k
+	}
+	\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n |\cI|/k-\frac{1}{2}\sum_{j=0}^{k-1}(|\cI_j|+1)|\cI_j| }  \\
+	& \le 
+	\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{n|\cI|/k}
+	\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n |\cI|/k-|\cI|^2}
+	\\
+	& \le
+	\exp\Big(\frac{|\cI|\log(n)}{k}(a e^{-s}+b e^s-a-b +\frac{ka|\cI|}{n})
+	+|\cI|O(\frac{\log^2(n)}{n})\Big) \\
+	& =
+	\exp\Big(\frac{|\cI|\log(n)}{k}(a e^{-s}+b e^s-a-b +
+	O(\log^{-1/3}(n))) \Big),
+	\end{align*}
+	where the first inequality follows from $1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s>1$ and $1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s}<1$; in the second inequality we use the Taylor expansion $\log(1+x)=x+O(x^2)$; the last equality follows from the assumption that $|\cI|\le kn/\log^{1/3}(n)$.
+	By Chernoff bound, for $s>0$, we have
+	\begin{align*} 
+	& P(B_{\cI,v}-A_{\cI}\ge t|{\cI}|\log(n))\le
+	\frac{E[e^{s(B_{\cI,v}-A_{\cI})}]}{e^{st|{\cI}|\log(n)}}  \\
+	\le & \exp\Big(\frac{{\cI}\log(n)}{k} \big(a e^{-s}+b e^s -kst -a-b
+	+ O(\log^{-1/3}(n)) \big)\Big)  .
+	\end{align*}
+	The rest of the proof is to find $s^\ast$ to minimize $a e^{-s}+b e^s -kst$ and take $s^\ast$ into the above bound. This is exactly the same as the proof of \eqref{eq:upba}, and we do not repeat it here.
 \end{proof}
+by Lemma xxx, $P(D_{v, s}) \leq 2 n^{r\tilde{g}(\beta)/4}$ where
+$s=O(n^{r\tilde{g}(\beta)/2})$. Therefore, by union bound
+\begin{align*}
+&P(\sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] - \frac{\alpha \log n}{n} N_{\bar{\sigma}}) > n^{r\tilde{g}(\beta)/2}) \\
+&\leq P(\sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}]) > n^{r\tilde{g}(\beta)/2}) \\
+&\leq \sum_{v \in \bar{W}^r} P(D(v, \frac{1}{(k-1)^r} n^{r\tilde{g}(\beta)/2})) \\
+& \leq 2(k-1)^r n^{r\tilde{g}(\beta)/4}
+\end{align*}
+\end{proof}
+
 \section{Samples differ from $\Gamma$ in $O(n^{\theta})$ coordinates for some $\theta<1$ when $\beta\le\beta^\ast$}
 \label{sect:theta}
 
