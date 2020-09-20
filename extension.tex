@@ -751,13 +751,12 @@ where $v \in \bar{W}^r$ and the number of summed term in $D(v, s)$ is $\binom{n}
 Following the main idea in Section \ref{sect:why}, we consider an enhanced conclusion of Lemma \ref{lem:fb}.
 \begin{lemma}
 	For $t\in [\frac{1}{k}(b-a), 0]$
-	and $|\cI|\le kn/\log^{1/3}(n),v$
+	and $ I \le n/\log^{\delta}(n),v$
 	\begin{equation} \label{eq:upmpt}
 	\begin{aligned}
-	& P(B_{\cI,v}-A_{\cI}\ge t|\cI|\log(n))  \\
-	\le & \exp\Big(|\cI|\log(n)
-	\Big(\frac{1}{k}\sqrt{k^2 t^2 + 4ab} -t\big(\log(\sqrt{k^2 t^2 + 4ab}+t)-\log(2b) \big) -\frac{a+b}{k} 
-	+ O(\log^{-1/3}(n)) \Big)\Big) .
+	& P(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t I \log(n))  \\
+	\le & \exp\Big(I\log(n)
+	\Big(f_{\beta}(t) - \beta t -1	+ O(\log^{-1/3}(n)) \Big)\Big) .
 	\end{aligned}
 	\end{equation}
 \end{lemma}
