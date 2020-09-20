@@ -580,7 +580,7 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	Now we use Chernoff bound to process inequality \eqref{eq:BwA}, we can omit $\frac{\alpha \log n}{n}$ on the left hand since it is far smaller than $\beta$:
 	\begin{align*}
 	&\Pr([B_{\bar{\sigma}} - A_{\bar{\sigma}}] >  \frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)
-	\leq (E[exp(sZ_{ij})])^{|B_{\bar{\sigma}}|}(E[\exp(-sZ_{ij})])^{|A_{\bar{\sigma}}|} \exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
+	\leq (E[\exp(sZ_{ij})])^{|B_{\bar{\sigma}}|}(E[\exp(-sZ_{ij})])^{|A_{\bar{\sigma}}|} \exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
 	& =\exp(|B_{\bar{\sigma}}|(\frac{b\log n}{n})(e^s -1)) \exp(|A_{\bar{\sigma}}|)[\frac{a\log n}{n}] (e^{-s} - 1))\exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
 	\end{align*}
 	Using $|B_{\bar{\sigma}}| = N_{\bar{\sigma}} + |A_{\bar{\sigma}}|$ we can further simplify the exponential term as
@@ -742,16 +742,16 @@ $$
 {P_{\sigma|G}(\sigma=X)}=
 \sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] - \frac{\alpha \log n}{n} N_{\bar{\sigma}})
 $$
-Let $\bar{W} = \{w, \dots, w^{k-1}\}$, and we consider the event
+Let $\bar{W} = \{w, \dots, w^{k-1}\}$, $\Xi(v) = \{ \sigma | \dist(\sigma, X) = dim(v),  \sigma_{i_j} = v_j \cdot X_{i_j}, j \in [r] \}$, and we consider the event
 $$
-D(v, s): \sum_{\bar{\sigma}_{i_j} = v_j \cdot X_{i_j}, j=1,\dots, r} \exp((\beta + \frac{\alpha \log n}{n}) [B_{\bar{\sigma}} - A_{\bar{\sigma}}]) > s
+D(v, s): \sum_{\bar{\sigma} \in \Xi(v)} \exp((\beta + \frac{\alpha \log n}{n}) [B_{\bar{\sigma}} - A_{\bar{\sigma}}]) > s
 $$
-where $v \in \bar{W}^r$ and the number of summed term in $D(v, s)$ is $\binom{n}{r}$.
+where $v \in \bar{W}^r$ and $|\Xi(v)|=\binom{n}{r}$.
 
 Following the main idea in Section \ref{sect:why}, we consider an enhanced conclusion of Lemma \ref{lem:fb}.
-\begin{lemma}
+\begin{lemma}\label{lem:enhanced_fb}
 	For $t\in [\frac{1}{k}(b-a), 0]$
-	and $ I \le n/\log^{\delta}(n),v$
+	and $ I \le n/\log^{\delta}(n)$
 	\begin{equation} \label{eq:upmpt}
 	\begin{aligned}
 	& P(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t I \log(n))  \\
@@ -792,6 +792,41 @@ Following the main idea in Section \ref{sect:why}, we consider an enhanced concl
 	\end{align*}
 	The rest of the proof is to find $s^\ast$ to minimize $a e^{-s}+b e^s -kst$ and take $s^\ast$ into the above bound. 
 	\end{proof}
+\begin{align*}
+&\Pr(D(v,s)) = 
+\Pr(D(v,s)| B_{\bar{\sigma}} - A_{\bar{\sigma}}   \geq 0, \exists \bar{\sigma} \in \Xi(v))
+\cdot I_1 \\
+&+ \Pr(D(v,s) | B_{\bar{\sigma}} - A_{\bar{\sigma}}  < 0, \forall   \bar{\sigma} \in \Xi(v))
+\Pr(  B_{\bar{\sigma}} - A_{\bar{\sigma}}    < 0 , \forall  \bar{\sigma} \in \Xi(v) ) \\
+& \leq I_1
++ \Pr(D(v,s) | B_{\bar{\sigma}} - A_{\bar{\sigma}}    < 0, \forall \bar{\sigma} \in \Xi(v))
+\end{align*}
+where $I_1 = \Pr( B_{\bar{\sigma}} - A_{\bar{\sigma}}  \geq 0, \exists   \bar{\sigma} \in \Xi(v) )$.
+
+We can bound $I_1$ by choosing $t=0$ in Lemma \ref{lem:enhanced_fb}, we have
+$\Pr( B_{\bar{\sigma}} - A_{\bar{\sigma}} \ge 0 ) \leq \exp(-r\log n \frac{(\sqrt{a}-\sqrt{b})^2}{k})$.
+Then
+\begin{align*}
+I_1 \leq \sum_{\bar{\sigma} \in \Xi(v)} \Pr( B_{\bar{\sigma}} - A_{\bar{\sigma}} \geq 0) \leq \binom{n}{r} n^{-r\frac{(\sqrt{a}-\sqrt{b})^2}{k}}
+\leq n^{r(1-\frac{(\sqrt{a}-\sqrt{b})^2}{k})}
+\end{align*}
+For the second term,
+conditioned on $B_{\bar{\sigma}} - A_{\bar{\sigma}}    < 0, \forall \bar{\sigma} \in \Xi(v)$ we have
+\begin{align*}
+&\sum_{\bar{\sigma} \in \Xi(v)} \exp ( (\beta + \alpha \frac{\log n}{n})(B_{\bar{\sigma}} - A_{\bar{\sigma}} ) ) \\
+& = \sum_{t\log n = -A_{\bar{\sigma}} }^{-1} \sum_{\bar{\sigma} \in \Xi(v)} \mathbbm{1}[A^r_i - A^0_i = t \log n] \exp ( \beta  t\log n)\leq \\ 
+&
+\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t \log n]\exp ( \beta  t\log n) + n^{1+\beta(b-a)/k}
+\end{align*}
+where $\tau =\frac{b-a}{k}\log n$ in short. Therefore
+\begin{align*}
+&\Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])  \\
+&\leq\Pr(\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t\log n]\exp ( \beta  t\log n)  > \tilde{s} ) \\
+& \leq \mathbb{E}[\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i= t\log n]\exp ( \beta  t\log n)] /  \tilde{s} \\
+& \leq \frac{a-b}{k}\log n \cdot n^{f_{\beta}(t) + o(1)} / \tilde{s} \textrm{ using Lemma \ref{lem:fb} }
+\end{align*}
+where $\tilde{s} = s - n^{1+\beta(b-a)/k}$. 
+
 by Lemma xxx, $P(D_{v, s}) \leq 2 n^{r\tilde{g}(\beta)/4}$ where
 $s=O(n^{r\tilde{g}(\beta)/2})$. Therefore, by union bound
 \begin{align*}
