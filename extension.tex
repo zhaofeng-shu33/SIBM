@@ -567,7 +567,7 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	Under condition 1, we can get a lower bound on $|A_{\bar{\sigma}}|$ from \eqref{eq:A_w}. Let $I'_{ij} = I_{ij}$ for $i\neq j$ and
 	$I'_{ii} = \frac{n}{k} - I_i$. Then we can simply $|A_{\bar{\sigma}}|$ as:
 	\begin{align*}
-	A_{\bar{\sigma}} &= \frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}) \\
+	|A_{\bar{\sigma}}| &= \frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}) \\
 	&= \frac{n^2}{2k} - \frac{1}{2} \sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij}
 	\end{align*}
 	We further have $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{n}{k} - I_{ij})^2 + I^2_{ij}$ where
@@ -756,38 +756,42 @@ Following the main idea in Section \ref{sect:why}, we consider an enhanced concl
 	\begin{aligned}
 	& P(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t I \log(n))  \\
 	\le & \exp\Big(I\log(n)
-	\Big(f_{\beta}(t) - \beta t -1	+ O(\log^{-1/3}(n)) \Big)\Big) .
+	\Big(f_{\beta}(t) - \beta t -1	+ O(\log^{-\delta}(n)) \Big)\Big) .
 	\end{aligned}
 	\end{equation}
 \end{lemma}
 \begin{proof}
-	By definition, $A_{\cI}\sim\Binom(|\nabla\cI_+|,\frac{a\log(n)}{n})$ and $B_{\cI,v}\sim\Binom(|\nabla\cI_v|,\frac{b\log(n)}{n})$, and they are independent. For $s>0$, the moment generating function of $B_{\cI,v}-A_{\cI}$ for $|\cI|\le kn/\log^{1/3}(n)$ can be bounded from above as follows:
+	By definition, $A_{\bar{\sigma}}\sim\Binom(|A_{\bar{\sigma}}|,\frac{a\log(n)}{n})$ and
+	$B_{\bar{\sigma}}\sim\Binom(|B_{\bar{\sigma}}|,\frac{b\log(n)}{n})$, and they are independent. For $s>0$, the moment generating function of $B_{\bar{\sigma}}-A_{\bar{\sigma}}$ for $ I \le n/\log^{\delta}(n)$ can be bounded from above as follows:
 	\begin{align*}
-	& E[e^{s(B_{\cI,v}-A_{\cI})}] \\
-	& =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{n|\cI|/k
-	}
-	\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n |\cI|/k-\frac{1}{2}\sum_{j=0}^{k-1}(|\cI_j|+1)|\cI_j| }  \\
-	& \le 
-	\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{n|\cI|/k}
-	\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{n |\cI|/k-|\cI|^2}
-	\\
-	& \le
-	\exp\Big(\frac{|\cI|\log(n)}{k}(a e^{-s}+b e^s-a-b +\frac{ka|\cI|}{n})
-	+|\cI|O(\frac{\log^2(n)}{n})\Big) \\
-	& =
-	\exp\Big(\frac{|\cI|\log(n)}{k}(a e^{-s}+b e^s-a-b +
-	O(\log^{-1/3}(n))) \Big),
+	 E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}] 
+	& =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{|B_{\bar{\sigma}}|}
+	\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{|A_{\bar{\sigma}}|}  \\
+	& = \exp(\frac{\log n}{n}(|B_{\bar{\sigma}}|(be^s - b) + |A_{\bar{\sigma}}|(ae^{-s}-a) + |B_{\bar{\sigma}}|O(\frac{\log n}{n}) ))
 	\end{align*}
-	where the first inequality follows from $1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s>1$ and $1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s}<1$; in the second inequality we use the Taylor expansion $\log(1+x)=x+O(x^2)$; the last equality follows from the assumption that $|\cI|\le kn/\log^{1/3}(n)$.
+	Using the conclusion that $|B_{\bar{\sigma}}|=\frac{n}{k}I + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji})$ and
+	$|A_{\bar{\sigma}}| = \frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij})$.
+	By estimating the order of residual term, $|A_{\bar{\sigma}}| = \frac{n}{k}I + O(I^2)$,
+	 $|B_{\bar{\sigma}}| = \frac{n}{k}I + O(I^2)$.
+	 
+	\begin{align*}
+	E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}] & \le
+	\exp(\frac{\log n}{n}((\frac{n}{k}I + O(I^2))(be^s - b) +(\frac{n}{k} I + O(I^2))(ae^{-s}-a) + \frac{n}{k}IO(\frac{\log n}{n}) ))
+	 \\
+	& =
+	\exp\Big(\frac{I \log(n)}{k}(a e^{-s}+b e^s-a-b +
+	O(\log^{-\delta}(n))) \Big),
+	\end{align*}
+	The last equality follows from the assumption that $ I \le n/\log^{\delta}(n)$.
 	By Chernoff bound, for $s>0$, we have
 	\begin{align*} 
-	& P(B_{\cI,v}-A_{\cI}\ge t|{\cI}|\log(n))\le
-	\frac{E[e^{s(B_{\cI,v}-A_{\cI})}]}{e^{st|{\cI}|\log(n)}}  \\
-	\le & \exp\Big(\frac{{\cI}\log(n)}{k} \big(a e^{-s}+b e^s -kst -a-b
-	+ O(\log^{-1/3}(n)) \big)\Big)  .
+	& P(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t I \log(n))\le
+	\frac{E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}]}{e^{st I \log(n)}}  \\
+	\le & \exp\Big(\frac{I\log(n)}{k} \big(a e^{-s}+b e^s -kst -a-b
+	+ O(\log^{-\delta}(n)) \big)\Big)  .
 	\end{align*}
-	The rest of the proof is to find $s^\ast$ to minimize $a e^{-s}+b e^s -kst$ and take $s^\ast$ into the above bound. This is exactly the same as the proof of \eqref{eq:upba}, and we do not repeat it here.
-\end{proof}
+	The rest of the proof is to find $s^\ast$ to minimize $a e^{-s}+b e^s -kst$ and take $s^\ast$ into the above bound. 
+	\end{proof}
 by Lemma xxx, $P(D_{v, s}) \leq 2 n^{r\tilde{g}(\beta)/4}$ where
 $s=O(n^{r\tilde{g}(\beta)/2})$. Therefore, by union bound
 \begin{align*}
