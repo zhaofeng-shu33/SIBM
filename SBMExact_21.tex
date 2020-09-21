@@ -659,16 +659,16 @@ We thus have, combining (\ref{eq:pF_unionbound_ITub}) and (\ref{eq:comesfromBern
 %The following lemma concludes the proof of Theorem~\ref{theorem:main_upperbound_2}.
 %\begin{lemma}
 Recall that $F$ is the event of the maximum likelihood estimator not coinciding with the ground truth. We next show that for $\epsilon>0$, if,
-\[
+\begin{equation}\label{eq:epsilon}
 \frac{\alpha+\beta}{2} -\sqrt{\alpha \beta} \geq 1+\epsilon
-\]
+\end{equation}
 then there exists a constant $c>0$ such that
 \begin{equation}\label{eq:with14epsilon_14}
 \p(F) \leq cn^{-\epsilon}.
 \end{equation}
 %\end{lemma}
 
-Combining (\ref{eq:outsidelemmaboundpf5_IT_ub}) and (\ref{eq:with14epsilon_14}), we have
+Combining (\ref{eq:outsidelemmaboundpf5_IT_ub}) and (\ref{eq:epsilon}), we have
 \begin{eqnarray}
 \p(F) & \leq &  \sum_{k=1}^{n/4}  \exp\left[k\left( 2 \log n - 2\log 2k - \left(\frac{1}2-\frac{k}n\right) \left( 4+4\epsilon \right) \log n +2\right)\right]\nonumber\\
 %& = &  \sum_{k=1}^{n/4}  \exp\left[k\left( 2 \log n - 2\log 2k -  \left(2-4\frac{k}n+\frac{\epsilon}2-\epsilon\frac{k}n\right)  \log n \right)\right]\nonumber\\
