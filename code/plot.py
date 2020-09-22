@@ -39,18 +39,22 @@ def draw_phase_transation(file_name):
     plt.imshow(matrix, cmap='Greys_r', origin='lower', extent=[b_min, b_max, a_min, a_max])
     x = np.linspace(b_min, b_max)
     y = (np.sqrt(2) + np.sqrt(x)) ** 2
+    plt.xlabel('b')
+    plt.ylabel('a')
     plt.plot(x, y, color='red')
     plt.colorbar()
     plt.show()
 
 if __name__ == '__main__':
+    method_list = ['sdp', 'metropolis', 'asyn_fluid', 'bi']
     parser = argparse.ArgumentParser()
     parser.add_argument('--action', choices=['phase_transition',
         'compare'], default='phase_transition')
+    parser.add_argument('--method', choices=method_list)
+    parser.add_argument('--date', default='2020-09-15')
     args = parser.parse_args()
     if args.action == 'phase_transition':
-        file_name = 'transition-2020-09-17.pickle'
+        file_name = args.method + '-transition-%s.pickle' % args.date
         draw_phase_transation(file_name)
     else:
-        plot_alg_fix_b(['sdp', 'metropolis', 'asyn_fluid'],
-            '2020-09-17')
+        plot_alg_fix_b(method_list, args.date)

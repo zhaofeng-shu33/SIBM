@@ -180,8 +180,14 @@ if __name__ == '__main__':
     set_up_log()
     if type(args.a) is float:
         args.a = [args.a]
+    elif len(args.a) == 3 and args.a[-1] < args.a[-2]:
+        args.a = np.arange(args.a[0], args.a[1], args.a[2])
+
     if type(args.b) is float:
         args.b = [args.b]
+    elif len(args.b) == 3 and args.b[-1] < args.b[-2]:
+        args.b = np.arange(args.b[0], args.b[1], args.b[2])
+
     acc_list = []
     total_points = len(args.a) * len(args.b)
     counter = 0
