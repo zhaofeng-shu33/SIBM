@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{ctexart}
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algorithmic}
@@ -156,7 +156,55 @@
 	We can use simulation annealing to search for the optimal value of Equation \eqref{eq:opsig}. This method has been tried
 	by \cite{he2016fast}. The earliest literature for adoption is \cite{liu2010detecting}, empirically combined with other techniques to improve
 	the performance.
-	
+	\section{SDP Algorithms Proofs}
+	\begin{lemma}
+	Suppose $C$ is a following symmetric matrix with dim = $2n$.
+	$$C=\begin{bmatrix} d & \text{ } &  a & \vrule & \text{ } & \text{ }  & \text{ } \\
+\text{ } & \ddots & \text{ } & \vrule & \text{ }&  b & \text{ } \\
+a & \text{ } & d & \vrule & \text{ } & \text{ } & \text{ } \\ \hline
+ \text{ } & \text{ }  & \text{ } & \vrule & d & \text{ } & a \\
+ \text{ }& b & \text{ }  & \vrule & \text{ } & \ddots & \text{ } \\
+\text{ } & \text{ } & \text{ }& \vrule & a & \text{ } & d \\
+\end{bmatrix}$$,
+then the characteristic polynomial function is $(\lambda - d + a)^{2n-2} (\lambda - d + a - na - nb)
+ (\lambda - d + a - na + nb)$. $d + (n-1)a+ nb$ corresponds to the all-one eigenvector while 
+ $d +(n-1)a -nb$ corresponds to the eigenvector $g=(1,\dots, 1, -1, \dots, -1)$.
+\end{lemma}
+\begin{proof}
+Let $d' = d-a, e$ is the all-one vector, then the matrix $\lambda I_{2n} - C$ can be written in block form:
+$$
+\lambda I_{2n} - C = \begin{bmatrix}
+(\lambda -d') I_n - a ee^T & -b ee^T \\
+-bee^T & (\lambda -d') I_n - a ee^T
+\end{bmatrix}
+$$
+Using Woodbury matrix inverse we can compute
+$$
+[(\lambda -d') I_n - a ee^T]^{-1} = (\lambda - d')^{-1} [I_n - \frac{a}{na - \lambda + d'} ee^T]
+$$
+Using the block matrix formula for determinate, i.e.
+$$
+\begin{vmatrix}
+A & B \\
+C & D
+\end{vmatrix} = |D| \times |A-BD^{-1}C|
+$$
+we further have
+$$
+|\lambda I_{2n} - C| = |(\lambda -d') I_n - a ee^T| |(\lambda - d')I_n + \kappa ee^T|
+$$
+where
+\begin{align*}
+\kappa &= -a - \frac{b^2}{\lambda - d'} e^T (I_n - \frac{a}{na-\lambda + d'}ee^T)e \\
+&= -a  - \frac{b^2 n}{\lambda - na - d'}
+\end{align*}
+Further for matrix of the form $(x-y)I_n + yee^T$, its determant can be computed explictly
+as $|(x-y)I_n + yee^T|=(x-y)^{n-1}(x+(n-1)y)$ (See Example 1.5.9 of \cite{ad_li}.
+Therefore, we can finally get the characteristic function:
+$$
+|\lambda I_{2n} - C| = (\lambda -d')^{2n-2} [(\lambda - d' - na)^2-n^2b^2]
+$$
+\end{proof}
 	\appendix
 	\section{Proofs}
 	\begin{lemma}
