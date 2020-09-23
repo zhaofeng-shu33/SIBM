@@ -754,7 +754,7 @@ L_{SBM}=\Dp-\Dm-A
 \begin{lemma} \label{lemma:lemma1SDP}
 If
 \begin{equation}
-2L_{SBM} +I_n-\1\1^T \succeq 0 \text{ and } \lambda_2\left(2L_{SBM} +I_n-\1\1^T\right)>0 \label{SDP:condition}
+2L_{SBM} +I_n + \1\1^T \succeq 0 \text{ and } \lambda_2\left(2L_{SBM} +I_n + \1\1^T\right)>0 \label{SDP:condition}
 \end{equation} 
 then $gg^T$ is the unique solution to the SDP (\ref{SDP:mainSDP}).
 \end{lemma}
@@ -788,15 +788,15 @@ Define a correct (resp. incorrect) edge to be an edge between two nodes in the s
 &= (\Dp)_{ii}+\left(\frac{n}{2}-(\Dm)_{ii}\right) - \left(\frac{n}{2}-1-(\Dp)_{ii}\right) - (\Dm)_{ii}\\
 &=2\left((\Dp)_{ii}-(\Dm)_{ii}\right)+1
 \end{align}
-Hence: $\tr\left(Bgg^T\right)=\tr\left(2\left(\Dp-\Dm\right)+I_n\right)$ so $Y=2\left(\Dp-\Dm\right)+I_n$ verifies $\tr(Bgg^T)=\tr(Y)$ and, thus defined, is diagonal. As long as $2\left(\Dp-\Dm\right)+I_n \succeq B$, or in other words, $2L_{SBM} +I_n-\1\1^T \succeq 0$, we can then conclude that $gg^T$ is an optimal solution for SDP (\ref{SDP:mainSDP}). \\
+Hence: $\tr\left(Bgg^T\right)=\tr\left(2\left(\Dp-\Dm\right)+I_n\right)$ so $Y=2\left(\Dp-\Dm\right)+I_n$ verifies $\tr(Bgg^T)=\tr(Y)$ and, thus defined, is diagonal. As long as $2\left(\Dp-\Dm\right)+I_n \succeq B$, or in other words, $2L_{SBM} +I_n + \1\1^T \succeq 0$, we can then conclude that $gg^T$ is an optimal solution for SDP (\ref{SDP:mainSDP}). \\
 
-The second part of condition (\ref{SDP:condition}) ensures that $gg^T$ is the unique solution to SDP (\ref{SDP:mainSDP}). Suppose that $X^*$ is another optimal solution to SDP (\ref{SDP:mainSDP}), then $\tr\left(X^*\left(2\left(\Dp-\Dm\right)+I_n-B\right)\right)=Tr \left( X^*\left(2L_{SBM} +I_n-\1\1^T\right)\right)=0$ from complementary slackness and $X^* \succeq 0$.  By assumption, the second smallest eigenvalue of  $2L_{SBM} +I_n-\1\1^T$ is non-zero. This entails that $g$ spans all of its null space. Combining this with complementary slackness, the fact that $X^* \succeq 0$ and $2L_{SBM} +I_n-\1\1^T \succeq 0$, we obtain that $X^*$ needs to be a multiple of $gg^T$. Since $X^*_{ii}=1$ we must have $X^*=gg^T$.
+The second part of condition (\ref{SDP:condition}) ensures that $gg^T$ is the unique solution to SDP (\ref{SDP:mainSDP}). Suppose that $X^*$ is another optimal solution to SDP (\ref{SDP:mainSDP}), then $\tr\left(X^*\left(2\left(\Dp-\Dm\right)+I_n-B\right)\right)=Tr \left( X^*\left(2L_{SBM} +I_n + \1\1^T\right)\right)=0$ from complementary slackness and $X^* \succeq 0$.  By assumption, the second smallest eigenvalue of  $2L_{SBM} +I_n + \1\1^T$ is non-zero. This entails that $g$ spans all of its null space. Combining this with complementary slackness, the fact that $X^* \succeq 0$ and $2L_{SBM} +I_n + \1\1^T \succeq 0$, we obtain that $X^*$ needs to be a multiple of $gg^T$. Since $X^*_{ii}=1$ we must have $X^*=gg^T$.
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{theorem:main_SDP_provenintheappendix}]
 
 
-Given Lemma (\ref{lemma:lemma1SDP}), the next natural step would be to control the eigenvalues of $ 2L_{SBM} +I_n-\1\1^T$  when $n \rightarrow \infty$. We want to use Benstein's inequality to do this; to make its application easier, we rewrite $2L_{SBM} +I_n-\1\1^T$ as a linear combination of elementary deterministic matrices with random coefficients.
+Given Lemma (\ref{lemma:lemma1SDP}), the next natural step would be to control the eigenvalues of $ 2L_{SBM} +I_n + \1\1^T$  when $n \rightarrow \infty$. We want to use Benstein's inequality to do this; to make its application easier, we rewrite $2L_{SBM} +I_n+\1\1^T$ as a linear combination of elementary deterministic matrices with random coefficients.
 Define
 \begin{align}
 \alpha^+_{ij}=\begin{cases} 1 & \text{wp }\A \\ -1 & \text{wp } 1-\A \end{cases}\\
@@ -811,7 +811,7 @@ Define
 where $e_i$ (resp. $e_j$) is the vector of all zeros except the $i^{th}$ (resp. $j^{th}$) coefficient which is 1. 
 Using these definitions, we can then write $2L_{SBM} +I_n-\1\1^T$ as the difference of two matrices $C$ and $\Gamma$ where $\Gamma$ is a zero-expectation matrix and $C$, a deterministic matrix that corresponds to the expectation, ie
 \begin{align}
-2L_{SBM} +I_n-\1\1^T &= \sum_{i<j, j \in S(i)} \alpha^+_{ij} \Delta^+_{ij}+\sum_{i<j, j \notin S(i)} \alpha^-_{ij} \Delta^-_{ij}\\
+2L_{SBM} +I_n+\1\1^T &= \sum_{i<j, j \in S(i)} \alpha^+_{ij} \Delta^+_{ij}+\sum_{i<j, j \notin S(i)} \alpha^-_{ij} \Delta^-_{ij}\\
 &= C - \Gamma
 \end{align}
 where
