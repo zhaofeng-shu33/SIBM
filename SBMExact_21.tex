@@ -809,7 +809,7 @@ Define
 \Delta^-_{ij}&=-(e_i+e_j)(e_i+e_j)^T
 \end{align}
 where $e_i$ (resp. $e_j$) is the vector of all zeros except the $i^{th}$ (resp. $j^{th}$) coefficient which is 1. 
-Using these definitions, we can then write $2L_{SBM} +I_n-\1\1^T$ as the difference of two matrices $C$ and $\Gamma$ where $\Gamma$ is a zero-expectation matrix and $C$, a deterministic matrix that corresponds to the expectation, ie
+Using these definitions, we can then write $2L_{SBM} +I_n+\1\1^T$ as the difference of two matrices $C$ and $\Gamma$ where $\Gamma$ is a zero-expectation matrix and $C$, a deterministic matrix that corresponds to the expectation, ie
 \begin{align}
 2L_{SBM} +I_n+\1\1^T &= \sum_{i<j, j \in S(i)} \alpha^+_{ij} \Delta^+_{ij}+\sum_{i<j, j \notin S(i)} \alpha^-_{ij} \Delta^-_{ij}\\
 &= C - \Gamma
@@ -1454,7 +1454,7 @@ For n big enough, $\p\left(n-2\beta \log(n) \leq \lambda_{\max}(\Gamma^{\1})\rig
 &= Q^T \left( \sum_{i<j, j \in S(i)}\left(2\A-1- \alpha_{ij}^+\right)\Delta^+_{ij}+\sum_{i<j, j \notin S(i)} \left(2\B-1 -\alpha_{ij}^-\right) \Delta^-_{ij} \right) Q \\
 &= \sum_{i<j, j \notin S(i)}  -\frac{4}{n}\cdot \left(2\B-1 -\alpha_{ij}^-\right)Q
 \end{align}
-using the fact that $\Delta_{ij}^+Q=0_{n}$ and the fact that $Q^T \Delta_{ij}^- Q =-\frac{4}{n}Q$. \\
+using the fact that $Q^T\Delta_{ij}^+Q=0_{n}$ and the fact that $Q^T \Delta_{ij}^- Q =-\frac{4}{n}Q$. \\
 
 We have
 \begin{align}
