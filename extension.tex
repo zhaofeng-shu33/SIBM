@@ -323,7 +323,7 @@ $$
 P_{\sigma | G}(\dist(\sigma, X) = 1) > n^{\tilde{g}(\beta)/2}P_{\sigma | G}(\sigma = X)\label{eq:betastar_xx}
 $$
 decreases faster than $2n^{\tilde{g}(\beta)/4}$.
-Similar techniques shows that $P_{\sigma | G}(\dist(\sigma, X) = m)> n^{m\tilde{g(\beta)}/2}P_{\sigma | G}(\sigma = X)$
+Similar techniques shows that $P_{\sigma | G}(\dist(\sigma, X) = m)> n^{m\tilde{g}(\beta)/2}P_{\sigma | G}(\sigma = X)$
 decreases faster than $2(k-1)^m n^{m\tilde{g}(\beta)/4}$. Therefore, $P_{\sigma | G}(\dist(\sigma, X) > 1) < n^{\tilde{g}(\beta)/2} = o(1)$ by summing geometric series.
 
 \subsection{Proof for $\beta\le\beta^\ast$: Structural results and tight concentration}
@@ -497,7 +497,7 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	\end{align*}
 \end{proof}
 \begin{lemma}\label{lem:minus}
-	For SSBM$(n,k,p,q)$, suppose the ground truth label is $X$ while $\bar{\sigma}$ differs from $X$ in $I$ coordinate.
+	For SSBM$(n,k,p,q)$, suppose the ground truth label is $X$ while $\bar{\sigma}$ differs from $X$ in $|\cI|$ coordinate.
 	Let $I_{ij} = |\{r\in [n] | X_r = w^i, \sigma_r = w^j \}$ for $i\neq j$ and $I_{ii} = 0$.
 	Then
 	\begin{equation}\label{eq:general_expansion}
@@ -506,8 +506,8 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	where 
 	\begin{align}
 	N_{\bar{\sigma}} &= \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 \label{eq:N_w} \\
-	B_{\bar{\sigma}} & \sim Binom(\frac{n}{k}I + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
-	A_{\bar{\sigma}} & \sim Binom(\frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
+	B_{\bar{\sigma}} & \sim Binom(\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
+	A_{\bar{\sigma}} & \sim Binom(\frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
 	\end{align}
 	We write the row sum $I_i = \sum_{j=0}^{k-1} I_{ij}$ and column sum $I'_i = \sum_{j=0}^{k-1} I_{ji}$.
 \end{lemma}
@@ -551,7 +551,7 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	\end{enumerate}
 	If we have $\sigma = \bar{\sigma}$ which belongs to neither of the above two cases, then from condition 1 we have
 	$I_{ij} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ or $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
-	Since $\sum_{i,j} I_{ij} = I \geq \frac{n}{\log^{\delta} n}$ there should exist $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
+	Since $\sum_{i,j} I_{ij} = |\cI| \geq \frac{n}{\log^{\delta} n}$ there should exist $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
 	Under such condition, if $I_{ji} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
 	Let $X'$ be the vector which exchanges value of $w^i$ with $w^j$ in $X$. We consider
 	\begin{align*}
@@ -567,11 +567,11 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	Under condition 1, we can get a lower bound on $|A_{\bar{\sigma}}|$ from \eqref{eq:A_w}. Let $I'_{ij} = I_{ij}$ for $i\neq j$ and
 	$I'_{ii} = \frac{n}{k} - I_i$. Then we can simply $|A_{\bar{\sigma}}|$ as:
 	\begin{align*}
-	|A_{\bar{\sigma}}| &= \frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}) \\
+	|A_{\bar{\sigma}}| &= \frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}) \\
 	&= \frac{n^2}{2k} - \frac{1}{2} \sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij}
 	\end{align*}
 	We further have $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{n}{k} - I_{ij})^2 + I^2_{ij}$ where
-	$I_{ij}$ satisfies condition 1. Therefore $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2
+	$I_{ij}$ satisfies condition 1. Therefore, $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2
 	+ (\frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{k} - \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
 	As a result, $A_{\bar{\sigma}} \geq \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
 	
@@ -675,19 +675,7 @@ $$
 \sum_{\cI\subseteq[n],1\le |\cI|\le kn/\log^{1/3}(n)}
 \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} =o(1) .
 $$
-In order to prove the existence of such a set $\cG$, we define two functions
-\begin{equation}  \label{eq:gbt}
-\begin{aligned}
-g(\beta) & := \frac{b e^{k\beta}+a e^{-k\beta}}{k}-\frac{a+b}{k}+1 , \\
-\tilde{g}(\beta) & :=\left\{
-\begin{array}{cc}
-  g(\beta)   & \text{~if~} \beta< \frac{1}{2k}\log\frac{a}{b} \\
-  g(\frac{1}{2k}\log\frac{a}{b})=1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}  & \text{~if~} \beta\ge \frac{1}{2k}\log\frac{a}{b}
-\end{array}
-\right. ,
-\end{aligned}
-\end{equation}
-and we will prove in Lemma~\ref{lm:ele} below (see the end of Section~\ref{sect:k=1}) that $\tilde{g}(\beta)<0$ under the conditions of Proposition~\ref{prop:tt} (i.e., $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\beta>\beta^\ast$).
+
 The existence of $\cG$ is guaranteed by the following proposition:
 \begin{proposition} \label{prop:big}
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\beta>\beta^\ast$ and $\alpha>b\beta$. 
@@ -711,24 +699,20 @@ $$
 With the $\cG^{(r)}$'s given by Proposition~\ref{prop:big}, we
 define 
 $$
-\cG:=\bigcap_{r=1}^{kn/\log^{1/3}(n)} \cG^{(r)} .
+\cG:=\bigcap_{r=1}^{kn/\log^{\delta}(n)} \cG^{(r)} .
 $$
 By the union bound,
 $$
-P(G\in\cG)\ge 1-2 \sum_{r=1}^{kn/\log^{1/3}(n)} (k-1)^rn^{r\tilde{g}(\beta)/8}
-> 1- \frac{2 (k-1)n^{\tilde{g}(\beta)/8}}{1-(k-1)n^{\tilde{g}(\beta)/8}}
+P(G\in\cG)\ge 1-2 \sum_{r=1}^{kn/\log^{\delta}(n)} (k-1)^rn^{r\tilde{g}(\beta)/4}
+> 1- \frac{2 (k-1)n^{\tilde{g}(\beta)/4}}{1-(k-1)n^{\tilde{g}(\beta)/4}}
 =1-o(1),
 $$
 where the last equality follows from $\tilde{g}(\beta)<0$. Moreover, for every $G\in\cG$,
 \begin{align*}
-& \sum_{\cI\subseteq[n],1\le |\cI|\le kn/\log^{1/3}(n)}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} =
-\sum_{r=1}^{kn/\log^{1/3}(n)}
-\hspace*{0.05in}
-\sum_{\cI\subseteq[n],|\cI|=r}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
-{P_{\sigma|G}(\sigma=X)}  \\
-& < \sum_{r=1}^{kn/\log^{1/3}(n)}
+\sum_{r=1}^{n/\log^{\delta}(n)}
+\frac{P_{\sigma|G}(\dist(\sigma, X) = r )}
+{P_{\sigma|G}(\sigma=X)}
+< \sum_{r=1}^{n/\log^{\delta}(n)}
 n^{r \tilde{g}(\beta) /2}
 < \frac{n^{\tilde{g}(\beta)/2}}{1-n^{\tilde{g}(\beta)/2}} =o(1) .
 \end{align*}
@@ -751,10 +735,10 @@ where $v \in \bar{W}^r$ and $|\Xi(v)|=\binom{n}{r}$.
 Following the main idea in Section \ref{sect:why}, we consider an enhanced conclusion of Lemma \ref{lem:fb}.
 \begin{lemma}\label{lem:enhanced_fb}
 	For $t\in [\frac{1}{k}(b-a), 0]$
-	and $ I \le n/\log^{\delta}(n)$
+	and $ |\cI| \le n/\log^{\delta}(n)$
 	\begin{equation} \label{eq:upmpt}
 	\begin{aligned}
-	& P(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t I \log(n))  \\
+	& P(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t |\cI| \log(n))  \\
 	\le & \exp\Big(I\log(n)
 	\Big(f_{\beta}(t) - \beta t -1	+ O(\log^{-\delta}(n)) \Big)\Big) .
 	\end{aligned}
@@ -762,32 +746,32 @@ Following the main idea in Section \ref{sect:why}, we consider an enhanced concl
 \end{lemma}
 \begin{proof}
 	By definition, $A_{\bar{\sigma}}\sim\Binom(|A_{\bar{\sigma}}|,\frac{a\log(n)}{n})$ and
-	$B_{\bar{\sigma}}\sim\Binom(|B_{\bar{\sigma}}|,\frac{b\log(n)}{n})$, and they are independent. For $s>0$, the moment generating function of $B_{\bar{\sigma}}-A_{\bar{\sigma}}$ for $ I \le n/\log^{\delta}(n)$ can be bounded from above as follows:
+	$B_{\bar{\sigma}}\sim\Binom(|B_{\bar{\sigma}}|,\frac{b\log(n)}{n})$, and they are independent. For $s>0$, the moment generating function of $B_{\bar{\sigma}}-A_{\bar{\sigma}}$ for $ |\cI| \le n/\log^{\delta}(n)$ can be bounded from above as follows:
 	\begin{align*}
 	 E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}] 
 	& =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{|B_{\bar{\sigma}}|}
 	\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{|A_{\bar{\sigma}}|}  \\
 	& = \exp(\frac{\log n}{n}(|B_{\bar{\sigma}}|(be^s - b) + |A_{\bar{\sigma}}|(ae^{-s}-a) + |B_{\bar{\sigma}}|O(\frac{\log n}{n}) ))
 	\end{align*}
-	Using the conclusion that $|B_{\bar{\sigma}}|=\frac{n}{k}I + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji})$ and
-	$|A_{\bar{\sigma}}| = \frac{n}{k}I - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij})$.
-	By estimating the order of residual term, $|A_{\bar{\sigma}}| = \frac{n}{k}I + O(I^2)$,
-	 $|B_{\bar{\sigma}}| = \frac{n}{k}I + O(I^2)$.
+	Using the conclusion that $|B_{\bar{\sigma}}|=\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji})$ and
+	$|A_{\bar{\sigma}}| = \frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij})$.
+	By estimating the order of residual term, $|A_{\bar{\sigma}}| = \frac{n}{k}|\cI| + O(I^2)$,
+	 $|B_{\bar{\sigma}}| = \frac{n}{k}|\cI| + O(I^2)$.
 	 
 	\begin{align*}
 	E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}] & \le
-	\exp(\frac{\log n}{n}((\frac{n}{k}I + O(I^2))(be^s - b) +(\frac{n}{k} I + O(I^2))(ae^{-s}-a) + \frac{n}{k}IO(\frac{\log n}{n}) ))
+	\exp(\frac{\log n}{n}((\frac{n}{k}|\cI| + O(|\cI|^2))(be^s - b) +(\frac{n}{k} |\cI| + O(|\cI|^2))(ae^{-s}-a) + \frac{n}{k}|\cI|O(\frac{\log n}{n}) ))
 	 \\
 	& =
-	\exp\Big(\frac{I \log(n)}{k}(a e^{-s}+b e^s-a-b +
+	\exp\Big(\frac{|\cI| \log(n)}{k}(a e^{-s}+b e^s-a-b +
 	O(\log^{-\delta}(n))) \Big),
 	\end{align*}
-	The last equality follows from the assumption that $ I \le n/\log^{\delta}(n)$.
+	The last equality follows from the assumption that $ |\cI| \le n/\log^{\delta}(n)$.
 	By Chernoff bound, for $s>0$, we have
 	\begin{align*} 
-	& P(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t I \log(n))\le
-	\frac{E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}]}{e^{st I \log(n)}}  \\
-	\le & \exp\Big(\frac{I\log(n)}{k} \big(a e^{-s}+b e^s -kst -a-b
+	& P(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t |\cI| \log(n))\le
+	\frac{E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}]}{e^{st \log(n)}}  \\
+	\le & \exp\Big(\frac{|\cI|\log(n)}{k} \big(a e^{-s}+b e^s -kst -a-b
 	+ O(\log^{-\delta}(n)) \big)\Big)  .
 	\end{align*}
 	The rest of the proof is to find $s^\ast$ to minimize $a e^{-s}+b e^s -kst$ and take $s^\ast$ into the above bound. 
