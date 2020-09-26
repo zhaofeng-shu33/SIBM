@@ -206,8 +206,8 @@ happens in probability $1-o(1)$ for all such $\bar{\sigma}$.
 Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{\delta} n}) \leq
 (k-1)\sum_{\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}}\exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)
 \leq (k-1)k^n \exp(-Cn) = o(1)$ for $C> \log k$, we conclude that
-$\dist(\sigma^{(i)}, \Lambda)< kn/\log^{\delta}(n)$ for all $i\in[m]$ with probability $1-o(1)$ if $\alpha<b\beta$. See Proposition~\ref{prop:1} for a rigorous proof.
-In this case, each sample only take $\sum_{j=0}^{kn/\log^{\delta}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{kn/\log^{\delta}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{\delta}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{\delta}(n)}{\log\log(n)})\ge \Omega(\log^{\delta'}(n))$ samples for $\delta'<\delta$. see Proposition~\ref{prop:ab} for a rigorous proof.
+$\dist(\sigma^{(i)}, \Lambda)< n/\log^{\delta}(n)$ for all $i\in[m]$ with probability $1-o(1)$ if $\alpha<b\beta$. See Proposition~\ref{prop:1} for a rigorous proof.
+In this case, each sample only take $\sum_{j=0}^{n/\log^{\delta}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{n/\log^{\delta}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{\delta}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{\delta}(n)}{\log\log(n)})\ge \Omega(\log^{\delta'}(n))$ samples for $\delta'<\delta$. see Proposition~\ref{prop:ab} for a rigorous proof.
 
 
 For the rest of this section, we will focus on the case $\alpha>b\beta$ and establish the sharp threshold on the sample complexity. We first analyze the typical behavior of one sample and explain how to prove Theorem~\ref{thm:wt3}. Then we use the method developed for the one sample case to analyze the distribution of multiple samples, which allows us to prove Theorem~\ref{thm:wt2}. Note that Theorem~\ref{thm:wt1} follows directly from Theorem~\ref{thm:wt2}.
@@ -337,22 +337,22 @@ n^{k (g(\beta)-1+o(1))}
 = \binom{n}{r} (k-1)^r n^{r (g(\beta)-1+o(1))}
 \end{equation}
 In the last inequality of \eqref{eq:nn}, we use a coarse bound $\binom{n}{r}<n^r$. Now let us use a tighter bound $\binom{n}{r}<n^r/(r!)$. 
-For $r>n^{g(\beta)+\delta}$, we have
+For $r>n^{\theta}$, we have
 $
 r!>(r/e)^r
 =\exp(r\log(r)-r)
->\exp(r(g(\beta)+\delta)\log(n)-r)
-=n^{r(g(\beta)+\delta-o(1))} .
+>\exp(r(\theta)\log(n)-r)
+=n^{r(\theta-o(1))} .
 $
-Taking these into the last inequality of \eqref{eq:nn}, we obtain that for all $r>n^{g(\beta)+\delta}$,
+Taking these into the last inequality of \eqref{eq:nn}, we obtain that for all $r>n^{\theta}$,
 $$
 E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} \Big]
 \le  (k-1)^r\binom{n}{k} n^{k (g(\beta)-1+o(1))}
 < n^{r (g(\beta)+o(1))} /(r!) 
 < (k-1)^rn^{-r(\delta-o(1))} .
 $$
-This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{g(\beta)+\delta} ) = 1- o(1)$ for any $\delta>0$. Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, we have $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$. This improves upon the upper bound 
-$\dist(\sigma, \Gamma)< kn/\log^{1/3}(n)$ we obtained using spectral method at the beginning of this section.
+This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for any $\delta>0$. Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, we have $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$. This improves upon the upper bound 
+$\dist(\sigma, \Gamma)< n/\log^{\delta}(n)$ we obtained using spectral method at the beginning of this section.
 
 More importantly, this allows us to prove a powerful structural result. (All the discussions below are conditioning on the event $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma\backslash\{X\}$.) We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
 Conditioning on the event every vertex has at most $z$ ``bad" neighbors, it is easy to show that $P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1}\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor $\exp(k^2\beta z)$.
@@ -609,21 +609,21 @@ If $\alpha<b\beta$, then it is not possible to recover $X$ from the samples when
 
 \begin{proof}
 First observe that there are $\frac{n!}{(n/k)^k}$ balanced partitions, so one needs at least $\log_k \frac{n!}{(n/k)^k}=\Theta(n)$ bits to recover $X$.
-By Proposition~\ref{prop:1}, with probability $1-o(n^{-4})$, $\dist(\sigma^{(i)}, \Theta)< kn/\log^{\delta}(n)$
+By Proposition~\ref{prop:1}, with probability $1-o(n^{-4})$, $\dist(\sigma^{(i)}, \Theta)< n/\log^{\delta}(n)$
 for all $i\in[m]$. Therefore, each $\sigma^{(i)}$ takes at most
 $$
-T:=\sum_{j=0}^{kn/\log^{\delta}(n)} \binom{n}{j}(k-1)^j
+T:=\sum_{j=0}^{n/\log^{\delta}(n)} \binom{n}{j}(k-1)^j
 $$
 values, so each $\sigma^{(i)}$ contains at most $\log_k T$ bits of information. Next we prove that $\log_k T=O(\frac{\log\log(n)}{\log^{\delta}(n)} n)$, so we need at least $\Omega(\frac{\log^{\delta}(n)}{\log\log(n)})$ samples to recover $X$, which proves the proposition.
 
 In order to upper bound $T$, we define a binomial random variable $Y\sim\Binom(n,\frac{k-1}{k})$. Then
 $$
-T=k^n P(Y\le kn/\log^{\delta}(n))
-= k^n P(-Y\ge -kn/\log^{\delta}(n)).
+T=k^n P(Y\le n/\log^{\delta}(n))
+= k^n P(-Y\ge -n/\log^{\delta}(n)).
 $$
 The moment generating function of $-Y$ is $(\frac{1}{k}+\frac{k-1}{k}e^{-s})^n$. By Chernoff bound, for any $s>0$,
 $$
-P(-Y\ge - kn/\log^{1/3}(n)) \le
+P(-Y\ge - n/\log^{\delta}(n)) \le
 (\frac{1}{k}+\frac{k-1}{k}e^{-s})^n
 e^{ksn/\log^{\delta}(n)}
 = k^{-n} (1+(k-1)e^{-s})^n e^{ksn/\log^{\delta}(n)} .
@@ -651,20 +651,20 @@ P_{\SIBM}(\sigma \in \Gamma)=1-o(1) .
 $$
 \end{proposition}
 
-We have proved in Proposition~\ref{prop:1} that if $\alpha>b\beta$, then $\dist(\sigma \in \Gamma) \le kn/\log^{1/3}(n)$
+We have proved in Proposition~\ref{prop:1} that if $\alpha>b\beta$, then $\dist(\sigma \in \Gamma) \le n/\log^{\delta}(n)$
  with probability $1-o(1)$.
 Then Proposition~\ref{prop:1} tells us that
 $$
 \sum_{\cI\subseteq[n],~
-kn/\log^{1/3}(n)<|\cI|<n-kn/\log^{1/3}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)})  = o(1) .
+n/\log^{\delta}(n)<|\cI|<n-n/\log^{\delta}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)})  = o(1) .
 $$
 By definition, $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$. Therefore, 
 $$
-\sum_{\cI\subseteq[n],1\le |\cI|\le kn/\log^{1/3}(n)} P_{\SIBM}(\sigma=f(X^{(\sim\cI)})) =\sum_{\cI\subseteq[n],1\le |\cI|\le kn/\log^{1/3}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)}).
+\sum_{\cI\subseteq[n],1\le |\cI|\le n/\log^{\delta}(n)} P_{\SIBM}(\sigma=f(X^{(\sim\cI)})) =\sum_{\cI\subseteq[n],1\le |\cI|\le n/\log^{\delta}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)}).
 $$
 As a consequence, to prove Proposition~\ref{prop:tt}, we only need to show that
 $$
-\sum_{\cI\subseteq[n],1\le |\cI|\le kn/\log^{1/3}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)}) 
+\sum_{\cI\subseteq[n],1\le |\cI|\le n/\log^{\delta}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)}) 
 = o(1) .
 $$
 This is further equivalent to proving that there exists a set $\cG$ such that
@@ -675,7 +675,7 @@ $P(G\in\cG)=1-o(1)$, where the probability is calculated according to the $\SSBM
 \noindent (ii)
 For every $G\in\cG$,
 $$
-\sum_{\cI\subseteq[n],1\le |\cI|\le kn/\log^{1/3}(n)}
+\sum_{\cI\subseteq[n],1\le |\cI|\le n/\log^{\delta}(n)}
 \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} =o(1) .
 $$
 
@@ -702,11 +702,11 @@ $$
 With the $\cG^{(r)}$'s given by Proposition~\ref{prop:big}, we
 define 
 $$
-\cG:=\bigcap_{r=1}^{kn/\log^{\delta}(n)} \cG^{(r)} .
+\cG:=\bigcap_{r=1}^{n/\log^{\delta}(n)} \cG^{(r)} .
 $$
 By the union bound,
 $$
-P(G\in\cG)\ge 1-2 \sum_{r=1}^{kn/\log^{\delta}(n)} (k-1)^rn^{r\tilde{g}(\beta)/4}
+P(G\in\cG)\ge 1-2 \sum_{r=1}^{n/\log^{\delta}(n)} (k-1)^rn^{r\tilde{g}(\beta)/4}
 > 1- \frac{2 (k-1)n^{\tilde{g}(\beta)/4}}{1-(k-1)n^{\tilde{g}(\beta)/4}}
 =1-o(1),
 $$
@@ -864,96 +864,83 @@ Let
 $$
 (X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
 $$
-Then for any (arbitrarily small) $\delta>0$ and any (arbitrarily large) $r>0$, there exists $n_0(\delta, r)$ such that for all even integers $n>n_0(\delta, r)$,
+Then for any $g(\beta) < \theta < 1$ and any (arbitrarily large) $r>0$, there exists $n_0(\theta, r)$ such that for all even integers $n>n_0(\theta, r)$,
 $$
-P_{\SIBM} \Big(\dist(\sigma^{(i)},S_k(X))<n^{g(\beta)+\delta}
+P_{\SIBM} \Big(\dist(\sigma^{(i)},S_k(X))<n^{\theta}
 \text{~for all~} i\in[m] \Big) \ge 1- n^{-r} .
 $$
 \end{proposition}
 
-By Lemma~\ref{lm:ele} (vi), we know that $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, so we can always choose a $\delta>0$ such that $g(\beta)+\delta<1$.
+By Lemma~\ref{lm:ele} (vi), we know that $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, so we can always choose a $\theta$ such that $g(\beta)<\theta<1$.
 Then Proposition~\ref{prop:43} implies that when $\beta\le\beta^\ast$,
 with probability $1-o(1)$ all samples differ from $S_k(X)$ in $O(n^\theta)$ coordinates for some $\theta<1$.
 
 
 Since we assume that $m$ is a constant that is independent of $n$,
 we only need to prove Proposition~\ref{prop:43} for the special case of $m=1$, and the case of general values of $m$ follows immediately from this special case.
-Proposition~\ref{prop:1} tells us that if $\alpha>b\beta$, then $\dist(\sigma,\pm X) \le kn/\log^{1/3}(n)$
- with probability $1-n^{-2r}$ for any given $r>0$ and large enough $n$.
-Also note that
-\begin{align*}
- \sum_{\cI\subseteq[n],~
-n^{g(\beta)+\delta}
-\le |\cI|\le kn/\log^{1/3}(n)}
-\frac{P_{\sigma|G}(\sigma=f(X)^{(\sim\cI)})}{P_{\sigma|G}(\sigma=f(X))} 
-=  \sum_{\cI\subseteq[n],~
-n^{g(\beta)+\delta}
-\le |\cI|\le kn/\log^{1/3}(n)}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} .
-\end{align*}
-Therefore, to prove Proposition~\ref{prop:43}, we only need to show that given $r>0$, there exists a set $\cG_{\delta}$ such that the following two conditions hold for large enough $n$:  (i)
-$P(G\in\cG_{\delta})\ge 1-n^{-2r}$, and (ii)
-For every $G\in\cG_{\delta}$,
+Proposition~\ref{prop:1} tells us that if $\alpha>b\beta$, then $\dist(\sigma,S_k(X)) \le n/\log^{\delta}(n)$
+with probability $1-n^{-r}$ for any given $r>0$ and large enough $n$.
+To prove Proposition~\ref{prop:43}, we only need to show that given $r>0$, there exists a set $\cG_{\delta}$ such that the following two conditions hold for large enough $n$:  (i)
+$P(G\in\cG_{\theta})\ge 1-n^{-r}$, and (ii)
+For every $G\in\cG_{\theta}$,
 $$
-\sum_{\cI\subseteq[n],~
-n^{g(\beta)+\delta}
-\le |\cI|\le kn/\log^{1/3}(n)}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} \le n^{-2r} .
+\sum_{s=n^{\theta}}^{n/\log^{\delta}(n)}
+\frac{P_{\sigma|G}(\dist(\sigma, X)=s)}{P_{\sigma|G}(\sigma=X)} \le n^{-r} .
 $$
-The existence of $\cG_{\delta}$ is guaranteed by the following proposition:
+The existence of $\cG_{\theta}$ is guaranteed by the following proposition:
 \begin{proposition} \label{prop:xz}
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
 Let 
 $$
 (X,G,\sigma) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
 $$
-For any $\delta>0$, there exists $n_0(\delta)$ such that
-for every even integer $n>n_0(\delta)$ and
-every integer $n^{g(\beta)+\delta} \le s \le kn/\log^{1/3}(n)$,
-there is a set $\cG_{\delta}^{(s)}$ for which
+For any $g(\beta)<\theta<1$, there exists $n_0(\theta)$ such that
+for every even integer $n>n_0(\theta)$ and
+every integer $n^{\theta} \le s \le n/\log^{\delta}(n)$,
+there is a set $\cG_{\theta}^{(s)}$ for which
 
 \noindent (i)
-$P(G\in\cG_\delta^{(s)}) \ge 1- 2(k-1)^s n^{-s\delta'}$,
+$P(G\in\cG_\theta^{(s)}) \ge 1- 2(k-1)^s n^{-s\delta'}$,
 where $\delta':=\min(\frac{\delta}{8},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2}) >0$.
 
-\noindent (ii) For every $G\in\cG_\delta^{(s)}$,
+\noindent (ii) For every $G\in\cG_\theta^{(s)}$,
 $$
-\sum_{\cI\subseteq[n],|\cI|=s}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
+\frac{P_{\sigma|G}(\dist(\sigma,X) = s )}
 {P_{\sigma|G}(\sigma=X)} <
 n^{-s \delta /4} .
 $$
 \end{proposition}
-With the $\cG_\delta^{(s)}$'s given by Proposition~\ref{prop:xz}, we
+With the $\cG_\theta^{(s)}$'s given by Proposition~\ref{prop:xz}, we
 define 
 $$
-\cG_\delta:=\bigcap_{s=n^{g(\beta)+\delta}}^{kn/\log^{1/3}(n)} \cG_\delta^{(s)} .
+\cG_\theta:=\bigcap_{s=n^{\theta}}^{n/\log^{\delta}(n)} \cG_\theta^{(s)} .
 $$
 By the union bound,
 $$
-P(G\in\cG_\delta)\ge 1-2 \sum_{s=n^{g(\beta)+\delta}}^{kn/\log^{1/3}(n)} (k-1)^sn^{-s\delta'}
+P(G\in\cG_\theta)\ge 1-2 \sum_{s=n^{\theta}}^{n/\log^{\delta}(n)} (k-1)^sn^{-s\delta'}
 > 1-2 \sum_{s=\lceil 4r/\delta' \rceil}^{+\infty} (k-1)^sn^{-s\delta'}
 \ge 1- (k-1)^{\lceil 4r/\delta' \rceil}\frac{2 n^{-4r}}{1-n^{-\delta'}}
 >1-n^{-2r}
 $$
 for large enough $n$.
- Moreover, for every $G\in\cG_\delta$ and large enough $n$,
+ Moreover, for every $G\in\cG_\theta$ and large enough $n$,
 \begin{align*}
 & \sum_{\cI\subseteq[n],~~
-n^{g(\beta)+\delta}\le |\cI|\le kn/\log^{1/3}(n)}
+n^{\theta}\le |\cI|\le n/\log^{\delta}(n)}
 \frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} =
-\sum_{s=n^{g(\beta)+\delta}}^{2n/\log^{1/3}(n)}
+\sum_{s=n^{\theta}}^{2n/\log^{1/3}(n)}
 \hspace*{0.05in}
 \sum_{\cI\subseteq[n],|\cI|=s}
 \frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
 {P_{\sigma|G}(\sigma=X)}  \\
-& < \sum_{s=n^{g(\beta)+\delta}}^{2n/\log^{1/3}(n)}
+& < \sum_{s=n^{\theta}}^{2n/\log^{1/3}(n)}
 n^{-s \delta /4}
 < \sum_{s=\lceil 16r/\delta \rceil}^{+\infty}
 n^{-s \delta /4}
 \le \frac{n^{-4r}}{1-n^{-\delta /4}} < n^{-2r} .
 \end{align*}
-Thus we have shown that Proposition~\ref{prop:43} is implied by Proposition~\ref{prop:xz}. Now we are left to prove the latter proposition.
+Thus we have shown that Proposition~\ref{prop:43} is implied by Proposition~\ref{prop:xz}.
+\begin{proof}
 It turns out that all we need for the proof of Proposition~\ref{prop:xz} is a tighter inequality than \eqref{eq:wuh}.
 Recall that we obtain \eqref{eq:wuh} from \eqref{eq:3l} by using a coarse upper bound $\binom{n}{s}<n^s$.
 Here we use a tighter upper bound $\binom{n}{s}<n^s/(s!)$ in \eqref{eq:3l} and obtain that for
@@ -981,12 +968,12 @@ $f_{\beta}(t)\le \tilde{g}(\beta) \le g(\beta)$ for all $t\le 0$
 It is well known that\footnote{We know from the Taylor expansion that $e^x>x^k/(k!)$ for any $x>0$. Taking $x=k$ gives us $k!>(k/e)^k$.}
 $s!>(s/e)^s$
 for all positive integer $s$.
-Therefore, for $s>n^{g(\beta)+\delta}$, we have
+Therefore, for $s>n^{\theta}$, we have
 $$
 s!>(s/e)^s
 =\exp(s\log(s)-s)
->\exp(s(g(\beta)+\delta)\log(n)-s)
-=n^{s(g(\beta)+\delta-o(1))}
+>\exp(s(\theta)\log(n)-s)
+=n^{s(\theta-o(1))}
 $$
 Taking this into \eqref{eq:zm}, we obtain that $G\in\cG_1^{(s)}\cap\cG^{(s)}(\epsilon)$,
 $$
@@ -1017,6 +1004,8 @@ P(G\in\cG_{\delta}^{(k)})
 > 1- 2 (k-1)^s n^{-s\delta'},
 \end{align*}
 where the second inequality follows from  $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}< 0$, and the last inequality follows from the definition $\delta'=\min(\frac{\delta}{8},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2})$.
+\end{proof}
+
 \section{Samples differ from $\Gamma$ in $\Theta(n^{g(\beta)})$ coordinates when $\beta\le\beta^\ast$}  \label{sect:struct}
 Recall the definitions of $A^r_i$ in previous sections; see the beginning of Section~\ref{sect:k=1}. 
 By definition,
@@ -1324,11 +1313,11 @@ i.e., $\Lambda_i(G, z)$ consists of all the samples for which the number of ``ba
 	In Proposition~\ref{prop:43}, we have shown that
 	for any $\delta>0$ and any $r'>0$, there exists $n_0(\delta, r')$ such that for all even integers $n>n_0(\delta, r')$,
 	$$ 
-	P_{\SIBM} \Big(\dist(\sigma, \Gamma) \le n^{g(\beta)+\delta}
+	P_{\SIBM} \Big(\dist(\sigma, \Gamma) \le n^{\theta}
 	\Big) \ge 1- n^{-r'} .
 	$$
-	By Lemma~\ref{lm:ele} (vi), we know that $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, so we can always choose a $\delta>0$ such that $g(\beta)+\delta<1$.
-	Let $\theta:=g(\beta)+\delta<1$. Then for large enough $n$,
+	By Lemma~\ref{lm:ele} (vi), we know that $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, so we can always choose a $\delta>0$ such that $\theta<1$.
+	Let $\theta:=\theta<1$. Then for large enough $n$,
 	$$
 	P_{\SIBM} \Big(\dist(\sigma, \Gamma) \le n^{\theta} \Big) \ge 1- n^{-r'} .
 	$$
