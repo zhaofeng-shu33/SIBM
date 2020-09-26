@@ -1282,14 +1282,14 @@ By definition, $\sigma = X^{(\sim\cI)}\in  \Lambda_i(G,z)$ if and only if $|\cI\
 	\end{equation}
 	By \eqref{eq:isingma}, we have
 	\begin{align*}
-	& \frac{P_{\sigma|G}(\sigma=  \bar{\sigma}' ) } { P_{\sigma|G}(\sigma= \bar{\sigma}) } \\
+	 \frac{P_{\sigma|G}(\sigma=  \bar{\sigma}' ) } { P_{\sigma|G}(\sigma= \bar{\sigma}) }
 	= & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)
 	-\frac{\alpha\log(n)}{n}
 	\Big)
 	\\
-	= & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)+o(1) \Big)
+	\leq & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)+2z \Big)
 	\end{align*}
-	Taking \eqref{eq:oo} into this equation gives us \eqref{eq:qk} and completes the proof.
+	The other hand of the inequality can be proved similarly.
 \end{proof}
 \begin{remark}
 	From the proof we can see that $\Gamma_i$ can be replaced with $\Gamma$. Since $A_i^r - A_i^0 < 0$ with probability one when
@@ -1313,7 +1313,7 @@ By definition, $\sigma = X^{(\sim\cI)}\in  \Lambda_i(G,z)$ if and only if $|\cI\
 \noindent
 {\em Proof of Proposition~\ref{prop:nr}.}
 Recall that $\sigma^{(1)},\dots,\sigma^{(m)}$ are the samples of SIBM.
-At the beginning of this section, we have shown that after the alignment step in Algorithm~\ref{alg:ez}, with probability $1-O(n^{-r})$ for any constant $r>0$ $\dist(\sigma^{(j)}, f(X))=o(n)$ for all $j\in[m]$ and $f(X) \in \Gamma$. Without loss of generality, we assume that 
+Without loss of generality, we assume that 
 $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$. 
 
 Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG_{\good}$ such that
@@ -1321,59 +1321,57 @@ Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there 
 \noindent (i)
 $P(G\in\cG_{\good}) \ge 1- O(n^{-4})$.
 
-\noindent (ii) For every $G\in\cG_{\good}$, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$,
+\noindent (ii) For every $G\in\cG_{\good}$, for all $j\in[m]$,
 \begin{equation}  \label{eq:chui}
 P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
 \text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-\text{~for all~} j\in[m]  \big) 
+\text{~for all~} j\in[m]  \big)
 =1- O(n^{-4}) ,
 \end{equation}
 where we can choose $\theta$ to be any constant in the open interval $(g(\beta), 1)$.
-By Lemma~\ref{lm:et},
-$$
-P_{\sigma|G}(\sigma_i^{(j)} = \omega^r \cdot X_i \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} ) 
-\le  \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + kz) \Big)
-$$
-for all $i\in[n]$ and all $j\in[m]$.
 For $i\in[n]$, define 
 $$
-\Phi_i := |\{j\in[m]: \sigma_i^{(j)} = \omega^r \cdot X_i\}|
+\Phi^r_i := |\{j\in[m]: \sigma_i^{(j)} = \omega^r \cdot X_i\}|
 $$
 as the number of samples for which $\sigma_i^{(j)} \neq X_i$.
-For an integer $u\in[m]$, we have
+For an integer $u\in[m]$, we consider
+%To give an upper bound of $P_{\SIBM} \big( \Phi_i \ge u \big)$ we consider:
+\begin{align*}
+P_{\SIBM}( \exists i \in [n], \Phi^r_i \ge u \big) \leq &P_{\SIBM}( \Phi^r_i \ge u , G \in \cG_{\good}) + P(G \not\in \cG_{\good}) \\
+\leq & E_G[P_{\sigma |G}(\Phi^r_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m])]+ O(n^{-4})
+\end{align*}
+For the first term, since
 $$
-\{\Phi_i \ge u\} \subseteq
+\{\Phi^r_i \ge u\} \subseteq
 \bigcup_{\cJ\subseteq[m], |\cJ|=u}
 \{\sigma_i^{(j)} = \omega^r \cdot X_i \text{~for all~} j\in \cJ\} .
 $$
-Therefore, by the union bound,
+by the union bound,
 \begin{align*}
-& P_{\sigma|G}( \Phi_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m] ) \\
+& P_{\sigma|G}( \Phi^r_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m] ) \\
 \le &  \binom{m}{u} \exp\Big(u\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
-\quad\quad\quad\quad\text{~for all~} i\in[n] .
+\quad\quad\text{~for all~} i\in[n] \textrm{ by Lemma~\ref{lm:et}}.
 \end{align*}
 Combining this with \eqref{eq:chui}, we obtain that for every $G\in\cG_{\good}$, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$,
 $$
-P_{\sigma|G} \big( \Phi_i \ge u \big) \le  \binom{m}{u} \exp\Big(ku \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + kz) \Big) + O(n^{-4}).
+P_{\sigma|G} \big( \Phi^r_i \ge u \big) \le  \binom{m}{u} \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big) + O(n^{-4}).
 $$
 Using the union bound, we have
 $$
-P_{\sigma|G} \big(\exists i \text{~s.t.~} \Phi_i \ge u \big) \le 
-C  \sum_{i=1}^n \exp\Big(ku \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) + o(1) ,
+P_{\sigma|G} \big(\exists i \text{~s.t.~} \Phi^r_i \ge u \big) \le 
+C  \sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) + o(1) ,
 $$
-where $C:=\binom{m}{u}\exp(k^2u(\beta+\alpha)z)$ is a constant.
-By Proposition \ref{prop:con}, if $\beta>\beta^*$, then there is a set $\cG^{(1)}$ such that (i) $P(G\in \cG^{(1)})=1-o(1)$; (ii) for every $G\in\cG^{(1)}$,
-$$
-\sum_{i=1}^n \exp\Big(k \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) = o(1) .
-$$
-This immediately implies that if $u\beta>\beta^*$, then for every $G\in\cG^{(1)}\cap\cG_{\good}$, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$,
+where $C:=\binom{m}{u}\exp(2u\beta z)$ is a constant.
+By Proposition \ref{prop:con}, if $u\beta>\beta^*$, then for every $G\in\cG^{(1)}\cap\cG_{\good}$, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$,
 $$
 P_{\sigma|G} \big(\exists i \text{~s.t.~} \Phi_i \ge u \big) \le 
-C\sum_{i=1}^n \exp\Big(ku \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) + o(1) =o(1).
+C\sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) + o(1) =o(1).
 $$
-Since $P(G\in\cG^{(1)}\cap\cG_{\good})=1-o(1)$, we conclude that $P_{\SIBM} \big(\Phi_i \le u-1 \text{~for all~} i\in[n] \big)=1-o(1)$ conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$.
+Since $P(G\in\cG^{(1)}\cap\cG_{\good})=1-o(1)$, we conclude that $P_{\SIBM} \big(\Phi_i \le u-1 \text{~for all~} i\in[n] \big)=1-o(1)$ for all $j\in[m]$.
 
-By assumption we have $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$. Therefore, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$, we have $\Phi_i\le \lfloor \frac{m-1}{k} \rfloor$ for all $i\in[n]$ with probability $1-o(1)$. As a consequence, after the majority voting step in Algorithm~\ref{alg:ez}, $\hat{X}_i=X_i$ for all $i\in[n]$ with probability $1-o(1)$. This completes the proof of Proposition~\ref{prop:nr}.
+By assumption, we have $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$.
+Therefore, we have $\Phi^r_i\le \lfloor \frac{m-1}{k} \rfloor$ for all $i\in[n]$ and $1\leq r\leq k-1$ with probability $1-o(1)$.
+As a consequence, after the majority voting step in Algorithm~\ref{alg:ez}, $\hat{X}_i=X_i$ for all $i\in[n]$ with probability $1-o(1)$. This completes the proof of Proposition~\ref{prop:nr}.
 \hfill\qed
 \section{Exact recovery is not solvable when $\lfloor (k-1)\frac{m+1}{k} \rfloor \beta < \beta^\ast$}\label{sect:converse}
 
