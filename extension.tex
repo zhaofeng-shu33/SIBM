@@ -220,9 +220,9 @@ P_{\sigma | G}(\dist(\sigma, X) = 1) & > P_{\sigma | G}(\sigma = X)\label{eq:bet
 We consider the $i$-th coordinate in which $\sigma_i \neq X_i$ and denote the event $T_{ir}=\{\sigma_i = \omega^r \cdot X_i, \sigma_j = X_j \forall j \neq i\}$.
 Then $P_{\sigma | G}(\dist(\sigma, X) = 1) = \sum_{i=1}^n\sum_{r=1}^{k-1} P_{\sigma | G}(T_{ir})$.
 We also define
-\begin{equation*}
+\begin{equation}\label{eq:Ari}
 A^r_i=A^r_i(G):=|\{j\in[n]\setminus\{i\}:\{i,j\}\in E(G), X_j=\omega^r \cdot X_i\} |
-\end{equation*}
+\end{equation}
 %	to represent the number of edges connected with $i$ whose two nodes differ by $\omega^r$.
 By definition,
 $A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$, $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $r=1,\dots, k-1$, and they are independent.
@@ -415,21 +415,21 @@ Let
 $$
 (X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n, \alpha,\beta, m) .
 $$
-If $\alpha < b\beta$, then for any (arbitrarily large) $r>0$ and $0<\delta<1$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
+If $\alpha < b\beta$, then for any (arbitrarily large) $C>0$ and $0<\delta<1$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, C)$,
 $$
 P_{\SIBM} \Big(\dist(\sigma^{(i)}, \Lambda)< n/\log^{\delta}(n)
-\text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
+\text{~~for all~} i\in[m] \Big) \ge 1- n^{-C} .
 $$
-If $\alpha > b\beta$, then for any (arbitrarily large) $r>0$ and $0<\delta<1$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, r)$,
+If $\alpha > b\beta$, then for any (arbitrarily large) $C>0$ and $0<\delta<1$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, C)$,
 $$
 P_{\SIBM} \Big(\dist(\sigma^{(i)}, S_k(X)) < n/\log^{\delta}(n)
-\text{~~for all~} i\in[m] \Big) \ge 1- n^{-r} .
+\text{~~for all~} i\in[m] \Big) \ge 1- n^{-C} .
 $$
 \end{proposition}
 \begin{proof}
 For the case $\alpha < b \beta$, we only need to show $P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n
- \Big) \leq n^{-r}$.
+ \Big) \leq n^{-C}$.
  Let the event $M_1:= \exists \bar{\sigma}$ satisfying the condition of Lemma \ref{lem:small}
   $s.t. P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$.
  Then by union bound, we have $P_{G}(M_1) \leq k^n\exp(-\tau(\alpha, \beta )n \log^{1-\delta} n )$ from Lemma \ref{lem:small}.
@@ -637,8 +637,6 @@ Taking $s=\log\log(n)$ into this bound, we obtain that $\log_k T=O(\frac{\log\lo
 \end{proof}
 
 \section{$\sigma \in S_k(X)$ with probability $1-o(1)$ when $\beta>\beta^\ast$} \label{sect:equal}
-
-Recall the definition of $\beta^\ast$ in \eqref{eq:defstar}.
 \begin{proposition} \label{prop:tt}
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\beta>\beta^\ast$ and $\alpha>b\beta$. 
 Let 
@@ -647,39 +645,13 @@ $
 $
 Then
 $$
-P_{\SIBM}(\sigma \in \Gamma)=1-o(1) .
+P_{\SIBM}(\sigma \in S_k(X))=1-o(1) .
 $$
 \end{proposition}
-
 We have proved in Proposition~\ref{prop:1} that if $\alpha>b\beta$, then $\dist(\sigma \in \Gamma) \le n/\log^{\delta}(n)$
- with probability $1-o(1)$.
-Then Proposition~\ref{prop:1} tells us that
-$$
-\sum_{\cI\subseteq[n],~
-n/\log^{\delta}(n)<|\cI|<n-n/\log^{\delta}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)})  = o(1) .
-$$
-By definition, $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$. Therefore, 
-$$
-\sum_{\cI\subseteq[n],1\le |\cI|\le n/\log^{\delta}(n)} P_{\SIBM}(\sigma=f(X^{(\sim\cI)})) =\sum_{\cI\subseteq[n],1\le |\cI|\le n/\log^{\delta}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)}).
-$$
-As a consequence, to prove Proposition~\ref{prop:tt}, we only need to show that
-$$
-\sum_{\cI\subseteq[n],1\le |\cI|\le n/\log^{\delta}(n)} P_{\SIBM}(\sigma=X^{(\sim\cI)}) 
-= o(1) .
-$$
-This is further equivalent to proving that there exists a set $\cG$ such that
-
-\noindent (i)
-$P(G\in\cG)=1-o(1)$, where the probability is calculated according to the $\SSBM(n, k,a\log(n)/n, \linebreak[4] b\log(n)/n)$.
-
-\noindent (ii)
-For every $G\in\cG$,
-$$
-\sum_{\cI\subseteq[n],1\le |\cI|\le n/\log^{\delta}(n)}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} =o(1) .
-$$
-
-The existence of $\cG$ is guaranteed by the following proposition:
+with probability $1-o(1)$. By the symmetric property, to prove Proposition \ref{prop:1}
+we only need to show $P_{\SIBM}( 0 <\dist(\sigma, X) < \frac{n}{\log^{\delta} n})=o(1) $.
+This is guaranteed by the following proposition:
 \begin{proposition} \label{prop:big}
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\beta>\beta^\ast$ and $\alpha>b\beta$. 
 Let 
@@ -804,7 +776,7 @@ conditioned on $B_{\bar{\sigma}} - A_{\bar{\sigma}}    < 0, \forall \bar{\sigma}
 & = \sum_{tr\log n = -A_{\bar{\sigma}} }^{-1} \sum_{\bar{\sigma} \in \Xi(v)} \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}}  = tr \log n] \exp ( \beta  tr\log n)\leq \\ 
 &
 \sum_{tr\log n =\tau}^{-1} \sum_{\bar{\sigma} \in \Xi(v)}  \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}}  = tr \log n]
-\exp ( \beta  tr\log n) + n^{r+r\beta(b-a)/k}
+\exp ( \beta  tr\log n) + n^{r+r\beta(b-a)/k} \textrm{ using } |\Xi(v)| = \binom{n}{r} \leq n^r
 \end{align*}
 where $\tau =\frac{b-a}{k}r\log n$ in short. Therefore,
 \begin{align*}
@@ -842,9 +814,13 @@ $\beta^\ast< \frac{1}{2}\log\frac{a}{b} <\beta'$.
 \end{lemma}
 
 \begin{align*}
-\Pr( D_r) \leq  n^{r-r\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{r\tilde{g}(\beta)/2 + o(1)} \leq 2n^{r\tilde{g}(\beta)/4}
+\Pr( D(v,s)) \leq  n^{r-r\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{r\tilde{g}(\beta)/2 + o(1)} \leq 2n^{r\tilde{g}(\beta)/4}
 \end{align*}
-Therefore, by union bound
+Consider the event:
+$$
+D_r: \frac{P_{\sigma | G}(\dist(\sigma, X) = r)}{P_{\sigma | G}(\sigma = X)} > n^{r\tilde{g}(\beta)/2},
+$$
+by union bound
 \begin{align*}
 &P(\sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] - \frac{\alpha \log n}{n} N_{\bar{\sigma}}) > n^{r\tilde{g}(\beta)/2}) \\
 &\leq P(\sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}]) > n^{r\tilde{g}(\beta)/2}) \\
@@ -853,7 +829,7 @@ Therefore, by union bound
 \end{align*}
 \end{proof}
 
-\section{Samples differ from $S_k(X)$ in $O(n^{\theta})$ coordinates for some $\theta<1$ when $\beta\le\beta^\ast$}
+\section{Samples differ from $S_k(X)$ in $O(n^{\theta})$ coordinates for $g(\beta)<\theta<1$ when $\beta\le\beta^\ast$}
 \label{sect:theta}
 
 
@@ -864,10 +840,10 @@ Let
 $$
 (X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
 $$
-Then for any $g(\beta) < \theta < 1$ and any (arbitrarily large) $r>0$, there exists $n_0(\theta, r)$ such that for all even integers $n>n_0(\theta, r)$,
+Then for any $g(\beta) < \theta < 1$ and any (arbitrarily large constant) $C>0$, there exists $n_0(\theta, C)$ such that for all even integers $n>n_0(\theta, C)$,
 $$
 P_{\SIBM} \Big(\dist(\sigma^{(i)},S_k(X))<n^{\theta}
-\text{~for all~} i\in[m] \Big) \ge 1- n^{-r} .
+\text{~for all~} i\in[m] \Big) \ge 1- n^{-C} .
 $$
 \end{proposition}
 
@@ -879,15 +855,13 @@ with probability $1-o(1)$ all samples differ from $S_k(X)$ in $O(n^\theta)$ coor
 Since we assume that $m$ is a constant that is independent of $n$,
 we only need to prove Proposition~\ref{prop:43} for the special case of $m=1$, and the case of general values of $m$ follows immediately from this special case.
 Proposition~\ref{prop:1} tells us that if $\alpha>b\beta$, then $\dist(\sigma,S_k(X)) \le n/\log^{\delta}(n)$
-with probability $1-n^{-r}$ for any given $r>0$ and large enough $n$.
-To prove Proposition~\ref{prop:43}, we only need to show that given $r>0$, there exists a set $\cG_{\delta}$ such that the following two conditions hold for large enough $n$:  (i)
-$P(G\in\cG_{\theta})\ge 1-n^{-r}$, and (ii)
-For every $G\in\cG_{\theta}$,
-$$
-\sum_{s=n^{\theta}}^{n/\log^{\delta}(n)}
-\frac{P_{\sigma|G}(\dist(\sigma, X)=s)}{P_{\sigma|G}(\sigma=X)} \le n^{-r} .
-$$
-The existence of $\cG_{\theta}$ is guaranteed by the following proposition:
+with probability $1-n^{-C}$ for any given $C>0$ and large enough $n$.
+Since the event $\dist(\sigma^{(i)},S_k(X)) \geq n^{\theta}$ implies one of $\dist(\sigma^{(i)},f(X)) \geq n^{\theta}$ for $f\in S_k$,
+by the union bound,
+to prove Proposition~\ref{prop:43}, we only need to show that 
+$P_{\SIBM} \Big(n^{\theta} \leq \dist(\sigma^{(i)},X) \leq \frac{n}{\log^{\delta} n}\Big) \leq n^{-C}$
+for given $C>0$.
+This is guaranteed by the following proposition:
 \begin{proposition} \label{prop:xz}
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
 Let 
@@ -896,114 +870,44 @@ $$
 $$
 For any $g(\beta)<\theta<1$, there exists $n_0(\theta)$ such that
 for every even integer $n>n_0(\theta)$ and
-every integer $n^{\theta} \le s \le n/\log^{\delta}(n)$,
-there is a set $\cG_{\theta}^{(s)}$ for which
+every integer $n^{\theta} \le r \le n/\log^{\delta}(n)$,
+there is a set $\cG_{\theta}^{(r)}$ for which
 
 \noindent (i)
-$P(G\in\cG_\theta^{(s)}) \ge 1- 2(k-1)^s n^{-s\delta'}$,
-where $\delta':=\min(\frac{\delta}{8},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2}) >0$.
+$P(G\in\cG_\theta^{(r)}) \ge 1- 2(k-1)^r n^{-r\delta'}$,
+where $\delta':=\min(\frac{\theta - g(\beta)}{4},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2}) >0$.
 
-\noindent (ii) For every $G\in\cG_\theta^{(s)}$,
+\noindent (ii) For every $G\in\cG_\theta^{(r)}$,
 $$
-\frac{P_{\sigma|G}(\dist(\sigma,X) = s )}
+\frac{P_{\sigma|G}(\dist(\sigma,X) = r )}
 {P_{\sigma|G}(\sigma=X)} <
-n^{-s \delta /4} .
+n^{-r (\theta - g(\beta)) /2}
 $$
 \end{proposition}
-With the $\cG_\theta^{(s)}$'s given by Proposition~\ref{prop:xz}, we
+With the $\cG_\theta^{(r)}$'s given by Proposition~\ref{prop:xz}, we
 define 
 $$
-\cG_\theta:=\bigcap_{s=n^{\theta}}^{n/\log^{\delta}(n)} \cG_\theta^{(s)} .
+\cG_\theta:=\bigcap_{r=n^{\theta}}^{n/\log^{\delta}(n)} \cG_\theta^{(r)} .
 $$
 By the union bound,
 $$
-P(G\in\cG_\theta)\ge 1-2 \sum_{s=n^{\theta}}^{n/\log^{\delta}(n)} (k-1)^sn^{-s\delta'}
-> 1-2 \sum_{s=\lceil 4r/\delta' \rceil}^{+\infty} (k-1)^sn^{-s\delta'}
-\ge 1- (k-1)^{\lceil 4r/\delta' \rceil}\frac{2 n^{-4r}}{1-n^{-\delta'}}
->1-n^{-2r}
+P(G\in\cG_\theta)\ge 1-2 \sum_{r=n^{\theta}}^{n/\log^{\delta}(n)} (k-1)^rn^{-r\delta'}
+> 1-4 \Big(\frac{k-1}{n^{\delta'}}\Big)^{n^\theta}
+>1-n^{-C}
 $$
 for large enough $n$.
- Moreover, for every $G\in\cG_\theta$ and large enough $n$,
+Moreover, for every $G\in\cG_\theta$ and large enough $n$,
 \begin{align*}
-& \sum_{\cI\subseteq[n],~~
-n^{\theta}\le |\cI|\le n/\log^{\delta}(n)}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim\cI)})}{P_{\sigma|G}(\sigma=X)} =
-\sum_{s=n^{\theta}}^{2n/\log^{1/3}(n)}
-\hspace*{0.05in}
-\sum_{\cI\subseteq[n],|\cI|=s}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
-{P_{\sigma|G}(\sigma=X)}  \\
-& < \sum_{s=n^{\theta}}^{2n/\log^{1/3}(n)}
-n^{-s \delta /4}
-< \sum_{s=\lceil 16r/\delta \rceil}^{+\infty}
-n^{-s \delta /4}
-\le \frac{n^{-4r}}{1-n^{-\delta /4}} < n^{-2r} .
+ \sum_{r=n^{\theta}}^{n/\log^{\delta}(n)}
+\frac{P_{\sigma|G}(\dist(\sigma,X) = r )}
+{P_{\sigma|G}(\sigma=X)}  < 2n^{-n^{\theta}(\theta - g(\beta))/2} < n^{-C} .
 \end{align*}
 Thus we have shown that Proposition~\ref{prop:43} is implied by Proposition~\ref{prop:xz}.
 \begin{proof}
-It turns out that all we need for the proof of Proposition~\ref{prop:xz} is a tighter inequality than \eqref{eq:wuh}.
-Recall that we obtain \eqref{eq:wuh} from \eqref{eq:3l} by using a coarse upper bound $\binom{n}{s}<n^s$.
-Here we use a tighter upper bound $\binom{n}{s}<n^s/(s!)$ in \eqref{eq:3l} and obtain that for
-$G\in\cG_1^{(s)}\cap\cG^{(s)}(\epsilon)$,
-(see the definitions of $\cG_1^{(s)}$ and $\cG^{(s)}(\epsilon)$
-in \eqref{eq:g1k} and \eqref{eq:gep})
-\begin{equation} \label{eq:zm}
-\begin{aligned}
-& \sum_{\cI\subseteq[n],|\cI|=s}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
-{P_{\sigma|G}(\sigma=X)} 
-< (k-1)^s(s!)^{-1} n^{sf_{\beta}((b-a)/k)} +
-(k-1)^s\sum_{ts\log(n)=\lceil\frac{b-a}{k}s\log(n) \rceil}^{-1}
-(r!)^{-1} n^{r(f_{\beta}(t)+\epsilon)} \\
-& \le (k-1)^s(s!)^{-1} n^{sg(\beta)}
-+ (k-1)^s\sum_{ts\log(n)=\lceil\frac{b-a}{k}s\log(n) \rceil}^{-1}  (s!)^{-1} n^{s(g(\beta) + \epsilon)}  \\
-& \le (s!)^{-1} (k-1)^s n^{s(g(\beta) + \epsilon)}
-\Big(\frac{a-b}{k}\log(n^s)+1 \Big) \\
-& < (s!)^{-1} n^{s(g(\beta) + 2\epsilon)}  ,
-\end{aligned}
-\end{equation}
-where the second inequality holds because
-$f_{\beta}(t)\le \tilde{g}(\beta) \le g(\beta)$ for all $t\le 0$
-(see  Lemma~\ref{lm:tus}), and the last inequality holds for positive $\epsilon$ and large $n$.
-It is well known that\footnote{We know from the Taylor expansion that $e^x>x^k/(k!)$ for any $x>0$. Taking $x=k$ gives us $k!>(k/e)^k$.}
-$s!>(s/e)^s$
-for all positive integer $s$.
-Therefore, for $s>n^{\theta}$, we have
-$$
-s!>(s/e)^s
-=\exp(s\log(s)-s)
->\exp(s(\theta)\log(n)-s)
-=n^{s(\theta-o(1))}
-$$
-Taking this into \eqref{eq:zm}, we obtain that $G\in\cG_1^{(s)}\cap\cG^{(s)}(\epsilon)$,
-$$
-\sum_{\cI\subseteq[n],|\cI|=s}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
-{P_{\sigma|G}(\sigma=X)} 
-< n^{s(2\epsilon-\delta+o(1))}
-< n^{s(3\epsilon-\delta)}
-$$
-for positive $\epsilon$ and large $n$.
-Let $\epsilon=\delta/4$ and define 
-$$
-\cG_{\delta}^{(s)}
-:=\cG_1^{(s)}\cap\cG^{(s)}(\delta/4) .
-$$
-Then for $G\in\cG_{\delta}^{(s)}$ we have
-$$
-\sum_{\cI\subseteq[n],|\cI|=s}
-\frac{P_{\sigma|G}(\sigma=X^{(\sim \cI)} )}
-{P_{\sigma|G}(\sigma=X)} <
-n^{-s \delta /4} .
-$$
-By \eqref{eq:Dk}, \eqref{eq:g1k} and \eqref{eq:Gk}, 
-\begin{align*}
-P(G\in\cG_{\delta}^{(k)})
-& \ge 1-(k-1)^s n^{-s\delta/8}- (k-1)^s n^{s (1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} + o(1) )} \\
-& \ge 1-(k-1)^s n^{-s\delta/8}- (k-1)^sn^{s(\frac{1}{2}-\frac{(\sqrt{a}-\sqrt{b})^k}{2k} )}
-> 1- 2 (k-1)^s n^{-s\delta'},
-\end{align*}
-where the second inequality follows from  $1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}< 0$, and the last inequality follows from the definition $\delta'=\min(\frac{\delta}{8},\frac{(\sqrt{a}-\sqrt{b})^2}{2k} - \frac{1}{2})$.
+The proof is similar with that of Proposition \ref{prop:big} with the exception that we use a tight bound
+$\binom{n}{r} < (\frac{en}{r})^r$ instead of $\binom{n}{r}< n^r$. For $r>n^{\theta}$, the former inequality
+can be transformed into $\binom{n}{r} < n^{r(1-\theta) + o(1)}$. By taking $s=n^{r(g(\beta) - \theta)/2}$ we can prove
+Proposition \ref{prop:xz}.
 \end{proof}
 
 \section{Samples differ from $\Gamma$ in $\Theta(n^{g(\beta)})$ coordinates when $\beta\le\beta^\ast$}  \label{sect:struct}
@@ -1249,9 +1153,9 @@ Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P
 	P_{\SIBM}(\sigma= X | \dist(\sigma, X) \le n/k ) \le \frac{1}{k}(1+o(1)) .
 	$$
 \end{proof}
-\section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
+\section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$}
 \label{sect:direct}
-In this section, we prove that Algorithm~\ref{alg:ez} in Section~\ref{sect:multi} is able to learn $\SIBM(n,k,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta, m)$ as long as $\sqrt{a}-\sqrt{b} > \sqrt{k}$,  $\alpha>b\beta$ and $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, where $\beta^\ast$ is defined in \eqref{eq:defstar}.
+In this section, we prove that Algorithm~\ref{alg:ez} in Section~\ref{sect:multi} is able to learn $\SIBM(n,k,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta, m)$ as long as $\sqrt{a}-\sqrt{b} > \sqrt{k}$,  $\alpha>b\beta$ and $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$, where $\beta^\ast$ is defined in \eqref{eq:defstar}.
 
 \begin{proposition} \label{prop:nr}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. Let $m$ be an integer such that $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$.
@@ -1261,16 +1165,24 @@ In this section, we prove that Algorithm~\ref{alg:ez} in Section~\ref{sect:multi
 	$$
 	Let $\hat{X}=\texttt{LearnSIBM}(\sigma^{(1)},\dots,\sigma^{(m)})$ be the output of Algorithm~\ref{alg:ez}. Then
 	$$
-	P(\hat{X} \in \Gamma) = 1-o(1) .
+	P(\hat{X} \in S_k(X)) = 1-o(1) .
 	$$
 \end{proposition}
 
 By Proposition~\ref{prop:tt},
-if $\beta>\beta^\ast$, then $\sigma \in \Gamma $ with probability $1-o(1)$, so $m=1$ sample suffices for recovery. In the rest of this section, we will focus on the case $\beta\le \beta^\ast$.
+if $\beta>\beta^\ast$, then $\sigma \in S_k(X) $ with probability $1-o(1)$, so $m=1$ sample suffices for recovery. In the rest of this section, we will focus on the case $\beta\le \beta^\ast$.
 
-In Proposition~\ref{prop:43} (or Proposition~\ref{prop:1}), we have shown that $\dist(\sigma^{(i)}, \Gamma) =o(n)$ for all $i\in[m]$ with probability $1-O(n^{-r})$ for any constant $r>0$, but it is possible that $\sigma^{(1)}$ is close to $X$ while $\sigma^{(2)}$ is close to some $f(X)$. Step 1 (the alignment step) in the above algorithm eliminates such possibility: After the alignment step, with probability $1-O(n^{-r})$ only the following two scenarios will happen: Either
-$\dist(\sigma^{(i)}, X)=o(n)$ for all $i\in[m]$ or $\dist(\sigma^{(i)}, f(X))=o(n)$ for all $i\in[m]$ where $f \in \Gamma \backslash \{\textrm{id}\}$. Without loss of generality, we assume the former case, i.e., we assume that 
-$\dist(\sigma^{(i)}, X) \le n/k$ for all $i\in[m]$,
+In Proposition~\ref{prop:43} (or Proposition~\ref{prop:1}),
+we have shown that $\dist(\sigma^{(i)}, S_k(X)) =o(n)$
+for all $i\in[m]$ with probability $1-O(n^{-C})$ for any constant $C>0$,
+but it is possible that $\sigma^{(1)}$ is close to $X$ while $\sigma^{(2)}$ is close to some $f(X)$.
+Step 1 (the alignment step) in the above algorithm eliminates such possibility:
+After the alignment step, with probability $1-O(n^{-C})$ only the following two scenarios will happen:
+Either
+$\dist(\sigma^{(i)}, X)=O(n^{\theta})$ for all $i\in[m]$ or $\dist(\sigma^{(i)}, f(X))=O(n^{\theta})$ for all $i\in[m]$
+where $f \in S_k(X) \backslash \{\textrm{id}\}$.
+Without loss of generality, we assume the former case, i.e., we assume that
+$\dist(\sigma^{(i)}, X) = O(n^{\theta})$ for all $i\in[m]$,
 and in the rest of this section we will prove that Algorithm~\ref{alg:ez} outputs $\hat{X}=X$ with probability $1-o(1)$.
 
 
@@ -1292,82 +1204,17 @@ i.e., $\Lambda_i(G, z)$ consists of all the samples for which the number of ``ba
 
 \begin{lemma} \label{lm:us}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $\beta\le \beta^\ast$.
-	Given any $r>0$, there exists an integer $z>0$ such that for large enough $n$ and every $i\in[n]$, 
+	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$ and every $i\in[n]$, 
 	\begin{equation} \label{eq:zr}
 	P_{\SIBM} (\sigma\in \Lambda_i(G, z)
-	| \dist(\sigma, X) \le n/k)
-	> 1 - n^{-r} .
+	| \dist(\sigma, X) = O(n^{\theta}))
+	> 1 - n^{-C} .
 	\end{equation}
 \end{lemma}
 \begin{proof}
-	The event $\{\sigma\notin \Lambda_i(G, z) \}$ can be written as
-	\begin{equation} \label{eq:lei}
-	\{\sigma\notin \Lambda_i(G, z) \}
-	=\{|\Omega_i(\sigma,G)| \ge z \}
-	=\bigcup_{\tilde{\cI}\subseteq[n]\setminus\{i\}, |\tilde{\cI}| = z} \{\tilde{\cI} \subseteq \Omega_i(\sigma,G)\} .
-	\end{equation}
-	Given a subset $\tilde{\cI}\subseteq[n]\setminus\{i\}$,
-	the event $\{\tilde{\cI} \subseteq \Omega_i(\sigma,G) \}$ is the intersection of two events $\{\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}\}$ and $\{i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI}\}$.
-	
-	We start with the analysis of the first event.
-	In Proposition~\ref{prop:43}, we have shown that
-	for any $\delta>0$ and any $r'>0$, there exists $n_0(\delta, r')$ such that for all even integers $n>n_0(\delta, r')$,
-	$$ 
-	P_{\SIBM} \Big(\dist(\sigma, \Gamma) \le n^{\theta}
-	\Big) \ge 1- n^{-r'} .
-	$$
-	By Lemma~\ref{lm:ele} (vi), we know that $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, so we can always choose a $\delta>0$ such that $\theta<1$.
-	Let $\theta:=\theta<1$. Then for large enough $n$,
-	$$
-	P_{\SIBM} \Big(\dist(\sigma, \Gamma) \le n^{\theta} \Big) \ge 1- n^{-r'} .
-	$$
-	This in particular implies that
-	$$
-	P_{\SIBM} \Big(\dist(\sigma, X) \le n^{\theta} | \dist(\sigma, X) \le n/k
-	\Big) \ge 1- n^{-r'} .
-	$$
-	Moreover, Lemma~\ref{lm:bq} in Appendix~\ref{ap:6} (see inequality \eqref{eq:l2}) tells us that
-	$$
-	P_{\SIBM}(\sigma_j \neq X_j \text{~for all~}  j\in\tilde{\cI}
-	~\big| \dist(\sigma,X) \le n^\theta) \le \Big(\frac{n^\theta}{n/k-|\tilde{\cI}|}
-	\Big)^{|\tilde{\cI}|}
-	\quad \text{for all~} \tilde{\cI}\subseteq [n] .
-	$$
-	Therefore, for any subset $\tilde{\cI}\subseteq[n]\setminus\{i\}$ with size $|\tilde{\cI}|=z$, we have
-	$$
-	P_{\SIBM}(\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}
-	| \dist(\sigma, X) \le n/k )
-	\le O(n^{-(1-\theta) z}) + O(n^{-r'}) . 
-	$$
-	Taking $r'>(1-\theta) z$ gives us
-	\begin{equation} \label{eq:gr}
-	P_{\SIBM}(\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}
-	| \dist(\sigma, X) \le n/k )
-	\le O(n^{-(1-\theta) z}) . 
-	\end{equation}
-	
-	Given $r>0$, we will prove \eqref{eq:zr} for any integer $z\ge \frac{r+1}{1-\theta}$. 
-	Now condition on the event $\{\sigma_j \neq X_j \text{~for all~} j\in \tilde{\cI}\}$.
-	Taking a specific $\sigma'$ which satistifies  $\{\sigma_j \neq X_j \text{~for all~} j \in \tilde{\cI}, \dist(\sigma, X) \le n/k\}$.
-	Using Lemma \ref{lem:post_independent}, we can show that
-	\begin{align*}
-	P(i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI} | \sigma_j \neq X_j \text{~for all~} j \in \tilde{\cI}, \dist(\sigma, X) \le n/k) &\leq P(i\in\cN_j(G) \text{~for all~} j\in \tilde{\cI} | \sigma =\sigma')\\
-	&=\prod_{j\in \tilde{\cI}}\Pr((i,j)\in E(G) | \sigma = \sigma') =  O\Big( \frac{\log^z(n)}{n^z} \Big) .
-	\end{align*}
-	Combining this with \eqref{eq:gr}, we have
-	$$
-	P_{\SIBM} (\tilde{\cI} \subseteq \Omega_i(\sigma,G))
-	= O (n^{-(2-\theta)z}\log^z(n)) .
-	$$
-	Finally, combining this with \eqref{eq:lei} and the union bound, we have
-	\begin{align*}
-	P_{\SIBM} \big(\sigma\notin \Lambda_i(G, z)
-	| \dist(\sigma, X) \le n/k \big)
-	& \le n^z O (n^{-(2-\theta)z}\log^z(n))
-	= O (n^{-(1-\theta)z}\log^z(n))  \\
-	& \le O (n^{-r-1}\log^z(n)) <n^{-r}
-	\end{align*}
-	for large enough $n$. This completes the proof of the lemma.
+	The conclusion for $k=2$ has been proved in Lemma 3 of \cite{ye2020exact}. Suppose $i$ belongs to the first community, and for the community
+	pair $(0, j)$, there is a $z_{j}$ from Lemma 3.
+	We can take $z = \sum_{j=1}^{k-1} z_j$ and Lemma \ref{lm:us} follows.
 \end{proof}
 We further define 
 \begin{align*}
@@ -1378,84 +1225,69 @@ We further define
 The following corollary follows immediately from Lemma~\ref{lm:us} and the union bound.
 \begin{corollary} \label{cr:1}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
-	Given any $r>0$, there exists an integer $z>0$ such that for large enough $n$, 
+	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$, 
 	$$
 	P_{\SIBM} (\sigma\in \Lambda(G, z)
-	| \dist(\sigma, X) \le n/k)
-	> 1 - n^{-2r} .
-	$$
-	Equivalently, for any $r>0$, there is an integer $z>0$ and a set $\cG_{\good}$ such that
-	
-	\noindent (i)
-	$P(G\in\cG_{\good}) \ge 1- O(n^{-r})$.
-	
-	\noindent (ii) For every $G\in\cG_{\good}$,
-	$$
-	P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)  \big| \dist(\sigma, X) \le n/2 \big) =1- O(n^{-r}).
+	|  \dist(\sigma, X) = O(n^{\theta}))
+	> 1 - n^{-C} .
 	$$
 \end{corollary}
-\begin{proof}
-	We only explain why the first statement implies the second one.
-	Define a set 
-	$$
-	\cG_{\bad}:= \big\{ G: P_{\sigma|G} \big( \sigma \notin  \Lambda(G, z)  \big| \dist(\sigma, X) \le n/k \big)
-	>n^{-r} \big\} .
-	$$
-	Then by the union bound and Lemma~\ref{lm:us}, $P(G\in\cG_{\bad})\le n^{-r}$. Therefore, the second statement follows by taking $\cG_{\good}$ to be the complement of $\cG_{\bad}$.
-\end{proof}
+
 We define subsets of $\cN_i(G)$ with the same labeling and the opposite labeling as
 $$
 \cN_{i,r}(G):=\{j\in \cN_i(G): X_j=\omega^r \cdot X_i \}
 $$
 respectively.
-Recall that in \eqref{eq:defAB}, we defined $A^r_i=A^r_i(G):=|\cN_{i,r}(G)|$.
+Recall that in \eqref{eq:Ari}, we defined $A^r_i=A^r_i(G):=|\cN_{i,r}(G)|$.
 By definition, $\sigma = X^{(\sim\cI)}\in  \Lambda_i(G,z)$ if and only if $|\cI\cap \cN_i(G)| < z$.
 
 
 \begin{lemma} \label{lm:et}
 	Let $0<\theta<1$ be some constant and $1\leq r \leq k-1$. Then for large enough $n$ we have
 	\begin{align*}
-	\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
+	\exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
 	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
 	{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } \\
-	& \le \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
+	& \le \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
 	\end{align*}
 \end{lemma}
 
 \begin{proof}
-	We only need to show that for every $\cI\in [n]\setminus\{i\},v$ with size $|\cI|\le n^\theta$ such that $X^{(\sim\cI,v)}\in \Lambda_i(G,z)$,
-	and $v'$ be an extension of $v$ such that $v'=[v, \omega^r]$:
+	We only need to show that for every $\cI\in [n]\setminus\{i\}$, satisfying $|\cI|\le n^\theta$ and
+	$|\cI \cap \cN_i(G)| < z$. $\dist(\bar{\sigma}, X) = |\cI|$, $\bar{\sigma}'$ only differs with $\bar{\sigma}$ at
+	position $i$: $\bar{\sigma}' = \omega^r \cdot \bar{\sigma}$.
 	\begin{equation} \label{eq:qk}
 	\begin{aligned}
-	\exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - kz) \Big) & \le 
-	\frac{P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}), v')} ) } { P_{\sigma|G}(\sigma= X^{(\sim\cI,v)} ) } \\
-	& \le \exp\Big(k\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + kz) \Big) .
+	\exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
+	\frac{P_{\sigma|G}(\sigma= \bar{\sigma}') } { P_{\sigma|G}(\sigma= \bar{\sigma} ) } \\
+	& \le \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big) .
 	\end{aligned}
 	\end{equation}
 	Then using 
 	$$
 	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
 	{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda_i(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
-	= \frac{\sum_{\cI, v} P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}), v')} ) } {\sum_{\cI, v} P_{\sigma|G}(\sigma= X^{(\sim\cI,v)} ) } 
+	= \frac{\sum_{\cI\in [n]\setminus\{i\},|\cI|\le n^\theta,|\cI \cap \cN_i(G)| < z}\sum_{\dist(\sigma, X)=|\cI|} P_{\sigma|G}(\sigma= \bar{\sigma} ) }
+	{\sum_{\cI\in [n]\setminus\{i\},|\cI|\le n^\theta,|\cI \cap \cN_i(G)| < z}\sum_{\dist(\sigma, X)=|\cI|} P_{\sigma|G}(\sigma = \bar{\sigma}' ) } 
 	$$
 	we can get the conclusion.
 	
-	Define $v^{-r} = |\{i | v_i = \omega^{k-r}\}|$ and
+	Define
 	$$
-	A'^r_i :=A^r_i-|\cI\cap \cN_{i,r}(G)| + \sum_{s=0, s\neq r}^{k-1}|\cI\cap \cN_{i,s}(G) \cap v^{-(s-r)}| .
+	A'^r_i := |\{ j \in [n]\backslash \{i\}:  \bar{\sigma}_j = \omega^r \cdot X_i \}|
 	$$
-	Since $X^{(\sim\cI, v)}\in \Lambda_i(G,z)$, we have $|\cI\cap \cN_{i,r}(G)| \le z-1$. Therefore,
+	Since $|\cI\cap \cN_{i,r}(G)| \le z-1$, $|A'^r_i - A^r_i| \leq z-1$
 	\begin{equation} \label{eq:oo}
-	A^r_i-A^0_i-k(z-1) \le A'^r_i-A'^0_i\le A^r_i-A^0_i+k(z-1) .
+	A^r_i-A^0_i-2(z-1) \le A'^r_i-A'^0_i\le A^r_i-A^0_i+2(z-1) .
 	\end{equation}
 	By \eqref{eq:isingma}, we have
 	\begin{align*}
-	& \frac{P_{\sigma|G}(\sigma= X^{(\sim(\cI\cup\{i\}))} ) } { P_{\sigma|G}(\sigma= X^{(\sim\cI)} ) } \\
-	= & \exp\Big(k(\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)
-	-2\frac{(k-1)\alpha\log(n)}{n}
+	& \frac{P_{\sigma|G}(\sigma=  \bar{\sigma}' ) } { P_{\sigma|G}(\sigma= \bar{\sigma}) } \\
+	= & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)
+	-\frac{\alpha\log(n)}{n}
 	\Big)
 	\\
-	= & \exp\Big(k(\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)+o(1) \Big)
+	= & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)+o(1) \Big)
 	\end{align*}
 	Taking \eqref{eq:oo} into this equation gives us \eqref{eq:qk} and completes the proof.
 \end{proof}
@@ -1510,14 +1342,14 @@ $$
 as the number of samples for which $\sigma_i^{(j)} \neq X_i$.
 For an integer $u\in[m]$, we have
 $$
-\{\Phi_i \ge u\} =
+\{\Phi_i \ge u\} \subseteq
 \bigcup_{\cJ\subseteq[m], |\cJ|=u}
 \{\sigma_i^{(j)} = \omega^r \cdot X_i \text{~for all~} j\in \cJ\} .
 $$
 Therefore, by the union bound,
 \begin{align*}
-& P_{\sigma|G}( \Phi_i \ge u  ~\big|~  \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m] ) \\
-\le &  \binom{m}{u} \exp\Big(ku\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + kz) \Big)
+& P_{\sigma|G}( \Phi_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m] ) \\
+\le &  \binom{m}{u} \exp\Big(u\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
 \quad\quad\quad\quad\text{~for all~} i\in[n] .
 \end{align*}
 Combining this with \eqref{eq:chui}, we obtain that for every $G\in\cG_{\good}$, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$,
@@ -2309,55 +2141,7 @@ This completes the proof of the lemma.
 	$$
 \end{lemma}
 
-\section{Extra Lemmas used in the proof}
-\begin{lemma}
-	For given $X, Y \in W^n$, suppose $|\{i | X_i = w^k \}| = \frac{n}{k}$.
-	Let $f^*=\arg\min_{f \in \Gamma } d(f(Y), X)$, then $d(X,f^*(Y)) \leq \frac{k-1}{k}n$.
-\end{lemma}
-\begin{proof}
-	We need to show that there exists a function $g\in \Gamma$ such that $\sum_{i=1}^n \mathbbm{1}[X_i=g(Y)_i] \geq \frac{n}{k}$.
-	Now we construct the required function $g$ as follows:
-	First we define $N_{ij} = |\{s | X_s = w^i, Z_s = w^j\}|$, $(i_1^*,j_1^*) = \arg\max N^{(1)}_{ij}$ and $S^{(1)}_i = \{i_1^*\}, S_j^{(1)}=\{j_1^*\}$.
-	Then we give the recursive definition:
-	$(i_r^*,j_r^*) = \arg\max_{i \not\in S_i^{(r-1)}, j \not\in S_j^{(r-1)}} N_{ij}$ and $S^{(r)}_i = S^{(r-1)}_i \cup \{i_r^*\}, S_j^{(r)}= S_j^{(r-1)}\cup \{j_r^*\}$ for $r=2, \dots, k$.
-	The function $g$ is defined by $g(w^{i_r^*}) = g(w^{j_r^*})$. It is easy to show that $g$ is well-defined and belongs to $\Gamma$.
-	On the other hand, $\sum_{i=1}^n \mathbbm{1}[X_i=g(Y)_i] = \sum_{i=1}^k N_{i_r^*,j_r^*}$.
-	$N_{i_k^*, j_k^*} = \frac{n}{k} - \sum_{r=1, r\neq i_k^*}^k N_{r,j_k^*} = \frac{n}{k} - \sum_{r=1}^{k-1} N_{i^*_r,j_k^*} \geq \frac{n}{k} - \sum_{r=1}^{k-1} N_{i^*_r,j^*_r}$. Therefore,  $\sum_{i=1}^n \mathbbm{1}[X_i=g(Y)_i] \geq \frac{n}{k}$.
-\end{proof}
-\begin{lemma}\label{lem:thm23eq}
-\begin{align}
-\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast \iff  & m\ge k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor + 1 \label{eq:m2} \\
-\lfloor \frac{m+k-1}{k} \rfloor \beta <\beta^\ast  \iff & m <  m^* \textrm{ if } \beta^*/\beta \textrm{ is not an integer } \notag \\
-& m <  m^* - k \textrm{ if } \beta^*/\beta \textrm{ is an integer } \label{eq:m22}
-\end{align}
-So Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold.
-\end{lemma}
-\begin{proof}
-	First, we give a proof of Equation \eqref{eq:m2}: $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$
-	implies that $\frac{\beta^\ast}{\beta}<\lfloor \frac{m+k-1}{k} \rfloor$.
-	The smallest integer that is larger than $\frac{\beta^\ast}{\beta}$ is
-	$\lfloor \frac{\beta^\ast}{\beta}\rfloor +1$,
-	so $\lfloor \frac{\beta^\ast}{\beta} \rfloor + 1 \le \lfloor \frac{m+k-1}{k} \rfloor\le \frac{m+k-1}{k}$,
-	and thus $m\ge k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$.
-	Now assume $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$,
-	then $\frac{m-1}{2} \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor$.
-	Since the right hand side is an integer,
-	we have $\lfloor \frac{m+1}{2} \rfloor = \lfloor \frac{m-1}{2} \rfloor +1 
-	\ge \lfloor \frac{\beta^\ast}{\beta} \rfloor +1 >\frac{\beta^\ast}{\beta}$.
-	
-	Secondly, we show Equation \eqref{eq:m22}. If $\beta^\ast \over \beta$ is not an integer, then
-	\begin{align*}
-	& \lfloor \frac{m+k-1}{k} \rfloor < {\beta^\ast \over \beta}  \\
-	\iff & \frac{m+k-1}{k}  < \lfloor{\beta^\ast \over \beta}\rfloor + 1 \\
-	\iff & m < k \lfloor \frac{\beta^\ast}{\beta} \rfloor  + 1 = m^*
-	\end{align*}
-	If  $\beta^\ast \over \beta$ is an integer, then
-	\begin{align*}
-	& \lfloor  \frac{m+k-1}{k}  \rfloor < {\beta^\ast \over \beta}  \\
-	\iff & \frac{m+k-1}{k}  < \lfloor{\beta^\ast \over \beta}\rfloor \\
-	\iff & m <  m^* - k
-	\end{align*}
-\end{proof}
+
 \bibliographystyle{plain}
 \bibliography{exportlist}
 

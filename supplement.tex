@@ -218,6 +218,55 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 	$ r(x, \sigma) = \frac{1}{n} \sum_{i=1}^n \delta(x_i \neq \pi(\sigma_i))$
 	We then have $ r(x, \sigma) \leq r_1(x, \sigma) \leq n r(x, \sigma)$.
 \end{proposition}
+\section{Extra Lemmas used in the proof}
+\begin{lemma}
+	For given $X, Y \in W^n$, suppose $|\{i | X_i = w^k \}| = \frac{n}{k}$.
+	Let $f^*=\arg\min_{f \in \Gamma } d(f(Y), X)$, then $d(X,f^*(Y)) \leq \frac{k-1}{k}n$.
+\end{lemma}
+\begin{proof}
+	We need to show that there exists a function $g\in \Gamma$ such that $\sum_{i=1}^n \mathbbm{1}[X_i=g(Y)_i] \geq \frac{n}{k}$.
+	Now we construct the required function $g$ as follows:
+	First we define $N_{ij} = |\{s | X_s = w^i, Z_s = w^j\}|$, $(i_1^*,j_1^*) = \arg\max N^{(1)}_{ij}$ and $S^{(1)}_i = \{i_1^*\}, S_j^{(1)}=\{j_1^*\}$.
+	Then we give the recursive definition:
+	$(i_r^*,j_r^*) = \arg\max_{i \not\in S_i^{(r-1)}, j \not\in S_j^{(r-1)}} N_{ij}$ and $S^{(r)}_i = S^{(r-1)}_i \cup \{i_r^*\}, S_j^{(r)}= S_j^{(r-1)}\cup \{j_r^*\}$ for $r=2, \dots, k$.
+	The function $g$ is defined by $g(w^{i_r^*}) = g(w^{j_r^*})$. It is easy to show that $g$ is well-defined and belongs to $\Gamma$.
+	On the other hand, $\sum_{i=1}^n \mathbbm{1}[X_i=g(Y)_i] = \sum_{i=1}^k N_{i_r^*,j_r^*}$.
+	$N_{i_k^*, j_k^*} = \frac{n}{k} - \sum_{r=1, r\neq i_k^*}^k N_{r,j_k^*} = \frac{n}{k} - \sum_{r=1}^{k-1} N_{i^*_r,j_k^*} \geq \frac{n}{k} - \sum_{r=1}^{k-1} N_{i^*_r,j^*_r}$. Therefore,  $\sum_{i=1}^n \mathbbm{1}[X_i=g(Y)_i] \geq \frac{n}{k}$.
+\end{proof}
+\begin{lemma}\label{lem:thm23eq}
+	\begin{align}
+	\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast \iff  & m\ge k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor + 1 \label{eq:m2} \\
+	\lfloor \frac{m+k-1}{k} \rfloor \beta <\beta^\ast  \iff & m <  m^* \textrm{ if } \beta^*/\beta \textrm{ is not an integer } \notag \\
+	& m <  m^* - k \textrm{ if } \beta^*/\beta \textrm{ is an integer } \label{eq:m22}
+	\end{align}
+	So Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold.
+\end{lemma}
+\begin{proof}
+	First, we give a proof of Equation \eqref{eq:m2}: $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$
+	implies that $\frac{\beta^\ast}{\beta}<\lfloor \frac{m+k-1}{k} \rfloor$.
+	The smallest integer that is larger than $\frac{\beta^\ast}{\beta}$ is
+	$\lfloor \frac{\beta^\ast}{\beta}\rfloor +1$,
+	so $\lfloor \frac{\beta^\ast}{\beta} \rfloor + 1 \le \lfloor \frac{m+k-1}{k} \rfloor\le \frac{m+k-1}{k}$,
+	and thus $m\ge k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$.
+	Now assume $m\ge 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1$,
+	then $\frac{m-1}{2} \ge \lfloor \frac{\beta^\ast}{\beta} \rfloor$.
+	Since the right hand side is an integer,
+	we have $\lfloor \frac{m+1}{2} \rfloor = \lfloor \frac{m-1}{2} \rfloor +1 
+	\ge \lfloor \frac{\beta^\ast}{\beta} \rfloor +1 >\frac{\beta^\ast}{\beta}$.
+	
+	Secondly, we show Equation \eqref{eq:m22}. If $\beta^\ast \over \beta$ is not an integer, then
+	\begin{align*}
+	& \lfloor \frac{m+k-1}{k} \rfloor < {\beta^\ast \over \beta}  \\
+	\iff & \frac{m+k-1}{k}  < \lfloor{\beta^\ast \over \beta}\rfloor + 1 \\
+	\iff & m < k \lfloor \frac{\beta^\ast}{\beta} \rfloor  + 1 = m^*
+	\end{align*}
+	If  $\beta^\ast \over \beta$ is an integer, then
+	\begin{align*}
+	& \lfloor  \frac{m+k-1}{k}  \rfloor < {\beta^\ast \over \beta}  \\
+	\iff & \frac{m+k-1}{k}  < \lfloor{\beta^\ast \over \beta}\rfloor \\
+	\iff & m <  m^* - k
+	\end{align*}
+\end{proof}
 \begin{thebibliography}{1}
 	
 
