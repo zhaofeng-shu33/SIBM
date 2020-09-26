@@ -147,7 +147,10 @@ Let
 $$
 (X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
 $$
-Define $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$.
+Define
+\begin{equation}\label{eq:gbeta}
+g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1
+\end{equation}
 If $\beta>\beta^\ast$, then
 $$
 P_{\SIBM}(\sigma^{(i)} \in S_k(X) \text{~for all~} i\in[m]) = 1-o(1).
@@ -245,9 +248,9 @@ By Chernoff inequality $ \Pr(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_
 Therefore the probability of event \eqref{eq:betastar} is bounded above by $ (k-1 + o(1)) n^{g(\beta)}$
 where $g(\beta)  := \frac{b e^{\beta}+a e^{-\beta}}{k}-\frac{a+b}{k}+1$. This $g(\beta)$ is also defined in Theorem~\ref{thm:wt3}.
 The critical value is the smaller zero point of $g(\beta)$, which is exactly
-$$
+\begin{equation}\label{eq:beta_star}
 \beta^* = \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b}
-$$
+\end{equation}
 also given in Theorem~\ref{thm:wt1}.
 When $\beta > \beta^*$ and $\beta$ is smaller than the larger root, $g(\beta) < 0$ and the probability of \eqref{eq:betastar} decreases to
 $0$ as $n\to \infty$.
@@ -270,10 +273,10 @@ To bound the two terms above, we need the following lemma, which can be proved b
 \begin{lemma}\label{lem:fb}
 	For $t\in [\frac{1}{k}(b-a), 0]$,
 	define a function
-	\begin{align*}
-	&f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -\frac{a+b}{k} +1 +\beta t  \\
-	&-t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big).
-	\end{align*}
+	\begin{align}
+	&f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -\frac{a+b}{k} +1 +\beta t  \notag\\
+	&-t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big). \label{eq:fbetat}
+	\end{align}
 	It follows that
 	\begin{align} 
 	& P(A^1_i-A^0_i\ge t\log(n))  \notag\\
@@ -305,12 +308,12 @@ where $\tilde{s} = s - n^{1+\beta(b-a)/k}$.
 The maximization of $f_{\beta}(t)$ is given by the following lemma:
 \begin{lemma}\label{lem:tilde_g}
 	Define
-	$$
+	\begin{equation}\label{eq:gbt}
 	\tilde{g}(\beta) = \begin{cases}
 	g(\beta)   & \text{~if~} \beta< \frac{1}{2}\log\frac{a}{b} \\
 	g(\frac{1}{2} \log\frac{a}{b}) = 1 - \frac{(\sqrt{a}-\sqrt{b})^2}{k} & \text{~if~} \beta\ge \frac{1}{2}\log\frac{a}{b}
 	\end{cases}
-	$$
+	\end{equation}
 	then $f_{\beta}(t) \leq \tilde{g}(\beta)$ for $t\leq 0$.
 \end{lemma}
 By choosing $s = n^{\tilde{g}(\beta)/2}$ and using Lemma \ref{lem:tilde_g}, we have
@@ -811,7 +814,33 @@ where $\tau =\frac{b-a}{k}r\log n$ in short. Therefore,
 & \leq \frac{a-b}{k}r\log n \cdot n^{rf_{\beta}(t) + o(1)} / \tilde{s} \textrm{ using Lemma \ref{lem:fb} }
 \end{align*}
 where $\tilde{s} = s - n^{r+r\beta(b-a)/k}$. 
-Choosing $s = O(n^{r\tilde{g}(\beta)/2})$ and using Lemma \ref{lem:tilde_g}, we have
+Choosing $s = O(n^{r\tilde{g}(\beta)/2})$ and using the following conclusion, which is an ehanced version of Lemma
+\ref{lem:tilde_g}.
+\begin{lemma}[Elementary properties of function $g(\beta), \tilde{g}(\beta), f_{\beta}(t)$] \label{lm:ele}
+Let $g(\beta)$ be defined in \eqref{eq:gbeta}, $\tilde{g}(\beta)$ be defined in \eqref{eq:gbt} and $f_{\beta}(t)$ be defined in \eqref{eq:fbetat}. Assume that $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
+Then,
+
+\begin{enumerate}[label=(\roman*)]
+\item The equation $g(\beta) = 0$ has two roots, and the smaller one of them is $\beta^\ast$, defined in \eqref{eq:beta_star}.
+
+\item Denote the other root as $\beta'$. Then
+$\beta^\ast< \frac{1}{2}\log\frac{a}{b} <\beta'$.
+
+\item $g(\beta)<0$ for all $\beta^\ast< \beta \le \frac{1}{2}\log\frac{a}{b}$.
+
+\item $\tilde{g}(\beta)<0$ for all $\beta>\beta^\ast$.
+
+\item $\tilde{g}(\beta)$ is a decreasing function in $[0,+\infty)$. 
+
+\item $\tilde{g}(\beta)<1$ for all $\beta>0$.
+
+\item $f_{\beta}(t)\le \tilde{g}(\beta)$ for all $t\le 0$.
+
+\item If $\beta>\beta^\ast$, $f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
+
+\end{enumerate}
+\end{lemma}
+
 \begin{align*}
 \Pr( D_r) \leq  n^{r-r\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{r\tilde{g}(\beta)/2 + o(1)} \leq 2n^{r\tilde{g}(\beta)/4}
 \end{align*}
@@ -824,7 +853,7 @@ Therefore, by union bound
 \end{align*}
 \end{proof}
 
-\section{Samples differ from $\Gamma$ in $O(n^{\theta})$ coordinates for some $\theta<1$ when $\beta\le\beta^\ast$}
+\section{Samples differ from $S_k(X)$ in $O(n^{\theta})$ coordinates for some $\theta<1$ when $\beta\le\beta^\ast$}
 \label{sect:theta}
 
 
@@ -837,13 +866,14 @@ $$
 $$
 Then for any (arbitrarily small) $\delta>0$ and any (arbitrarily large) $r>0$, there exists $n_0(\delta, r)$ such that for all even integers $n>n_0(\delta, r)$,
 $$
-P_{\SIBM} \Big(\dist(\sigma^{(i)},\Gamma)<n^{g(\beta)+\delta}
+P_{\SIBM} \Big(\dist(\sigma^{(i)},S_k(X))<n^{g(\beta)+\delta}
 \text{~for all~} i\in[m] \Big) \ge 1- n^{-r} .
 $$
 \end{proposition}
 
 By Lemma~\ref{lm:ele} (vi), we know that $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, so we can always choose a $\delta>0$ such that $g(\beta)+\delta<1$.
-Then Proposition~\ref{prop:43} implies that when $\beta\le\beta^\ast$, with probability $1-o(1)$ all samples differ from $\Gamma$ in $O(n^\theta)$ coordinates for some $\theta<1$.
+Then Proposition~\ref{prop:43} implies that when $\beta\le\beta^\ast$,
+with probability $1-o(1)$ all samples differ from $S_k(X)$ in $O(n^\theta)$ coordinates for some $\theta<1$.
 
 
 Since we assume that $m$ is a constant that is independent of $n$,
