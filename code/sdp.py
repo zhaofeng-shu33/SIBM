@@ -5,7 +5,7 @@ try:
 except ImportError:
     pass
 
-def construct_B(G, kappa=-1):
+def construct_B(G, kappa=1):
     n = len(G.nodes)
     B = np.ones([n, n]) * (-kappa)
     for i, j in G.edges():
