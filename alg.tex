@@ -6,8 +6,10 @@
 \usepackage{amsthm}
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
-
+\DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\Var}{Var}
+\newcommand{\A}{\frac{a \log(n)}{n}}
+\newcommand{\B}{\frac{b \log(n)}{n}}
 \begin{document}
 	\section{Introduction}
 	\section{Stochastic Ising BlockModel}\label{sec:sibm}
@@ -157,7 +159,7 @@
 	by \cite{he2016fast}. The earliest literature for adoption is \cite{liu2010detecting}, empirically combined with other techniques to improve
 	the performance.
 	\section{SDP Algorithms Proofs}
-	\begin{lemma}
+	\begin{lemma}\label{lem:Cabd}
 	Suppose $C$ is a following symmetric matrix with dim = $2n$.
 	$$C=\begin{bmatrix} d & \text{ } &  a & \vrule & \text{ } & \text{ }  & \text{ } \\
 \text{ } & \ddots & \text{ } & \vrule & \text{ }&  b & \text{ } \\
@@ -205,8 +207,7 @@ $$
 |\lambda I_{2n} - C| = (\lambda -d')^{2n-2} [(\lambda - d' - na)^2-n^2b^2]
 $$
 \end{proof}
-	\appendix
-	\section{Proofs}
+\section{Proofs of Parameter Estimation}
 	\begin{lemma}
 		Suppose $e_1, e_2$ is defined from (\ref{eq:e_1}, \ref{eq:e_2}), Then the following equation array has unique solution $x=a, y=b$
 		\begin{align}
@@ -353,9 +354,11 @@ $$
 \Pr( \Big|\frac{T_{ijk}}{\log^3 n} -\frac{b^3}{k^3} \Big| > \epsilon) \leq \frac{\Var[T_{ijk} / \log^3 n]}{\epsilon^2} = \frac{1}{\epsilon^2}
 O(\frac{1}{\log n})
 $$
-\section{ADMM scheme}
+\end{proof}
+\section{SDP for two community}
+\subsection{ADMM scheme}
 Let $B_{ij} = 1$ if $(i,j) \in E(G)$ and $B_{ij} = -\kappa$ if $(i,j) \not \in E(G)$.
-We require $\kappa > 0$. When $\kappa = 1$, the matrix $B$ is the same with
+We require $0<\kappa \leq 1$. When $\kappa = 1$, the matrix $B$ is the same with
 Abbe's formulation in \cite{abbe2015exact}.
 To solve $\max Tr(BX)$ s.t. $X_{ii} = 1$ and $X \succeq 0$.
 We use ADMM, that is, we solve
@@ -372,7 +375,66 @@ X^{k+1} = \Pi_A(Z^k - U^k + \frac{1}{\rho}B) \\
 Z^{k+1} = \Pi_{S_+^n}(X^{k+1} + U^{k}) \\
 U^{k+1} = U^k + (X^{k+1} - Z^{k+1}) 
 \end{align}
-\end{proof}
-	\bibliographystyle{plain}
+\subsection{Therotical Guarantee}
+We have already know that for $\kappa = \frac{\alpha \log n}{\beta n}$, the problem to maximize
+$\sum_{(i,j)\in E(G)} \sigma_i \sigma_j - \kappa \sum_{(i,j) \not\in E(G)} \sigma_i \sigma_j$ can be written in matrix form
+as 
+\begin{align}
+\max \, & \sigma^T B \sigma \label{eq:sigmaB}\\
+s.t. & \sigma_i \in \{\pm 1\} \notag
+\end{align}
+We can use semi-definite relaxation to solve this integer programming problems.
+That is, we consider
+\begin{align}
+\max \,& Tr(BX) \label{eq:semiD}\\
+s.t. & X_{ii} = 1 \notag \\
+&  X \succeq 0 \notag
+\end{align}
+By following the same procedure in Abbe's paper \cite{abbe2015exact}, we can get the sufficient condition that the optimal solution
+to \eqref{eq:semiD} is the ground truth vector $g$.
+\begin{theorem}
+If $(a - b)^2 > 8 (a+b)$, then with high probability \eqref{eq:semiD} has a unique solution $g$.
+\end{theorem}
+The proof is similar with that of Abbe's paper. We choose the conjugate vector $Y=\diag(Bgg^T)$ and show that 
+we need to guarantee:  $Y \succeq B$ and $\lambda_2(Y-B)>0$.
+$g$ is the eigenvector for $Y-B$, with the corresponding eigenvalue equal to zero.
+The modification of $\alpha_{ij}^+, \alpha_{ij}^-$ is as follows:
+\begin{align}
+\alpha^+_{ij}=\begin{cases} 1 & \text{wp }\A \\ -\kappa & \text{wp } 1-\A \end{cases}\\
+\alpha^-_{ij}=\begin{cases} 1 & \text{wp }\B \\ -\kappa & \text{wp } 1-\B \end{cases}
+\end{align}
+The expression of $C, \Gamma$ are modified in corresponding way:
+\begin{align}
+C &=  \sum_{i<j, j \in S(i)}\left(2\A-1\right)\Delta^+_{ij}+\sum_{i<j, j \notin S(i)} \left(2\B-1\right) \Delta^-_{ij}\\
+\Gamma &=  \sum_{i<j, j \in S(i)}\left(\left(2\A-1\right) - \alpha^{+}_{ij}\right) \cdot \Delta^+_{ij} + \sum_{i<j, j \notin S(i)} \left(\left(2\B-1\right) - \alpha^{-}_{ij}\right) \cdot \Delta^-_{ij}
+\end{align}
+$j\in S(i)$ means that $i,j$ belongs to the same community.
+
+There is some minor problems when using projection in Abbe's paper. We can overcome the problem by consider
+the event $\forall u \perp g, u^T(C-\Gamma)u \leq 0$, the probability of this event is bounded by
+$$P(\min_{u \perp g, ||u||_2=1} u^T C u \leq \max_{||v||_2=1} v^T \Gamma v)$$.
+For the determistic matrix $C$, we have
+\begin{align}
+a &= \kappa - (1+\kappa) \A \\
+b &= \kappa - (1+\kappa) \B \\
+d & = a + \frac{1+\kappa}{2} (a-b) \log n
+\end{align}
+Using Lemma \ref{lem:Cabd}, we can get $\min_{u \perp g, ||u||_2=1} u^T C u = \frac{1+\kappa}{2}(a-b)\log n := t$
+Using matrix Bernstein inequality (Theorem 5 in \cite{abbe2015exact}, the matrix norm is the spectral norm), we need to computer $\sigma^2$ and $R$. Actually, $R$ is the minor term.
+For example, we can take $R = 4\A$. Only $\sigma^2$ needs to be computed carefully.
+We have
+$$
+\sigma^2 = (\kappa+1)^2 \log n(a (1-\A) + b (1-\B))
+$$
+Therefore,
+\begin{align*}
+&P(\lambda_{\max}( \Gamma v) \geq t)\\
+& \leq n\cdot \exp \left(
+\frac{(a-b)^2(\kappa+1)^2\log n}{8(\kappa+1)^2\log n (a(1-\A) + b(1-\B)) + \frac{2a(1+\kappa)(a-b)}{3}\frac{\log^2 n}{n} }
+\right)\\
+& \leq n^{-\epsilon}
+\end{align*}
+where $\epsilon > 0$ by choosing $(a-b)^2>8(a+b)$
+\bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
