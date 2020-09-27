@@ -364,10 +364,11 @@ s.t. $X=Z$.
 $L$ is a mapping from $\mathbb{R}^{n,n} \to \mathbb{R}^n$ such that $[L(X)]_i = <X,F_i>$
 $F_i$ is a matrix with element $(i,i)$ equal to 1 and 0 elsewhere.
 The projection $\Pi_{A}(Y)$ simply modifies the diagonal elements of $Y$ to $1$.
+The scaled form of ADMM \cite{boyd2011distributed} is given by
 \begin{align}
 X^{k+1} = \Pi_A(Z^k - U^k + \frac{1}{\rho}B) \\
 Z^{k+1} = \Pi_{S_+^n}(X^{k+1} + U^{k}) \\
-U^{k+1} = U^k + (X^k - Z^k) \\
+U^{k+1} = U^k + (X^k - Z^k) 
 \end{align}
 \end{proof}
 	\bibliographystyle{plain}
