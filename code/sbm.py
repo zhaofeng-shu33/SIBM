@@ -9,7 +9,7 @@ import networkx as nx
 import numpy as np
 from sklearn import metrics
 from ising import SIBM_metropolis, SIBM
-from sdp import sdp
+from sdp import sdp, sdp2
 
 def set_up_log():
     LOGGING_FILE = 'simulation.log'
@@ -117,8 +117,10 @@ def acc_task(alg, params, num_of_times, qu):
         elif alg == 'asyn_fluid':
             results_partition = nx.algorithms.community.asyn_fluid.asyn_fluidc(graph, k)
             results = convert_to_label_list(n, results_partition)
-        elif alg == 'sdp':
+        elif alg == 'sdpk':
             results = sdp(graph, k)
+        elif alg == 'sdp2':
+            results = sdp2(graph)
         elif alg == 'metropolis':
             if logging.getLogger().level == logging.DEBUG:
                 sibm = SIBM(graph, k)
@@ -167,7 +169,7 @@ def phase_transition_interval(file_name_prefix, a_list, b_list, acc_list):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'asyn_fluid', 'modularity', 'sdp'], default='metropolis')
+    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'asyn_fluid', 'modularity', 'sdpk', 'sdp2'], default='metropolis')
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
     parser.add_argument('--multi_thread', type=int, default=1)
     parser.add_argument('--n', type=int, default=100)

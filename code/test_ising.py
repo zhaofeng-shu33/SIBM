@@ -12,7 +12,7 @@ class TestIsing(unittest.TestCase):
         G = sample_graph()
         sibm = SIBM(G, k=3, estimate_a_b_indicator=False, epsilon=0.1)
         print(sibm.metropolis())
-   
+
 class TestSDP(unittest.TestCase):
     def test_sdp2(self):
         G = sbm_graph(100, 2, 16, 4)
