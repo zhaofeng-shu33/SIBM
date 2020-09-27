@@ -18,7 +18,7 @@ def project_cone(Y):
     vals = (vals + np.abs(-vals)) / 2
     return vectors @ np.diag(vals) @ vectors.T
 
-def sdp2(G, rho = 0.5, max_iter = 1000, tol=1e-4):
+def sdp2(G, rho = 0.1, max_iter = 1000, tol=1e-4):
     '''only for two communties
     rho: ADMM penalty parameter
     '''
@@ -30,15 +30,17 @@ def sdp2(G, rho = 0.5, max_iter = 1000, tol=1e-4):
     for _ in range(max_iter):
         X_new = Z - U + B / rho
         np.fill_diagonal(X_new, 1)
-        if np.linalg.norm(X_new - X, ord='fro') < tol:
-            break
-        X = X_new        
+        X = X_new
         Z = project_cone(X + U)
-        U = U + X - Z
+        delta_U = X - Z
+        if np.linalg.norm(delta_U, ord='fro') < tol:
+            break
+        U = U + delta_U
     return get_labels_sdp2(X)
 
-def get_labels_sdp2(X):
-    return X
+def get_labels_sdp2(cluster_matrix):
+    labels = cluster_matrix[0, :] < 0
+    return labels.astype(np.int)
 
 def sdp(G, k):
     a = nx.adjacency_matrix(G)

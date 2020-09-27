@@ -358,7 +358,7 @@ Let $B_{ij} = 1$ if $(i,j) \in E(G)$ and $B_{ij} = -\kappa$ if $(i,j) \not \in E
 We require $\kappa > 0$. When $\kappa = 1$, the matrix $B$ is the same with
 Abbe's formulation in \cite{abbe2015exact}.
 To solve $\max Tr(BX)$ s.t. $X_{ii} = 1$ and $X \succeq 0$.
-We use ADMM, That is, we solve
+We use ADMM, that is, we solve
 \begin{align*}
 \min & - \langle B, X\rangle + \delta_{Z \succeq 0} + \delta_{L(X) = b}\\
 s.t.& X=Z
