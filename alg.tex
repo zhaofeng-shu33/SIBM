@@ -359,16 +359,18 @@ We require $\kappa > 0$. When $\kappa = 1$, the matrix $B$ is the same with
 Abbe's formulation in \cite{abbe2015exact}.
 To solve $\max Tr(BX)$ s.t. $X_{ii} = 1$ and $X \succeq 0$.
 We use ADMM, That is, we solve
-$\min - \langle B, X\rangle + \delta_{Z \succeq 0} + \delta_{L(X) = b}$
-s.t. $X=Z$.
-$L$ is a mapping from $\mathbb{R}^{n,n} \to \mathbb{R}^n$ such that $[L(X)]_i = <X,F_i>$
+\begin{align*}
+\min & - \langle B, X\rangle + \delta_{Z \succeq 0} + \delta_{L(X) = b}\\
+s.t.& X=Z
+\end{align*}
+$L$ is a mapping from $\mathbb{R}^{n \times n} \to \mathbb{R}^n$ such that $[L(X)]_i =  \langle X,F_i \rangle $.
 $F_i$ is a matrix with element $(i,i)$ equal to 1 and 0 elsewhere.
 The projection $\Pi_{A}(Y)$ simply modifies the diagonal elements of $Y$ to $1$.
 The scaled form of ADMM \cite{boyd2011distributed} is given by
 \begin{align}
 X^{k+1} = \Pi_A(Z^k - U^k + \frac{1}{\rho}B) \\
 Z^{k+1} = \Pi_{S_+^n}(X^{k+1} + U^{k}) \\
-U^{k+1} = U^k + (X^k - Z^k) 
+U^{k+1} = U^k + (X^{k+1} - Z^{k+1}) 
 \end{align}
 \end{proof}
 	\bibliographystyle{plain}

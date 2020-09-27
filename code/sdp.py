@@ -10,6 +10,7 @@ def construct_B(G, kappa=1):
     B = np.ones([n, n]) * (-kappa)
     for i, j in G.edges():
         B[i, j] = 1
+        B[j, i] = 1
     return B
 
 def project_cone(Y):
@@ -28,13 +29,16 @@ def sdp2(G, rho = 0.5, max_iter = 1000, tol=1e-4):
     Z = np.zeros([n, n])
     for _ in range(max_iter):
         X_new = Z - U + B / rho
+        np.fill_diagonal(X_new, 1)
         if np.linalg.norm(X_new - X, ord='fro') < tol:
             break
-        X = X_new
-        np.fill_diagonal(X, 1)
+        X = X_new        
         Z = project_cone(X + U)
-        U += (X - Z)
-    return get_labels(X)
+        U = U + X - Z
+    return get_labels_sdp2(X)
+
+def get_labels_sdp2(X):
+    return X
 
 def sdp(G, k):
     a = nx.adjacency_matrix(G)
