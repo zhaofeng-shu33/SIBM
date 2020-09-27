@@ -1,6 +1,22 @@
+import unittest
 import networkx as nx
 
+from sbm import sbm_graph
 from ising import SIBM
+from sdp import sdp2
+
+class TestIsing(unittest.TestCase):
+    def test_ising(self):
+        # demo illustration to use sibm method for general graph
+        G = sample_graph()
+        sibm = SIBM(G, k=3, estimate_a_b_indicator=False, epsilon=0.1)
+        print(sibm.metropolis())
+   
+class TestSDP(unittest.TestCase):
+    def test_sdp2(self):
+        G = sbm_graph(100, 2, 16, 4)
+        results = sdp2(G)
+        print(results)
 
 def sample_graph():
     # see Network_Community_Structure.svg for an illustration
@@ -33,7 +49,4 @@ def sample_graph():
     return G
 
 if __name__ == '__main__':
-    # demo illustration to use sibm method for general graph
-    G = sample_graph()
-    sibm = SIBM(G, k=3, estimate_a_b_indicator=False, epsilon=0.1)
-    print(sibm.metropolis())
+    unittest.main()
