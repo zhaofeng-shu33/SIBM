@@ -419,7 +419,12 @@ a &= \kappa - (1+\kappa) \A \\
 b &= \kappa - (1+\kappa) \B \\
 d & = a + \frac{1+\kappa}{2} (a-b) \log n
 \end{align}
-Using Lemma \ref{lem:Cabd}, we can get $\min_{u \perp g, ||u||_2=1} u^T C u = \frac{1+\kappa}{2}(a-b)\log n := t$
+Using Lemma \ref{lem:Cabd}, we can get all eigenvalues of $C$ as $\lambda_2=\frac{1+\kappa}{2}(a-b)\log n $ and $\lambda_1=n\kappa - (1+\kappa)b\log n$
+(omit the eigenvalue corresponding to $g$). If $\kappa = 0$, then $C$ has negative eigenvalue and it is impossible for
+$C-\Gamma \succeq 0 $ to hold
+with large probability. The minimum requirement for this is that $\kappa > b\frac{\log n}{n}$.
+This condition has been verified previously.
+$\min_{u \perp g, ||u||_2=1} u^T C u = \min\{\lambda_1, \lambda_2\} := t$
 Using matrix Bernstein inequality (Theorem 5 in \cite{abbe2015exact}, the matrix norm is the spectral norm), we need to computer $\sigma^2$ and $R$. Actually, $R$ is the minor term.
 For example, we can take $R = 4\A$. Only $\sigma^2$ needs to be computed carefully.
 We have
@@ -430,11 +435,12 @@ Therefore,
 \begin{align*}
 &P(\lambda_{\max}( \Gamma v) \geq t)\\
 & \leq n\cdot \exp \left(
-\frac{(a-b)^2(\kappa+1)^2\log n}{8(\kappa+1)^2\log n (a(1-\A) + b(1-\B)) + \frac{2a(1+\kappa)(a-b)}{3}\frac{\log^2 n}{n} }
+\frac{t^2}{(\kappa+1)^2\log n (a(1-\A) + b(1-\B)) + \frac{2a(1+\kappa)(a-b)}{3}\frac{\log^2 n}{n} }
 \right)\\
 & \leq n^{-\epsilon}
 \end{align*}
-where $\epsilon > 0$ by choosing $(a-b)^2>8(a+b)$
+where $\epsilon > 0$ by choosing $t^2 > (\kappa + 1)^2 (a+b)$.
+If $\kappa \geq \frac{a+b}{2}\frac{\log n}{n}$ Then the condition is equivalent to $(a-b)^2 > 8(a+b)$
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
