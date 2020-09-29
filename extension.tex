@@ -291,12 +291,12 @@ I_1 \leq \sum_{i=1}^n \Pr( A_i^r - A_i^0 \geq 0) \leq n^{1-\frac{(\sqrt{a}-\sqrt
 \end{align}
 For the second term,
 conditioned on $A_i^r - A_i^0  < 0, \forall i\in [n]$ we have
-\begin{align*}
-&\sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) \\
-& = \sum_{t\log n =-\frac{n}{k}}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t \log n] \exp ( \beta  t\log n)\leq \\ 
-&
+\begin{align}
+\sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i))
+& = \sum_{t\log n =-\frac{n}{k}}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t \log n] \exp ( \beta  t\log n) \label{eq:split_tlogn} \\ 
+& \leq
 \sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t \log n]\exp ( \beta  t\log n) + n^{1+\beta(b-a)/k}
-\end{align*}
+\end{align}
 where $\tau =\frac{b-a}{k}\log n$ in short. Therefore
 \begin{align*}
 &\Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])  \\
@@ -939,7 +939,7 @@ By \eqref{eq:I_1}, we have $P(G\in\cG_1)=1-o(1)$. We will prove that
 Then the proposition follows immediately from  Chebyshev's inequality and the fact that $g(\beta)\ge 0$ when $0<\beta\le\beta^\ast$ (see Lemma~\ref{lm:ele}).
 
 
-In Proposition~\ref{prop:df} (see Appendix~\ref{ap:um}), we prove \eqref{eq:cg} for $0<\beta<\frac{1}{2k}\log\frac{a}{b}$. By Lemma~\ref{lm:ele}, $\beta^\ast<\frac{1}{2k}\log\frac{a}{b}$, so \eqref{eq:cg} holds for $0< \beta\le \beta^\ast$.
+In Proposition~\ref{prop:df} (see Appendix~\ref{ap:um}), we prove \eqref{eq:cg} for $0<\beta<\frac{1}{2}\log\frac{a}{b}$. By Lemma~\ref{lm:ele}, $\beta^\ast<\frac{1}{2}\log\frac{a}{b}$, so \eqref{eq:cg} holds for $0< \beta\le \beta^\ast$.
 Now we are left to prove \eqref{eq:sw}. Observe that
 \begin{equation} \label{eq:mh1}
 \begin{aligned}
@@ -957,7 +957,7 @@ $$
 \sum_{i=1}^n E[ \exp\big(2k\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
 = O ( n^{\tilde{g}(2\beta)} ) .
 $$
-By Lemma~\ref{lm:ele}, $\tilde{g}(\beta)$ is a decreasing function, and it is strictly decreasing when $\beta\le\beta^\ast<\frac{1}{2k}\log\frac{a}{b}$. Therefore, $g(\beta)=\tilde{g}(\beta)>\tilde{g}(2\beta)$ whenever $\beta\le\beta^\ast$. As a consequence, 
+By Lemma~\ref{lm:ele}, $\tilde{g}(\beta)$ is a decreasing function, and it is strictly decreasing when $\beta\le\beta^\ast<\frac{1}{2}\log\frac{a}{b}$. Therefore, $g(\beta)=\tilde{g}(\beta)>\tilde{g}(2\beta)$ whenever $\beta\le\beta^\ast$. As a consequence, 
 \begin{equation} \label{eq:mh2}
 \sum_{i=1}^n E[ \exp\big(2k\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
 < o ( n^{g(\beta)} ) .
@@ -1605,131 +1605,64 @@ conclusion.
 Assume that $\sqrt{a}-\sqrt{b}>\sqrt{k}$. Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$.
 If $0<\beta<\frac{1}{2}\log\frac{a}{b}$, then
 $$
-E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
-= (1+o(1)) E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) \Big]
-= (1+o(1)) n^{g(\beta)}  .
+E \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+= (1+o(1)) E \Big[   \exp\big(\beta (A^r_i-A^0_i) \big) \Big]
+= (1+o(1)) n^{g(\beta)-1}  .
 $$
 If $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
 \begin{align*}
-E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
-= O(n^{\tilde{g}(\beta)})  .
+E \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+= O(n^{\tilde{g}(\beta)}-1)  .
 \end{align*}
 \end{proposition}
 \begin{proof}
-	Due to the symmetric property, we have
-	$E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = E \Big[\exp\big(\beta (A^r_j-A^0_j) \big) ~\Big|~ G\in\cG_1 \Big]$.
-	
+
 Therefore, we only need to show that
 $E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))n^{g(\beta) - 1}$.
 
-We first calculate the unconditional expectation:
-By writing $A^r_i$ and $A^0_i$ as sums of independent Bernoulli random variables, we obtain that
-\begin{align*}
-E[e^{k\beta(A^r_i-A^0_i)}]
-& =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^{k\beta} \Big)^{n/k}
-\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-k\beta} \Big)^{n/k-1}  \\
-& = 
-\exp\Big(\frac{\log(n)}{k} ( a e^{-k\beta}+b e^{k\beta} -a-b )
-+o(1) \Big) \\
-& = (1+o(1)) n^{g(\beta)-1} .
-\end{align*}
-Therefore, for all $\beta$ we have
-\begin{equation} \label{eq:lb}
-E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) \Big]
-= (1+o(1)) n^{g(\beta)}  .
-\end{equation}
-Now let us switch to conditional expectation. In light of \eqref{eq:lb}, for the case of $0<\beta<\frac{1}{2k}\log\frac{a}{b}$ we only need to prove that the conditional expectation is very close to the unconditional expectation.
-To that end, we first reprove a weaker version of \eqref{eq:lb} using Proposition~\ref{prop:99}. This will help us estimate the difference between the conditional and unconditional expectations.
-
-Define $D_r(G,t):=|\{i\in[n]:A^r_i-A^0_i= t\log(n)\}|$.
-Similarly to \eqref{eq:fd}, we have
-\begin{equation} \label{eq:s1}
-\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) 
-=  \sum_{t\log(n)=-n/k}^{n/k}
-D_r(G,t) \exp\big(\beta t \log(n) \big) .
-\end{equation}
-By definition, $D(G,t)=\sum_{i=1}^n \mathbbm{1}[A^r_i-A^0_i= t\log(n)]$, so
-$E[D(G,t)]=n P(A^r_i-A^0_i= t\log(n))$. Therefore, by Proposition~\ref{prop:99} and the definition of function $f_{\beta}(t)$ in \eqref{eq:gt},
-$$
-E[D(G,t)
-\exp\big(\beta t \log(n) \big)]
-\asymp \frac{1} {\sqrt{\log(n)}} \exp( f_{\beta}(t) \log(n) ) .
-$$
+The unconditional expectation result follows from \eqref{eq:gbetaminus1}.
+For the conditional expectation, we follow \eqref{eq:split_tlogn} and use Proposition~\ref{prop:99} to estimate
+$\mathbb{E}[\mathbbm{1}[A^r_i - A^0_i = t \log n]|~G\in\cG_1] = \Pr(A^r_i - A^0_i = t \log n|~G\in\cG_1) = (1+o(1))\Pr(A^r_i - A^0_i = t \log n)$
+by Lemma~\ref{lm:5t}.
 As a consequence,
 \begin{equation}  \label{eq:wf1}
 \begin{aligned}
-E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) \Big]     
-& =  \sum_{t\log(n)=-n/k}^{n/k}
-E \big[ D(G,t) \exp\big(\beta t \log(n) \big) \big]  \\
-& \asymp  \frac{1} {\sqrt{\log(n)}} \sum_{t\log(n)=-n/k}^{n/k}
- \exp( f_{\beta}(t) \log(n) ) .
+E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
+& =  \sum_{t\log(n)=-n/k}^{-1}
+\Pr(A^r_i - A^0_i = t \log n)\exp\big(\beta t \log(n) \big)  \\
+& \asymp  \frac{1} {\sqrt{\log(n)}} \sum_{t\log(n)=-n/k}^{-1}
+ \exp( (f_{\beta}(t) -1)\log(n) ) .
 \end{aligned}
 \end{equation}
-By the proof of Lemma~\ref{lm:tus}, $f_{\beta}(t)$ is a concave function and takes maximum at
+By Lemma~\ref{lm:ele}, $f_{\beta}(t)$ is a concave function and takes maximum at
 $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}$. 
-Similarly to the analysis of \eqref{eq:jh}, $\exp( f_{\beta}(t) \log(n))$ varies by a constant factor within a window of length $\Theta(1/\sqrt{\log(n)})$ around $t^\ast$, and
+$\exp( f_{\beta}(t) \log(n))$ varies by a constant factor within a window of length $\Theta(1/\sqrt{\log(n)})$ around $t^\ast$, and
 then drops off geometrically fast beyond that window. Since $t\log(n)$ takes $\Theta(\sqrt{\log(n)})$ integer values when $t$ takes values in such a window, we have
 \begin{equation} \label{eq:wf2}
-\sum_{t\log(n)=-n/k}^{n/k}
+\sum_{t\log(n)=-n/k}^{-1}
  \exp( f_{\beta}(t) \log(n) )
  \asymp \sqrt{\log(n)}
  \exp( f_{\beta}(t^\ast) \log(n) ) .
 \end{equation}
-By the proof of Lemma~\ref{lm:tus}, we have $f_{\beta}(t^\ast)=g(\beta)$. Taking this into \eqref{eq:wf1} and \eqref{eq:wf2}, we obtain that
-$$
-E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) \Big]
-= \Theta (n^{g(\beta)}) .
-$$
-Now let us consider the conditional expectation. When conditioning on the event $G\in\cG_1$, we have $D_r(G,t)=0$ for all $t\ge 0$.
-In this case, the range of sum in both \eqref{eq:s1} and \eqref{eq:wf1} reduces from $[-n/k,n/k]$ to
-$[-n/k,0)$. By Lemma~\ref{lm:5t} below, we have $P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i= t\log(n))$ for $t<0$, and so
-$E[D_r(G,t)|G\in\cG_1]=(1+o(1))E[D_r(G,t)]$ for $t<0$. Therefore,
-$$
-E\Big[ \sum_{i=1}^n \exp\big(2\beta (A^r_i-A^0_i) \big) \Big| G\in\cG_1 \Big]
-= (1+o(1)) \sum_{t\log(n)=-n/k}^{-1}
-E\big[ D_r(G,t) \exp\big(2\beta t \log(n) \big) \big] .
-$$
-From the analysis of \eqref{eq:wf1}, we know that 
-\begin{align*}
-& \sum_{t\log(n)=-n/k}^{n/k}
-E\big[ D_r(G,t) \exp\big(\beta t \log(n) \big) \big]  \\
-= & (1+o(1)) \sum_{t\log(n)=t^\ast\log(n)-\Theta(\sqrt{\log(n)})}^{t^\ast\log(n)+\Theta(\sqrt{\log(n)})}
-E\big[ D_r(G,t) \exp\big(\beta t \log(n) \big) \big] .
-\end{align*}
 Therefore, if $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}<0$,
-or equivalently $0<\beta<\frac{1}{2k}\log\frac{a}{b}$, then
+or equivalently $0<\beta<\frac{1}{2}\log\frac{a}{b}$, then
 $$
-\sum_{t\log(n)=-n/k}^{n/k}
-E\big[ D_r(G,t) \exp\big(\beta t \log(n) \big) \big] = (1+o(1))
-\sum_{t\log(n)=-n/k}^{-1}
-E\big[ D_r(G,t) \exp\big(\beta t \log(n) \big) \big] ,
+E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
+n^{f_{\beta}(t^*)-1} = n^{g(\beta)-1}
 $$
-i.e.,
-\begin{equation} \label{eq:bz}
-E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
-= (1+o(1)) E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) \Big] .
-\end{equation}
 On the other hand,
-if $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}\ge 0$, or equivalently $\beta\ge\frac{1}{2k}\log\frac{a}{b}$, then
-\begin{equation}  \label{eq:wq}
-E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]   
-\asymp  \frac{1} {\sqrt{\log(n)}} \sum_{t\log(n)=-n/k}^{-1}
- \exp( f_{\beta}(t) \log(n) ) .
-\end{equation}
-Since $f_{\beta}(t)$ is concave, it is an increasing function when $t<t^\ast$.
-Therefore, $f_{\beta}(t)<f_{\beta}(0)=g(\frac{1}{2k}\log\frac{a}{b})=\tilde{g}(\beta)$ for $\beta\ge\frac{1}{2k}\log\frac{a}{b}$.
-Similarly to the analysis of \eqref{eq:jh} and \eqref{eq:wf1},
+if $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}\ge 0$, or equivalently $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
+$f_{\beta}(t)$ takes maximum value at $t=0$.
 $\exp( f_{\beta}(t) \log(n))$ varies by a constant factor within a window of length $O(1/\sqrt{\log(n)})$ around $t=0$, and
 then drops off geometrically fast beyond that window. As a consequence,
 \begin{align*}
-\sum_{t\log(n)=-n/k}^{-1}
- \exp( f_{\beta}(t) \log(n) )
-=   O(\sqrt{\log(n)}) \exp(\tilde{g}(\beta) \log(n)) .
+E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
+n^{f_{\beta}(0)-1} = n^{\tilde{g}(\beta)-1}
 \end{align*}
-Taking this into \eqref{eq:wq} completes the proof of the proposition.
 \end{proof}
-
-The following corollary follows immediately from Proposition~\ref{prop:df} and \eqref{eq:lb}:
+Due to the symmetric property, we have
+$E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = E \Big[\exp\big(\beta (A^r_j-A^0_j) \big) ~\Big|~ G\in\cG_1 \Big]$.
+Therefore, the following corollary follows immediately from Proposition~\ref{prop:df}:
 \begin{corollary} \label{cr:yy}
 For all $\beta>0$,
 \begin{align*}
@@ -1741,15 +1674,6 @@ For all $\beta>0$,
 \end{corollary}
 
 
-
-\begin{remark}
-From the proof of \eqref{eq:bz}, we can see that if $0<\beta<\frac{1}{2k}\log\frac{a}{b}$, then
-\begin{equation} \label{eq:pl}
-E \big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] 
-= (1+o(1)) E \big[  \exp\big(\beta (A^r_i-A^0_i) \big) \big] ,
-\end{equation}
-i.e., we can remove the summation in \eqref{eq:bz}. We will use this in the proof of Proposition~\ref{prop:con}.
-\end{remark}
 
 
 
