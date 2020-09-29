@@ -1,0 +1,117 @@
+// dependency graph
+// of the paper https://arxiv.org/abs/2004.05944
+// title: Exact recovery and sharp thresholds of Stochastic Ising Block Model
+// dot -Tpng sibm.gv -o sibm.png
+strict digraph {
+	"theorem.1" -> "theorem.2"
+	"theorem.2" -> "theorem.2"
+	"theorem.3" -> "theorem.3"
+	"proposition.1" -> "theorem.3"
+	"proposition.2" -> "theorem.3"
+	"theorem.3" -> "theorem.3"
+	"theorem.2" -> "theorem.3"
+	"theorem.1" -> "theorem.3"
+	"theorem.2" -> "theorem.3"
+	"theorem.3" -> "theorem.3"
+	"theorem.3" -> "theorem.3"
+	"proposition.10" -> "theorem.3"
+	"theorem.3" -> "theorem.3"
+	"theorem.3" -> "theorem.3"
+	"proposition.11" -> "theorem.3"
+	"theorem.2" -> "theorem.3"
+	"theorem.4" -> "proposition.1"
+	"proposition.1" -> "proposition.2"
+	"proposition.1" -> "proposition.3"
+	"proposition.1" -> "proposition.3"
+	"proposition.3" -> "proposition.3"
+	"lemma.1" -> "proposition.3"
+	"proposition.3" -> "proposition.3"
+	"proposition.4" -> "proposition.4"
+	"proposition.3" -> "proposition.4"
+	"proposition.4" -> "proposition.4"
+	"proposition.4" -> "proposition.4"
+	"proposition.4" -> "proposition.4"
+	"proposition.4" -> "proposition.4"
+	"lemma.1" -> "lemma.2"
+	"proposition.1" -> "proposition.7"
+	"lemma.1" -> "proposition.7"
+	"proposition.7" -> "proposition.7"
+	"proposition.7" -> "proposition.7"
+	"proposition.1" -> "proposition.7"
+	"proposition.7" -> "proposition.7"
+	"proposition.8" -> "proposition.8"
+	"proposition.7" -> "proposition.8"
+	"proposition.8" -> "proposition.8"
+	"proposition.8" -> "proposition.8"
+	"lemma.2" -> "proposition.8"
+	"proposition.3" -> "proposition.9"
+	"proposition.7" -> "proposition.9"
+	"proposition.1" -> "proposition.9"
+	"proposition.7" -> "lemma.3"
+	"lemma.1" -> "lemma.3"
+	"lemma.7" -> "lemma.3"
+	"lemma.9" -> "lemma.3"
+	"lemma.1" -> "proposition.10"
+	"proposition.14" -> "proposition.10"
+	"lemma.1" -> "proposition.10"
+	"corollary.2" -> "proposition.10"
+	"lemma.1" -> "proposition.10"
+	"lemma.1" -> "proposition.10"
+	"corollary.1" -> "theorem.5"
+	"proposition.7" -> "theorem.5"
+	"lemma.4" -> "theorem.5"
+	"lemma.4" -> "theorem.5"
+	"proposition.10" -> "theorem.5"
+	"lemma.9" -> "proposition.11"
+	"proposition.10" -> "proposition.11"
+	"proposition.10" -> "proposition.11"
+	"lemma.8" -> "lemma.5"
+	"theorem.5" -> "lemma.6"
+	"theorem.5" -> "lemma.6"
+	"corollary.1" -> "lemma.6"
+	"proposition.7" -> "lemma.6"
+	"lemma.4" -> "lemma.6"
+	"lemma.4" -> "lemma.6"
+	"theorem.5" -> "lemma.6"
+	"proposition.10" -> "lemma.6"
+	"lemma.8" -> "lemma.7"
+	"lemma.8" -> "lemma.7"
+	"lemma.9" -> "proposition.13"
+	"lemma.9" -> "proposition.13"
+	"proposition.13" -> "proposition.14"
+	"proposition.13" -> "proposition.14"
+	"lemma.2" -> "proposition.14"
+	"lemma.2" -> "proposition.14"
+	"lemma.10" -> "proposition.14"
+	"proposition.10" -> "corollary.2"
+	"proposition.5" -> "lemma.10"
+	"theorem.1" [label="theorem.1"]
+	"theorem.2" [label="theorem.2"]
+	"theorem.3" [label="theorem.3"]
+	"theorem.4" [label="theorem.4"]
+	"proposition.1" [label="proposition.1"]
+	"proposition.2" [label="proposition.2"]
+	"proposition.3" [label="proposition.3"]
+	"proposition.4" [label="proposition.4"]
+	"proposition.5" [label="proposition.5"]
+	"lemma.1" [label="lemma.1"]
+	"lemma.2" [label="lemma.2"]
+	"proposition.7" [label="proposition.7"]
+	"proposition.8" [label="proposition.8"]
+	"proposition.9" [label="proposition.9"]
+	"lemma.3" [label="lemma.3"]
+	"lemma.4" [label="lemma.4"]
+	"corollary.1" [label="corollary.1"]
+	"proposition.10" [label="proposition.10"]
+	"theorem.5" [label="theorem.5"]
+	"proposition.11" [label="proposition.11"]
+	"lemma.5" [label="lemma.5"]
+	"lemma.6" [label="lemma.6"]
+	"lemma.7" [label="lemma.7"]
+	"lemma.8" [label="lemma.8"]
+	"lemma.9" [label="lemma.9"]
+	"proposition.13" [label="proposition.13"]
+	"proposition.14" [label="proposition.14"]
+	"corollary.2" [label="corollary.2"]
+	"lemma.10" [label="lemma.10"]
+}

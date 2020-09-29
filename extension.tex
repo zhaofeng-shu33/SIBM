@@ -1601,23 +1601,27 @@ Transforming back by $a'=\frac{2}{k}a, b' = \frac{2}{k}b$ and use the approximat
 conclusion.
 \end{proof}
 
-Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\text{~and~} 1\leq r \leq k-1\}$. By \eqref{eq:tD}, we have $P(G\in\cG_1)=1-o(1)$. In the proposition below, we will prove that if $0<\beta<\frac{1}{2k}\log\frac{a}{b}$,
-then the conditional expectation $E \Big[ \sum_{i=1}^n  \exp\big(2\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]$ is very close to the unconditional expectation $E \Big[ \sum_{i=1}^n  \exp\big(2\beta (A^r_i-A^0_i) \big) \Big]$. On the other hand, if $\beta\ge\frac{1}{2k}\log\frac{a}{b}$, then the conditional expectation is $O(n^{\tilde{g}(\beta)})$ while the unconditional one is $\Theta(n^{g(\beta)})$. Since $\tilde{g}(\beta)<g(\beta)$ when $\beta>\frac{1}{2k}\log\frac{a}{b}$, the conditional expectation is much smaller than the unconditional one in this case.
 \begin{proposition}  \label{prop:df}
-Assume that $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
-If $0<\beta<\frac{1}{2k}\log\frac{a}{b}$, then
+Assume that $\sqrt{a}-\sqrt{b}>\sqrt{k}$. Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$.
+If $0<\beta<\frac{1}{2}\log\frac{a}{b}$, then
 $$
 E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
 = (1+o(1)) E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) \Big]
 = (1+o(1)) n^{g(\beta)}  .
 $$
-If $\beta\ge\frac{1}{2k}\log\frac{a}{b}$, then
+If $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
 \begin{align*}
-E \Big[ \sum_{i=1}^n  \exp\big(2\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
 = O(n^{\tilde{g}(\beta)})  .
 \end{align*}
 \end{proposition}
 \begin{proof}
+	Due to the symmetric property, we have
+	$E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = E \Big[\exp\big(\beta (A^r_j-A^0_j) \big) ~\Big|~ G\in\cG_1 \Big]$.
+	
+Therefore, we only need to show that
+$E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))n^{g(\beta) - 1}$.
+
 We first calculate the unconditional expectation:
 By writing $A^r_i$ and $A^0_i$ as sums of independent Bernoulli random variables, we obtain that
 \begin{align*}
