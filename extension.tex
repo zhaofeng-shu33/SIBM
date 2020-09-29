@@ -1573,7 +1573,6 @@ Using the above three lemmas, we obtain the following proposition
 
 
 
-We first prove a tight estimate of $P(A^1_i-A^0_i = t\log(n))$ for $t=\Theta(1)$. Note that \eqref{eq:upba} gives an upper bound on $P(A^1_i-A^0_i \ge t\log(n))$ for $t\in [\frac{1}{k}(b-a), 0]$, so it is also an upper bound of $P(A^1_i-A^0 = t\log(n))$. Below we prove that the upper bound in \eqref{eq:upba} is in fact tight up to a $\Theta(1/ \sqrt{\log(n)})$ factor for all $t=\Theta(1)$ such that $t\log(n)$ is an integer.
 
 We use $f(n)=\Theta(g(n))$ and $f(n)\asymp g(n)$ interchangeably if there is a constant $C>0$ such that $C^{-1}g(n)\le f(n)\le C g(n)$ for large enough $n$.
 
@@ -1583,133 +1582,23 @@ For any $t$ such that $t\log(n)$ is an integer and $|t|<100a$,
 \begin{aligned}
 & P(A^1_i-A^0_i = t\log(n))  \\
 \asymp & \frac{1} {\sqrt{\log(n)}} \exp\Big(\log(n)
-\Big(\sqrt{t^2+\frac{4ab}{k}} -t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big) -\frac{a+b}{k}  \Big)\Big) .
+\Big(f_{\beta}(t) - \beta t -1 \Big)\Big) .
 \end{aligned}
 \end{equation}
 \end{proposition}
 
 
 \begin{proof}
-Since
+We make variable transformation from Proposition 13 in \cite{ye2020exact}.
+Let $b = \frac{k}{2}b', a=\frac{k}{2}a', n = \frac{k}{2}n'$.
+Then we have $A_i^1 \sim Binom(\frac{n'}{2}, \frac{b' \log n'}{n'})$ and 
+$A_i^0 \sim Binom(\frac{n'}{2}, \frac{a' \log n'}{n'})$ approximately.
+Therefore, 
 $$
-P(A^1_i-A^0_i = t\log(n))
-= \sum_{s\log(n)=0}^{n/k}
-P(A^1_i = s\log(n)) P(A^0_i=(s-t)\log(n)) ,
+P(A_i^1 - A_i^0 = t \log n') \asymp \frac{1}{\sqrt{\log n'}} \exp(\log n'(\sqrt{t^2+ab} - t(\log(\sqrt{t^2+a'b'}+t)-\log b') - \frac{a'+b'}{2}))
 $$
-we first calculate tight estimates of $P(A^1_i = s\log(n))$ and $P(A^0_i=(s-t)\log(n))$. (The summation $\sum_{s\log(n)=0}^{n/k}$ in the above equation means that the quantity $s\log(n)$ ranges over all integer values from $0$ to $n/k$.)
-By Lemma~\ref{lm:bmd} in Appendix~\ref{ap:6}, we only need to focus on the regime where both $|s|$ and $|t|$ are bounded from above by some (large) constants, e.g., $100a$.
-Therefore,
-\begin{align*}
-& P(A^1_i = s\log(n)) \\
-= & \binom{n/k}{s\log(n)}
-\Big( \frac{b\log(n)}{n} \Big)^{s\log(n)}
-\Big( 1- \frac{b\log(n)}{n} \Big)^{n/k-s\log(n)}  \\
-= & (1+o(1))
-\frac{(n/k)^{s\log(n)}}{(s\log(n))!} \Big( \frac{b\log(n)}{n} \Big)^{s\log(n)}
-\exp \Big(-\frac{b\log(n)}{k} \Big)  \\
-= & (1+o(1))
-\frac{1} {(s\log(n))!} \Big( \frac{b\log(n)}{k} \Big)^{s\log(n)}
-\exp \Big(-\frac{b\log(n)}{k} \Big)  \\
-\overset{(a)}{=} & (1+o(1))
-\frac{1} {\sqrt{2\pi s\log(n)}}
-\Big(\frac{e}{s\log(n)} \Big)^{s\log(n)}
-\Big( \frac{b\log(n)}{k} \Big)^{s\log(n)}
-\exp \Big(-\frac{b\log(n)}{k} \Big)  \\
-= & (1+o(1))
-\frac{1} {\sqrt{2\pi s\log(n)}}
-\Big( \frac{ e b }{ks} \Big)^{s\log(n)}
-\exp \Big(-\frac{b\log(n)}{k} \Big) \\
-= & (1+o(1))
-\frac{1} {\sqrt{2\pi s\log(n)}}
-\exp\Big( \log(n) \Big( 
-s+ s\log(b)-s\log(k)-s\log(s)-\frac{b}{k}
-\Big)\Big) ,
-\end{align*}
-where $(a)$ follows from Stirling's formula.
-Similarly, when $s > t$,
-\begin{align*}
-& P(A^0_i=(s-t)\log(n)) \\
-= & (1+o(1))
-\frac{1} {\sqrt{2\pi (s-t)\log(n)}}
-\exp\Big( \log(n) \Big( 
- (s-t)(1+\log(a)-\log(k)-\log(s-t))-\frac{a}{k}
-\Big)\Big)
-\end{align*}
-Define a function
-$$
-h_t(s):=(2s-t)(1-\log(k))
-+s\log\frac{ab}{s(s-t)}
-+t\log\frac{s-t}{a} -\frac{a+b}{k} .
-$$
-Then for $s>\max(0,t)$,
-$$
-P(B_i = s\log(n)) P(A_i=(s-t)\log(n))
-= (1+o(1)) \frac{1} {2\pi \log(n)\sqrt{s (s-t)}}
-\exp(h_t(s) \log(n)) .
-$$
-Therefore, for $t$ such that $t\log(n)$ is an integer, we have
-\begin{equation} \label{eq:gj}
-\begin{aligned}
-& P(A^1_i-A^0_i = t\log(n))  \\
-= & (1+o(1)) \sum_{s\log(n)=\max(0,t\log(n))}^{n/k}
-\frac{1} {2\pi \log(n)\sqrt{s (s-t)}}
-\exp(h_t(s) \log(n)) .
-\end{aligned}
-\end{equation}
-In order to estimate this sum, we need to analyze the function $h_t(s)$. Its first and second derivatives are
-$h_t'(s)=\log\frac{ab}{k^2s(s-t)}$
-and $h_t''(s)=-\frac{1}{s}-\frac{1}{s-t}<0$, so $h_t(s)$ is a concave function and takes maximum at $s^\ast$ such that $h_t'(s^\ast)=0$.
-Simple calculations show that
-$s^\ast=(t+\sqrt{t^2+4ab/k^2})/2>\max(0,t)$ and
-$$
-h_t(s^\ast)
-= \sqrt{t^2+4ab/k^2} +t\big(\log(\sqrt{t^2+4ab/k^2}-t)-\log(2a) \big) -\frac{a+b}{k} .
-$$
-By Lemma~\ref{lm:bmd} in Appendix~\ref{ap:6}, both $|s|$ and $|t|$ are upper bounded by some (large) constants
-with probability $1-o(n^{-10})$. Therefore, the sum on the right-hand side of \eqref{eq:gj} is concentrated around a small neighborhood of $s^\ast$. In this neighborhood, we have
-$$
-\frac{1} {2\pi \log(n)\sqrt{s (s-t)}} = \Theta(\frac{1} {\log(n)}) .
-$$
-Therefore, in order to prove this proposition, we only need to show that
-\begin{equation} \label{eq:jh}
-\sum \exp(h_t(s) \log(n))
-= \Theta\Big(\sqrt{\log(n)} \exp(h_t(s^\ast) \log(n))\Big) ,
-\end{equation}
-where the summation is taken over this small neighborhood.
-We will show that $\exp(h_t(s) \log(n))$ varies by a constant factor within a window of length $\Theta(1/\sqrt{\log(n)})$ around $s^\ast$, and
-then drops off geometrically fast beyond that window. First observe that $h_t(s)\approx h_t(s^\ast) - h_t''(s^\ast) (s-s^\ast)^2$ in the neighborhood of $s^\ast$, so when $|s-s^\ast|=\Theta(1/\sqrt{\log(n)})$, we have $h_t(s^\ast) \log(n) - h_t(s) \log(n) = \Theta(1)$.
-Also note that when $s$ is in the range $(s^\ast-\Theta(1/\sqrt{\log(n)}) , s^\ast+\Theta(1/\sqrt{\log(n)}))$, the quantity $s\log(n)$ takes $\Theta(\sqrt{\log(n)})$ integer values.
-Now pick some constant $c>0$. By the above analysis we have
-$$
-\sum_{s^\ast\log(n) - c\sqrt{\log(n)} \le s\log(n) \le s^\ast\log(n) + c\sqrt{\log(n)}}
-\exp(h_t(s) \log(n))
-= \Theta\Big(\sqrt{\log(n)} \exp(h_t(s^\ast) \log(n))\Big) .
-$$
-For $s>s^\ast+c/\sqrt{\log(n)}$, we use the fact that concave functions are always bounded from above by its tangent lines. Therefore,
-\begin{align*}
-h_t(s) & \le h_t(s^\ast+c/\sqrt{\log(n)})
-+ h_t'(s^\ast+c/\sqrt{\log(n)}) 
-(s- s^\ast - c/\sqrt{\log(n)}) \\
-& \le h_t(s^\ast) - \frac{c'}{\sqrt{\log(n)}}
-(s- s^\ast - c/\sqrt{\log(n)}) ,
-\end{align*}
-where we use the fact that $h_t'(s^\ast+c/\sqrt{\log(n)}) = \Theta(1/\sqrt{\log(n)})$, and $c'$ is another constant that depends on $c$.
-Therefore,
-\begin{align*}
-& \sum_{s\log(n) > s^\ast\log(n) + c\sqrt{\log(n)}}
-\exp(h_t(s) \log(n))  \\
-\le & \sum_{s\log(n) > s^\ast\log(n) + c\sqrt{\log(n)}}
-\exp \Big( h_t(s^\ast) \log(n) 
--\frac{c'}{\sqrt{\log(n)}}
-(s\log(n)- s^\ast \log(n)- c \sqrt{\log(n)}) \Big)   \\
-= & \exp(h_t(s^\ast) \log(n))
-\sum_{j>0} \exp \Big( 
--\frac{c'}{\sqrt{\log(n)}} j \Big) \\
-\le & \exp(h_t(s^\ast) \log(n))
-\frac{1}{1-\exp(-c'/ \sqrt{\log(n)})} \\
-= & O\Big(\sqrt{\log(n)} \exp(h_t(s^\ast) \log(n))\Big) .
-\end{align*}
-The sum over $s\log(n) < s^\ast\log(n) - c\sqrt{\log(n)}$ can be bounded in the same way. Thus we have shown \eqref{eq:jh}, and this completes the proof of the proposition.
+Transforming back by $a'=\frac{2}{k}a, b' = \frac{2}{k}b$ and use the approximation $\log n' \sim \log n$ when $n$ is large, we can get the desired
+conclusion.
 \end{proof}
 
 Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\text{~and~} 1\leq r \leq k-1\}$. By \eqref{eq:tD}, we have $P(G\in\cG_1)=1-o(1)$. In the proposition below, we will prove that if $0<\beta<\frac{1}{2k}\log\frac{a}{b}$,
