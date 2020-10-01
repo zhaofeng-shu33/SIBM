@@ -6,6 +6,7 @@
 \usepackage{amsthm}
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\Var}{Var}
 \newcommand{\A}{\frac{a \log(n)}{n}}
@@ -64,6 +65,40 @@
 	0 & \textrm {otherwise}
 	\end{cases}
 	\end{equation}
+	\begin{remark}
+	If we require $\bar{\sigma}_i \in \{\pm 1\}$ and use $\bar{\sigma}_i \cdot \bar{\sigma}_j$ replacing
+	the indicator function  $\delta(\bar{\sigma},\bar{\sigma}_j)$ in \eqref{eq:delta_H}, the energy will be
+	$$
+	H(\bar{\sigma}) = \frac{\alpha}{\beta} \frac{\log n}{n} \sum_{\{i,j\}\not\in E(G)}\bar{\sigma}_i \cdot \bar{\sigma}_j
+		- \sum_{\{i,j\}\in E(G)}\bar{\sigma}_i \cdot \bar{\sigma}_j
+	 $$
+	 suppose $\bar{\sigma}'$ is a state with one flop from $\bar{\sigma}$ at position $i$. That is
+	 $$
+	 \begin{cases}
+	 \bar{\sigma}'_i &= -\bar{\sigma}_i \\
+	 \bar{\sigma}'_j & = \bar{\sigma}_j \textrm{ for } j \neq i
+	 \end{cases}
+	 $$
+	 Then the energy difference:
+	 \begin{align*}
+	 H(\bar{\sigma}') - H(\bar{\sigma}) &= 2[\sum_{j\in N_i(G)}\bar{\sigma}_i \cdot \bar{\sigma}_j - \frac{\alpha \log n}{\beta n}
+	 \sum_{\substack{j\not\in N_i(G) \\ j\neq i}} \bar{\sigma}_i \cdot \bar{\sigma}_j ] \\
+	 & = 2 [\sum_{j\in N_i(G)}(1+\frac{\alpha \log n}{\beta n})\bar{\sigma}_i \cdot \bar{\sigma}_j - \frac{\alpha \log n}{\beta n}
+	 \sum_{j\neq i} \bar{\sigma}_i \cdot \bar{\sigma}_j ] 
+	 \end{align*}
+	 We use the conclusion that there are $\frac{n}{2} \bar{\sigma}_i$ takes value $1$ and $\frac{n}{2}\bar{\sigma}_i$ with value
+	 $-1$. Therefore, $\sum_{j\neq i}]cdot \bar{\sigma}_i \bar{\sigma}_j = -1$.
+	 On the other hand:
+	 $$
+	 \frac{P_{\sigma | G}(\sigma = \bar{\sigma'})}{P_{\sigma | G}(\sigma = \bar{\sigma})}
+	 = \frac{\exp(-\beta H(\bar{\sigma}'))}{\exp(-\beta H(\bar{\sigma}))} = \exp(-\beta(H(\bar{\sigma}')-H(\bar{\sigma})))
+	 $$
+	 By some simplification we can get the same result as \cite{ye2020exact} in Section III.A:
+	 $$
+	 \frac{P_{\sigma |G }(\sigma = X^{(\sim i)})}{P_{\sigma |G }(\sigma = X)}
+	 = \exp(2(\beta + \frac{\alpha \log n}{n})(B_i - A_i)-\frac{2\alpha \log n}{n})
+	 $$
+	\end{remark}
 	The pseudo code of our algorithm is summarized in \ref{alg:m}. This algorithm requires the number of the communities $k$ to be known and the weight parameter $\frac{\alpha}{\beta}$ is given. We use the annealing techniques (cooling temperature) to increase $\beta$ at each outer loop, thus guarantee that $\beta > \beta^*$
 	if $\epsilon \in (0, 1)$ and $N$ are large. 
 	The maximum iteration time $N$ should also be specified.
