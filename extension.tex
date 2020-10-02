@@ -120,10 +120,10 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 \begin{equation} \label{eq:defstar}
 \beta^\ast := 
 \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b} \text{~~and~~}
-m^\ast := k \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1  .
+m^\ast := 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1  .
 \end{equation}
 {\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
-If $\beta^\ast/\beta$ is not an integer and $m < m^*$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m < m^* - k$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
+If $\beta^\ast/\beta$ is not an integer and $m < m^*$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m < m^* - 2$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
 {\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $~\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{\delta}(n))$ for given $\delta \in (0, 1)$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
 \end{theorem}
 Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a  real number.
@@ -136,7 +136,7 @@ Below we present an equivalent characterization of the recovery threshold in ter
 	$$
 	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
 	$$
-	If $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{m+k-1}{k} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
+	If $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{m+1}{2} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
 \end{theorem}
 Using careful analysis on the floor function, we can show that Theorem~\ref{thm:wt1} and Theorem~\ref{thm:wt2} give the same threshold.
 
@@ -392,18 +392,18 @@ See Sections~\ref{sect:theta} and Sections~\ref{sect:struct} for the rigorous pr
 For the multiple-sample case, we prove that the above simple algorithm can recover $X$ with probability $1-o(1)$ if and only if the Maximum Likelihood (ML) algorithm recovers $X$ with probability $1-o(1)$. We already showed that each sample is very close to $\Gamma(X)$, so after the alignment step in Algorithm~\ref{alg:ez}, all the samples are either simultaneously aligned with one of $\Gamma$. WLOG, we assume all samples are aligned with $X$.
 By the structural results discussed above,
 with probability $1-o(1)$, $P_{\sigma|G}(\sigma_i^{(j)} = \omega^r \cdot X_i)$ differs from
-$\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$. Since the samples are independent, we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $\sum_{r=1}^{k-1} \exp (k u \beta (A^r_i-A^0_i))$
+$\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for all $j\in[m]$. Since the samples are independent, we further obtain that $P_{\sigma|G}(\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq X_i]\ge u)$ differs from $ \exp ( u \beta (A^r_i-A^0_i))$
 by at most a constant factor.
 Here $u\beta$ plays the role of $\beta$ in the single-sample case.
 Therefore, if $u\beta>\beta^\ast$, then with probability $1-o(1)$
 we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)}= \omega^r \cdot X_i] \le u-1$ for all $i\in[n]$.
-Let $u=\lfloor \frac{m+k-1}{k} \rfloor$,
-then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = \omega^r \cdot X_i] \le \lfloor \frac{m-1}{k} \rfloor $
+Let $u=\lfloor \frac{m+1}{2} \rfloor$,
+then we have $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq  X_i] \le \lfloor \frac{m-1}{2} \rfloor $
 while $\sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = X_i]
-= m - (k-1)\lfloor \frac{m-1}{k} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} = \omega^r \cdot X_i]$
+= m - \lfloor \frac{m-1}{2} \rfloor > \sum_{j=1}^m\mathbbm{1}[\sigma_i^{(j)} \neq  X_i]$
 which implies that $\hat{X}=X$ after the majority voting step in Algorithm~\ref{alg:ez}. See Section~\ref{sect:direct} for a rigorous proof of the above argument.
 
-The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+k-1}{k} \rfloor \beta < \beta^\ast$, also relies on the structural result and it is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case. We refer the readers to Section~\ref{sect:converse} for details.
+The proof of the converse results, i.e., even ML algorithm cannot recover $X$ with probability $1-o(1)$ when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$, also relies on the structural result and it is rather similar to the proof of $\beta\le\beta^\ast$ for the single-sample case. We refer the readers to Section~\ref{sect:converse} for details.
 
 \section{Samples are concentrated around $S_k(X)$ or $\Lambda$} \label{sect:aln}
 In this section, we show that for $a>b$, if $\alpha<b\beta$, then the samples differ from  $\Lambda$ in at most $n/\log^{\delta}(n)$ coordinates.
