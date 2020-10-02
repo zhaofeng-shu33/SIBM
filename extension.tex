@@ -1152,9 +1152,9 @@ Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P
 	P_{\SIBM}(\sigma= X | \dist(\sigma, X) \le n/k ) \le \frac{1}{k}(1+o(1)) .
 	$$
 \end{proof}
-\section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$}
+\section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
 \label{sect:direct}
-In this section, we prove that Algorithm~\ref{alg:ez} in Section~\ref{sect:multi} is able to learn $\SIBM(n,k,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta, m)$ as long as $\sqrt{a}-\sqrt{b} > \sqrt{k}$,  $\alpha>b\beta$ and $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$, where $\beta^\ast$ is defined in \eqref{eq:defstar}.
+In this section, we prove that Algorithm~\ref{alg:ez} in Section~\ref{sect:multi} is able to learn $\SIBM(n,k,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta, m)$ as long as $\sqrt{a}-\sqrt{b} > \sqrt{k}$,  $\alpha>b\beta$ and $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, where $\beta^\ast$ is defined in \eqref{eq:defstar}.
 
 \begin{proposition} \label{prop:nr}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. Let $m$ be an integer such that $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$.
@@ -1326,51 +1326,51 @@ P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
 where we can choose $\theta$ to be any constant in the open interval $(g(\beta), 1)$.
 For $i\in[n]$, define 
 $$
-\Phi^r_i := |\{j\in[m]: \sigma_i^{(j)} = \omega^r \cdot X_i\}|
+\Phi_i := |\{j\in[m]: \sigma_i^{(j)} \neq \omega^r \cdot X_i\}|
 $$
 as the number of samples for which $\sigma_i^{(j)} \neq X_i$.
 For an integer $u\in[m]$, we consider
 %To give an upper bound of $P_{\SIBM} \big( \Phi_i \ge u \big)$ we consider:
 \begin{align*}
-P_{\SIBM}( \exists i \in [n], \Phi^r_i \ge u \big) \leq &P_{\SIBM}( \Phi^r_i \ge u , G \in \cG_{1}) + P(G \not\in \cG_{1}) \\
+P_{\SIBM}( \exists i \in [n], \Phi_i \ge u \big) \leq &P_{\SIBM}( \Phi_i \ge u , G \in \cG_{1}) + P(G \not\in \cG_{1}) \\
 \leq & E_G[P_{\sigma |G}(D_r)]+ O(n^{-C})
 \end{align*}
-where the event $D_r: \exists i \in [n], \Phi^r_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m]$.
-To bound  $_G[P_{\sigma |G}(D_r)]$,
+where the event $D_u: \exists i \in [n], \Phi_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m]$.
+To bound  $E_G[P_{\sigma |G}(D_u)]$,
 since
 $$
-\{\Phi^r_i \ge u\} \subseteq
-\bigcup_{\cJ\subseteq[m], |\cJ|=u}
+\{\Phi_i \ge u\} \subseteq
+\bigcup_{\cJ\subseteq[m], |\cJ|=u}\bigcup_{1\leq r \leq k-1}
 \{\sigma_i^{(j)} = \omega^r \cdot X_i \text{~for all~} j\in \cJ\} .
 $$
 by the union bound,
 \begin{align*}
-& P_{\sigma|G}(D_r) \\
-\le &  \binom{m}{u} \exp\Big(u\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
+& P_{\sigma|G}(D_u) \\
+\le &  \binom{m}{u}(k-1)^r \exp\Big(u\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
 \quad\quad\text{~for all~} i\in[n] \textrm{ by Lemma~\ref{lm:et}}.
 \end{align*}
 Using the union bound, we have
 $$
-P_{\sigma|G} \big(D_r\big) \le 
+P_{\sigma|G} \big(D_u\big) \le 
 C  \sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big),
 $$
-where $C:=\binom{m}{u}\exp(2u\beta z)$ is a constant.
+where $C:=\binom{m}{u}(k-1)^r\exp(2u\beta z)$ is a constant.
 By Proposition \ref{prop:con}, if $u\beta>\beta^*$, there exists $\cG_2$ such that $P(G\not\in\cG_2) \leq n^{1-(\sqrt{a}-\sqrt{b})^2/k}$.
 Then for every $G\in\cG_1 \cap\cG_{2}$,
 $$
-P_{\sigma|G} \big(D_r\big) \le 
+P_{\sigma|G} \big(D_u\big) \le 
 C\sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) = (1+o(1))n^{g(u\beta)}.
 $$
 Further
 \begin{align*}
-P_{\SIBM}( \exists i \in [n], \Phi^r_i \ge u \big)
-\leq & E_G[P_{\sigma |G}(D_r)] + O(n^{-4}) \\
+P_{\SIBM}( \exists i \in [n], \Phi_i \ge u \big)
+\leq & E_G[P_{\sigma |G}(D_u)] + O(n^{-4}) \\
 \leq &  (1+o(1))n^{g(\beta)} + P(G \not\in \cG_2) + O(n^{-C}) = o(1)
 \end{align*}
-We conclude that $P_{\SIBM} \big(\Phi^r_i \le u-1 \text{~for all~} i\in[n] \big)=1-o(1)$.
+We conclude that $P_{\SIBM} \big(\Phi_i \le u-1 \text{~for all~} i\in[n] \big)=1-o(1)$.
 
-By assumption, we have $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$.
-Therefore, we have $\Phi^r_i\le \lfloor \frac{m-1}{k} \rfloor$ for all $i\in[n]$ and $1\leq r\leq k-1$ with probability $1-o(1)$.
+By assumption, we have $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$.
+Therefore, we have $\Phi_i\le \lfloor \frac{m-1}{2} \rfloor$ for all $i\in[n]$ with probability $1-o(1)$.
 As a consequence, after the majority voting step in Algorithm~\ref{alg:ez}, $\hat{X}_i=X_i$ for all $i\in[n]$ with probability $1-o(1)$. This completes the proof of Proposition~\ref{prop:nr}.
 \hfill\qed
 \section{Exact recovery is not solvable when $\lfloor \frac{m+1}{2} \rfloor \beta < \beta^\ast$}\label{sect:converse}
@@ -1414,13 +1414,13 @@ P_{\SSBM}(\pi(G)  | X = \bar{X}^{(\sim I,v)})\prod_{j=1}^m P_{\sigma | \pi(G)}(\
 \end{align*}
 The key to prove Equation \eqref{eq:sigmaEqual} lies at the property
 $\sigma^{(j)}_{i} = \sigma^{(j)}_{i'}, r\in [k]$.
-Let $c_G(\sigma, i,j) = (\beta + \frac{\alpha \log n}{n})I(\sigma_i,\sigma_j) \mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}$
-and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i_1, \dots, i_k\}} c_G(\sigma, j_1, j_2) - (k-1)c_G(\sigma, i,i'))$
+Let $c_G(\sigma, i,j) = \delta_{\sigma_i \sigma_j}[(\beta + \frac{\alpha \log n}{n})\mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}]$
+and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i,i'\}} c_G(\sigma, j_1, j_2) - c_G(\sigma, i, i'))$
 \begin{align*}
-P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_{s=1}^n c_G(\sigma^{(j)}, i_r, s)) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_{s=1}^n c_G(\sigma^{(j)}, i_r, s) ) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i_r), s) ) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{r=1}^k\sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, i_r, s) ) \\
+P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s)) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s) ) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), s) + c_{\pi(G)}(\sigma^{(j)}, \pi(i'), s)) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, i, s) + c_{\pi(G)}(\sigma^{(j)}, i', s)) \\
 & = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{align*}
 \end{proof}
