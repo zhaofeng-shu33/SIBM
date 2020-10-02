@@ -233,7 +233,7 @@ We then have
 {P_{\sigma|G}(\sigma=X)}
 = \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \nonumber\\
 &-\frac{\alpha\log(n)}{n} \Big) 
-= (1+o(1)) \exp ( \beta(A^r_i-A^0_i))
+= (1+o(1)) \exp ( \beta(A^r_i-A^0_i)) \label{eq:diffAr0}
 \end{align}
 By Chernoff inequality $ \Pr(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_i)) > 1) \leq (k-1)n\mathbb{E}_G[\exp (\beta (A^r_i-A^0_i))] $.
 \begin{align}
@@ -1023,93 +1023,23 @@ Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\
 	$$
 \end{theorem}
 \begin{proof}
-	This theorem is a special case of Lemma \ref{lm:cvs} when $m=1$. Actually, Lemma \ref{lm:cvs}
-	shows that 
-	We prove the following equivalent form:
+	This theorem is a special case of Lemma \ref{lm:cvs} when $m=1$.
+	For $s\neq r$, we have
 	$$
-	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ \dist(\sigma, X) \le n/k) = 1-o(1) .
+	P_{\SIBM}(|\{j\in [n] | \sigma_j = \omega^s, X_j = \omega^r \}| = \Theta(n^{g(\beta)}) ~\big|~ \dist(\sigma, X) \le n^{\theta}) = 1-o(1) .
 	$$
-	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG_{\good}$ such that
-	
-	\noindent (i)
-	$P(G\in\cG_{\good}) \ge 1- O(n^{-4})$.
-	
-	\noindent (ii) For every $G\in\cG_{\good}$, 
-	\begin{equation}  \label{eq:hs}
-	P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ \dist(\sigma, X) \le n/k \big) 
-	=1- O(n^{-4}) ,
-	\end{equation}
-	where we can choose $\theta$ to be any constant in the open interval $(\tilde{g}(\beta), 1)$.
-	
-	We now define 
-	$\phi_i := \mathbbm{1}[\sigma_i \neq X_i]$ for $i\in[n]$, and
-	we want to estimate $\dist(\sigma,X)=\sum_{i=1}^n \phi_i$. 
-	Given a fixed graph $G$ and a random sample $\sigma$, we will define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
-	\begin{enumerate}
-		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. $\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-		\item $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$.
-		\item Conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $P(\underline{S}_i=1)=\underline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$. The constants $\bar{C}$ and $\underline{C}$ are defined in Equation \eqref{eq:qke}.
-	\end{enumerate}
-	We will postpone the definition of random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ to the end of this proof. For now let us assume the existence of these random variables and prove the theorem.
-	By property 3), conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, we have
-	\begin{align*}
-	& E[\underline{S}_1 + \dots + \underline{S}_n] = \underline{C}
-	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(2\beta (A^r_i-A^0_i) \big) , \quad
-	\Var(\underline{S}_1 + \dots + \underline{S}_n) \le \underline{C}
-	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(2\beta (A^r_i-A^0_i) \big)
- 	, \\
-	& E[\overline{S}_1 + \dots + \overline{S}_n] = \overline{C}
-	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(2\beta (A^r_i-A^0_i) \big) , \quad
-	\Var(\overline{S}_1 + \dots + \overline{S}_n) \le \overline{C}
-	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(2\beta (A^r_i-A^0_i) \big) ,
-	\end{align*}
-	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
-	By Proposition~\ref{prop:con}, for all $G\in\cG_{\good}\cap\cG_{\con}$, we have 
-	\begin{align*}
-	& E[\underline{S}_1 + \dots + \underline{S}_n] = \Theta(n^{g(\beta)}) , \quad
-	\Var(\underline{S}_1 + \dots + \underline{S}_n) = O(n^{g(\beta)}) , \\
-	& E[\overline{S}_1 + \dots + \overline{S}_n] = \Theta(n^{g(\beta)}) , \quad
-	\Var(\overline{S}_1 + \dots + \overline{S}_n) = O(n^{g(\beta)}) 
-	\end{align*}
-	conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Since $g(\beta)\ge 0$ for all $0<\beta\le \beta^\ast$, by Chebyshev's inequality we know that both $\underline{S}_1 + \dots + \underline{S}_n=\Theta(n^{g(\beta)})$ and $\overline{S}_1 + \dots + \overline{S}_n=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG_{\good}\cap\cG_{\con}$, $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on $\{\dist(\sigma, X) \le n/k\}$. Finally, the theorem follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
-	
-	Now we are left to define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$.
-	First we define some auxiliary random variables.
-	For $i\in[n]$, let 
-	$\underline{R}_i=\underline{R}_i(\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n,G)$ be a Bernoulli random variable with parameter 
+	From $\dist(\sigma, X) =\sum_{r\neq s} |\{j\in [n] | \sigma_j = \omega^s, X_j = \omega^r \}|$, we have:
 	$$
-	\min \Big( \frac{\underline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} , 1 \Big) ,
+	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ \dist(\sigma, X) \le n^{\theta}) = 1-o(1) .
 	$$
-	and let 
-	$\overline{R}_i=\overline{R}_i(\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n,G)$ be a Bernoulli random variable with parameter 
-	$$
-	\min \Big(\frac{1- \overline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=0|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} , 1 \Big) .
-	$$
-	Furthermore, let both $\underline{R}_i$ and $\overline{R}_i$ be independent of $\phi_i$.
-	For $i\in[n]$, define
-	$$
-	\underline{S}_i=\phi_i \underline{R}_i \quad
-	\text{and} \quad
-	\overline{S}_i = 1- (1-\phi_i) \overline{R}_i .
-	$$
-	Property 2) above directly follows from this definition.
-	Now condition on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-	By \eqref{eq:soon} we have $\underline{R}_i =\frac{\underline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} $, one can see that no matter what values $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ take, the conditional probability of $\underline{S}_i=1$ given these variables is always $\underline{C}
-	\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$. Therefore, conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $\underline{S}_i$ is independent of $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ and it only depends on $\phi_i$. As a consequence, $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Thus, we have verified the three properties above for $\underline{S}_1,\dots, \underline{S}_n$. The arguments for $\overline{S}_1,\dots, \overline{S}_n$ are the same.
+
 \end{proof}
-For $0<\beta<\beta^\ast$, we have $g(\beta)>0$, so Theorem~\ref{thm:dist} immediately implies that $P_{\SIBM}(\sigma \in \Gamma)=o(1)$. However, when $\beta=\beta^\ast$, we have $g(\beta^\ast)=0$. In this case, Theorem~\ref{thm:dist} tells us that
+For $0<\beta<\beta^\ast$, we have $g(\beta)>0$, so Theorem~\ref{thm:dist} immediately implies that $P_{\SIBM}(\sigma \in S_k(X))=o(1)$. However, when $\beta=\beta^\ast$, we have $g(\beta^\ast)=0$. In this case, Theorem~\ref{thm:dist} tells us that
 $
-P_{\SIBM}(\dist(\sigma,\Gamma) = \Theta(1) ) = 1-o(1) ,
+P_{\SIBM}(\dist(\sigma, S_k(X)) = \Theta(1) ) = 1-o(1) ,
 $
-but this is not sufficient for us to draw any conclusion on $P_{\SIBM}(\sigma \in \Gamma)$.
-Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P_{\SIBM}(\sigma \in \Gamma)$ is bounded away from $1$.
+but this is not sufficient for us to draw any conclusion on $P_{\SIBM}(\sigma \in S_k(X))$.
+Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P_{\SIBM}(\sigma \in S_k(X))$ is bounded away from $1$.
 
 \begin{proposition}  \label{prop:zj}
 	Let $a,b,\alpha> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta^\ast$. Let 
@@ -1118,20 +1048,20 @@ Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P
 	$
 	Then 
 	$$
-	P_{\SIBM}(\sigma \in \Gamma) \le \frac{1}{k}(1+o(1)) .
+	P_{\SIBM}(\sigma \in S_k(X)) \le \frac{1}{k}(1+o(1)) .
 	$$
 \end{proposition}
 \begin{proof}
 	We prove an equivalent form
 	$$
-	P_{\SIBM}(\sigma = X | \dist(\sigma, X) \le n/k) \le \frac{1}{k}(1+o(1)) .
+	P_{\SIBM}(\sigma = X | \dist(\sigma, X) \le n^{\theta}) \le \frac{1}{k}(1+o(1)) .
 	$$
-	By \eqref{eq:isingma}, we have
+	By \eqref{eq:diffAr0}, we have
 	\begin{align*}
 	\frac{P_{\sigma|G}(\sigma=X^{(\sim i)} )}
 	{P_{\sigma|G}(\sigma=X)}
-	& = \sum_{r=1}^{k-1}\exp\Big(k\big(\beta^\ast+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i)
-	-\frac{2(k-1)\alpha\log(n)}{n} \Big) \\
+	& = \sum_{r=1}^{k-1}\exp\Big(\big(\beta^\ast+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i)
+	-\frac{\alpha\log(n)}{n} \Big) \\
 	& = (1+o(1))\sum_{r=1}^{k-1} \exp\big(\beta^\ast (A^r_i-A^0_i) \big)  ,
 	\end{align*}
 	where the last equality holds for almost all $G$ since $|A^r_i-A^0_i|=O(\log(n))$ with probability $1-o(1)$; see Lemma~\ref{lm:bmd} in Appendix~\ref{ap:6}.
@@ -1142,14 +1072,14 @@ Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P
 	\end{align*}
 	As a consequence, for every $G\in\cG_{\con}$,
 	\begin{align*}
-	P_{\sigma|G} (\sigma= X | \dist(\sigma, X) \le n/k ) <
+	P_{\sigma|G} (\sigma= X | \dist(\sigma, X) \le n^{\theta}) <
 	\frac {P_{\sigma|G}(\sigma=X)}
 	{P_{\sigma|G}(\sigma=X)+\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
 	=\frac{1}{k} (1+o(1)) .
 	\end{align*}
 	By Proposition~\ref{prop:con}, $P(G\in\cG_{\con})=1-o(1)$, so
 	$$
-	P_{\SIBM}(\sigma= X | \dist(\sigma, X) \le n/k ) \le \frac{1}{k}(1+o(1)) .
+	P_{\SIBM}(\sigma= X | \dist(\sigma, X) \le n^{\theta} ) \le \frac{1}{k}(1+o(1)) .
 	$$
 \end{proof}
 \section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
@@ -1470,7 +1400,7 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 	\text{~for all~} j\in[m] \big) \\
 	\le & \overline{C}
-	\sum_{r=1}^{k-1}\exp\big((m-u_0) \beta (A^r_i-A^0_i) \big)
+	\exp\big((m-u_0) \beta (A^r_i-A^0_i) \big)
 	\end{align*}
 	for all $i\in[n]$, where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
 	Similar to Equation \eqref{eq:soon}. the above equation can be reformulated as follows:
@@ -1480,11 +1410,11 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(
 	\begin{equation} \label{eq:s56}
 	\begin{aligned}
 	& \underline{C}
-	\sum_{r=1}^{k-1}\exp\big(k u_r  \beta (A^r_i-A^0_i) \big) \\
+	\exp\big( u_r  \beta (A^r_i-A^0_i) \big) \\
 	\le
 	& P_{\sigma|G} \big( (\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v ~\big|~ (\sigma_{i'}^{(1)},\dots,\sigma_{i'}^{(m)})= (\bar{\sigma}_{i'}^{(1)},\dots,\bar{\sigma}_{i'}^{(m)}) \text{~for all~} i'\neq i \big) \\
 	\le & \overline{C}
-	\sum_{r=1}^{k-1}\exp\big(k u_r  \beta (A^r_i-A^0_i) \big).
+	\exp\big(u_r  \beta (A^r_i-A^0_i) \big).
 	\end{aligned}
 	\end{equation}
 	Define 
@@ -1502,8 +1432,8 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(
 		\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 		\text{~for all~} j\in[m]\}$,
 		$P(\underline{S}_i=1)=\underline{C}
-		\sum_{r=1}^{k-1}\exp\big(u_r \beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
-		\sum_{r=1}^{k-1}\exp\big(u_r \beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$.
+		\exp\big(u_r \beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
+		\exp\big(u_r \beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$.
 	\end{enumerate}
 	The construction of random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ is rather similar to the one at the end of the proof of Theorem~\ref{thm:dist}, and we do not repeat it here. 
 	Define a set $[n]_+:=\{i\in[n]:X_i=1\}$.
@@ -1513,13 +1443,13 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(
 	\text{~for all~} j\in[m]\}$, we have
 	\begin{align*}
 	& E\Big[ \sum_{i\in[n]_+}\underline{S}_i \Big] = \underline{C}
-	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(u_r \beta (A^r_i-A^0_i) \big) , \quad
+	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big) , \quad
 	\Var \Big(\sum_{i\in[n]_+}\underline{S}_i \Big) \le \underline{C}
-	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(u_r \beta (A^r_i-A^0_i) \big), \\
+	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big), \\
 	& E \Big[\sum_{i\in[n]_+} \overline{S}_i \Big] = \overline{C}
-	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(u_r \beta (A^r_i-A^0_i) \big), \quad
+	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big), \quad
 	\Var \Big(\sum_{i\in[n]_+} \overline{S}_i \Big) \le \overline{C}
-	\sum_{i\in[n]_+} \sum_{r=1}^{k-1}\exp\big(u_r \beta (A^r_i-A^0_i) \big) ,
+	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big) ,
 	\end{align*}
 	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
 	In Proposition~\ref{prop:con}, we have shown that for $ u_r \beta\le \beta^\ast$, there is a set $\cG_{\con}$ such that (i) $P(G \in \cG_{\con}) = 1-o(1)$ and (ii) for every $G\in \cG_{\con}$, 
@@ -1534,35 +1464,23 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(
 	$
 	Therefore, for every $G\in\cG_{\good}\cap\cG_{\con}$, 
 	\begin{align*}
-	& E \Big[ \sum_{i\in[n]_+}\underline{S}_i \Big] = \Theta(\sum_{r=1}^{k-1}n^{g(u_r \beta)}) , \quad
-	\Var \Big( \sum_{i\in[n]_+}\underline{S}_i \Big) = O(\sum_{r=1}^{k-1} n^{g(u_r\beta)}) , \\
-	& E \Big[ \sum_{i\in[n]_+}\overline{S}_i \Big] = \Theta(\sum_{r=1}^{k-1}n^{g(u_r\beta)}) , \quad
-	\Var \Big( \sum_{i\in[n]_+}\overline{S}_i \Big) = O(\sum_{r=1}^{k-1} n^{g(u_r\beta)}) 
+	& E \Big[ \sum_{i\in[n]_+}\underline{S}_i \Big] = \Theta(n^{g(u_r \beta)}) , \quad
+	\Var \Big( \sum_{i\in[n]_+}\underline{S}_i \Big) = O( n^{g(u_r\beta)}) , \\
+	& E \Big[ \sum_{i\in[n]_+}\overline{S}_i \Big] = \Theta(n^{g(u_r\beta)}) , \quad
+	\Var \Big( \sum_{i\in[n]_+}\overline{S}_i \Big) = O( n^{g(u_r\beta)}) 
 	\end{align*}
 	conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$. Since $g(u_r\beta)> 0$ for all $u_r\beta< \beta^\ast$, by Chebyshev's inequality we know that both $\sum_{i\in[n]_+}\underline{S}_i=\Theta(\sum_{r=1}^{k-1}n^{g(u_r\beta)})$ and
-	$\sum_{i\in[n]_+}\overline{S}_i=\Theta(\sum_{r=1}^{k-1} n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
+	\text{~for all~} j\in[m]\}$. Since $g(u_r\beta)> 0$ for all $u_r\beta< \beta^\ast$, by Chebyshev's inequality we know that both $\sum_{i\in[n]_+}\underline{S}_i=\Theta(n^{g(u_r\beta)})$ and
+	$\sum_{i\in[n]_+}\overline{S}_i=\Theta( n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 	\text{~for all~} j\in[m]\}$.
-	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $T_0=\Theta(\sum_{r=1}^{k-1}n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
+	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $T_0=\Theta(n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 	\text{~for all~} j\in[m]\}$. Combining this with \eqref{eq:ljrc}, we obtain that for every $G\in\cG_{\good}\cap\cG_{\con}$,
-	$T_0=\Theta(\sum_{r=1}^{k-1} n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$. Finally, the lemma follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
+	$T_0=\Theta( n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$. Finally, the lemma follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
 \end{proof}
-\begin{lemma}\label{lem:mk}
-	Let $m,k$ be integers and $k\geq 2, m\geq 1$, then
-	\begin{equation}\label{eq:m1}
-	m  \leq  k \lfloor {m + k -1 \over k} \rfloor 
-	\end{equation}
-\end{lemma}
-\begin{proof}
-   Let $m = kr + t$ where $0\leq t \leq k-1$.
-   Then Equation \eqref{eq:m1} is equivalent with $ t \leq k\lfloor 1 +  \frac{t-1}{k} \rfloor $.
-   When $ t = 0$, we have the equality. For $1\leq t \leq k-1$, we have $t < k \leq k\lfloor 1 +  \frac{t-1}{k} \rfloor$
-   Therefore, Equation \eqref{eq:m1} holds.
-\end{proof}
-Using the above three lemmas, we obtain the following proposition
+Using the above two lemmas, we obtain the following proposition:
 \begin{proposition}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
 	Let 
@@ -1572,11 +1490,15 @@ Using the above three lemmas, we obtain the following proposition
 	If $\lfloor\frac{m+1}{2} \rfloor \beta<\beta^\ast$, then no algorithm can recover $X$ from the samples with constant success probability, i.e., the success probability of any algorithm is $o(1)$.
 \end{proposition}
 \begin{proof}
-	From Lemma \ref{lem:mk}, we choose $v \in W^m$ such that it has $\lfloor \frac{m+1}{2} \rfloor$ coordinates being $1$
+	From Lemma \ref{lm:cvs}, we choose $v \in W^m$ such that it has $\lfloor \frac{m+1}{2} \rfloor$ coordinates being $1$
 	and $(m-\lfloor \frac{m+1}{2} \rfloor)$ coordinates being $\omega$.
 	Then $u_0 = \lfloor \frac{m+1}{2} \rfloor, u_1 = m - u_0$.
 	By detailed analysis, both $T_0, T_1$ are $\omega(1)$.
-	Therefore, we can find $\omega(1)$ pairs of $i, i'$ satisfying the following two conditions: (1) $\sigma_{i_r}^{(j)}=\sigma_{i_1}^{(j)}$ for all $j\in[m], r\in[k]$ and (2) $\{X_{i_1}, \dots, X_{i_k} \} = \{1, \omega, \dots, \omega^{k-1} \}$. Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X$ from $X^{(\sim\{I\}, v)}$ for $\omega(1)$ pairs of $i_1, \dots,i_k$. Therefore, the success probability of any recovery algorithm is $o(1)$.
+	Therefore, we can find $\omega(1)$ pairs of $i, i'$ satisfying the following two conditions: (1) $\sigma_{i}^{(j)}=\sigma_{i'}^{(j)}$ for all $j\in[m]$ and
+	(2) $X_i = 1, X_{i'} = \omega$.
+	Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X_i = 1, X_{i'} = \omega$ from $X_i = \omega, X_{i'} = 1$
+	for $\omega(1)$ pairs of $i, i'$.
+	Therefore, the success probability of any recovery algorithm is $o(1)$.
 \end{proof}
 \appendix
 
