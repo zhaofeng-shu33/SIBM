@@ -920,16 +920,16 @@ Also note that $A^r_i$ are functions of the underlying graph $G$.
 \begin{proposition}  \label{prop:con}
 Let $(X,G)\sim \SSBM(n,k, a\log(n)/n, b\log(n)/n)$, where $\sqrt{a}-\sqrt{b} > \sqrt{k}$.
 Suppose that $0< \beta \le \beta^\ast$.
-Then there is a set $\cG_{\con}$ such that (i) $P(G \in \cG_{\con}) = 1-o(1)$ and (ii) for every $G\in \cG_{\con}$, 
+Then there is a set $\cG_{1}$ such that (i) $P(G \in \cG_{1}) = 1-O({1-(\sqrt{a}-\sqrt{b})^2/k})$ and (ii) for every $G\in \cG_{1}$, 
 $$
 \sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big)
-=(1+o(1)) n^{g(\beta)} .
+=(1+o(1)) n^{g(\beta)}
 $$
 \end{proposition}
 
 \begin{proof}
 Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n] \}$.
-By \eqref{eq:I_1}, we have $P(G\in\cG_1)=1-o(1)$. We will prove that
+By \eqref{eq:I_1}, we have $P(G\in\cG_1)=1-O(n^{1-(\sqrt{a}-\sqrt{b})^2/k})$. We will prove that
 \begin{align}
 & E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
 = (1+o(1)) n^{g(\beta)}  , \label{eq:cg} \\
@@ -939,7 +939,7 @@ By \eqref{eq:I_1}, we have $P(G\in\cG_1)=1-o(1)$. We will prove that
 Then the proposition follows immediately from  Chebyshev's inequality and the fact that $g(\beta)\ge 0$ when $0<\beta\le\beta^\ast$ (see Lemma~\ref{lm:ele}).
 
 
-In Proposition~\ref{prop:df} (see Appendix~\ref{ap:um}), we prove \eqref{eq:cg} for $0<\beta<\frac{1}{2}\log\frac{a}{b}$. By Lemma~\ref{lm:ele}, $\beta^\ast<\frac{1}{2}\log\frac{a}{b}$, so \eqref{eq:cg} holds for $0< \beta\le \beta^\ast$.
+In Corollary~\ref{cr:yy} (see Appendix~\ref{ap:um}), we prove \eqref{eq:cg} for $0<\beta<\frac{1}{2}\log\frac{a}{b}$. By Lemma~\ref{lm:ele}, $\beta^\ast<\frac{1}{2}\log\frac{a}{b}$, so \eqref{eq:cg} holds for $0< \beta\le \beta^\ast$.
 Now we are left to prove \eqref{eq:sw}. Observe that
 \begin{equation} \label{eq:mh1}
 \begin{aligned}
@@ -947,19 +947,19 @@ Now we are left to prove \eqref{eq:sw}. Observe that
 = & \sum_{i=1}^n  \Var \big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] \\
 & \hspace*{1.2in} + \sum_{i,j\in[n],i\neq j}
 \Cov(\exp\big(\beta (A^r_i-A^0_i) \big), \exp\big(\beta (A^r_j-A^0_j) \big) ~\big|~ G\in\cG_1 ) \\
-\le & \sum_{i=1}^n E \big[ \exp\big(2k\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] \\
+\le & \sum_{i=1}^n E \big[ \exp\big(2\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] \\
 & \hspace*{1.2in} + \sum_{i,j\in[n],i\neq j}
 \Cov(\exp\big(\beta (A^r_i-A^0_i) \big), \exp\big(\beta (A^r_j-A^0_j) \big) ~\big|~ G\in\cG_1) .
 \end{aligned}
 \end{equation}
 By Corollary~\ref{cr:yy} in Appendix~\ref{ap:um}, for all $\beta>0$ we have
 $$
-\sum_{i=1}^n E[ \exp\big(2k\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
+\sum_{i=1}^n E[ \exp\big(2\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
 = O ( n^{\tilde{g}(2\beta)} ) .
 $$
 By Lemma~\ref{lm:ele}, $\tilde{g}(\beta)$ is a decreasing function, and it is strictly decreasing when $\beta\le\beta^\ast<\frac{1}{2}\log\frac{a}{b}$. Therefore, $g(\beta)=\tilde{g}(\beta)>\tilde{g}(2\beta)$ whenever $\beta\le\beta^\ast$. As a consequence, 
 \begin{equation} \label{eq:mh2}
-\sum_{i=1}^n E[ \exp\big(2k\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
+\sum_{i=1}^n E[ \exp\big(2\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
 < o ( n^{g(\beta)} ) .
 \end{equation}
 
@@ -974,11 +974,11 @@ Therefore,
 & \Cov(\exp\big(\beta (A^r_i-A^0_i) \big), \exp\big(\beta (A^r_j-A^0_j) \big) ) \\
 = & E[\exp\big(\beta (A^r_i-A^0_i+A^r_j-A^0_j) \big)] 
 -E[\exp\big(\beta (A^r_i-A^0_i) \big)] E[\exp\big(\beta (A^r_j-A^0_j) \big)]   \\
-= & E[\exp\big(\beta (A'^r_i-A^0_i) \big)] E[\exp\big(\beta (A'^r_j-A^0_j) \big)]  \Big( E[\exp(2k\beta \xi_{ij})] -
+= & E[\exp\big(\beta (A'^r_i-A^0_i) \big)] E[\exp\big(\beta (A'^r_j-A^0_j) \big)]  \Big( E[\exp(2\beta \xi_{ij})] -
 \big(E[\exp(\beta \xi_{ij})]\big)^2 \Big) \\
 = & E[\exp\big(\beta (A'^r_i-A^0_i) \big)] E[\exp\big(\beta (A'^r_j-A^0_j) \big)] \\
 & \hspace*{1.2in}
-\Big( 1-\frac{b\log(n)}{n} + \frac{b\log(n)}{n} e^{2k\beta} -
+\Big( 1-\frac{b\log(n)}{n} + \frac{b\log(n)}{n} e^{2\beta} -
 \Big(1-\frac{b\log(n)}{n} + \frac{b\log(n)}{n} e^{k\beta} \Big)^2 \Big) \\
 = & \Theta\Big( \frac{\log(n)}{n} \Big) E[\exp\big(\beta (A'^r_i-A^0_i) \big)] E[\exp\big(\beta (A'^r_j-A^0_j) \big)] \\
 = & \Theta\Big( \frac{\log(n)}{n} \Big) E[\exp\big(\beta (A^r_i-A^0_i) \big)] E[\exp\big(\beta (A^r_j-A^0_j) \big)]  ,
@@ -1012,7 +1012,7 @@ $$
 E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) \Big]
 = (1+o(1)) n^{g(\beta)}  
 $$
-for all $\beta$. This gives us the same estimate as the conditional expectation in \eqref{eq:cg}. However, the unconditional variance can be much larger than the conditional one in \eqref{eq:sw}. Recall from \eqref{eq:mh1} that we use $\sum_{i=1}^n E[ \exp\big(2k\beta (A^r_i-A^0_i) \big)]$ to bound the variance. 
+for all $\beta$. This gives us the same estimate as the conditional expectation in \eqref{eq:cg}. However, the unconditional variance can be much larger than the conditional one in \eqref{eq:sw}. Recall from \eqref{eq:mh1} that we use $\sum_{i=1}^n E[ \exp\big(2\beta (A^r_i-A^0_i) \big)]$ to bound the variance. 
 By Corollary~\ref{cr:yy} in Appendix~\ref{ap:um},
 for the unconditional case this sum is of order $\Theta(n^{g(2\beta)})$ while for the conditional case it is of order $O(n^{\tilde{g}(2\beta)})$. One can show that if $\beta\le\beta^\ast$, then we always have $g(2\beta)>\tilde{g}(2\beta)$. Therefore the order of the unconditional variance is much larger than the conditonal one.
 \end{remark}
@@ -1313,17 +1313,18 @@ Recall that $\sigma^{(1)},\dots,\sigma^{(m)}$ are the samples of SIBM.
 Without loss of generality, we assume that 
 $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$. 
 
-Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG_{\good}$ such that
+Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$,
+a large constant $C$ and a set $\cG_{1}$ such that
 
 \noindent (i)
-$P(G\in\cG_{\good}) \ge 1- O(n^{-4})$.
+$P(G\in\cG_{1}) \ge 1- O(n^{-C})$.
 
-\noindent (ii) For every $G\in\cG_{\good}$, for all $j\in[m]$,
+\noindent (ii) For every $G\in\cG_{1}$, for all $j\in[m]$,
 \begin{equation}  \label{eq:chui}
 P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
 \text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 \text{~for all~} j\in[m]  \big)
-=1- O(n^{-4}) ,
+=1- O(n^{-C}) ,
 \end{equation}
 where we can choose $\theta$ to be any constant in the open interval $(g(\beta), 1)$.
 For $i\in[n]$, define 
@@ -1334,10 +1335,12 @@ as the number of samples for which $\sigma_i^{(j)} \neq X_i$.
 For an integer $u\in[m]$, we consider
 %To give an upper bound of $P_{\SIBM} \big( \Phi_i \ge u \big)$ we consider:
 \begin{align*}
-P_{\SIBM}( \exists i \in [n], \Phi^r_i \ge u \big) \leq &P_{\SIBM}( \Phi^r_i \ge u , G \in \cG_{\good}) + P(G \not\in \cG_{\good}) \\
-\leq & E_G[P_{\sigma |G}(\exists i \in [n], \Phi^r_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m])]+ O(n^{-4})
+P_{\SIBM}( \exists i \in [n], \Phi^r_i \ge u \big) \leq &P_{\SIBM}( \Phi^r_i \ge u , G \in \cG_{1}) + P(G \not\in \cG_{1}) \\
+\leq & E_G[P_{\sigma |G}(D_r)]+ O(n^{-C})
 \end{align*}
-For the first term, since
+where the event $D_r: \exists i \in [n], \Phi^r_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m]$.
+To bound  $_G[P_{\sigma |G}(D_r)]$,
+since
 $$
 \{\Phi^r_i \ge u\} \subseteq
 \bigcup_{\cJ\subseteq[m], |\cJ|=u}
@@ -1345,22 +1348,29 @@ $$
 $$
 by the union bound,
 \begin{align*}
-& P_{\sigma|G}( \Phi^r_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m] ) \\
+& P_{\sigma|G}(D_r) \\
 \le &  \binom{m}{u} \exp\Big(u\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
 \quad\quad\text{~for all~} i\in[n] \textrm{ by Lemma~\ref{lm:et}}.
 \end{align*}
 Using the union bound, we have
 $$
-P_{\sigma|G} \big(\exists i \text{~s.t.~} \Phi^r_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m] \big) \le 
+P_{\sigma|G} \big(D_r\big) \le 
 C  \sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big),
 $$
 where $C:=\binom{m}{u}\exp(2u\beta z)$ is a constant.
-By Proposition \ref{prop:con}, if $u\beta>\beta^*$, then for every $G\in\cG^{(1)}\cap\cG_{\good}$, conditioning on the event $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$,
+By Proposition \ref{prop:con}, if $u\beta>\beta^*$, there exists $\cG_2$ such that $P(G\not\in\cG_2) \leq n^{1-(\sqrt{a}-\sqrt{b})^2/k}$.
+Then for every $G\in\cG_1 \cap\cG_{2}$,
 $$
-P_{\sigma|G} \big(\exists i \text{~s.t.~} \Phi_i \ge u \big) \le 
-C\sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) + o(1) =o(1).
+P_{\sigma|G} \big(D_r\big) \le 
+C\sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) = (1+o(1))n^{g(\beta)}.
 $$
-Since $P(G\in\cG^{(1)}\cap\cG_{\good})=1-o(1)$, we conclude that $P_{\SIBM} \big(\Phi_i \le u-1 \text{~for all~} i\in[n] \big)=1-o(1)$ for all $j\in[m]$.
+Further
+\begin{align*}
+P_{\SIBM}( \exists i \in [n], \Phi^r_i \ge u \big)
+\leq & E_G[P_{\sigma |G}(D_r)] + O(n^{-4}) \\
+\leq &  (1+o(1))n^{g(\beta)} + P(G \not\in \cG_2) + O(n^{-C}) = o(1)
+\end{align*}
+We conclude that $P_{\SIBM} \big(\Phi^r_i \le u-1 \text{~for all~} i\in[n] \big)=1-o(1)$.
 
 By assumption, we have $\lfloor \frac{m+k-1}{k} \rfloor \beta>\beta^\ast$.
 Therefore, we have $\Phi^r_i\le \lfloor \frac{m-1}{k} \rfloor$ for all $i\in[n]$ and $1\leq r\leq k-1$ with probability $1-o(1)$.
@@ -1748,7 +1758,7 @@ On the other hand, we suppose $X_i \neq X_j$ and we decompose $A^r_j = A'^r_j + 
 $\xi_{ij} \sim Bern(\frac{b\log n}{n})$.
 Then we have
 \begin{align*}
-E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = E[\exp(2k\beta \xi_{ij})] E[\exp(\beta (A'^r_i - A^r_i)]
+E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = E[\exp(2\beta \xi_{ij})] E[\exp(\beta (A'^r_i - A^r_i)]
 E[\exp(\beta (A'^r_j - A^r_j)] \\
 & = (1+o(1))E[\exp(\beta(A'^r_i - A^r_i))] E[\exp(\beta(A'^r_j - A^r_j))]
 \end{align*}

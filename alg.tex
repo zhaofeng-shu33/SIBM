@@ -412,7 +412,10 @@ U^{k+1} = U^k + (X^{k+1} - Z^{k+1})
 \end{align}
 \subsection{Therotical Guarantee}
 We have already know that for $\kappa = \frac{\alpha \log n}{\beta n}$, the problem to maximize
-$\sum_{(i,j)\in E(G)} \sigma_i \sigma_j - \kappa \sum_{(i,j) \not\in E(G)} \sigma_i \sigma_j$ can be written in matrix form
+\begin{equation}
+\sum_{(i,j)\in E(G)} \sigma_i \sigma_j - \kappa \sum_{(i,j) \not\in E(G)} \sigma_i \sigma_j
+\end{equation}
+can be written in matrix form
 as 
 \begin{align}
 \max \, & \sigma^T B \sigma \label{eq:sigmaB}\\
@@ -476,6 +479,24 @@ Therefore,
 \end{align*}
 where $\epsilon > 0$ by choosing $t^2 > (\kappa + 1)^2 (a+b)$.
 If $\kappa \geq \frac{a+b}{2}\frac{\log n}{n}$ Then the condition is equivalent to $(a-b)^2 > 8(a+b)$
+\section{SDP with $\{0,1\}$}
+In this section, we consider the state taking values from $\{0,1\}$. Then using
+the equivalent definition of $\delta(\sigma_i, \sigma_j) = \sigma_i \sigma_j + (1-\sigma_i)(1-\sigma_j)$ and
+the equality $\sigma_i^2 =\sigma_i$
+we take rewrite the object function
+\begin{equation}
+\sum_{(i,j)\in E(G)} \delta(\sigma_i, \sigma_j) -
+\kappa \sum_{(i,j) \not\in E(G)} \delta(\sigma_i, \sigma_j)
+\end{equation}
+as $\sigma^T B \sigma$ where the matrix $B$ is defined as follows:
+\begin{equation}
+B_{ij} = \begin{cases}
+1 & (i,j) \in E \\
+-\kappa & (i,j) \not\in E\\
+2[\kappa (n-1 - d_i) - d_i] & i=j
+\end{cases}
+\end{equation}
+where $d_i$ is the degree of the node $i$ in the graph.
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
