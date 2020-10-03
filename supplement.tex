@@ -267,6 +267,33 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 	\iff & m <  m^* - k
 	\end{align*}
 \end{proof}
+\begin{lemma}
+	Given a $k-1$ length vector $v=(u_1, \dots, u_{k-1})$, where $u_i$ is a non-negative integer.
+	Let $u=\sum_{i=1}^{k-1} u_i$, $\sqrt{a} - \sqrt{b} > \sqrt{k}$.
+	Define a function
+	\begin{equation}\label{eq:gvbeta}
+	g_v(\beta) = \frac{b\sum_{i=1}^{k-1}\exp(u_i \beta) + a \exp(-u\beta) - a - (k-1)b}{k}+1
+	\end{equation}
+	The function $g_v(\beta)$ has the following property:
+	\begin{enumerate}
+		\item $g_v(0)=1$ and $g_v(\beta)$ decreases from $[0, \bar{\beta}]$ and increases from
+		$[\bar{\beta}, \infty)$, $g(\bar{\beta}) < 0$.
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	The monotonicity property comes from careful analysis on $g'_v$ and $g''_v>0$.
+	The critical point $\bar{\beta}$ satisfies the following equation:
+	$$
+	b\sum_{i=1}^{k-1} u_i \exp(u_i \beta) = a u \exp(-u\beta)
+	$$
+	Replacing $a\exp(-u\beta)$ by the above expression in \eqref{eq:gvbeta} we get
+	$$
+	g_v(\bar{\beta}) = b\sum_{i=1}^{k-1}
+	$$
+\end{proof}
+\begin{remark}
+	The function $g_v(\beta)$ reduces to common $g(\beta)$ if we choose $v=(1,0,\dots, 0)$.
+\end{remark}
 \begin{thebibliography}{1}
 	
 
