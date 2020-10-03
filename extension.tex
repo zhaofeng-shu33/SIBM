@@ -1395,23 +1395,25 @@ As a consequence, after the majority voting step in Algorithm~\ref{alg:ez}, $\ha
 	If there is a pair $i, i'\in[n]$ satisfying the following two conditions: (1) $\sigma_{i}^{(j)}=\sigma_{i'}^{(j)}$ for all $j\in[m]$ and (2) $X_i = \omega^{r_1}$ and $X_{i'} = \omega^{r_2}$ ($r_1 \neq r_2$), then it is not possible to distinguish
 	the case $X_i = \omega^{r_1}, X_{i'} = \omega^{r_2}$
 	from the case $X_i = \omega^{r_2}, X_{i'} = \omega^{r_1}$.
-	In other words, conditioning on the samples, the posterior probability of the ground truth being $X$ is the same as that of the ground truth being $\bar{X}$ where $\bar{X}_{i} = \omega^{r_2}, \bar{X}_{i'} = \omega^{r_1}, \bar{X}_j = X_j$ for $j\neq i,i'$.
+	In other words, conditioning on the samples, the posterior probability of the ground truth being $\bar{X}$ is the same as that of the ground truth being $\hat{X}$ where $\hat{X}_{i} = \bar{X}_{i'}= \omega^{r_2}, \hat{X}_{i'} = \bar{X}_{i} = \omega^{r_1}, \hat{X}_j = \bar{X}_j$ for $j\neq i,i'$.
 \end{lemma}
 \begin{proof}
-Taking a vector $\bar{X}$ which satisfies $\bar{X}_{i_r} = \omega^{r-1}$ for $r\in [k]$. For a vector $v$ such that $v_{1}\cdot \bar{X}_{i_1}, \dots, v_{r} \cdot \bar{X}_{i_k}$ is a permutation of $1, \omega, \dots, \omega^{k-1}$, we only need to show
+We only need to show
 \begin{equation}\label{eq:11}
-P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k]) = P(X=\bar{X}^{(\sim I, v)}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k])
+P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m]) =
+P(X=\hat{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m])
 \end{equation}
-We can also find a 1-1 mapping $\pi$ which satisfies $ \bar{X}_{i_r} = \bar{X}^{(\sim I, v)}_{\pi(i_r)}$. $\pi$ is a permutation restricted on $\{i,i'\}$ and is identity mapping on other indices.
+We can also find a 1-1 mapping $\pi$ which satisfies $ \bar{X}_{i_r} = \hat{X}_{\pi(i_r)}$.
+$\pi$ is a permutation restricted on $\{i,i'\}$ and is identity mapping on other indices.
 Similar to the analysis in the proof of Lemma \ref{lm:cc}, $\pi$ satisfies properties such as
 $\{\pi(i), \pi(j)\} \in E(\pi(G)) \iff \{i,j\} \in E(G)$, $Z_G(\alpha, \beta) = Z_{\pi(G)}(\alpha, \beta)$ and
 $$
-P_{\SSBM}(G  | X = \bar{X})=P_{\SSBM}(\pi(G) | X = \bar{X}^{(\sim I,v)}),
+P_{\SSBM}(G  | X = \bar{X})=P_{\SSBM}(\pi(G) | X = \hat{X}),
 $$
 
 Using the Markov property of $X \to G \to \sigma$, we have
 \begin{align*}
-P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k])& = \sum_{G \in \cG_{[n]}} P(X=\bar{X}) P_{\SSBM}(G  | X = \bar{X})\prod_{j=1}^m P_{\sigma | G}(\sigma =\sigma^{(j)})\\
+P(X=\bar{X}, \sigma_{i}^{(j)}=\sigma_{i'}^{(j)}, j\in[m], r\in[k])& = \sum_{G \in \cG_{[n]}} P(X=\bar{X}) P_{\SSBM}(G  | X = \bar{X})\prod_{j=1}^m P_{\sigma | G}(\sigma =\sigma^{(j)})\\
 \end{align*}
 If we can show that 
 \begin{equation}\label{eq:sigmaEqual}
@@ -1419,10 +1421,10 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{equation}
 Then 
 \begin{align*}
-P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k]) &
-= \sum_{G \in \cG_{[n]}} P(X=\bar{X}^{(\sim I,v)})
-P_{\SSBM}(\pi(G)  | X = \bar{X}^{(\sim I,v)})\prod_{j=1}^m P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})\\
-& = P(\bar{X}^{(\sim I,v)}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m], r\in[k])
+P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m]) &
+= \sum_{G \in \cG_{[n]}} P(X=\hat{X})
+P_{\SSBM}(\pi(G)  | X = \hat{X})\prod_{j=1}^m P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})\\
+& = P(X=\hat{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m])
 \end{align*}
 The key to prove Equation \eqref{eq:sigmaEqual} lies at the property
 $\sigma^{(j)}_{i} = \sigma^{(j)}_{i'}, r\in [k]$.
