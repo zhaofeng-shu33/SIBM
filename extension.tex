@@ -1344,26 +1344,30 @@ $$
 by the union bound,
 \begin{align*}
 & P_{\sigma|G}(D_u) \\
-\le &  \binom{m}{u}(k-1)^r \exp\Big(u\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
+\le &  \binom{m}{u}\sum_v \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i + 2z) \Big)
 \quad\quad\text{~for all~} i\in[n] \textrm{ by Lemma~\ref{lm:et}}.
 \end{align*}
+where $v=(u_1, \dots, u_{k-1})$ and $u_r = |\{j | \sigma_i^{(j)} = \omega^r \cdot X_i \}|, u=\sum_{r=1}^{k-1} u_r$.
+
 Using the union bound, we have
 $$
 P_{\sigma|G} \big(D_u\big) \le 
-C  \sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big),
+C  \sum_{v}\sum_{i=1}^n \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i ) \Big),
 $$
-where $C:=\binom{m}{u}(k-1)^r\exp(2u\beta z)$ is a constant.
-By Proposition \ref{prop:con}, if $u\beta>\beta^*$, there exists $\cG_2$ such that $P(G\not\in\cG_2) \leq n^{1-(\sqrt{a}-\sqrt{b})^2/k}$.
-Then for every $G\in\cG_1 \cap\cG_{2}$,
+where $C:=\binom{m}{u}\exp(2u\beta z)$ is a constant.
+By Lemma \ref{lem:large}, if $u\beta>\beta^*$, there exists $\cG_v$ such that $P(G\not\in\cG_v) = o(1)$.
+and for every $G\in\cG_1 \cap \bigcap_{v}\cG_{v}$,
 $$
 P_{\sigma|G} \big(D_u\big) \le 
-C\sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) = (1+o(1))n^{g(u\beta)}.
+C\sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) = C\sum_{v} n^{g_v(\beta)/2}.
 $$
+in which $g_v(\beta) < 0$.
+
 Further
 \begin{align*}
 P_{\SIBM}( \exists i \in [n], \Phi_i \ge u \big)
 \leq & E_G[P_{\sigma |G}(D_u)] + O(n^{-4}) \\
-\leq &  (1+o(1))n^{g(\beta)} + P(G \not\in \cG_2) + O(n^{-C}) = o(1)
+\leq &  Cn^{g_v(\beta)/2} + \sum_{v} P(G \not\in \cG_v) + O(n^{-C}) = o(1)
 \end{align*}
 We conclude that $P_{\SIBM} \big(\Phi_i \le u-1 \text{~for all~} i\in[n] \big)=1-o(1)$.
 
@@ -1951,7 +1955,97 @@ This completes the proof of the lemma.
 	P(Y\ge r a \log(n)) < n^{-r} .
 	$$
 \end{lemma}
-
+\begin{lemma}\label{lem:g_v_extension}
+	Given a $k-1$ length vector $v=(u_1, \dots, u_{k-1})$, where $u_i$ is a non-negative integer.
+	Let $u=\sum_{i=1}^{k-1} u_i$, $\sqrt{a} - \sqrt{b} > \sqrt{k}$.
+	Define a function
+	\begin{equation}\label{eq:gvbeta}
+	g_v(\beta) = \frac{b\sum_{i=1}^{k-1}\exp(u_i \beta) + a \exp(-u\beta) - a - (k-1)b}{k}+1
+	\end{equation}
+	The function $g_v(\beta)$ has the following property:
+	\begin{enumerate}
+		\item $g_v(0)=1$ and $g_v(\beta)$ decreases from $[0, \bar{\beta}]$ and increases from
+		$[\bar{\beta}, \infty)$, $g(\bar{\beta}) < 0$.
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	The monotonicity property comes from careful analysis on $g'_v$ and $g''_v>0$.
+	We have already known that $\beta' = \frac{\beta^*}{u}$ satisfies:
+	$$
+	\frac{b e^{u\beta'} + a e^{-u\beta'}-a-b}{k}+1=0
+	$$
+	We compute $g_v(\beta')$:
+	$$
+	g_v(\beta') = \frac{b}{k}(2-k + \sum_{i=1}^{k-1}\exp(\frac{u_i}{u} \beta^*) - \exp(\beta^*))
+	$$
+	
+	We use mathematical induction to show that $g_v(\beta') \leq 0$.
+	Let $\lambda_i = \frac{u_i}{u} \in [0,1]$ and $\sum_{i=1}^{k-1} \lambda_i = 1$.
+	If only one $\lambda_i = 1$, then $g_v(\beta')$.
+	For $\lambda_i = 0, i=r,\dots, k-1$, if $r=2$, we have
+	$$
+	2-k + \sum_{i=1}^{k-1}\exp(\frac{u_i}{u} \beta^*) - \exp(\beta^*)
+	= -(1-\exp(\lambda_1 \beta^*))(1-\exp(\lambda_2 \beta^*))
+	$$
+	Since $\exp(\lambda_i \beta^*) \geq 1$, the above equation is negative.
+	Therefore, the conclusion holds when $r=2$.
+	Now suppose it holds for a certain $r$, consider the case for $r+1$.
+	We then have
+	\begin{align*}
+	L(r+1) = 2-k + \sum_{i=1}^{k-1}\exp(\frac{u_i}{u} \beta^*) - \exp(\beta^*)
+	& = L(r)- (1-\exp(\sum_{i=1}^r \lambda_i \beta^*)) (1-\exp(\lambda_{r+1}\beta^*)) \leq 0
+	\end{align*}
+	Therefore, we have proven that $g_v(\beta') \leq 0$.
+\end{proof}
+\begin{remark}
+	The function $g_v(\beta)$ reduces to common $g(\beta)$ if we choose $v=(1,0,\dots, 0)$.
+\end{remark}
+\begin{lemma}\label{lem:large}
+	Suppose $u\beta > \beta^*$. For every $v=(u_1, \dots, u_{k-1})$,
+	there exists a set $\cG_v$ such that $P(\cG_v) = 1-o(1)$ and for every $G\in \cG_v$,
+	\begin{equation}
+	\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \leq n^{g_v(\beta)/2}
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	We use Chernoff's Inequality to show $P_G(\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \geq n^{g_v(\beta)/2}) = o(1)$.
+	The expectation can be computed as follows:
+	\begin{align*}
+	\mathbb{E}[\exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))] &=\prod_{i=1}^{k-1}\left(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)\right)^{n/k}
+	\left(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta)\right)^{n/k} \\
+	&= \exp(\frac{n}{k} \left[\sum_{i=1}^{k-1}\log(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)) + \log(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta))\right])\\
+	& = \exp(\log n (g_v(\beta) - 1) + O(\frac{\log^2 n}{n}))
+	\end{align*}
+	By Chernoff's Inequality,
+	\begin{align*}
+	P_G(\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \geq n^{g_v(\beta)/2}) 
+	& \leq \mathbb{E}[\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))]/n^{g_v(\beta)/2}\\
+	& = n^{g_v(\beta)}
+	\end{align*}
+	From Lemma \ref{lem:g_v_extension}, we know that the left root of $g_v(\beta)$ is no larger than $\frac{\beta^*}{u}$.
+	Therefore, if $\beta > \frac{\beta^*}{u}$, it is also larger than the left root of $g_v(\beta)$ and our conclusion holds.
+\end{proof}
+\begin{lemma}
+	For $ t \in [u\frac{b-a}{k}, 0] $,
+	we have
+	$$
+	P(\sum_{r=1}^{k-1} u_i A_i^r - u A_i^0 \geq t \log n) \leq \exp(\log(n) (f_{v,\beta}(t) - \beta t - 1) + O(\frac{\log n}{n}))
+	$$.
+	The function $f_{v,\beta}(t)$ satisfies $f_{v, \beta} \leq \tilde{g}_v(\beta)$.
+	When $\beta > \beta^*$, we have $f_{v, \beta} \leq \tilde{g}_v(\beta) < 0$.
+\end{lemma}
+\begin{proof}
+	By some detailed analysis, $f_{v,\beta} = \min_{s \geq 0} (g_v(s) - st) + \beta t$.
+	Since $ t\leq 0$, the minimum value is taken for $s\leq \bar{\beta}$. Therefore, we can replace $g_v(s)$ with $\tilde{g}_v(s)$ defined
+	as follows:
+	\begin{equation}
+	\tilde{g}_v(s) = \begin{cases}
+	g_v(s) & s < \bar{\beta} \\
+	g_v(\bar{\beta}) & s \geq \bar{\beta}\\
+	\end{cases}
+	\end{equation}
+	That is, $f_{v,\beta} = \min_{s \geq 0} (\tilde{g}_v(s) - st) + \beta t \leq \tilde{g}_v(\beta) - \beta t + \beta t = \tilde{g}_v(\beta)$.
+\end{proof}
 
 \bibliographystyle{plain}
 \bibliography{exportlist}
