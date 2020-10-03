@@ -282,14 +282,32 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 \end{lemma}
 \begin{proof}
 	The monotonicity property comes from careful analysis on $g'_v$ and $g''_v>0$.
-	The critical point $\bar{\beta}$ satisfies the following equation:
+	We have already known that $\beta' = \frac{\beta^*}{u}$ satisfies:
 	$$
-	b\sum_{i=1}^{k-1} u_i \exp(u_i \beta) = a u \exp(-u\beta)
+	\frac{b e^{u\beta'} + a e^{-u\beta'}-a-b}{k}+1=0
 	$$
-	Replacing $a\exp(-u\beta)$ by the above expression in \eqref{eq:gvbeta} we get
+	We compute $g_v(\beta')$:
 	$$
-	g_v(\bar{\beta}) = b\sum_{i=1}^{k-1}
+	g_v(\beta') = \frac{b}{k}(2-k + \sum_{i=1}^{k-1}\exp(\frac{u_i}{u} \beta^*) - \exp(\beta^*))
 	$$
+
+	We use mathematical induction to show that $g_v(\beta') \leq 0$.
+	Let $\lambda_i = \frac{u_i}{u} \in [0,1]$ and $\sum_{i=1}^{k-1} \lambda_i = 1$.
+	If only one $\lambda_i = 1$, then $g_v(\beta')$.
+	For $\lambda_i = 0, i=r,\dots, k-1$, if $r=2$, we have
+	$$
+	2-k + \sum_{i=1}^{k-1}\exp(\frac{u_i}{u} \beta^*) - \exp(\beta^*)
+	= -(1-\exp(\lambda_1 \beta^*))(1-\exp(\lambda_2 \beta^*))
+	$$
+	Since $\exp(\lambda_i \beta^*) \geq 1$, the above equation is negative.
+	Therefore, the conclusion holds when $r=2$.
+	Now suppose it holds for a certain $r$, consider the case for $r+1$.
+	We then have
+	\begin{align*}
+	L(r+1) = 2-k + \sum_{i=1}^{k-1}\exp(\frac{u_i}{u} \beta^*) - \exp(\beta^*)
+	& = L(r)- (1-\exp(\sum_{i=1}^r \lambda_i \beta^*)) (1-\exp(\lambda_{r+1}\beta^*)) \leq 0
+	\end{align*}
+	Therefore, we have proven that $g_v(\beta') \leq 0$.
 \end{proof}
 \begin{remark}
 	The function $g_v(\beta)$ reduces to common $g(\beta)$ if we choose $v=(1,0,\dots, 0)$.
