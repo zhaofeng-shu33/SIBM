@@ -267,7 +267,7 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 	\iff & m <  m^* - k
 	\end{align*}
 \end{proof}
-\begin{lemma}
+\begin{lemma}\label{lem:g_v_extension}
 	Given a $k-1$ length vector $v=(u_1, \dots, u_{k-1})$, where $u_i$ is a non-negative integer.
 	Let $u=\sum_{i=1}^{k-1} u_i$, $\sqrt{a} - \sqrt{b} > \sqrt{k}$.
 	Define a function
@@ -312,6 +312,52 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 \begin{remark}
 	The function $g_v(\beta)$ reduces to common $g(\beta)$ if we choose $v=(1,0,\dots, 0)$.
 \end{remark}
+\begin{lemma}
+	Suppose $u\beta > \beta^*$. For every $v=(u_1, \dots, u_{k-1})$,
+	there exists a set $\cG_v$ such that $P(\cG_v) = 1-o(1)$ and for every $G\in \cG_v$,
+	\begin{equation}
+	\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \leq n^{g_v(\beta)/2}
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	We use Chernoff's Inequality to show $P_G(\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \geq n^{g_v(\beta)/2}) = o(1)$.
+	The expectation can be computed as follows:
+	\begin{align*}
+	\mathbb{E}[\exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))] &=\prod_{i=1}^{k-1}\left(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)\right)^{n/k}
+	\left(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta)\right)^{n/k} \\
+	&= \exp(\frac{n}{k} \left[\sum_{i=1}^{k-1}\log(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)) + \log(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta))\right])\\
+	& = \exp(\log n (g_v(\beta) - 1) + O(\frac{\log^2 n}{n}))
+	\end{align*}
+	By Chernoff's Inequality,
+	\begin{align*}
+	P_G(\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \geq n^{g_v(\beta)/2}) 
+	& \leq \mathbb{E}[\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))]/n^{g_v(\beta)/2}\\
+	& = n^{g_v(\beta)}
+	\end{align*}
+	From Lemma \ref{lem:g_v_extension}, we know that the left root of $g_v(\beta)$ is no larger than $\frac{\beta^*}{u}$.
+	Therefore, if $\beta > \frac{\beta^*}{u}$, it is also larger than the left root of $g_v(\beta)$ and our conclusion holds.
+\end{proof}
+\begin{lemma}
+	For $ t \in [u\frac{b-a}{k}, 0] $,
+	we have
+	$$
+	P(\sum_{r=1}^{k-1} u_i A_i^r - u A_i^0 \geq t \log n) \leq \exp(\log(n) (f_{v,\beta}(t) - \beta t - 1) + O(\frac{\log n}{n}))
+	$$.
+	The function $f_{v,\beta}(t)$ satisfies $f_{v, \beta} \leq \tilde{g}_v(\beta)$.
+	When $\beta > \beta^*$, we have $f_{v, \beta} \leq \tilde{g}_v(\beta) < 0$.
+\end{lemma}
+\begin{proof}
+	By some detailed analysis, $f_{v,\beta} = \min_{s \geq 0} (g_v(s) - st) + \beta t$.
+	Since $ t\leq 0$, the minimum value is taken for $s\leq \bar{\beta}$. Therefore, we can replace $g_v(s)$ with $\tilde{g}_v(s)$ defined
+	as follows:
+	\begin{equation}
+	\tilde{g}_v(s) = \begin{cases}
+	g_v(s) & s < \bar{\beta} \\
+	g_v(\bar{\beta}) & s \geq \bar{\beta}\\
+	\end{cases}
+	\end{equation}
+	That is, $f_{v,\beta} = \min_{s \geq 0} (\tilde{g}_v(s) - st) + \beta t \leq \tilde{g}_v(\beta) - \beta t + \beta t = \tilde{g}_v(\beta)$.
+\end{proof}
 \begin{thebibliography}{1}
 	
 
