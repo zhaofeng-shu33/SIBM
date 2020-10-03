@@ -1355,13 +1355,13 @@ P_{\sigma|G} \big(D_u\big) \le
 C  \sum_{v}\sum_{i=1}^n \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i ) \Big),
 $$
 where $C:=\binom{m}{u}\exp(2u\beta z)$ is a constant.
-By Lemma \ref{lem:large}, if $u\beta>\beta^*$, there exists $\cG_v$ such that $P(G\not\in\cG_v) = o(1)$.
+By Lemma \ref{lem:large}, if $u\beta>\beta^*$, there exists $\cG_v$ such that $P(G\not\in\cG_v) \leq 2n^{\tilde{g}_v(\beta)/2}$.
 and for every $G\in\cG_1 \cap \bigcap_{v}\cG_{v}$,
 $$
 P_{\sigma|G} \big(D_u\big) \le 
-C\sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) = C\sum_{v} n^{g_v(\beta)/2}.
+C\sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) = C\sum_{v} n^{\tilde{g}_v(\beta)/2}.
 $$
-in which $g_v(\beta) < 0$.
+in which $\tilde{g}_v(\beta) < 0$, since $u\beta > \beta^*$.
 
 Further
 \begin{align*}
@@ -1966,6 +1966,7 @@ This completes the proof of the lemma.
 	\begin{enumerate}
 		\item $g_v(0)=1$ and $g_v(\beta)$ decreases from $[0, \bar{\beta}]$ and increases from
 		$[\bar{\beta}, \infty)$, $g(\bar{\beta}) < 0$.
+		\item $g_v(\hat{\beta}) = 0$ where $\hat{\beta} < \bar{\beta}$. We have $\hat{\beta} \leq \frac{\beta^*}{u}$.
 	\end{enumerate}
 \end{lemma}
 \begin{proof}
@@ -2002,27 +2003,15 @@ This completes the proof of the lemma.
 \end{remark}
 \begin{lemma}\label{lem:large}
 	Suppose $u\beta > \beta^*$. For every $v=(u_1, \dots, u_{k-1})$,
-	there exists a set $\cG_v$ such that $P(\cG_v) = 1-o(1)$ and for every $G\in \cG_v$,
+	there exists a set $\cG_v$ such that $P(\cG_v) = 1-2n^{\tilde{g}_v(\beta)/2}$ and for every $G\in \cG_v$,
 	\begin{equation}
 	\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \leq n^{\tilde{g}_v(\beta)/2}
 	\end{equation}
 \end{lemma}
 \begin{proof}
-	We use Chernoff's Inequality to show $P_G(\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \geq n^{g_v(\beta)/2}) = o(1)$.
-	The expectation can be computed as follows:
-	\begin{align*}
-	\mathbb{E}[\exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))] &=\prod_{i=1}^{k-1}\left(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)\right)^{n/k}
-	\left(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta)\right)^{n/k} \\
-	&= \exp(\frac{n}{k} \left[\sum_{i=1}^{k-1}\log(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)) + \log(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta))\right])\\
-	& = \exp(\log n (g_v(\beta) - 1) + O(\frac{\log^2 n}{n}))
-	\end{align*}
-	By Chernoff's Inequality,
-	\begin{align*}
-	P_G(\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \geq n^{g_v(\beta)/2}) 
-	& \leq \mathbb{E}[\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))]/n^{g_v(\beta)/2}\\
-	& = n^{g_v(\beta)}
-	\end{align*}
-	Using the same technique as in Section \ref{sect:why}, we can enhance the above results as follows:
+
+	By lemma \ref{lem:fbeta_prop},
+	using the same technique as in Section \ref{sect:why}, we can enhance the above results as follows:
 	\begin{align*}
 		&P_G(\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \geq n^{\tilde{g}_v(\beta)/2})
 		 \leq P(\exists i \sum_{r=1}^{k-1}u_i A_i^r - u A_i^0 \geq 0 ) \\
@@ -2032,10 +2021,10 @@ This completes the proof of the lemma.
 		&= n^{f_{v,\beta}(0)} + P(\sum_{t\log n = u(b-a)/k}^{-1}\sum_{i=1}^n \mathbbm{1}[\sum_{r=1}^{k-1} u_iA_i^r -u A_i^0=t\log n]\exp(\beta t \log n) \geq n^{\tilde{g}_v(\beta)}/2 - f_{v,\beta}(u(b-a)/k)) \\
 		&\leq 2n^{\tilde{g}_v(\beta)/2}
 	\end{align*}
-	From Lemma \ref{lem:g_v_extension}, we know that the left root of $g_v(\beta)$ is no larger than $\frac{\beta^*}{u}$.
-	Therefore, if $\beta > \frac{\beta^*}{u}$, it is also larger than the left root of $g_v(\beta)$ and our conclusion holds.
+	From Lemma \ref{lem:g_v_extension}, we know that $\hat{\beta}\leq \frac{\beta^*}{u}$.
+	Therefore, if $\beta > \frac{\beta^*}{u} \geq \hat{\beta}$, $\tilde{g}_v(\beta) < 0$ and our conclusion holds.
 \end{proof}
-\begin{lemma}
+\begin{lemma}\label{lem:fbeta_prop}
 	For $ t \in [u\frac{b-a}{k}, 0] $,
 	we have
 	$$
@@ -2046,7 +2035,14 @@ This completes the proof of the lemma.
 	$f_{v,\beta}(u(b-a)/k) = 1 + \beta u (b-a)/k$.
 \end{lemma}
 \begin{proof}
-	By some detailed analysis,
+	The expectation can be computed as follows:
+	\begin{align*}
+	\mathbb{E}[\exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))] &=\prod_{i=1}^{k-1}\left(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)\right)^{n/k}
+	\left(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta)\right)^{n/k} \\
+	&= \exp(\frac{n}{k} \left[\sum_{i=1}^{k-1}\log(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)) + \log(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta))\right])\\
+	& = \exp(\log n (g_v(\beta) - 1) + O(\frac{\log^2 n}{n}))
+	\end{align*}
+	By Chernoff's Inequality, we have
 	\begin{equation}\label{eq:f_def}
 	f_{v,\beta} = \min_{s \geq 0} (g_v(s) - st) + \beta t
 	\end{equation}
