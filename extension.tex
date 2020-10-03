@@ -2004,7 +2004,7 @@ This completes the proof of the lemma.
 	Suppose $u\beta > \beta^*$. For every $v=(u_1, \dots, u_{k-1})$,
 	there exists a set $\cG_v$ such that $P(\cG_v) = 1-o(1)$ and for every $G\in \cG_v$,
 	\begin{equation}
-	\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \leq n^{g_v(\beta)/2}
+	\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \leq n^{\tilde{g}_v(\beta)/2}
 	\end{equation}
 \end{lemma}
 \begin{proof}
@@ -2022,6 +2022,16 @@ This completes the proof of the lemma.
 	& \leq \mathbb{E}[\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))]/n^{g_v(\beta)/2}\\
 	& = n^{g_v(\beta)}
 	\end{align*}
+	Using the same technique as in Section \ref{sect:why}, we can enhance the above results as follows:
+	\begin{align*}
+		&P_G(\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \geq n^{\tilde{g}_v(\beta)/2})
+		 \leq P(\exists i \sum_{r=1}^{k-1}u_i A_i^r - u A_i^0 \geq 0 ) \\
+		&+ 
+		P_G(\sum_{i=1}^n \exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0)) \geq n^{\tilde{g}_v(\beta)/2}, \sum_{r=1}^{k-1}u_i A_i^r - u A_i^0 < 0 \forall i \in [n])
+		\\
+		&= n^{f_{v,\beta}(0)} + P(\sum_{t\log n = u(b-a)/k}^{-1}\sum_{i=1}^n \mathbbm{1}[\sum_{r=1}^{k-1} u_iA_i^r -u A_i^0=t\log n]\exp(\beta t \log n) \geq n^{\tilde{g}_v(\beta)}/2 - f_{v,\beta}(u(b-a)/k)) \\
+		&\leq 2n^{\tilde{g}_v(\beta)/2}
+	\end{align*}
 	From Lemma \ref{lem:g_v_extension}, we know that the left root of $g_v(\beta)$ is no larger than $\frac{\beta^*}{u}$.
 	Therefore, if $\beta > \frac{\beta^*}{u}$, it is also larger than the left root of $g_v(\beta)$ and our conclusion holds.
 \end{proof}
@@ -2031,11 +2041,16 @@ This completes the proof of the lemma.
 	$$
 	P(\sum_{r=1}^{k-1} u_i A_i^r - u A_i^0 \geq t \log n) \leq \exp(\log(n) (f_{v,\beta}(t) - \beta t - 1) + O(\frac{\log n}{n}))
 	$$.
-	The function $f_{v,\beta}(t)$ satisfies $f_{v, \beta} \leq \tilde{g}_v(\beta)$.
-	When $\beta > \beta^*$, we have $f_{v, \beta} \leq \tilde{g}_v(\beta) < 0$.
+	The function $f_{v,\beta}(t)$ satisfies $f_{v, \beta}(t) \leq \tilde{g}_v(\beta)$.
+	When $\beta > \beta^*$, we have $f_{v, \beta}(t) \leq \tilde{g}_v(\beta) < 0$.
+	$f_{v,\beta}(u(b-a)/k) = 1 + \beta u (b-a)/k$.
 \end{lemma}
 \begin{proof}
-	By some detailed analysis, $f_{v,\beta} = \min_{s \geq 0} (g_v(s) - st) + \beta t$.
+	By some detailed analysis,
+	\begin{equation}\label{eq:f_def}
+	f_{v,\beta} = \min_{s \geq 0} (g_v(s) - st) + \beta t
+	\end{equation}
+	
 	Since $ t\leq 0$, the minimum value is taken for $s\leq \bar{\beta}$. Therefore, we can replace $g_v(s)$ with $\tilde{g}_v(s)$ defined
 	as follows:
 	\begin{equation}
@@ -2044,7 +2059,8 @@ This completes the proof of the lemma.
 	g_v(\bar{\beta}) & s \geq \bar{\beta}\\
 	\end{cases}
 	\end{equation}
-	That is, $f_{v,\beta} = \min_{s \geq 0} (\tilde{g}_v(s) - st) + \beta t \leq \tilde{g}_v(\beta) - \beta t + \beta t = \tilde{g}_v(\beta)$.
+	That is, $f_{v,\beta}(t) = \min_{s \geq 0} (\tilde{g}_v(s) - st) + \beta t \leq \tilde{g}_v(\beta) - \beta t + \beta t = \tilde{g}_v(\beta)$.
+	The special value $f_{v,\beta}(u(b-a)/k)$ can be computed directly from the definition \eqref{eq:f_def}. The solution to $g'(s) = u(b-a)/k$ is $s=0$.
 \end{proof}
 
 \bibliographystyle{plain}
