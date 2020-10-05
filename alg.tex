@@ -493,10 +493,65 @@ as $\sigma^T B \sigma$ where the matrix $B$ is defined as follows:
 B_{ij} = \begin{cases}
 1 & (i,j) \in E \\
 -\kappa & (i,j) \not\in E\\
-2[\kappa (n-1 - d_i) - d_i] & i=j
+\kappa (n-1 - d_i) - d_i & i=j
 \end{cases}
 \end{equation}
 where $d_i$ is the degree of the node $i$ in the graph.
+All one vector is the eigenvector of the  matrix $B$ and its eigenvalue is zero.
+
+To simplify our discussion, we restrict our discussion on $\kappa = 1$.
+
+We decompose the matrix $B$ into two parts, one part is $C$, a deterministic matrix and the other part is $\Gamma$, a random matrix
+with zero expectation.
+\begin{align}
+B & = \sum_{i<j, j\in S(i)} \alpha_{ij}^+ \Delta_{ij} + \sum_{i<j, j\not\in S(i)}\alpha_{ij}^- \Delta_{ij} \\
+& = C + \Gamma
+\end{align}
+where $\Delta_{ij} = -(e_i - e_j)(e_i - e_j)^T $.
+The matrix $C$ and $\Gamma$ has the following form:
+\begin{align*}
+C &=  \sum_{i<j, j \in S(i)}\left(2\A-1\right)\Delta_{ij}+\sum_{i<j, j \notin S(i)} \left(2\B-1\right) \Delta_{ij}\\
+\Gamma &=  \sum_{i<j, j \in S(i)}\left( \alpha^{+}_{ij} - \left(2\A-1\right) \right) \cdot \Delta_{ij} + \sum_{i<j, j \notin S(i)} \left(\alpha^{-}_{ij}-\left(2\B-1\right)\right) \cdot \Delta_{ij}
+\end{align*}
+We can compute the eigen-decomposition of $C$ using Lemma \ref{lem:Cabd}. The conclusion is that
+$C$ has all-one eigenvector, with 0 as eigenvalue. $C$ also has an eigenvalue $n-2b\log n$ with eigenvector $g$.
+All other eigenvectors of $C$ belong to eigenvalue $n-(a+b)\log n $.
+
+Now we relax to SDP problem, inspired by 3.1 of \cite{rendl2010semidefinite}.
+That is, we consider an extension of $\tilde{B}$ of $(n+1)\times (n+1)$ dimension.
+\begin{equation}
+\tilde{B}_{ij} = \begin{cases}
+B_{ij} & i,j\leq n \\
+0 & \textrm{ otherwise}
+\end{cases}
+\end{equation}
+Then we convert the problem to
+\begin{align*}
+\max\,& \tilde{B} \cdot X \\
+s.t. & X_{ii} = X_{i,n+1} \textrm{ for } i = 1, \dots, n\\
+& X_{n+1, n+1} = 1, X \succeq 0 \\
+\end{align*}
+By using Lagrange dual theorem, its dual problem can be written as:
+\begin{align*}
+\min \, & z \\
+s.t. & \begin{pmatrix}
+2\diag(y) - B & -y \\
+-y & z 
+\end{pmatrix}\succeq 0
+\end{align*}
+where $y$ is a vector.
+
+We can use the equivalent condition to write the constraint as
+$2\diag(y)-B - \frac{yy^T}{z} \succeq 0$.
+Let $g_1 = (0, 0 ,\dots, 0, 1, \dots, 1)$ be the vector corresponding to the ground truth.
+We take $z = g_1^T B g_1$ and $2y = \lambda_{\max}(B)\mathbf{1}$ with eigenvector $v$.
+Then we can verify that $2\diag(y)-B - \frac{yy^T}{z} \succeq 0$ holds iff $z\geq \frac{ny}{2}$
+by considering the space decomposition
+of $1 \bigoplus  v \bigoplus \{1,v\}^{\perp}$.
+The condition $z\geq \frac{ny}{2}$ is further equivalent to
+$$
+\frac{4}{n} g_1^T B g_1 \geq u^T (C + \Gamma) u, \forall ||u||_2 = 1
+$$
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
