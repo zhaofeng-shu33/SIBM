@@ -544,16 +544,9 @@ where $y$ is a vector.
 We can use the equivalent condition to write the constraint as
 $2\diag(y)-B - \frac{yy^T}{z} \succeq 0$.
 Let $g_1 = (0, 0 ,\dots, 0, 1, \dots, 1)$ be the vector corresponding to the ground truth.
-We take $z = g_1^T B g_1$ and $2y = \lambda_{\max}(B)\mathbf{1}$ with eigenvector $v$.
-Then we can verify that $2\diag(y)-B - \frac{yy^T}{z} \succeq 0$ holds iff $z\geq \frac{ny}{2}$
-by considering the space decomposition
-of $1 \bigoplus  v \bigoplus \{1,v\}^{\perp}$.
-The condition $z\geq \frac{ny}{2}$ is further equivalent to
-\begin{equation}\label{eq:g1}
-\frac{4}{n} g_1^T B g_1 \geq u^T (C + \Gamma) u, \forall ||u||_2 = 1
-\end{equation}
+We take $z = g_1^T B g_1$
 
-However, due to the symmetric property of the problem, if we should consider
+Due to the symmetric property of the problem, if we should consider
 $$
 g_2 = (1, \dots, 1 ,0, \dots, 0)
 $$
@@ -564,8 +557,68 @@ g_1^T B g_1 = g_2^T B g_2 = -\sum_{i<j, j \not\in S(i)} B_{ij}
 \end{equation}
 since $B_{ij} = B_{ji}$ for $i\neq j$.
 
-For \eqref{eq:g1}, if we take $u=g/\sqrt{n}$, we can show that both left and
-right hand side equals to $-\frac{4}{n} \sum_{i<j, j \not\in S(i)} B_{ij}$.
+We choose $y_i = \frac{g_i}{2}\sum_{j=1}^n B_{ij}g_j$.
+Then $y\cdot g = 0$.
+
+Then
+$2\diag(y)- B - \frac{yy^T}{2z} = z^* I - \Gamma_1 - C - \Gamma $
+where $z^* = E[y_i]= n - 2b\log n$.
+Therefore, for the deterministic matrix $z^* I - C$, it has eigenvalue $0$, eigenvector $g$;
+eigenvalue $n-2b\log n $, eigenvector $\mathbf{1}$; eigenvalue $(a-b)\log n$ for other eigenvectors.
+
+We can also verify that $g$ is the eigenvector of random matrix $\Gamma_1 + \Gamma$.
+
+
+Therefore, the condition $z^*I - C - \Gamma_1 - \Gamma \succeq 0$ is further equivalent to
+\begin{equation}\label{eq:g1}
+(a-b)\log n \geq u^T (\Gamma_1 + \Gamma) u, \forall ||u||_2 = 1, u \perp g
+\end{equation}
+The random matrix $\Gamma_1$ has the following form:
+\begin{align*}
+\Gamma_1 =& \sum_{i<j, j\in S(i)}
+\begin{pmatrix}
+0 & y_iy_j/2z \\
+y_iy_j/2z & 0
+\end{pmatrix} \\
++& \sum_{i<j, j\not\in S(i)}
+\begin{pmatrix}
+2(\alpha_{ij}^- - (2\B-1)) & y_iy_j/2z \\
+y_iy_j/2z & 2(\alpha_{ij}^- - (2\B-1))
+\end{pmatrix} + \diag\{y_1^2, \dots, y_n^2\}/2z
+\end{align*}
+Therefore, we have
+\begin{align*}
+\Gamma_1 + \Gamma =& \sum_{i<j, j\in S(i)} (\alpha_{ij}^+ - (2\A-1))\Delta_{ij}
++\sum_{i<j, j\not\in S(i)} ( (2\B-1) - \alpha_{ij}^-)\Delta_{ij}^- + yy^T/2z
+\end{align*}
+\section{Enhancement of Abbe's conclusion}
+In Abbe's original formulation, he proposed a SDP algorithm which has theoretical
+guarantee under a weak condition $(\alpha - \beta)^2 > 8(\alpha + \beta)$.
+In this section, we show that this condition can be enhanced to $\sqrt{\alpha} - \sqrt{\beta} > \sqrt{2}$, which
+is the detection threshold for SBM(2).
+
+The key is to bound
+$P(\lambda_{\max}(\Gamma) \geq (a-b)\log n)$,
+we decompose the random matrix $\Gamma=\Gamma_1 +\Gamma_2$ to two parts: diagonal parts $\Gamma_1$ and non-diagonal parts $\Gamma_2$.
+We can show that $\Gamma_2 = 2(A-E[A])$ where $A$ is the random adjacency matrix of the graph. It is a well known conclusion that
+with probability $1-n^{-r}$ such that the spectral norm of $A-E[A]$ is bounded by $c\sqrt{\log n}$ (See Theorem 5.2 of \cite{lei2015consistency}).
+
+By the property of spectral norm $||\Gamma_1 + \Gamma_2|| \leq ||\Gamma_1 || + ||\Gamma_2||$.
+\begin{align*}
+P(\lambda_{\max}(\Gamma) \geq (a-b)\log n) \leq & P(||\Gamma_1 || + ||\Gamma_2|| \geq (a-b) \log n)  \\
+\leq & n^{-r} +
+P(||\Gamma_1 || + ||\Gamma_2|| \geq (a-b) \log n, ||\Gamma_2||
+\leq c\sqrt{\log n})\\
+\leq & n^{-r} + P(||\Gamma_1|| \geq (a-b)\log n -c\sqrt{\log n}) \\
+\leq & n^{-r} + \sum_{i=1}^n (\Gamma_{ii} \geq (a-b)\log n -c\sqrt{\log n})
+\end{align*}
+Now we estimate $P(\Gamma_{11} \geq (a-b)\log n -c\sqrt{\log n})$, for the others are symmetric.
+By some algebra we can get
+$P(\Gamma_{11} \geq (a-b)\log n -c\sqrt{\log n}) = P(\sum_{i=1}^{n/2} z_i - x_i \geq -c\sqrt{\log n})$
+where $z_i \sim Bern(\frac{\alpha \log n}{n})$ and $x_i \sim Bern(\frac{\beta \log n}{n})$.
+This limit can be estimated as $(1+o(1))n^{-\frac{(\sqrt{\alpha}-\sqrt{\beta})^2}{2}}$.
+Therefore, $P(\lambda_{\max}(\Gamma) \geq (a-b)\log n)\leq n^{-r} + (1+o(1))n^{1-\frac{(\sqrt{\alpha}-\sqrt{\beta})^2}{2}} = o(1)$
+if $\sqrt{\alpha} - \sqrt{\beta} > \sqrt{2}$ is satisfied.
 
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
