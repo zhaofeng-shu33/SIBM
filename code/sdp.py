@@ -4,6 +4,24 @@ try:
     from sdp_admm_py import sdp1_admm_py
 except ImportError:
     pass
+from cvxopt import matrix, solvers
+def solve_0_1(B):
+    n = B.shape[0]
+    h = matrix([[matrix(-B), matrix(0, (1, n))], [matrix(0, (n+1, 1))]])
+    c  = matrix(0.0, (n + 1, 1))
+    c[n] = 1
+    g_list = []
+    for i in range(n):
+        matrix_temp = matrix(0.0, (n+1, n+1))
+        matrix_temp[0, 0] = -1
+        matrix_temp[n, i] = 0.5
+        matrix_temp[i, n] = 0.5
+        g_list.append(matrix_temp)
+    matrix_last = matrix(0.0, (n+1, n+1))
+    matrix_last[n, n] = -1
+    g_list.append(matrix_last)
+    sol = solvers.sdp(c, Gs=g_list, hs=h)
+    return sol['zs']
 
 def construct_B(G, kappa=1):
     n = len(G.nodes)

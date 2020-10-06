@@ -549,9 +549,19 @@ Then we can verify that $2\diag(y)-B - \frac{yy^T}{z} \succeq 0$ holds iff $z\ge
 by considering the space decomposition
 of $1 \bigoplus  v \bigoplus \{1,v\}^{\perp}$.
 The condition $z\geq \frac{ny}{2}$ is further equivalent to
-$$
+\begin{equation}\label{eq:g1}
 \frac{4}{n} g_1^T B g_1 \geq u^T (C + \Gamma) u, \forall ||u||_2 = 1
+\end{equation}
+
+However, due to the symmetric property of the problem, we should consider
 $$
+g_2 = (1, \dots, 1 ,0, \dots, 0)
+$$
+And either \eqref{eq:g1} or \eqref{eq:g2} holds with large probability.
+\begin{equation}\label{eq:g2}
+\frac{4}{n} g_2^T B g_2 \geq u^T (C + \Gamma) u, \forall ||u||_2 = 1
+\end{equation}
+If we consider $u=\frac{g}{\sqrt{n}}$, 
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
