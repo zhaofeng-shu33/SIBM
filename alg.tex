@@ -553,15 +553,20 @@ The condition $z\geq \frac{ny}{2}$ is further equivalent to
 \frac{4}{n} g_1^T B g_1 \geq u^T (C + \Gamma) u, \forall ||u||_2 = 1
 \end{equation}
 
-However, due to the symmetric property of the problem, we should consider
+However, due to the symmetric property of the problem, if we should consider
 $$
 g_2 = (1, \dots, 1 ,0, \dots, 0)
 $$
-And either \eqref{eq:g1} or \eqref{eq:g2} holds with large probability.
-\begin{equation}\label{eq:g2}
-\frac{4}{n} g_2^T B g_2 \geq u^T (C + \Gamma) u, \forall ||u||_2 = 1
+we have
+\begin{equation}
+g_1^T B g_1 = g_2^T B g_2 = -\sum_{i<j, j \not\in S(i)} B_{ij}
+= -\sum_{i>j, j \not\in S(i)} B_{ij}
 \end{equation}
-If we consider $u=\frac{g}{\sqrt{n}}$, 
+since $B_{ij} = B_{ji}$ for $i\neq j$.
+
+For \eqref{eq:g1}, if we take $u=g/\sqrt{n}$, we can show that both left and
+right hand side equals to $-\frac{4}{n} \sum_{i<j, j \not\in S(i)} B_{ij}$.
+
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
