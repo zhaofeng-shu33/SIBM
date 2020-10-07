@@ -5,6 +5,7 @@ try:
 except ImportError:
     pass
 from cvxopt import matrix, solvers
+solvers.options['show_progress'] = False
 def solve_sdp_cvx(G):
     B = construct_B(G)
     n = B.shape[0]
