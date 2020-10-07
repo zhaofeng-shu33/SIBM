@@ -5,23 +5,16 @@ try:
 except ImportError:
     pass
 from cvxopt import matrix, solvers
-def solve_0_1(B):
+def solve_sdp_cvx(G):
+    B = construct_B(G)
     n = B.shape[0]
-    h = matrix([[matrix(-B), matrix(0, (1, n))], [matrix(0, (n+1, 1))]])
-    c  = matrix(0.0, (n + 1, 1))
-    c[n] = 1
-    g_list = []
+    h = [matrix(-B)]
+    c  = matrix(1.0, (n, 1))
+    g_matrix = matrix(0.0, (n * n, n))
     for i in range(n):
-        matrix_temp = matrix(0.0, (n+1, n+1))
-        matrix_temp[0, 0] = -1
-        matrix_temp[n, i] = 0.5
-        matrix_temp[i, n] = 0.5
-        g_list.append(matrix_temp)
-    matrix_last = matrix(0.0, (n+1, n+1))
-    matrix_last[n, n] = -1
-    g_list.append(matrix_last)
-    sol = solvers.sdp(c, Gs=g_list, hs=h)
-    return sol['zs']
+        g_matrix[n * i + i, i] = -1
+    sol = solvers.sdp(c, Gs=[g_matrix], hs=h)
+    return get_labels_sdp2(np.array(sol['zs'][0]))
 
 def construct_B(G, kappa=1):
     n = len(G.nodes)
