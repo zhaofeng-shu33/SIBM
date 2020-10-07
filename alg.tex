@@ -610,7 +610,7 @@ P(\lambda_{\max}(\Gamma) \geq (a-b)\log n) \leq & P(||\Gamma_1 || + ||\Gamma_2||
 P(||\Gamma_1 || + ||\Gamma_2|| \geq (a-b) \log n, ||\Gamma_2||
 \leq c\sqrt{\log n})\\
 \leq & n^{-r} + P(||\Gamma_1|| \geq (a-b)\log n -c\sqrt{\log n}) \\
-\leq & n^{-r} + \sum_{i=1}^n (\Gamma_{ii} \geq (a-b)\log n -c\sqrt{\log n})
+\leq & n^{-r} + \sum_{i=1}^n P(\Gamma_{ii} \geq (a-b)\log n -c\sqrt{\log n})
 \end{align*}
 Now we estimate $P(\Gamma_{11} \geq (a-b)\log n -c\sqrt{\log n})$, for the others are symmetric.
 By some algebra we can get
