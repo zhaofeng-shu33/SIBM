@@ -591,6 +591,16 @@ Therefore, we have
 \Gamma_1 + \Gamma =& \sum_{i<j, j\in S(i)} (\alpha_{ij}^+ - (2\A-1))\Delta_{ij}
 +\sum_{i<j, j\not\in S(i)} ( (2\B-1) - \alpha_{ij}^-)\Delta_{ij}^- + yy^T/2z
 \end{align*}
+$\lambda_{\max}(yy^T/2z) = y^Ty/2z = O(1)$ with large probability.
+Therefore, we can neglect the matrix $yy^T/2z$ using the property of spectral norm.
+Indeed, to show $P(yy^T > 2Cz) = o(1)$ where $C$ is a constant,
+using $2z = \sum_{i=1}^n y_i$
+we can write
+$P(\sum_{i=1}^n y_i^2 \geq C\sum_{i=1}^n y_i) \leq \sum_{i=1}^n P(y_i^2 \geq C y_i) = nP(y_1 \geq C)$
+by union bound.
+We can show that $P(y_1 \geq C)$ decreases exponentially fast, so that
+.
+
 \section{Enhancement of Abbe's conclusion}
 In Abbe's original formulation, he proposed a SDP algorithm which has theoretical
 guarantee under a weak condition $(\alpha - \beta)^2 > 8(\alpha + \beta)$.
