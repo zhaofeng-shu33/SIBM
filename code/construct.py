@@ -1,5 +1,5 @@
 import numpy as np
-n = 64
+n = 128
 n2 = int(n / 2)
 alpha = 16
 beta = 4
@@ -28,4 +28,5 @@ for i in range(n):
     for j in range(i+1, n + 1):
         B[i, j] = B[j, i]
 print(np.linalg.eig(B)[0])
-
+print(d  - a + D1)
+print(d  - a + D2)
