@@ -1697,7 +1697,8 @@ For all $\beta>0$,
 
 
 \begin{lemma}  \label{lm:5t}
-Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\text{~and~}1\leq r \leq k-1\}$. Then $P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
+Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$.
+Then $P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
 \end{lemma}
 
 \begin{proof}
@@ -1706,7 +1707,7 @@ $$
 P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1)
 =\frac{P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log(n) \big)}{P(G\in\cG_1)} .
 $$
-By \eqref{eq:tD}, we have $P(G\in\cG_1)=1-o(1)$, so
+By \eqref{eq:I_1}, we have $P(G\in\cG_1)=1-o(1)$, so
 \begin{align*}
 & P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1) \\
 = & (1+o(1)) P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log(n) \big) \\
@@ -1718,15 +1719,15 @@ For $j\in[n]\setminus\{i\}$, define $\xi_{ij}=\xi_{ij}(G):=\mathbbm{1}[\{i,j\}\i
 $$
 A'^r_j=\left\{
 \begin{array}{cl}
-  A^r_j-\xi_{ij}   & \mbox{if~} X_i\neq X_j \\
-  A^r_j   &   \mbox{if~} X_i= X_j
+  A^r_j-\xi_{ij}   & \mbox{if~} X_j = \omega^r \cdot X_i \\
+  A^r_j   &   \mbox{if~} X_j \neq \omega^r \cdot X_i
 \end{array}
 \right.
 \quad \text{and} \quad
 A'^0_j=\left\{
 \begin{array}{cl}
-  A^0_j   & \mbox{if~} X_i\neq X_j \\
-  A^0_j-\xi_{ij}   &   \mbox{if~} X_i= X_j
+  A^0_j   & \mbox{if~} X_j \neq X_i \\
+  A^0_j-\xi_{ij}   &   \mbox{if~} X_j = X_i
 \end{array}
 \right. .
 $$
@@ -1739,7 +1740,7 @@ so $P \big(A'^r_j-A'^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i
 By definition, we have
 $A'^r_j\sim\Binom(\frac{n}{k}-\Theta(1),b\log(n)/n)$
 and $A'^0_j\sim\Binom(\frac{n}{k}-\Theta(1),a\log(n)/n)$ for all $j\in[n]\setminus\{i\}$.
-Then following exactly the same proof\footnote{First use Chernoff bound as we did in Proposition~\ref{prop:cher} and then use the union bound.} as that of \eqref{eq:tD}, we have
+Then following exactly the same proof\footnote{First use Chernoff bound as we did in Proposition~\ref{prop:cher} and then use the union bound.} as that of \eqref{eq:I_1}, we have
 $$
 P \big(A'^r_j-A'^0_j <-1 \text{~for all~} j\in[n]\setminus\{i\}  \big)
 \ge 1- n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)} = 1-o(1).
@@ -1748,7 +1749,7 @@ This completes the proof of the lemma.
 \end{proof}
 Using the same techniques as in Lemma \ref{lm:5t}, we have the following corollary:
 \begin{corollary}\label{lem:ucBA}
-Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n] \text{ and } 1\leq r \leq k-1\}$. Suppose $i\neq j$, then $P(A^r_i-A^0_i + A^r_j - A^0_j= t\log(n)~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i + A^r_j - A^0_j= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
+Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$. Suppose $i\neq j$, then $P(A^r_i-A^0_i + A^r_j - A^0_j= t\log(n)~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i + A^r_j - A^0_j= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
 \end{corollary}
 \begin{lemma}\label{lem:BijG}
 \begin{equation} 
@@ -1760,8 +1761,8 @@ E \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \b
 First we have
 \begin{align}
 E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
-&= \sum_{t=-2\frac{n}{k}}^{-2} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n | G \in \cG_1) \exp(\beta t \log n) \notag \\
-\text{ Corollary \ref{lem:ucBA} implies }&= (1+o(1))\sum_{t=-2\frac{n}{k}}^{-2} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) \exp(\beta t \log n)
+&= \sum_{t=-2\frac{n}{k}}^{-1} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n | G \in \cG_1) \exp(\beta t \log n) \notag \\
+\text{ Corollary \ref{lem:ucBA} implies }&= (1+o(1))\sum_{t=-2\frac{n}{k}}^{-1} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) \exp(\beta t \log n)
 \end{align}
 On the other hand, we suppose $X_i \neq X_j$ and we decompose $A^r_j = A'^r_j + \xi_{ij}, A^r_i = A'^r_i + \xi_{ij}$ where $\xi_{ij}$ is an indicator function of $\{i,j\} \in E(G)$. Then $A'^r_j, A'^r_i, A^r_j, A^r_i, \xi_{ij}$ are independent.
 $\xi_{ij} \sim Bern(\frac{b\log n}{n})$.

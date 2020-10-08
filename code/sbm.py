@@ -188,6 +188,7 @@ if __name__ == '__main__':
     if type(args.a) is float:
         args.a = [args.a]
     elif len(args.a) == 3 and args.a[-1] < args.a[-2]:
+        # start, end, step
         args.a = np.arange(args.a[0], args.a[1], args.a[2])
 
     if type(args.b) is float:
