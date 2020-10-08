@@ -1631,7 +1631,7 @@ $$
 If $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
 \begin{align*}
 E \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
-= O(n^{\tilde{g}(\beta)}-1)  .
+= O(n^{\tilde{g}(\beta)-1})  .
 \end{align*}
 \end{proposition}
 \begin{proof}
@@ -1740,7 +1740,7 @@ so $P \big(A'^r_j-A'^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i
 By definition, we have
 $A'^r_j\sim\Binom(\frac{n}{k}-\Theta(1),b\log(n)/n)$
 and $A'^0_j\sim\Binom(\frac{n}{k}-\Theta(1),a\log(n)/n)$ for all $j\in[n]\setminus\{i\}$.
-Then following exactly the same proof\footnote{First use Chernoff bound as we did in Proposition~\ref{prop:cher} and then use the union bound.} as that of \eqref{eq:I_1}, we have
+Then following exactly the same proof as that of \eqref{eq:I_1}, we have
 $$
 P \big(A'^r_j-A'^0_j <-1 \text{~for all~} j\in[n]\setminus\{i\}  \big)
 \ge 1- n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k} +o(1)} = 1-o(1).
@@ -1752,10 +1752,11 @@ Using the same techniques as in Lemma \ref{lm:5t}, we have the following corolla
 Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$. Suppose $i\neq j$, then $P(A^r_i-A^0_i + A^r_j - A^0_j= t\log(n)~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i + A^r_j - A^0_j= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
 \end{corollary}
 \begin{lemma}\label{lem:BijG}
-\begin{equation} 
-E \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
-= (1+o(1)) E \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) \big] ,
-\end{equation}
+	When $\beta < \beta^*$, we have
+\begin{align}
+E \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] &= (1+o(1))n^{2g(\beta) - 2} \\
+E \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) \big] &= (1+o(1))n^{2g(\beta) - 2}
+\end{align}
 \end{lemma}
 \begin{proof}
 First we have
@@ -1768,20 +1769,20 @@ On the other hand, we suppose $X_i \neq X_j$ and we decompose $A^r_j = A'^r_j + 
 $\xi_{ij} \sim Bern(\frac{b\log n}{n})$.
 Then we have
 \begin{align*}
-E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = E[\exp(2\beta \xi_{ij})] E[\exp(\beta (A'^r_i - A^r_i)]
-E[\exp(\beta (A'^r_j - A^r_j)] \\
-& = (1+o(1))E[\exp(\beta(A'^r_i - A^r_i))] E[\exp(\beta(A'^r_j - A^r_j))]
+E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = E[\exp(2\beta \xi_{ij})] E[\exp(\beta (A'^r_i - A^0_i)]
+E[\exp(\beta (A'^r_j - A^0_j)] \\
+& = (1+o(1))E[\exp(\beta(A'^r_i - A^0_i))] E[\exp(\beta(A'^r_j - A^0_j))]
 \end{align*}
-From Equation \eqref{eq:pl} we have
+From Proposition \ref{prop:df} we have
 $$
 E[\exp(\beta(A^r_i - A^0_i))] = (1+o(1)) \sum_{t=-n/k}^{-1} P(A^r_i - A^0_i = t \log n)E[\exp(\beta t \log n)]
 $$
 we have
 \begin{align*}
 E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = (1+o(1))
-\sum_{t_1=-n/k}^{-1} P(A'^r_i - A^r_i = t_1 \log n)E[\exp(\beta t_1 \log n)] \\
+\sum_{t_1=-n/k}^{-1} P(A'^r_i - A^0_i = t_1 \log n)E[\exp(\beta t_1 \log n)] \\
 & \cdot
-\sum_{t_2=-n/k}^{-1} P(A'^r_j - A^r_j = t_2 \log n)E[\exp(\beta t_2 \log n)] \\
+\sum_{t_2=-n/k}^{-1} P(A'^r_j - A^0_j = t_2 \log n)E[\exp(\beta t_2 \log n)] \\
 & = (1+o(1))  \sum_{t=-2\frac{n}{k}}^{-2} E[\exp(\beta t \log n)]\\
 & \cdot \sum_{\substack{t_1 + t_2 = t \\ t_1 < 0, t_2 < 0}}
 P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2\log n)
@@ -1792,7 +1793,19 @@ P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n)
 &= \sum_{\substack{t_1 + t_2 + t_3 = t\\ t_3 \in\{0, 1\}}} P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2 \log n) P(2\xi_{ij} = t_3 \log n) \\
 &=(1+o(1)) \sum_{t_1 + t_2 = t} P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2 \log n)  \\
 \end{align*}
-By Equation \ref{eq:tD}, $P(G\in G_1) = 1-o(1)$. The above summation can be further restricted to $t_1 < 0, t_2 < 0$. Thus Lemma \ref{lem:BijG} follows. 
+From  Proposition \ref{prop:99}, $P(A'^r_i - A^r_i = t_1 \log n) \asymp \frac{1}{\sqrt{\log n}}\exp(f_{\beta}(t) - \beta t -1)$.
+$f_{\beta}(t)$ takes maximum value at a negative $t$ and decreases exponentially fast for $t>0$.
+Then we have
+$$
+\sum_{t_1 + t_2 = t} P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2 \log n) =(1+o(1))
+\sum_{\substack{t_1 + t_2 = t \\ t_1 < 0, t_2 < 0}} P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2 \log n) 
+$$
+Therefore,
+$$
+E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] = (1+o(1))\sum_{t=-2\frac{n}{k}}^{-2} E[\exp(\beta t \log n)]
+P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) 
+$$
+Thus Lemma \ref{lem:BijG} follows. 
 \end{proof}
 
 
