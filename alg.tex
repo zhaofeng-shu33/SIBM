@@ -431,7 +431,7 @@ s.t. & X_{ii} = 1 \notag \\
 By following the same procedure in Abbe's paper \cite{abbe2015exact}, we can get the sufficient condition that the optimal solution
 to \eqref{eq:semiD} is the ground truth vector $g$.
 \begin{theorem}
-If $(a - b)^2 > 8 (a+b)$, then with high probability \eqref{eq:semiD} has a unique solution $g$.
+If $\kappa > \frac{b\log n}{n}$ and $\sqrt{a} - \sqrt{b} > \sqrt{2}$, then with high probability \eqref{eq:semiD} has a unique solution $g$.
 \end{theorem}
 The proof is similar with that of Abbe's paper. We choose the conjugate vector $Y=\diag(Bgg^T)$ and show that 
 we need to guarantee:  $Y \succeq B$ and $\lambda_2(Y-B)>0$.
@@ -443,8 +443,8 @@ The modification of $\alpha_{ij}^+, \alpha_{ij}^-$ is as follows:
 \end{align}
 The expression of $C, \Gamma$ are modified in corresponding way:
 \begin{align}
-C &=  \sum_{i<j, j \in S(i)}\left(2\A-1\right)\Delta^+_{ij}+\sum_{i<j, j \notin S(i)} \left(2\B-1\right) \Delta^-_{ij}\\
-\Gamma &=  \sum_{i<j, j \in S(i)}\left(\left(2\A-1\right) - \alpha^{+}_{ij}\right) \cdot \Delta^+_{ij} + \sum_{i<j, j \notin S(i)} \left(\left(2\B-1\right) - \alpha^{-}_{ij}\right) \cdot \Delta^-_{ij}
+C &=  \sum_{i<j, j \in S(i)}\left((1+\kappa)\A-\kappa\right)\Delta^+_{ij}+\sum_{i<j, j \notin S(i)} \left((1+\kappa)\B-\kappa\right) \Delta^-_{ij}\\
+\Gamma &=  \sum_{i<j, j \in S(i)}\left(\left((1+\kappa)\A-\kappa\right) - \alpha^{+}_{ij}\right) \cdot \Delta^+_{ij} + \sum_{i<j, j \notin S(i)} \left(\left((1+\kappa)\B-\kappa\right) - \alpha^{-}_{ij}\right) \cdot \Delta^-_{ij}
 \end{align}
 $j\in S(i)$ means that $i,j$ belongs to the same community.
 
@@ -463,22 +463,13 @@ $C-\Gamma \succeq 0 $ to hold
 with large probability. The minimum requirement for this is that $\kappa > b\frac{\log n}{n}$.
 This condition has been verified previously.
 $\min_{u \perp g, ||u||_2=1} u^T C u = \min\{\lambda_1, \lambda_2\} := t$
-Using matrix Bernstein inequality (Theorem 5 in \cite{abbe2015exact}, the matrix norm is the spectral norm), we need to computer $\sigma^2$ and $R$. Actually, $R$ is the minor term.
-For example, we can take $R = 4\A$. Only $\sigma^2$ needs to be computed carefully.
-We have
-$$
-\sigma^2 = (\kappa+1)^2 \log n(a (1-\A) + b (1-\B))
-$$
-Therefore,
-\begin{align*}
-&P(\lambda_{\max}( \Gamma v) \geq t)\\
-& \leq n\cdot \exp \left(
-\frac{t^2}{(\kappa+1)^2\log n (a(1-\A) + b(1-\B)) + \frac{2a(1+\kappa)(a-b)}{3}\frac{\log^2 n}{n} }
-\right)\\
-& \leq n^{-\epsilon}
-\end{align*}
-where $\epsilon > 0$ by choosing $t^2 > (\kappa + 1)^2 (a+b)$.
-If $\kappa \geq \frac{a+b}{2}\frac{\log n}{n}$ Then the condition is equivalent to $(a-b)^2 > 8(a+b)$
+Similar to the analysis in Section \ref{sec:original}, the non-diagonal term of the random matrix $\Gamma$ is $(1+\kappa)(A-E[A])$ and its
+spectral norm is bounded by $c\sqrt{\log n}$ with large probability.
+Therefore, we only need to consider the diagonal term of $\Gamma$, in which we have
+$\Gamma_{ii} \geq \frac{1+\kappa}{2}(a-b)\log n \iff \sum_{j=1}^{n/2} z^-_{ij} - z^+_{ij} \geq 0$
+where $z^-_{ij} \sim Bern(\B)$ and $z^+_{ij} \sim Bern(\A)$.
+And we can get the threshold $\sqrt{a} - \sqrt{b} > \sqrt{2}$.
+
 \section{SDP with $\{0,1\}$}
 In this section, we consider the state taking values from $\{0,1\}$. Then using
 the equivalent definition of $\delta(\sigma_i, \sigma_j) = \sigma_i \sigma_j + (1-\sigma_i)(1-\sigma_j)$ and
@@ -601,7 +592,7 @@ by union bound.
 We can show that $P(y_1 \geq C)$ decreases exponentially fast, so that
 .
 
-\section{Enhancement of Abbe's conclusion}
+\section{Enhancement of Abbe's conclusion}\label{sec:original}
 In Abbe's original formulation, he proposed a SDP algorithm which has theoretical
 guarantee under a weak condition $(\alpha - \beta)^2 > 8(\alpha + \beta)$.
 In this section, we show that this condition can be enhanced to $\sqrt{\alpha} - \sqrt{\beta} > \sqrt{2}$, which
