@@ -9,7 +9,7 @@ import networkx as nx
 import numpy as np
 from sklearn import metrics
 from ising import SIBM_metropolis, SIBM
-from sdp import sdp, sdp2
+from sdp import sdp, sdp2, solve_sdp_cvx
 
 def set_up_log():
     LOGGING_FILE = 'simulation.log'
@@ -121,6 +121,8 @@ def acc_task(alg, params, num_of_times, qu):
             results = sdp(graph, k)
         elif alg == 'sdp2':
             results = sdp2(graph)
+        elif alg == 'sdp_ip':
+            results = solve_sdp_cvx(graph)
         elif alg == 'metropolis':
             if logging.getLogger().level == logging.DEBUG:
                 sibm = SIBM(graph, k)
@@ -169,7 +171,10 @@ def phase_transition_interval(file_name_prefix, a_list, b_list, acc_list):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'asyn_fluid', 'modularity', 'sdpk', 'sdp2'], default='metropolis')
+    # sdpk: sdp for k community, wrapper for corresponding R package
+    # sdp2: sdp for 2 community, ADMM implementation
+    # sdp_ip, sdp using cvx toolbox, interior point implementation
+    parser.add_argument('--alg', choices=['metropolis', 'bisection', 'asyn_fluid', 'modularity', 'sdpk', 'sdp2', 'sdp_ip'], default='metropolis')
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
     parser.add_argument('--multi_thread', type=int, default=1)
     parser.add_argument('--n', type=int, default=100)
@@ -183,6 +188,7 @@ if __name__ == '__main__':
     if type(args.a) is float:
         args.a = [args.a]
     elif len(args.a) == 3 and args.a[-1] < args.a[-2]:
+        # start, end, step
         args.a = np.arange(args.a[0], args.a[1], args.a[2])
 
     if type(args.b) is float:

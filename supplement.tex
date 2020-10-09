@@ -10,7 +10,8 @@ This document is not so useful since we have a general $k$ version. The followin
 Let $\cG_1:=\{G:B_i-A_i<0\text{~for all~}i\in[n]\}$. Suppose $i\neq j$, then $P(B_i-A_i + B_j - A_j= t\log(n)~|~G\in\cG_1)= (1+o(1))P(B_i-A_i + B_j - A_j= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
 \end{lemma}
 \begin{lemma}\label{lem:BijG}
-\begin{equation} 
+	Let $\beta < \beta^*$,
+then \begin{equation} 
 E \big[  \exp\big(2\beta (B_i-A_i + B_j - A_j) \big) ~\big|~ G\in\cG_1 \big] 
 = (1+o(1)) E \big[  \exp\big(2\beta (B_i-A_i + B_j - A_j) \big) \big] ,
 \end{equation}
@@ -358,6 +359,53 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 	\end{equation}
 	That is, $f_{v,\beta} = \min_{s \geq 0} (\tilde{g}_v(s) - st) + \beta t \leq \tilde{g}_v(\beta) - \beta t + \beta t = \tilde{g}_v(\beta)$.
 \end{proof}
+
+\section{Alternative proof for Proposition 4 in \cite{ye2020exact}}
+Let
+the event $D_r : = \sum_{i=1}^n\exp ( 2\beta(A^r_i-A^0_i)) > s$
+and we are going to give an upper bound of $P(D_r)$. We proceed as follows: 
+\begin{align*}
+&\Pr(D_r) = 
+\Pr(D_r| B_i - A_i \geq 0, \exists i\in [n])
+\cdot I_1 \\
+&+ \Pr(D_r | B_i - A_i  < 0, \forall i\in [n])
+\Pr(  B_i - A_i  < 0 , \forall i \in [n] ) \\
+& \leq I_1
++ \Pr(D_r | B_i - A_i  < 0, \forall i\in [n])
+\end{align*}
+where $I_1 = \Pr( B_i - A_i \geq 0, \exists i\in [n])$.
+To bound the two terms above, we need the following lemma, which can be proved by standard Chernoff inequality techniques:
+
+Choosing $t=0$ in Proposition 5 of \cite{ye2020exact}, we have
+$\Pr(B_i-A_i\ge 0 ) \leq \exp(-\log n \frac{(\sqrt{a}-\sqrt{b})^2}{2})$.
+Then
+\begin{align}\label{eq:I_1}
+I_1 \leq \sum_{i=1}^n \Pr( B_i - A_i \geq 0) \leq n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{2}}
+\end{align}
+For the second term,
+conditioned on $B_i - A_i  < 0, \forall i\in [n]$ we have
+\begin{align}
+\mathbb{E}[\sum_{i=1}^n\exp (2 \beta(B_i - A_i))|B_i - A_i < 0]
+& = \sum_{i=1}^n \sum_{t\log n =-\frac{n}{2}}^{-1}P(B_i - A_i = t \log n) \exp ( 2\beta  t\log n) \label{eq:split_tlogn} \\ 
+& \leq
+\sum_{i=1}^n \sum_{t\log n =\tau}^{-1}P(B_i - A_i = t \log n)\exp ( 2\beta  t\log n) + n^{1+\beta(b-a)}
+\end{align}
+where $\tau =\frac{b-a}{2}\log n$ in short. Therefore
+\begin{align*}
+&\Pr(D_r | B_i - A_i  < 0, \forall i\in [n])  \\
+&\leq\Pr(\sum_{i=1}^n\exp (2 \beta(B_i - A_i))  > s | B_i - A_i < 0) \\
+& \leq \mathbb{E}[\sum_{i=1}^n\exp (2 \beta(B_i - A_i))|B_i - A_i < 0] / s \\
+& \leq (\sum_{i=1}^n \sum_{t\log n =\tau}^{-1}P(B_i - A_i = t \log n)\exp ( 2\beta  t\log n) + n^{1+\beta(b-a)})/ s \\
+& \leq (\frac{a-b}{2}\log n \cdot n^{f_{\beta}(t) + o(1)} + n^{(b-a)\beta + 1})/ s
+\end{align*}
+
+We have $f_{\beta}(t) \leq \tilde{g}(\beta)$ for all $t\leq 0$ 
+and $f_{\beta}(\frac{b-a}{2}) = (b-a)\beta + 1$.
+
+By choosing $s = n^{\tilde{g}(\beta)/2}$ we have
+\begin{align*}
+\Pr( D_r) \leq  n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{2}} + O(\log n)  \cdot n^{\tilde{g}(\beta)/2 + o(1)} \leq 2n^{\tilde{g}(\beta)/4}
+\end{align*}
 \begin{thebibliography}{1}
 	
 

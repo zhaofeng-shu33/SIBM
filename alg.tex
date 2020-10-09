@@ -431,7 +431,7 @@ s.t. & X_{ii} = 1 \notag \\
 By following the same procedure in Abbe's paper \cite{abbe2015exact}, we can get the sufficient condition that the optimal solution
 to \eqref{eq:semiD} is the ground truth vector $g$.
 \begin{theorem}
-If $(a - b)^2 > 8 (a+b)$, then with high probability \eqref{eq:semiD} has a unique solution $g$.
+If $\kappa > \frac{b\log n}{n}$ and $\sqrt{a} - \sqrt{b} > \sqrt{2}$, then with high probability \eqref{eq:semiD} has a unique solution $g$.
 \end{theorem}
 The proof is similar with that of Abbe's paper. We choose the conjugate vector $Y=\diag(Bgg^T)$ and show that 
 we need to guarantee:  $Y \succeq B$ and $\lambda_2(Y-B)>0$.
@@ -443,8 +443,8 @@ The modification of $\alpha_{ij}^+, \alpha_{ij}^-$ is as follows:
 \end{align}
 The expression of $C, \Gamma$ are modified in corresponding way:
 \begin{align}
-C &=  \sum_{i<j, j \in S(i)}\left(2\A-1\right)\Delta^+_{ij}+\sum_{i<j, j \notin S(i)} \left(2\B-1\right) \Delta^-_{ij}\\
-\Gamma &=  \sum_{i<j, j \in S(i)}\left(\left(2\A-1\right) - \alpha^{+}_{ij}\right) \cdot \Delta^+_{ij} + \sum_{i<j, j \notin S(i)} \left(\left(2\B-1\right) - \alpha^{-}_{ij}\right) \cdot \Delta^-_{ij}
+C &=  \sum_{i<j, j \in S(i)}\left((1+\kappa)\A-\kappa\right)\Delta^+_{ij}+\sum_{i<j, j \notin S(i)} \left((1+\kappa)\B-\kappa\right) \Delta^-_{ij}\\
+\Gamma &=  \sum_{i<j, j \in S(i)}\left(\left((1+\kappa)\A-\kappa\right) - \alpha^{+}_{ij}\right) \cdot \Delta^+_{ij} + \sum_{i<j, j \notin S(i)} \left(\left((1+\kappa)\B-\kappa\right) - \alpha^{-}_{ij}\right) \cdot \Delta^-_{ij}
 \end{align}
 $j\in S(i)$ means that $i,j$ belongs to the same community.
 
@@ -463,22 +463,13 @@ $C-\Gamma \succeq 0 $ to hold
 with large probability. The minimum requirement for this is that $\kappa > b\frac{\log n}{n}$.
 This condition has been verified previously.
 $\min_{u \perp g, ||u||_2=1} u^T C u = \min\{\lambda_1, \lambda_2\} := t$
-Using matrix Bernstein inequality (Theorem 5 in \cite{abbe2015exact}, the matrix norm is the spectral norm), we need to computer $\sigma^2$ and $R$. Actually, $R$ is the minor term.
-For example, we can take $R = 4\A$. Only $\sigma^2$ needs to be computed carefully.
-We have
-$$
-\sigma^2 = (\kappa+1)^2 \log n(a (1-\A) + b (1-\B))
-$$
-Therefore,
-\begin{align*}
-&P(\lambda_{\max}( \Gamma v) \geq t)\\
-& \leq n\cdot \exp \left(
-\frac{t^2}{(\kappa+1)^2\log n (a(1-\A) + b(1-\B)) + \frac{2a(1+\kappa)(a-b)}{3}\frac{\log^2 n}{n} }
-\right)\\
-& \leq n^{-\epsilon}
-\end{align*}
-where $\epsilon > 0$ by choosing $t^2 > (\kappa + 1)^2 (a+b)$.
-If $\kappa \geq \frac{a+b}{2}\frac{\log n}{n}$ Then the condition is equivalent to $(a-b)^2 > 8(a+b)$
+Similar to the analysis in Section \ref{sec:original}, the non-diagonal term of the random matrix $\Gamma$ is $(1+\kappa)(A-E[A])$ and its
+spectral norm is bounded by $c\sqrt{\log n}$ with large probability.
+Therefore, we only need to consider the diagonal term of $\Gamma$, in which we have
+$\Gamma_{ii} \geq \frac{1+\kappa}{2}(a-b)\log n \iff \sum_{j=1}^{n/2} z^-_{ij} - z^+_{ij} \geq 0$
+where $z^-_{ij} \sim Bern(\B)$ and $z^+_{ij} \sim Bern(\A)$.
+And we can get the threshold $\sqrt{a} - \sqrt{b} > \sqrt{2}$.
+
 \section{SDP with $\{0,1\}$}
 In this section, we consider the state taking values from $\{0,1\}$. Then using
 the equivalent definition of $\delta(\sigma_i, \sigma_j) = \sigma_i \sigma_j + (1-\sigma_i)(1-\sigma_j)$ and
@@ -493,10 +484,143 @@ as $\sigma^T B \sigma$ where the matrix $B$ is defined as follows:
 B_{ij} = \begin{cases}
 1 & (i,j) \in E \\
 -\kappa & (i,j) \not\in E\\
-2[\kappa (n-1 - d_i) - d_i] & i=j
+\kappa (n-1 - d_i) - d_i & i=j
 \end{cases}
 \end{equation}
 where $d_i$ is the degree of the node $i$ in the graph.
+All one vector is the eigenvector of the  matrix $B$ and its eigenvalue is zero.
+
+To simplify our discussion, we restrict our discussion on $\kappa = 1$.
+
+We decompose the matrix $B$ into two parts, one part is $C$, a deterministic matrix and the other part is $\Gamma$, a random matrix
+with zero expectation.
+\begin{align}
+B & = \sum_{i<j, j\in S(i)} \alpha_{ij}^+ \Delta_{ij} + \sum_{i<j, j\not\in S(i)}\alpha_{ij}^- \Delta_{ij} \\
+& = C + \Gamma
+\end{align}
+where $\Delta_{ij} = -(e_i - e_j)(e_i - e_j)^T $.
+The matrix $C$ and $\Gamma$ has the following form:
+\begin{align*}
+C &=  \sum_{i<j, j \in S(i)}\left(2\A-1\right)\Delta_{ij}+\sum_{i<j, j \notin S(i)} \left(2\B-1\right) \Delta_{ij}\\
+\Gamma &=  \sum_{i<j, j \in S(i)}\left( \alpha^{+}_{ij} - \left(2\A-1\right) \right) \cdot \Delta_{ij} + \sum_{i<j, j \notin S(i)} \left(\alpha^{-}_{ij}-\left(2\B-1\right)\right) \cdot \Delta_{ij}
+\end{align*}
+We can compute the eigen-decomposition of $C$ using Lemma \ref{lem:Cabd}. The conclusion is that
+$C$ has all-one eigenvector, with 0 as eigenvalue. $C$ also has an eigenvalue $n-2b\log n$ with eigenvector $g$.
+All other eigenvectors of $C$ belong to eigenvalue $n-(a+b)\log n $.
+
+Now we relax to SDP problem, inspired by 3.1 of \cite{rendl2010semidefinite}.
+That is, we consider an extension of $\tilde{B}$ of $(n+1)\times (n+1)$ dimension.
+\begin{equation}
+\tilde{B}_{ij} = \begin{cases}
+B_{ij} & i,j\leq n \\
+0 & \textrm{ otherwise}
+\end{cases}
+\end{equation}
+Then we convert the problem to
+\begin{align*}
+\max\,& \tilde{B} \cdot X \\
+s.t. & X_{ii} = X_{i,n+1} \textrm{ for } i = 1, \dots, n\\
+& X_{n+1, n+1} = 1, X \succeq 0 \\
+\end{align*}
+By using Lagrange dual theorem, its dual problem can be written as:
+\begin{align*}
+\min \, & z \\
+s.t. & \begin{pmatrix}
+2\diag(y) - B & -y \\
+-y & z 
+\end{pmatrix}\succeq 0
+\end{align*}
+where $y$ is a vector.
+
+We can use the equivalent condition to write the constraint as
+$2\diag(y)-B - \frac{yy^T}{z} \succeq 0$.
+Let $g_1 = (0, 0 ,\dots, 0, 1, \dots, 1)$ be the vector corresponding to the ground truth.
+We take $z = g_1^T B g_1$
+
+Due to the symmetric property of the problem, if we should consider
+$$
+g_2 = (1, \dots, 1 ,0, \dots, 0)
+$$
+we have
+\begin{equation}
+g_1^T B g_1 = g_2^T B g_2 = -\sum_{i<j, j \not\in S(i)} B_{ij}
+= -\sum_{i>j, j \not\in S(i)} B_{ij}
+\end{equation}
+since $B_{ij} = B_{ji}$ for $i\neq j$.
+
+We choose $y_i = \frac{g_i}{2}\sum_{j=1}^n B_{ij}g_j$.
+Then $y\cdot g = 0$.
+
+Then
+$2\diag(y)- B - \frac{yy^T}{2z} = z^* I - \Gamma_1 - C - \Gamma $
+where $z^* = E[y_i]= n - 2b\log n$.
+Therefore, for the deterministic matrix $z^* I - C$, it has eigenvalue $0$, eigenvector $g$;
+eigenvalue $n-2b\log n $, eigenvector $\mathbf{1}$; eigenvalue $(a-b)\log n$ for other eigenvectors.
+
+We can also verify that $g$ is the eigenvector of random matrix $\Gamma_1 + \Gamma$.
+
+
+Therefore, the condition $z^*I - C - \Gamma_1 - \Gamma \succeq 0$ is further equivalent to
+\begin{equation}\label{eq:g1}
+(a-b)\log n \geq u^T (\Gamma_1 + \Gamma) u, \forall ||u||_2 = 1, u \perp g
+\end{equation}
+The random matrix $\Gamma_1$ has the following form:
+\begin{align*}
+\Gamma_1 =& \sum_{i<j, j\in S(i)}
+\begin{pmatrix}
+0 & y_iy_j/2z \\
+y_iy_j/2z & 0
+\end{pmatrix} \\
++& \sum_{i<j, j\not\in S(i)}
+\begin{pmatrix}
+2(\alpha_{ij}^- - (2\B-1)) & y_iy_j/2z \\
+y_iy_j/2z & 2(\alpha_{ij}^- - (2\B-1))
+\end{pmatrix} + \diag\{y_1^2, \dots, y_n^2\}/2z
+\end{align*}
+Therefore, we have
+\begin{align*}
+\Gamma_1 + \Gamma =& \sum_{i<j, j\in S(i)} (\alpha_{ij}^+ - (2\A-1))\Delta_{ij}
++\sum_{i<j, j\not\in S(i)} ( (2\B-1) - \alpha_{ij}^-)\Delta_{ij}^- + yy^T/2z
+\end{align*}
+$\lambda_{\max}(yy^T/2z) = y^Ty/2z = O(1)$ with large probability.
+Therefore, we can neglect the matrix $yy^T/2z$ using the property of spectral norm.
+Indeed, to show $P(yy^T > 2Cz) = o(1)$ where $C$ is a constant,
+using $2z = \sum_{i=1}^n y_i$
+we can write
+$P(\sum_{i=1}^n y_i^2 \geq C\sum_{i=1}^n y_i) \leq \sum_{i=1}^n P(y_i^2 \geq C y_i) = nP(y_1 \geq C)$
+by union bound.
+We can show that $P(y_1 \geq C)$ decreases exponentially fast, so that
+.
+
+\section{Enhancement of Abbe's conclusion}\label{sec:original}
+In Abbe's original formulation, he proposed a SDP algorithm which has theoretical
+guarantee under a weak condition $(\alpha - \beta)^2 > 8(\alpha + \beta)$.
+In this section, we show that this condition can be enhanced to $\sqrt{\alpha} - \sqrt{\beta} > \sqrt{2}$, which
+is the detection threshold for SBM(2).
+
+The key is to bound
+$P(\lambda_{\max}(\Gamma) \geq (a-b)\log n)$,
+we decompose the random matrix $\Gamma=\Gamma_1 +\Gamma_2$ to two parts: diagonal parts $\Gamma_1$ and non-diagonal parts $\Gamma_2$.
+We can show that $\Gamma_2 = 2(A-E[A])$ where $A$ is the random adjacency matrix of the graph. It is a well known conclusion that
+with probability $1-n^{-r}$ such that the spectral norm of $A-E[A]$ is bounded by $c\sqrt{\log n}$ (See Theorem 5.2 of \cite{lei2015consistency}).
+
+By the property of spectral norm $||\Gamma_1 + \Gamma_2|| \leq ||\Gamma_1 || + ||\Gamma_2||$.
+\begin{align*}
+P(\lambda_{\max}(\Gamma) \geq (a-b)\log n) \leq & P(||\Gamma_1 || + ||\Gamma_2|| \geq (a-b) \log n)  \\
+\leq & n^{-r} +
+P(||\Gamma_1 || + ||\Gamma_2|| \geq (a-b) \log n, ||\Gamma_2||
+\leq c\sqrt{\log n})\\
+\leq & n^{-r} + P(||\Gamma_1|| \geq (a-b)\log n -c\sqrt{\log n}) \\
+\leq & n^{-r} + \sum_{i=1}^n P(\Gamma_{ii} \geq (a-b)\log n -c\sqrt{\log n})
+\end{align*}
+Now we estimate $P(\Gamma_{11} \geq (a-b)\log n -c\sqrt{\log n})$, for the others are symmetric.
+By some algebra we can get
+$P(\Gamma_{11} \geq (a-b)\log n -c\sqrt{\log n}) = P(\sum_{i=1}^{n/2} z_i - x_i \geq -c\sqrt{\log n})$
+where $z_i \sim Bern(\frac{\alpha \log n}{n})$ and $x_i \sim Bern(\frac{\beta \log n}{n})$.
+This limit can be estimated as $(1+o(1))n^{-\frac{(\sqrt{\alpha}-\sqrt{\beta})^2}{2}}$.
+Therefore, $P(\lambda_{\max}(\Gamma) \geq (a-b)\log n)\leq n^{-r} + (1+o(1))n^{1-\frac{(\sqrt{\alpha}-\sqrt{\beta})^2}{2}} = o(1)$
+if $\sqrt{\alpha} - \sqrt{\beta} > \sqrt{2}$ is satisfied.
+
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
