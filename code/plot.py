@@ -1,6 +1,7 @@
 import os
 import pickle
 import argparse
+from datetime import datetime
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -46,12 +47,12 @@ def draw_phase_transation(file_name):
     plt.show()
 
 if __name__ == '__main__':
-    method_list = ['sdp', 'metropolis', 'asyn_fluid', 'bi']
+    method_list = ['sdp', 'metropolis', 'asyn_fluid', 'bi', 'sdp2']
     parser = argparse.ArgumentParser()
     parser.add_argument('--action', choices=['phase_transition',
         'compare'], default='phase_transition')
     parser.add_argument('--method', choices=method_list)
-    parser.add_argument('--date', default='2020-09-15')
+    parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
     if args.action == 'phase_transition':
         file_name = args.method + '-transition-%s.pickle' % args.date
