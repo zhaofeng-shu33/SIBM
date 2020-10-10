@@ -455,7 +455,7 @@ For the determistic matrix $C$, we have
 \begin{align}
 a &= \kappa - (1+\kappa) \A \\
 b &= \kappa - (1+\kappa) \B \\
-d & = a + \frac{1+\kappa}{2} (a-b) \log n
+d & = \kappa - (1+\kappa) \A + \frac{1+\kappa}{2} (a-b) \log n
 \end{align}
 Using Lemma \ref{lem:Cabd}, we can get all eigenvalues of $C$ as $\lambda_2=\frac{1+\kappa}{2}(a-b)\log n $ and $\lambda_1=n\kappa - (1+\kappa)b\log n$
 (omit the eigenvalue corresponding to $g$). If $\kappa = 0$, then $C$ has negative eigenvalue and it is impossible for
@@ -474,7 +474,7 @@ And we can get the threshold $\sqrt{a} - \sqrt{b} > \sqrt{2}$.
 In this section, we consider the state taking values from $\{0,1\}$. Then using
 the equivalent definition of $\delta(\sigma_i, \sigma_j) = \sigma_i \sigma_j + (1-\sigma_i)(1-\sigma_j)$ and
 the equality $\sigma_i^2 =\sigma_i$
-we take rewrite the object function
+we can rewrite the object function
 \begin{equation}
 \sum_{(i,j)\in E(G)} \delta(\sigma_i, \sigma_j) -
 \kappa \sum_{(i,j) \not\in E(G)} \delta(\sigma_i, \sigma_j)
@@ -597,6 +597,7 @@ In Abbe's original formulation, he proposed a SDP algorithm which has theoretica
 guarantee under a weak condition $(\alpha - \beta)^2 > 8(\alpha + \beta)$.
 In this section, we show that this condition can be enhanced to $\sqrt{\alpha} - \sqrt{\beta} > \sqrt{2}$, which
 is the detection threshold for SBM(2).
+This result has already been obtained in Section 2 of \cite{hajek2016achieving}.
 
 The key is to bound
 $P(\lambda_{\max}(\Gamma) \geq (a-b)\log n)$,
