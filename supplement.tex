@@ -406,6 +406,33 @@ By choosing $s = n^{\tilde{g}(\beta)/2}$ we have
 \begin{align*}
 \Pr( D_r) \leq  n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{2}} + O(\log n)  \cdot n^{\tilde{g}(\beta)/2 + o(1)} \leq 2n^{\tilde{g}(\beta)/4}
 \end{align*}
+\section{A weaker conclusion than Theorem 3}
+In section \cite{ye2020exact}, there is some problem related with the proof. We try to prove a weaker version of Theorem 3.
+That is, when $\beta < \beta^*$, we will show that $P_{\SIBM}(\dist(\sigma, \pm X)\geq 1) = 1 - o(1)$.
+The following discussion assumes $\dist(\sigma, X) \leq \frac{n}{2}$.
+Indeed, using proposition 10 in \cite{ye2020exact}, we can find $\cG_1$ such that $P(\cG_1) < n^{1-(\sqrt{a} - \sqrt{b})^2/2}$
+and for $G\not\in \cG_1$, for large enough $n$
+$$
+\sum_{i=1}^n \exp(2\beta(B_i - A_i)) \geq \frac{1}{2}n^{g(\beta)}
+$$
+For such $G$, we already have
+$$
+\frac{P_{\sigma | G}(\dist(\sigma, X) = 1)}{P_{\sigma | G}(\sigma = X)} = (1+o(1))\sum_{i=1}^n \exp(2\beta(B_i - A_i)) \geq \frac{1}{4}n^{g(\beta)}
+$$
+Therefore, we can get
+$$
+\frac{P_{\sigma | G}(\dist(\sigma, X) \geq 1)}{1-P_{\sigma | G}(\dist(\sigma, X)\geq 1)}\geq \frac{1}{4}n^{g(\beta)}
+$$
+We then have
+$$
+P_{\sigma | G}(\dist(\sigma, X) \geq 1) \geq \frac{n^{g(\beta)}}{4+n^{g(\beta)}}
+$$
+Then
+\begin{align*}
+P_{\SIBM}(\dist(\sigma, X) = 0) & \leq P(\cG_1) + \sum_{G\not\in cG_1}P(G)(1-P_{\sigma|G}(\dist(\sigma, X)\geq 1))\\
+& \leq n^{1-(\sqrt{a} - \sqrt{b})^2/2} + \frac{4}{4+n^{g(\beta)}} \\
+& \leq n^{1-(\sqrt{a} - \sqrt{b})^2/2} + 4n^{-g(\beta)} = o(1)
+\end{align*}
 \begin{thebibliography}{1}
 	
 
