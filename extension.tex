@@ -1025,7 +1025,7 @@ Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\
 \begin{proof}
 	We prove the following equivalent form:
 	$$
-	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ \dist(\sigma, X) \le n/k) = 1-o(1) .
+	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ X = \arg\dist_{X'\in S(X)}(\sigma, S(X')) ) = 1-o(1) .
 	$$
 	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG_{\good}$ such that
 	
@@ -1035,7 +1035,7 @@ Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\
 	\noindent (ii) For every $G\in\cG_{\good}$, 
 	\begin{equation}  \label{eq:hs}
 	P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ \dist(\sigma, X) \le n/k \big) 
+	\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ X = \arg\dist_{X'\in S(X)}(\sigma, S(X')) \big) 
 	=1- O(n^{-4}) ,
 	\end{equation}
 
@@ -1213,7 +1213,7 @@ i.e., $\Lambda_i(G, z)$ consists of all the samples for which the number of ``ba
 	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$ and every $i\in[n]$, 
 	\begin{equation} \label{eq:zr}
 	P_{\SIBM} (\sigma\in \Lambda_i(G, z)
-	| \dist(\sigma, X) = O(n^{\theta}))
+	| X = \arg\dist_{X'\in S(X)}(\sigma, S(X')))
 	> 1 - n^{-C} .
 	\end{equation}
 \end{lemma}
@@ -1234,7 +1234,7 @@ The following corollary follows immediately from Lemma~\ref{lm:us} and the union
 	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$, 
 	$$
 	P_{\SIBM} (\sigma\in \Lambda(G, z)
-	|  \dist(\sigma, X) = O(n^{\theta}))
+	| X = \arg\dist_{X'\in S(X)}(\sigma, S(X')) )
 	> 1 - n^{-C} .
 	$$
 \end{corollary}
@@ -1399,12 +1399,12 @@ As a consequence, after the majority voting step in Algorithm~\ref{alg:ez}, $\ha
 	In other words, conditioning on the samples, the posterior probability of the ground truth being $\bar{X}$ is the same as that of the ground truth being $\hat{X}$ where $\hat{X}_{i} = \bar{X}_{i'}= \omega^{r_2}, \hat{X}_{i'} = \bar{X}_{i} = \omega^{r_1}, \hat{X}_j = \bar{X}_j$ for $j\neq i,i'$.
 \end{lemma}
 \begin{proof}
-We only need to show
+Observing data satisfying $\sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}$, we need to show the posterior probability
 \begin{equation}\label{eq:11}
-P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m]) =
-P(X=\hat{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m])
+P(X=\bar{X} | \sigma^{(j)}, j\in[m]) =
+P(X=\hat{X} | \sigma^{(j)}, j\in[m])
 \end{equation}
-We can also find a 1-1 mapping $\pi$ which satisfies $ \bar{X}_{i_r} = \hat{X}_{\pi(i_r)}$.
+For a given graph $G$, we can find a 1-1 mapping $\pi$ which satisfies $ \bar{X}_{i_r} = \hat{X}_{\pi(i_r)}$.
 $\pi$ is a permutation restricted on $\{i,i'\}$ and is identity mapping on other indices.
 Then $\pi$ satisfies properties such as
 $\{\pi(i), \pi(j)\} \in E(\pi(G)) \iff \{i,j\} \in E(G)$, $Z_G(\alpha, \beta) = Z_{\pi(G)}(\alpha, \beta)$ and
@@ -1414,7 +1414,7 @@ $$
 
 Using the Markov property of $X \to G \to \sigma$, we have
 \begin{align*}
-P(X=\bar{X}, \sigma_{i}^{(j)}=\sigma_{i'}^{(j)}, j\in[m], r\in[k])& = \sum_{G \in \cG_{[n]}} P(X=\bar{X}) P_{\SSBM}(G  | X = \bar{X})\prod_{j=1}^m P_{\sigma | G}(\sigma =\sigma^{(j)})\\
+P(X=\bar{X} | \sigma^{(j)}, j\in[m])& = \sum_{G \in \cG_{[n]}} P(X=\bar{X}) P_{\SSBM}(G  | X = \bar{X})\prod_{j=1}^m P_{\sigma | G}(\sigma =\sigma^{(j)})\\
 \end{align*}
 If we can show that 
 \begin{equation}\label{eq:sigmaEqual}
@@ -1422,20 +1422,20 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{equation}
 Then 
 \begin{align*}
-P(X=\bar{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m]) &
+P(X=\bar{X} | \sigma^{(j)}, j\in[m]) &
 = \sum_{G \in \cG_{[n]}} P(X=\hat{X})
 P_{\SSBM}(\pi(G)  | X = \hat{X})\prod_{j=1}^m P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})\\
-& = P(X=\hat{X}, \sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}, j\in[m])
+& = P(X=\hat{X} | \sigma^{(j)}, j\in[m])
 \end{align*}
 The key to prove Equation \eqref{eq:sigmaEqual} lies at the property
-$\sigma^{(j)}_{i} = \sigma^{(j)}_{i'}, r\in [k]$.
-Let $c_G(\sigma, i,j) = \delta_{\sigma_i \sigma_j}[(\beta + \frac{\alpha \log n}{n})\mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}]$
-and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i,i'\}} c_G(\sigma, j_1, j_2) - c_G(\sigma, i, i'))$
+$\sigma^{(j)}_{i} = \sigma^{(j)}_{i'}$.
+Let $c_G(\sigma, i,j) = \frac{1}{2}\delta_{\sigma_i\sigma_j}[(\beta + \frac{\alpha \log n}{n})\mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}]$
+and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i,i'\},j_1\neq j_2} c_G(\sigma, j_1, j_2) + c_G(\sigma, i, i'))$
 \begin{align*}
-P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s)) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s) ) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), s) + c_{\pi(G)}(\sigma^{(j)}, \pi(i'), s)) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1}^n c_{\pi(G)}(\sigma^{(j)}, i, s) + c_{\pi(G)}(\sigma^{(j)}, i', s)) \\
+P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s)) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s) ) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), s) + c_{\pi(G)}(\sigma^{(j)}, \pi(i'), s)) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_{\pi(G)}(\sigma^{(j)}, i, s) + c_{\pi(G)}(\sigma^{(j)}, i', s)) \\
 & = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{align*}
 \end{proof}
@@ -1448,8 +1448,8 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1}^n c_G(
 	\begin{equation}  \label{eq:rl}
 	T_r:= | \{i\in[n]:(\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v, X_i=\omega^r \} | ,  \\
 	\end{equation}
-	If $m-u_s = u_r$ for some $s\neq r$ and $u_r\beta<\beta^\ast$, then
-	$P_{\SIBM}\big(T_s = \Theta(n^{g(u_r\beta)}) \big) = 1-o(1)$.
+	If exists $s \neq r$ such that $u_r + u_s = m$ and $u_s\beta<\beta^\ast$, then
+	$P_{\SIBM}\big(T_r = \Theta(n^{g(u_s\beta)}) \big) = 1-o(1)$.
 \end{lemma}
 \begin{proof}
 
