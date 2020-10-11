@@ -351,14 +351,17 @@ E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} 
 < n^{r (g(\beta)+o(1))} /(r!) 
 < (k-1)^rn^{-r(\delta-o(1))} .
 $$
-This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for any $\delta>0$. Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$, we have $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$. This improves upon the upper bound 
-$\dist(\sigma, \Gamma)< n/\log^{\delta}(n)$ we obtained using spectral method at the beginning of this section.
+This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for any $\delta>0$.
+Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$,
+we have $P_{\SIBM} (\dist(\sigma, S_k(X))<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$.
+This improves upon the upper bound 
+$\dist(\sigma, S_k(X))< n/\log^{\delta}(n)$ we obtained using spectral method at the beginning of this section.
 
-More importantly, this allows us to prove a powerful structural result. (All the discussions below are conditioning on the event $\dist(\sigma,X)\le n/k$, i.e., $\sigma$ is closer to $X$ than to $\Gamma\backslash\{X\}$.) We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
-Conditioning on the event every vertex has at most $z$ ``bad" neighbors, it is easy to show that $P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1}\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor $\exp(k^2\beta z)$.
-Therefore, $E_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
-We can further prove that $\dist(\sigma,X)$ concentrates around its expectation. Thus we conclude that $\dist(\sigma,X)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
-Quite surprisingly, when $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation: For almost all graph $G$, we have $\sum_{i=1}^n\exp (k \beta (A^r_i-A^0_i))=(1+o(1))n^{g(\beta)}$; see Proposition~\ref{prop:con} in Section~\ref{sect:struct} for a proof. Combining this with the above analysis, we conclude that $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ when $\beta\le\beta^\ast$. This completes the sketched proof of Theorem~\ref{thm:wt3}.
+More importantly, this allows us to prove a powerful structural result. (All the discussions below are conditioning on the event $\sigma$ is closer to $X$ than to $S_k(X)\backslash\{X\}$.) We say that $j$ is a ``bad" neighbor of vertex $i$ if the edge $\{i,j\}$ is connected in graph $G$ and $\sigma_j\neq X_j$. Then there is an integer $z>0$ such that with probability $1-o(1)$, every vertex has at most $z$ ``bad" neighbors.
+Conditioning on the event every vertex has at most $z$ ``bad" neighbors, it is easy to show that $P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1}\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor $\exp(2\beta z)$.
+Therefore, $E_{\sigma|G}[\dist(\sigma,X)]=\sum_{i=1}^n P_{\sigma|G}(\sigma_i \neq X_i)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
+We can further prove that $\dist(\sigma,X)$ concentrates around its expectation. Thus we conclude that $\dist(\sigma,X)$ differs from $\sum_{r=1}^{k-1} \sum_{i=1}^n\exp (\beta (A^r_i-A^0_i))$ by at most a constant factor for almost all $G$.
+Quite surprisingly, when $\beta\le\beta^\ast$, we can prove a very tight concentration around the expectation: For almost all graph $G$, we have $\sum_{i=1}^n\exp (\beta (A^r_i-A^0_i))=(1+o(1))n^{g(\beta)}$; see Proposition~\ref{prop:con} in Section~\ref{sect:struct} for a proof. Combining this with the above analysis, we conclude that $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ when $\beta\le\beta^\ast$. This completes the sketched proof of Theorem~\ref{thm:wt3}.
 See Sections~\ref{sect:theta} and Sections~\ref{sect:struct} for the rigorous proof of the above arguments.
 
 \subsection{Multiple sample case: Proof of Theorem~\ref{thm:wt2}}
