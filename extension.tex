@@ -410,7 +410,7 @@ The proof of the converse results, i.e., even ML algorithm cannot recover $X$ wi
 
 \section{Samples are concentrated around $S_k(X)$ or $\Lambda$} \label{sect:aln}
 In this section, we show that for $a>b$, if $\alpha<b\beta$, then the samples differ from  $\Lambda$ in at most $n/\log^{\delta}(n)$ coordinates.
-We prove that the number of samples needed for exact recovery of $X$ is at least $\Omega(\log^{\delta}(n))$. We also show that if $\alpha > b\beta$, then the samples differ from  $S_k(x)$ in at most $n/\log^{\delta}(n)$ coordinates.
+We prove that the number of samples needed for exact recovery of $X$ is at least $\Omega(\log^{\delta}(n))$. We also show that if $\alpha > b\beta$, then the samples differ from  $S_k(X)$ in at most $n/\log^{\delta}(n)$ coordinates.
 
 \begin{proposition} \label{prop:1}
 Let $a>b>0$ and $\alpha,\beta>0$ be constants. Let $m$ be a positive integer that is upper bounded by some polynomial of $n$.
@@ -449,7 +449,7 @@ P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 The case $\alpha > b \beta$ can be proved in the same way as above by applying Lemma \ref{lem:sigmaX}.
 \end{proof}
 \begin{lemma}\label{lem:small}
-	$\alpha< b \beta$. When $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Show that
+	$\alpha< b \beta$. When $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Then
 	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
 	happens with probability less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
 \end{lemma}

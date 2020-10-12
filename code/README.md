@@ -5,3 +5,13 @@
 ```
 python3 test_ising.py
 ```
+
+## reproduce Abbe's figure
+```
+python3 sbm.py --alg sdp2 --multi_thread 20 --repeat 20 --n 300 --k 2 --a 5 25 1 --b 2 10 1 --binary
+```
+See Figure 4
+
+Abbe, Emmanuel, Afonso S. Bandeira, and Georgina Hall. "Exact recovery in the stochastic block model." IEEE Transactions on Information Theory 62.1 (2015): 471-487.
+
+![](./sdp2.png)
