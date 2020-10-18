@@ -1,0 +1,233 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\DeclareMathOperator{\myspan}{span}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\title{Channel Construction}
+\author{Feng Zhao}
+\date
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+Consider $n=2$ and we want to consider a channel
+with input alphabet $\mathcal{X}=\{00,01,10,11\}$
+and output alphabet $\mathcal{Y}=\mathcal{X}$.
+Now we have a random variable $X$ on $\mathcal{X}$
+with distribution $(1+x-x_1-x_2, x_2-x,x_1-x,x)$.
+The output variable $Y$ should have distribution
+$((1-y_1)(1-y_2), y_2(1-y_1), y_1(1-y_2), y_1y_2)$.
+We can decompose $Y$ into the product of two Bernoulli
+random variables.
+Now all $x_1, x_2, x, y_1, y_2$ are given.
+\begin{align*}
+x_ 1 & = P(\phi_1 = 1) \\
+x_2 & = P(\phi_2 = 1) \\
+x & = P(\phi_1 = 1, \phi_2 =1) \\
+y_1 & = \underline{C} \exp(2\beta (B_1 - A_1)) \\
+y_2 & = \underline{C} \exp(2\beta (B_2 - A_2))
+\end{align*}
+We have $y_1 \leq x_1, y_2 \leq x_2, y_1y_2 \leq x, y_1 + y_2 - y_1y_2 \leq x_1 + x_2 - x$.
+
+We consider the transition probability matrix $A$ of $p(y_j | x_i)$ as a constant matrix. That is,
+$A_{ij} = p(y_j | x_i)$ is a constant.
+We then have the following constraint on $A$
+\begin{align*}
+    A = \begin{pmatrix}
+    1 & 0 & 0 & 0 \\
+    1-z_1 & z_1 & 0 & 0\\
+    1-z_2 & 0 & z_2 & 0 \\
+    z_3 & z_4 & z_5 & 1-z_3-z_4 - z_5
+    \end{pmatrix}
+\end{align*}
+$0\leq z_{ij} \leq 1$ and $z_3 + z_4 + z_5 \leq 1$.
+There are three equality constraints on $z_i$:
+\begin{align*}
+    y_1y_2 & = (1-z_3 - z_4 - z_5) x\\
+    y_2(1-y_1) &= z_1(x_2-x) + z_4 x \\
+    y_1(1-y_2) &= z_2(x_1 - x) + z_5x
+\end{align*}
+We can get:
+\begin{align}
+    z_3 x & = x + y_1y_2 - y_1 - y_2 + z_1(x_2 - x) + z_2(x_1 - x)\label{eq3}\\
+    z_4 x &= y_2 - y_1y_2 - z_1(x_2 - x) \label{eq1}\\
+    z_5 x &= y_1 - y_1y_2 - z_2(x_1 - x) \label{eq2}
+\end{align}
+We can verify that
+\begin{align*}
+    z_1 &= \min\{1, \frac{y_2 - y_1y_2}{x_2 -x}\}\\
+    z_2 &= \min\{1, \frac{y_1 - y_1y_2}{x_1 -x}\}
+\end{align*}
+is a feasible solution for the problem.
+
+\section{Another notation for $n=2$}
+We want to construct a mapping from $x_{00}, x_{01},
+x_{10}, x_{11}$ to $y_{00}, y_{01},
+y_{10}, y_{11}$. Then the four known equalities becomes:
+\begin{align}
+    x_{00} &\leq y_{00} \label{eq:4}\\
+    x_{00} + x_{01} & \leq y_{00} + y_{01} \\
+    x_{00} + x_{10} & \leq y_{00} + y_{10} \\
+    x_{00} + x_{01} + x_{10} & \leq y_{00}
+    + y_{01} + y_{10}
+\end{align}
+For the transition matrix, we have
+\begin{align*}
+    A = \begin{pmatrix}
+    1 & 0 & 0 & 0 \\
+    1-z_1 & z_1 & 0 & 0\\
+    1-z_2 & 0 & z_2 & 0 \\
+    z_3 & z_4 & z_5 & \frac{y_{11}}{x_{11}}
+    \end{pmatrix}
+\end{align*}
+where
+\begin{align*}
+    z_1&=\min\{1, \frac{y_{01}}{x_{01}}\}\\
+    z_2&=\min\{1, \frac{y_{10}}{x_{10}}\}\\
+    z_4x_{11} &= y_{01} - z_1 x_{01} \\
+    z_5x_{11} &= y_{10} - z_2 x_{10}
+\end{align*}
+It is easy to show that $z_4 \geq 0, z_5 \geq 0$.
+Then
+\begin{align}
+    z_3 x_{11} &= x_{11} - y_{11} - y_{01} - y_{10} + z_1 x_{01} + z_2 x_{10} \\
+    &= y_{00} - x_{00} + z_1x_{01} - x_{01} + z_2x_{10}-x_{10}
+\end{align}
+We only need to show that $z_3 \geq 0$.
+Then $z_3, z_4, z_5 \leq 1$ are automatically guaranteed.
+
+Actually $z_3 \geq 0$ comes from the four inequalities
+in \eqref{eq:4}. We enumerate each value in $z_1, z_2$
+and we can get the results.
+\section{For $n=3$}
+The matrix $A$ becomes:
+\begin{align*}
+    A = \begin{pmatrix}
+    1 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+    1-z_1 & z_1 & 0 & 0 & 0 & 0 & 0 & 0\\
+    1-z_2 & 0 & z_2 & 0 & 0 & 0 & 0 & 0\\
+    z_5 & z_6 & 1 - z_4 - z_5 - z_6 & z_4 & 0 & 0 & 0 & 0 \\
+    1-z_3 & 0 & 0 & 0 & z_3 & 0 & 0 & 0\\
+    z_8 & z_9 & 0 & 0 & 1-z_7 - z_8 - z_9 & z_7 & 0 & 0 \\
+    z_{11} & 0 & z_{12} & 0 & 1-z_{10} - z_{11}-z_{12} & 0 & z_{10} & 0 \\
+    z_{13} & z_{14} & z_{15} & z_{16} & z_{17} & z_{18} & z_{19} & \frac{y_{111}}{x_{111}}
+    \end{pmatrix}
+\end{align*}
+    We give a recursive definition for $z_1$ to $z_{19}$.
+    The definition should satisfy the equality constraint:
+    $x A  = y$ where $x,y$ are row vectors of length 8.
+    Since each row of $A$ sums to 1 and $\sum_i x_i = \sum_i y_i = 1$, we have 7 equality constraint in total.
+    Firstly, $z_1 = \min\{1,\frac{y_{001}}{x_{001}}\}$,
+    $z_2 = \min\{1,\frac{y_{010}}{x_{010}}\}$,
+    $z_4 = \min\{1,\frac{y_{011}}{x_{011}}\}$,
+    $z_3 = \min\{1,\frac{y_{100}}{x_{100}}\}$,
+    $z_7 = \min\{1,\frac{y_{101}}{x_{101}}\}$,
+    $z_{10} = \min\{1,\frac{y_{110}}{x_{110}}\}$.
+    Then we define
+    $t_5=y_{000} - x_{000} - (1-z_1)x_{001} - (1-z_2)x_{010} - (1-z_3) x_{100}$,
+    $z_5 = \min\{1-z_4, \frac{t_5}{x_{011}}\}$, $z_6 = \min\{1-z_4 -z_5,\frac{y_{001}-z_1x_{001}}{x_{011}}\}$.
+    $t_8 = t_5 -z_5x_{011}, t_{11} = t_8 - z_8x_{101}, t_{13} = t_{11} - z_{11} x_{110}$
+    \begin{align*}
+    z_8 &= \min\{1-z_{7}, \frac{t_8}{x_{101}}\} \\
+    z_{11} &= \min\{1-z_{10}, \frac{t_{11}}{x_{110}}\} \\
+    z_{13} &=  \frac{t_{13}}{x_{111}}
+    \end{align*}
+    We should only verify that
+    \begin{align*}
+        z_5,z_6,z_{8},z_{11},z_{13} \geq 0
+    \end{align*}
+    Since $y_{001} - z_1 x_{001} \geq 0$, $z_6 \geq 0$
+    is guaranteed. From lemma \ref{lem:coverA},
+    $ t_5 \geq 0$ regardless of $z_1, z_2, z_3$. Therefore,
+    $z_5 \geq 0$. Since $z_5 \leq \frac{t_5}{x_{011}}$, $t_8 = t_5 - z_5 x_{011} \geq 0$. Similarly, $t_{11}, t_{13} \geq 0$ and we have $z_8, z_{11}, z_{13} \geq 0$.
+    We further define
+    $z_9 = \min\{1-z_7 - z_8,\frac{y_{001} - z_1x_{001} - z_6 x_{011}}{x_{101}} \}$, $z_{14} = \frac{y_{001} - z_1x_{001} - z_6 x_{011} - z_9 x_{101}}{x_{111}}$.
+    By definition we have $z_9, z_{14} \geq 0$.
+    
+    We then define
+    $t_{12} = y_{010} - z_2 x_{010} - (1-z_4-z_5-z_6)x_{011}$
+    $z_{12} = \min\{1-z_{10} - z_{11}, \frac{t_{12}}{x_{110}}\}$.
+    We should verify:
+    \begin{equation}\label{eq:y4}
+    y_{010} - z_2 x_{010} - (1-z_4-z_5-z_6)x_{011} \geq 0
+    \end{equation}
+    If $1-z_4 - z_5 - z_6 = 0$ the above formula is automatically guaranteed since $y_{010} - z_2 x_{010} \geq 0$. Otherwise, we will have
+    $z_4 + z_5 + z_6 < 1$. That is:
+    \begin{align*}
+        z_6 &= \frac{y_{001}-z_1x_{001}}{x_{011}}\\
+        z_5 &= \frac{t_5}{x_{011}} \\
+        z_4 &= \frac{y_{011}}{x_{011}}
+    \end{align*}
+    Replacing $z_4,z_5,z_6$ in \eqref{eq:y4} we only need to prove
+    $$
+    y_{000} + y_{010} + y_{001} + y_{011}
+    \geq x_{000} + x_{010} + x_{001} + x_{011}
+    + (1-z_3) x_{100}
+    $$, which can be shown from Lemma \ref{lem2}.
+    
+    Therefore, $z_{12} \geq 0$ and our definition is valid.
+    Then define $z_{15} =\frac{t_{12} - z_{12} x_{110}}{x_{111}} \geq 0$
+    $z_{16} = \frac{y_{011} - z_4 x_{011}}{x_{111}} \geq 0$,
+    $z_{18} = \frac{y_{101} - z_7 x_{101}}{x_{111}} \geq 0$,
+    $z_{19} = \frac{y_{110} - z_8 x_{110}}{x_{111}} \geq 0$.
+    Finally we only need to guarantee:
+    $z_{17} = \frac{y_{100} - z_3 x_{100} - (1-z_7-z_8-z_9)x_{101} - (1-z_{10}-z_{11} - z_{12})x_{110}}{x_{111}} \geq 0$.
+    Then from $\sum_{i=13}^{19} z_i + \frac{y_{111}}{x_{111}} = 1$, $z_i \leq 1$ is automatically guaranteed.
+    The technique to prove
+    \begin{equation}
+        y_{100} - z_3 x_{100} - (1-z_7-z_8-z_9)x_{101} - (1-z_{10}-z_{11} - z_{12})x_{110}\geq 0
+    \end{equation}
+    is similar with that of \eqref{eq:y4}.
+    We discuss based on the sign of $1-z_7-z_8-z_9$ and
+    $1-z_{10}-z_{11} - z_{12}$. If $1-z_7-z_8-z_9 > 0$,
+    we can write $z_7, z_8, z_9$ explicitly.
+\section{For general $n$}
+We consider $x_u = P(\phi_i = u_i, i\in [n])$ and
+$y_u = P(\underline{S}_i = u_i, i\in [n])$.
+\begin{definition}
+a 0-1 sequence $u$ is covered by another 0-1 sequence $v$ if $u_i \leq v_i$ for $i \in [n]$. Denoted as
+$u \preceq v$.
+A set $A$ of 0-1 sequence is called cover-complete if for any $v \in A$, $u \preceq v$, we have $u \in A$.
+
+\end{definition}
+\begin{lemma}\label{lem:coverA}
+For a cover-complete set $A$, we have
+\begin{equation}
+    \sum_{u \in A} x_u \leq \sum_{u \in A} y_u
+\end{equation}
+\end{lemma}
+\begin{proof}
+For any cover-complete set, we can find the minimum
+generating element $u_1, \dots, u_k$ such that
+$A = \myspan\{u_1, \dots, u_k\} = \bigcup_{i=1}^k \myspan\{u_i\}$. Therefore, without loss of
+generality, we suppose $A$ is spanned by one generator
+$v$. Then $\sum_{u \in \myspan\{v\}} x_u$ is
+equivalent to a marginal distribution $P(\phi_i = 0 ,i \in \{u_i = 0\})$, which is larger than $\sum_{u\in A}y_u = P(\underline{S}_i = 0 ,i \in \{u_i = 0\}) $.
+\end{proof}
+\begin{lemma}\label{lem2}
+Suppose $x_v \leq y_v$ and $u \preceq v$, then we have
+$x_u \leq y_u$.
+\end{lemma}
+\begin{proof}
+Since the cover has the partial order property,
+that is, $u_1 \preceq u_2, u_2 \preceq u_3 \Rightarrow u_1 \preceq u_3$. We need only
+consider the case when $u$ and $v$ differs at
+only one position. Suppose $v_j=1, u_j=0$ without
+loss of generality.
+We consider 
+\begin{align*}
+\frac{x_v}{x_u}
+=& \frac{P(\phi_i = v_i, i \in [n])}
+{P(\phi_i = u_i, i\in [n])}
+\geq \frac{P(\phi_i = v_i, i \in [n])}
+{P(\phi_i = v_i, i \in [n]\backslash\{j\})} \\
+=& P(\phi_j = 1 | \phi_i = v_i, i \in [n]\backslash\{j\}) \geq P(S_j = 1) = \frac{y_v}{y_u}
+\end{align*}
+\end{proof}
+
+\end{document}
+
