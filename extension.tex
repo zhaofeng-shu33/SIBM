@@ -1026,10 +1026,10 @@ Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\
 	$$
 \end{theorem}
 \begin{proof}
-	Let $D(X):=X = \arg\dist_{X'\in S(X)}(\sigma, S(X'))$,
+	Let $D(\sigma, X):=X = \arg\dist_{X'\in S(X)}(\sigma, S(X'))$,
 	we prove the following equivalent form:
 	$$
-	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ D(X) ) = 1-o(1) .
+	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ D(\sigma, X) ) = 1-o(1) .
 	$$
 	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG'$ such that
 	
@@ -1039,7 +1039,7 @@ Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\
 	\noindent (ii) For every $G\in\cG'$, 
 	\begin{equation}  \label{eq:hs}
 	P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ D(X) \big) 
+	\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ D(\sigma, X) \big) 
 	=1- O(n^{-4}) ,
 	\end{equation}
 
@@ -1074,7 +1074,7 @@ Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\
 	\Var(\overline{S}_1 + \dots + \overline{S}_n) = O(n^{g(\beta)}) 
 	\end{align*}
 	conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Since $g(\beta)\ge 0$ for all $0<\beta\le \beta^\ast$, by Chebyshev's inequality we know that both $\underline{S}_1 + \dots + \underline{S}_n=\Theta(n^{g(\beta)})$ and $\overline{S}_1 + \dots + \overline{S}_n=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-	From Lemma 5 of \cite{ye2020exact}, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG'\cap\cG_1$, $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on $D(X)$. Finally, the theorem follows from $P(G\in\cG'\cap\cG_1)=1-o(1)$.
+	From Lemma 5 of \cite{ye2020exact}, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG'\cap\cG_1$, $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on $D(\sigma, X)$. Finally, the theorem follows from $P(G\in\cG'\cap\cG_1)=1-o(1)$.
 	
 \end{proof}
 For $0<\beta<\beta^\ast$, we have $g(\beta)>0$, so Theorem~\ref{thm:dist} immediately implies that $P_{\SIBM}(\sigma \in S_k(X))=o(1)$. However, when $\beta=\beta^\ast$, we have $g(\beta^\ast)=0$. In this case, Theorem~\ref{thm:dist} tells us that
@@ -1414,19 +1414,19 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1,s\neq i
 	Let $v=(v^{(1)},v^{(2)},\dots,v^{(m)})\in W^m$ be a vector of length $m$
 	and let $u_r:=|\{i\in[m]:v^{(i)}=\omega^r\}|$ be the number of $\omega^r$'s in $v$ for $r=0,1,\dots, k-1$.
 	Let $\sigma^{(1)},\dots,\sigma^{(m)}$ be the aligned samples of SIBM (see the alignment step in Algorithm~\ref{alg:ez}).
-	Without loss of generality we assume that the aligned samples satisfy  $\dist(\sigma^{(j)}, X) \le n^{\theta}$ for all $j\in[m]$.
+	Without loss of generality we assume that the aligned samples satisfy condition $D(\sigma^{(j)}, X)$ for all $j\in[m]$.
 	Define 
 	\begin{equation}  \label{eq:rl}
 	T_r:= | \{i\in[n]:(\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v, X_i=\omega^r \} | ,  \\
 	\end{equation}
-	If exists $s \neq r$ such that $u_r + u_s = m$ and $u_s\beta<\beta^\ast$, then
+	If there exists $s \neq r$ such that $u_r + u_s = m$ and $u_s\beta<\beta^\ast$, then
 	$P_{\SIBM}\big(T_r = \Theta(n^{g(u_s\beta)}) \big) = 1-o(1)$.
 \end{lemma}
 \begin{proof}
 
 	We only prove the claims about $T_0$ since the proof for $T_r (r>0)$ is virtually identical.
-	The proof follows the same steps as the proof of Theorem~\ref{thm:dist}. All we need to do is to replace $\beta$ with $u\beta$ in the proof of Theorem~\ref{thm:dist}. For the sake of completeness, we provide the proof here.
-	
+	The proof follows similar steps as the proof of Theorem~\ref{thm:dist}. All we need to do is to replace $\beta$ with $u\beta$ and consider
+	only the probability of $\sigma^{(j)}_i = \omega^r$. For the sake of completeness, we provide the proof here.
 	
 	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG'$ such that
 	
@@ -1438,105 +1438,51 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1,s\neq i
 	\begin{aligned}
 	& P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m] ~\big| \dist(\sigma^{(j)}, X) \le n/k
+	\text{~for all~} j\in[m] ~\big| D(\sigma^{(j)}, X)
 	\text{~for all~} j\in[m]  \big) \\
 	& =1- O(n^{-4}) ,
 	\end{aligned}
 	\end{equation}
 	where we can choose $\theta$ to be any constant in the open interval $(g(\beta), 1)$.
-	We define $[n]_r:=\{v\in[n]:X_v= \omega^r\}$ for $r=0, \dots, k-1$.
-	By Lemma~\ref{lm:et}, we know that for all $i\in[n]_0$, all $j\in[m]$ and $1\leq r \leq k-1$,
-	$P_{\sigma|G}(\sigma_i^{(j)} = \omega^r \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} )$ differ from
-	$\exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \Big)$
+	By our assumption, there exists $s\neq 0$ such that
+	$u_s + u_0 = m$. That is, all $v^{(j)}$ takes values from $1$ or $\omega^s$.
+	By Lemma~\ref{lm:et}, we know that for all $i\in[n]$ and all $j\in[m]$,
+	$P_{\sigma|G}(\sigma_i^{(j)} = \omega^s \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} )$ differ from
+	$\exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^s_i-A^0_i) \Big)$
 	by at most a constant factor. Since $|A^r_i-A^0_i|=O(\log(n))$ with probability $1-o(1)$, the term $\frac{\alpha\log(n)}{n}(A^r_i-A^0_i)=o(1)$ and is negligible. Moreover, since the $m$ samples are independent given the graph $G$, there are $u_0$ samples which takes value $\sigma_i^{(j)} = 1$. Since the probability
 	$P_{\sigma|G}(\sigma_i^{(j)} = 1 \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} )$ is near 1, we conclude that
 	\begin{align*}
 	& \underline{C}
-	\exp\big(u_r\beta (A^r_i-A^0_i) \big) \\
+	\exp\big(u_s\beta (A^s_i-A^0_i) \big) \\
 	\le
 	& P_{\sigma|G} \big( (\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v ~\big|~ \sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 	\text{~for all~} j\in[m] \big) \\
 	\le & \overline{C}
-	\exp\big(u_r \beta (A^r_i-A^0_i) \big)
+	\exp\big(u_s \beta (A^s_i-A^0_i) \big)
 	\end{align*}
 	for all $i\in[n]$, where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
-	Similar to Equation \eqref{eq:soon}. the above equation can be reformulated as follows:
+	Similar to Equation \eqref{eq:qke}. the above equation can be reformulated as follows:
 	For every $\bar{\sigma}^{(1)},\dots,\bar{\sigma}^{(m)}\in W^n$ such that $\bar{\sigma}^{(j)}\in  \Lambda(G, z)$
 	and $\dist(\bar{\sigma}^{(j)}, X) \le n^\theta$
 	for all $j\in[m]$,
 	\begin{equation} \label{eq:s56}
 	\begin{aligned}
 	& \underline{C}
-	\exp\big( u_r  \beta (A^r_i-A^0_i) \big) \\
+	\exp\big( u_s  \beta (A^s_i-A^0_i) \big) \\
 	\le
 	& P_{\sigma|G} \big( (\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v ~\big|~ (\sigma_{i'}^{(1)},\dots,\sigma_{i'}^{(m)})= (\bar{\sigma}_{i'}^{(1)},\dots,\bar{\sigma}_{i'}^{(m)}) \text{~for all~} i'\neq i \big) \\
 	\le & \overline{C}
-	\exp\big(u_r  \beta (A^r_i-A^0_i) \big).
+	\exp\big(u_s  \beta (A^s_i-A^0_i) \big).
 	\end{aligned}
 	\end{equation}
 	Define 
 	$\phi_i := \mathbbm{1}[(\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v]$ for $i\in[n]$.
-
-	Given a fixed graph $G$ and random samples $\sigma^{(1)},\dots,\sigma^{(m)}$, we will define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
-	\begin{enumerate}
-		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-		\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-		\text{~for all~} j\in[m]\}$. $\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-		\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-		\text{~for all~} j\in[m]\}$.
-		\item $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$.
-		\item Conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-		\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-		\text{~for all~} j\in[m]\}$,
-		$P(\underline{S}_i=1)=\underline{C}
-		\exp\big(u_r \beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
-		\exp\big(u_r \beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$.
-	\end{enumerate}
-	The construction of random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ is rather similar to the one at the end of the proof of Theorem~\ref{thm:dist}, and we do not repeat it here. 
-	Define a set $[n]_+:=\{i\in[n]:X_i=1\}$.
-	Then $T_0=\sum_{i\in[n]_+} \phi_i$.
-	By property 3), conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
+	we will have $T_0=\sum_{i=1}^n \phi_i=\Theta(n^{g(u_s\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$, we have
-	\begin{align*}
-	& E\Big[ \sum_{i\in[n]_+}\underline{S}_i \Big] = \underline{C}
-	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big) , \quad
-	\Var \Big(\sum_{i\in[n]_+}\underline{S}_i \Big) \le \underline{C}
-	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big), \\
-	& E \Big[\sum_{i\in[n]_+} \overline{S}_i \Big] = \overline{C}
-	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big), \quad
-	\Var \Big(\sum_{i\in[n]_+} \overline{S}_i \Big) \le \overline{C}
-	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big) ,
-	\end{align*}
-	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
-	In Proposition~\ref{prop:con}, we have shown that for $ u_r \beta\le \beta^\ast$, there is a set $\cG_{\con}$ such that (i) $P(G \in \cG_{\con}) = 1-o(1)$ and (ii) for every $G\in \cG_{\con}$, 
-	$
-	\sum_{i=1}^n \exp\big(u_r \beta (A^r_i-A^0_i) \big)
-	=(1+o(1)) n^{g( u_r \beta)} .
-	$
-    Since the size of $[n]_0$ is $1/k$ of $[n]$, for every $G\in \cG_{\con}$, 
-	$
-	\sum_{i\in[n]_0} \exp\big(ku_r \beta (A^r_i-A^0_i) \big)
-	=\Theta (n^{g(u_r \beta)}) .
-	$
-	Therefore, for every $G\in\cG'\cap\cG_{\con}$, 
-	\begin{align*}
-	& E \Big[ \sum_{i\in[n]_+}\underline{S}_i \Big] = \Theta(n^{g(u_r \beta)}) , \quad
-	\Var \Big( \sum_{i\in[n]_+}\underline{S}_i \Big) = O( n^{g(u_r\beta)}) , \\
-	& E \Big[ \sum_{i\in[n]_+}\overline{S}_i \Big] = \Theta(n^{g(u_r\beta)}) , \quad
-	\Var \Big( \sum_{i\in[n]_+}\overline{S}_i \Big) = O( n^{g(u_r\beta)}) 
-	\end{align*}
-	conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$. Since $g(u_r\beta)> 0$ for all $u_r\beta< \beta^\ast$, by Chebyshev's inequality we know that both $\sum_{i\in[n]_+}\underline{S}_i=\Theta(n^{g(u_r\beta)})$ and
-	$\sum_{i\in[n]_+}\overline{S}_i=\Theta( n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$.
-	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $T_0=\Theta(n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$. Combining this with \eqref{eq:ljrc}, we obtain that for every $G\in\cG'\cap\cG_{\con}$,
-	$T_0=\Theta( n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$. Finally, the lemma follows from $P(G\in\cG'\cap\cG_{\con})=1-o(1)$.
+	\text{~for all~} j\in[m]\}$. Combining this with \eqref{eq:ljrc}, we obtain that for every $G\in\cG'\cap\cG_{1}$,
+	$T_0=\Theta( n^{g(u_s\beta)})$ with probability $1-o(1)$ conditioning on $D(\sigma^{(j)}, X)$ for all $j\in[m]$.
+	Finally, the lemma follows from $P(G\in\cG'\cap\cG_{1})=1-o(1)$.
 \end{proof}
 Using the above two lemmas, we obtain the following proposition:
 \begin{proposition}
