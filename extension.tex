@@ -511,7 +511,8 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 \end{proof}
 \begin{lemma}\label{lem:minus}
 	For SSBM$(n,k,p,q)$, suppose the ground truth label is $X$ while $\bar{\sigma}$ differs from $X$ in $|\cI|$ coordinate.
-	Let $I_{ij} = |\{r\in [n] | X_r = w^i, \sigma_r = w^j \}$ for $i\neq j$ and $I_{ii} = 0$.
+	Let $I_{ij} = |\{r\in [n] | X_r = w^i, \sigma_r = w^j \}$ for $i\neq j$ and $I_{ii} = 0$. We further denote the row sum as $I_i = \sum_{j=0}^{k-1} I_{ij}$ and
+	the column sum as $I'_i = \sum_{j=0}^{k-1} I_{ji}$.
 	Then
 	\begin{equation}\label{eq:general_expansion}
 \frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)} = \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] - \frac{\alpha \log n}{n} N_{\bar{\sigma}})
@@ -522,14 +523,12 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	B_{\bar{\sigma}} & \sim Binom(\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
 	A_{\bar{\sigma}} & \sim Binom(\frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
 	\end{align}
-	We write the row sum $I_i = \sum_{j=0}^{k-1} I_{ij}$ and column sum $I'_i = \sum_{j=0}^{k-1} I_{ji}$.
 \end{lemma}
 \begin{proof}
 	$$ \log P_{\sigma|G}(\sigma=\bar{\sigma}) = (\beta + \frac{\alpha \log n}{n}) \sum_{\bar{\sigma}_i = \bar{\sigma}_j} Z_{ij}
 	- \frac{\alpha \log n}{n} \sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1  - \log Z_G(\alpha, \beta)
 	$$
 	where $Z_{ij}$ is Bernoulli random variable which takes value 1 if there is an edge between $i$ and $j$.
-	
 	For $\sigma = X$, we have
 	\begin{align*}
 	\sum_{X_i = X_j} Z_{ij} &= \sum_{X_i = X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij} + \sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij} \\
@@ -538,8 +537,12 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	For $\sigma = \bar{\sigma}$, we have
 	\begin{align*}
 	\sum_{\bar{\sigma}_i = \bar{\sigma}_j} Z_{ij} &= \sum_{X_i = X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij} + \sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij} \\
-	\sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1 &= \frac{1}{2} \sum_{i=0}^{k-1} (\frac{n}{k} - I_i + I_i') ( \frac{n}{k} - 1 - I_i + I_i')
+	\sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1 &= \frac{1}{2} \sum_{i=0}^{k-1} (I'_i + \frac{n}{k} - I_i) ( I'_i + \frac{n}{k} - I_i - 1)
 	\end{align*}
+	The term $|\{r\in [n] | X_r = \omega^i \}| = \frac{n}{k}$,
+	$|\{r\in [n] | X_r = \omega^i, \sigma_r \neq \omega^i \}| = I_i$,
+	$|\{r\in [n] | X_r \neq \omega^i, \sigma_r = \omega^i \}| = I'_i$.
+	Therefore,  $|\{r\in [n] | \sigma_r = \omega^i \}| = I'_i + \frac{n}{k} - I_i $.
 	Therefore, we get
 	$N_{\bar{\sigma}} = \sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1  -\sum_{X_i = X_j} 1 = \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 $.
 	On the other hand, for $Z_{ij}$ in the sum $\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim Bern(q)$ and
