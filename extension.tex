@@ -351,7 +351,7 @@ E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} 
 < n^{r (g(\beta)+o(1))} /(r!) 
 < (k-1)^rn^{-r(\delta-o(1))} .
 $$
-This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for any $\delta>0$.
+This immediately implies that  $P_{\SIBM} (\dist(\sigma, S_k(X)))<n^{\theta} ) = 1- o(1)$ for any $\delta>0$.
 Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$,
 we have $P_{\SIBM} (\dist(\sigma, S_k(X))<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$.
 This improves upon the upper bound 
@@ -433,9 +433,8 @@ $$
 For the case $\alpha < b \beta$, we only need to show $P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n
  \Big) \leq n^{-C}$.
- Let the event $M_1:= \exists \bar{\sigma}$ satisfying the condition of Lemma \ref{lem:small}
-  $s.t. P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$.
- Then by union bound, we have $P_{G}(M_1) \leq k^n\exp(-\tau(\alpha, \beta )n \log^{1-\delta} n )$ from Lemma \ref{lem:small}.
+ Let the event $M_1(G): \exists \bar{\sigma} \,s.t. P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$.
+Then by Lemma \ref{lem:small} and union bound, we have $P_{G}(M_1) \leq k^n\exp(-\tau(\alpha, \beta )n \log^{1-\delta} n )$.
  
 \begin{align*}
 &P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
@@ -443,25 +442,29 @@ For the case $\alpha < b \beta$, we only need to show $P_{\SIBM} \Big(\dist(\bar
 &\leq
 P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma')= \mathbf{1}_n, G \not\in M_1^c\Big) + P_G(M_1) \\
-&\leq \sum_{G \in M_1^c} P(G) k^n \exp(-Cn)P_{\sigma|G}(\sigma=\mathbf{1}_n) + P_G(M_1) \\
+&\leq \sum_{G \in M_1^c} P(G) k^n\exp(-Cn)P_{\sigma|G}(\sigma=\mathbf{1}_n) + P_G(M_1) \\
 & \leq k^n \exp(-Cn) (1 + o(1)) \leq n^{-r} \textrm{ for } C> \log k
 \end{align*}
 The case $\alpha > b \beta$ can be proved in the same way as above by applying Lemma \ref{lem:sigmaX}.
 \end{proof}
 \begin{lemma}\label{lem:small}
-	$\alpha< b \beta$. When $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Then
+	Suppose $\alpha< b \beta$ and $\bar{\sigma}$ satisfies $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$
+	where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Then the event
 	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
-	happens with probability less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
+	happens with probability (w.r.t. SSBM) less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
 \end{lemma}
 \begin{proof}
 	Let $n_r = |\{\bar{\sigma}_i = w^r | i\in [n] \}|$. Then $n_0 \geq n_r$ for $r=1, \dots, k-1$ since  $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$.
-	WLOG, suppose $n_0 \geq n_1 \dots \geq n_{k-1}$.
-	We are concerned with the number $N_{\bar{\sigma}} = \frac{1}{2}(n(n-1) - \sum_{r=0}^{k-1} n_r(n_r-1))
+	WLOG, we suppose $n_0 \geq n_1 \dots \geq n_{k-1}$.
+	Define $N_{\bar{\sigma}} = \frac{1}{2}(n(n-1) - \sum_{r=0}^{k-1} n_r(n_r-1))
 	=\frac{1}{2}(n^2 - \sum_{r=0}^{k-1} n_r^2)$.
 	Taking the $\log$ on both sides of $P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$ we can get
 	\begin{equation}\label{eq:small}
-	(\beta + \frac{\alpha \log n}{n}) \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j} Z_{ij} \leq \frac{\alpha \log n}{n} N_{\bar{\sigma}} + C n
+	(\beta + \frac{\alpha \log n}{n})
+	\left( \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i = X_j} Z_{ij} + \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i \neq X_j} Z'_{ij} \right)
+	\leq \frac{\alpha \log n}{n} N_{\bar{\sigma}} + C n
 	\end{equation}
+	where $Z_{ij} i.i.d \sim \textrm{Bernoulli}(\frac{a\log n}{n})$ and $Z'_{ij} i.i.d. \sim \textrm{Bernoulli}(\frac{b \log n}{n})$.
 	
 	Firstly we estimate the order of $N_{\bar{\sigma}}$, obviously $N_{\bar{\sigma}} \leq \frac{1}{2} n^2$.
 	Using the conclusion in Appendix A of \cite{chen2016information} we have
@@ -472,33 +475,37 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	n^2 - 2n_0(n-n_0) & n_0 > \frac{n}{2}
 	\end{cases}
 	\end{equation}
-	We have $n_0 \leq n - \frac{n}{\log^{\delta} n}$ and $n_0 \geq \frac{n}{k}$. When $n_0 > \frac{n}{2}$ we take $n_0 = n - \frac{n}{\log^{1/3} n}$
-	and we have $N_{\bar{\sigma}} \geq n_0 (n - n_0) = \frac{n^2}{\log^{\delta} n}(1+o(1))$. When $n_0 < \frac{n}{2}$ we take $n_0 = \frac{n}{2}$ such that
-	$N_{\bar{\sigma}} \geq \frac{n^2}{4}$. So generally we have $\frac{n^2}{\log^{\delta} n}(1+o(1)) \leq N_{\bar{\sigma}} \leq \frac{1}{2}n^2$.
-	The Bernoulli random variables are independent, taking either $Bern(\frac{a\log n}{n})$ or $Bern(\frac{b \log n}{n})$ depending on whether
-	$X_i$ equals to $X_j$.
-	Since $\frac{\log n}{n} N_{\bar{\sigma}}$ is dominated than $Cn$ we neglect inferior terms to rewrite \eqref{eq:small} as
-	\begin{equation}
-	\sum_{ \bar{\sigma}_i  \neq \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n}(1+o(1))
-	\end{equation}
-	Let $N_1$ be the number of random variables of $Z_{ij} \sim Bern(\frac{a\log n}{n})$.
-	and $N_2 = N_{\bar{\sigma}} - N_1$ is that of $Z_{ij} \sim Bern(\frac{b\log n}{n})$.
+	By assumption of $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$, we have $n_0 \leq n - \frac{n}{\log^{\delta} n}$
+	and $n_0 \geq \frac{n}{k}$ follows from $n_0 \geq n_r$.
+	When $n_0 > \frac{n}{2}$,
+	we have $N_{\bar{\sigma}} \geq n_0 (n - n_0) \geq \frac{n^2}{\log^{\delta} n}(1+o(1))$.
+	The second inequality is achieved if $n_0 = n - \frac{n}{\log^{1/3} n}$.
+	When $n_0 < \frac{n}{2}$,
+	$N_{\bar{\sigma}} \geq \frac{n^2 - nn_0}{2} \geq \frac{n^2}{4}$ and the second inequality is achieved when $n_0 = \frac{n}{2}$.
+	So generally we have $\frac{n^2}{\log^{\delta} n}(1+o(1)) \leq N_{\bar{\sigma}} \leq \frac{n^2}{4}$.
 	
-	Using Chernoff Inequality we have
+	Since $Cn = o(\frac{\log n}{n} N_{\bar{\sigma}})$ we can rewrite \eqref{eq:small} as
+	\begin{equation}
+	\left( \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i = X_j} -Z_{ij} + \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i \neq X_j} -Z'_{ij} \right)\geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n}(1+o(1))
+	\end{equation}
+	Let $N_1 = \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i = X_j} 1$
+	and $N_2 = \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i \neq X_j} 1 = N_{\bar{\sigma}} - N_1$
+	
+	Using Chernoff inequality we have
 	\begin{align*}
-	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})& \leq (E[\exp(-s Z_{ij})])^{N_1} (E[-exp(-s Z_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1))) \\
-	&= \exp( \frac{\log n}{n}(1+o(1))(\exp(-s)-1)(aN_1 + bN_2)+\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1)))
+	P(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})& \leq (E[\exp(-s Z_{ij})])^{N_1} (E[\exp(-s Z'_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1))) \\
+	&= \exp( \frac{\log n}{n}(1+o(1))(e^{-s}-1)(aN_1 + bN_2)+\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1)))
 	\end{align*}
-	Since $s > 0$, we further have
+	Since $s > 0$ and $a>b$, we further have
 	\begin{align*}
-	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})
-	& \leq \exp( \frac{N_{\bar{\sigma}}\log n }{n}(b(\exp(-s)-1)+ \frac{\alpha}{\beta}s + o(1))) 
+	P(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})
+	& \leq \exp( \frac{N_{\bar{\sigma}}\log n }{n}(b(e^{-s}-1)+ \frac{\alpha}{\beta}s + o(1))) 
 	\end{align*}
 	Let $h_b(x) = x - b -x\log \frac{x}{b}$, which satisfies $h_b(x) < 0$ for $0<x<b$,
 	and take $s=-\log\frac{\alpha}{b\beta} > 0$, using 
 	$N_{\bar{\sigma}} \geq \frac{n^2}{\log^{1/3} n}$ we have
 	\begin{align*}
-	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})&\leq \exp( N_{\bar{\sigma}} \frac{\log n}{n} h_b(\frac{\alpha}{\beta})(1+o(1))) \\
+	P(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})&\leq \exp( N_{\bar{\sigma}} \frac{\log n}{n} h_b(\frac{\alpha}{\beta})(1+o(1))) \\
 	& \leq \exp (h_b(\frac{\alpha}{\beta}) n \log^{1-\delta} n (1+o(1)))
 	\end{align*}
 \end{proof}
@@ -541,7 +548,7 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	$\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i + \frac{1}{2} I^2_i ]$.
 \end{proof}
 \begin{lemma}\label{lem:sigmaX}
-		When $\dist(\bar{\sigma}, X) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in S_k(X)} \dist(\bar{\sigma}, \sigma') = X$. Show that
+		Let $\alpha > b \beta$. When $\dist(\bar{\sigma}, X) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in S_k(X)} \dist(\bar{\sigma}, \sigma') = X$. Show that
 	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = X)$
 	happens with probability less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
 \end{lemma}
