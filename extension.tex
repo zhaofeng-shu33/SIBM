@@ -493,7 +493,8 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	
 	Using Chernoff inequality we have
 	\begin{align*}
-	P(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})& \leq (E[\exp(-s Z_{ij})])^{N_1} (E[\exp(-s Z'_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1))) \\
+	P(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})&
+	\leq (\mathbb{E}[\exp(-s Z_{ij})])^{N_1} (E[\exp(-s Z'_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1))) \\
 	&= \exp( \frac{\log n}{n}(1+o(1))(e^{-s}-1)(aN_1 + bN_2)+\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1)))
 	\end{align*}
 	Since $s > 0$ and $a>b$, we further have
@@ -520,8 +521,8 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	where 
 	\begin{align}
 	N_{\bar{\sigma}} &= \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 \label{eq:N_w} \\
-	B_{\bar{\sigma}} & \sim Binom(\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
-	A_{\bar{\sigma}} & \sim Binom(\frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
+	B_{\bar{\sigma}} & \sim \textrm{Bernoulli}(\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
+	A_{\bar{\sigma}} & \sim \textrm{Bernoulli}(\frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
 	\end{align}
 \end{lemma}
 \begin{proof}
@@ -545,40 +546,44 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	Therefore,  $|\{r\in [n] | \sigma_r = \omega^i \}| = I'_i + \frac{n}{k} - I_i $.
 	Therefore, we get
 	$N_{\bar{\sigma}} = \sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1  -\sum_{X_i = X_j} 1 = \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 $.
-	On the other hand, for $Z_{ij}$ in the sum $\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim Bern(q)$ and
-	$\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i' + \frac{1}{2} I'^2_i ]$;
-	for $Z_{ij}$ in the sum $\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim Bern(p)$ and
-	$\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i + \frac{1}{2} I^2_i ]$.
+	On the other hand, we show that $B_{\bar{\sigma}} - A_{\bar{\sigma}} = \sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij} - \sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij}$.
+	for $Z_{ij}$ in the sum $\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim \textrm{Bernoulli}(q)$ and
+	$\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i' + \frac{1}{2} \sum_{j=0}^{k-1} I_{ji}(I'_i - I_{ji}) ]
+	=\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) $;
+	for $Z_{ij}$ in the sum $\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim \textrm{Bernoulli}(p)$ and
+	$\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} 1
+	= \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i + \frac{1}{2} \sum_{j=0}^{k-1} I_{ij}(I_i - I_{ij}) ] 
+	= \frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij})$.
 \end{proof}
 \begin{lemma}\label{lem:sigmaX}
 		Let $\alpha > b \beta$. When $\dist(\bar{\sigma}, X) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in S_k(X)} \dist(\bar{\sigma}, \sigma') = X$. Show that
 	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = X)$
-	happens with probability less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
+	happens with probability (w.r.t. SSBM) less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
 \end{lemma}
 \begin{proof}
-	Using Lemma \ref{lem:minus} we only need to consider the event:
+	Using Lemma \ref{lem:minus}, $P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = X)$ reduces to
 	\begin{equation}\label{eq:BwA}
 	(\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] >  \frac{\alpha \log n}{n} N_{\bar{\sigma}}  - Cn
 	\end{equation}
-	We divide the cases for $\bar{\sigma}$ to two cases:
+	We claim that $\bar{\sigma}$ must satisfy at least one of the following two conditions:
 	\begin{enumerate}
 		\item $\exists i\neq j$ s.t. $\frac{1}{k(k-1)}\frac{n}{\log^{\delta} n} \leq I_{ij} \leq \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$
 		\item $\exists i \neq j$ s.t. $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ and $I_{ji} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$
 	\end{enumerate}
 	If we have $\sigma = \bar{\sigma}$ which belongs to neither of the above two cases, then from condition 1 we have
-	$I_{ij} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ or $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
-	Since $\sum_{i,j} I_{ij} = |\cI| \geq \frac{n}{\log^{\delta} n}$ there should exist $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
+	$I_{ij} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ or $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ for any $0 \leq i,j\leq k-1$.
+	Since $\sum_{i,j} I_{ij} = |\cI| \geq \frac{n}{\log^{\delta} n}$ there exists $i,j$ such that $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
 	Under such condition, if $I_{ji} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
 	Let $X'$ be the vector which exchanges value of $w^i$ with $w^j$ in $X$. We consider
 	\begin{align*}
-	\dist(\bar{\sigma}, X') - \dist(\bar{\sigma}, X) &= |\{ r \in [n]|X=w^i, \bar{\sigma}_r \neq w^j \}| + |\{ r \in [n]|X=w^j, \bar{\sigma}_r \neq w^i \}| \\
-	&-|\{ r \in [n]|X=w^i, \bar{\sigma}_r \neq w^i \}| - |\{ r \in [n]|X=w^j, \bar{\sigma}_r \neq w^j \}| \\
+	\dist(\bar{\sigma}, X') - \dist(\bar{\sigma}, X) &= |\{ r \in [n]|X_r=w^i, \bar{\sigma}_r \neq w^j \}| + |\{ r \in [n]|X_r=w^j, \bar{\sigma}_r \neq w^i \}| \\
+	&-|\{ r \in [n]|X_r=w^i, \bar{\sigma}_r \neq w^i \}| - |\{ r \in [n]|X_r=w^j, \bar{\sigma}_r \neq w^j \}| \\
 	& = \frac{n}{k} - I_{ij} +  \frac{n}{k} - I_{ji} - I_i - I_j \\
 	& < \frac{2}{k(k-1)}\frac{n}{\log^{\delta} n} - I_i - I_j < 0
 	\end{align*}
 	which contracts with that $\bar{\sigma}$ is nearest to $X$.
 	Therefore, we should have $I_{ji} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
-	Now the $(i, j)$ pair satisfies condition 2, which contracts with $\bar{\sigma}$ belongs to neither of the two conditions.
+	Now the $(i, j)$ pair satisfies condition 2, which contracts with that $\bar{\sigma}$ satisfies neither of the two conditions.
 	
 	Under condition 1, we can get a lower bound on $|A_{\bar{\sigma}}|$ from \eqref{eq:A_w}. Let $I'_{ij} = I_{ij}$ for $i\neq j$ and
 	$I'_{ii} = \frac{n}{k} - I_i$. Then we can simply $|A_{\bar{\sigma}}|$ as:
@@ -589,15 +594,15 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	We further have $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{n}{k} - I_{ij})^2 + I^2_{ij}$ where
 	$I_{ij}$ satisfies condition 1. Therefore, $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2
 	+ (\frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{k} - \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
-	As a result, $A_{\bar{\sigma}} \geq \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
+	As a result, $A_{\bar{\sigma}} \geq \frac{n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
 	
-	Under condition 2, we can get a lower bound on $N_{\bar{\sigma}}$ from \eqref{eq:N_w}: $N_{\bar{\sigma}} \geq \frac{1}{2}(\frac{n}{k} - \frac{2}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{k^2}(1+o(1))$.
+	Under condition 2, we can get a lower bound on $N_{\bar{\sigma}}$ from \eqref{eq:N_w}: $N_{\bar{\sigma}} \geq \frac{1}{2}(\frac{n}{k} - \frac{2}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{2k^2}(1+o(1))$.
 	
-	Now we use Chernoff bound to process inequality \eqref{eq:BwA}, we can omit $\frac{\alpha \log n}{n}$ on the left hand since it is far smaller than $\beta$:
+	Now we use Chernoff inequality to bound \eqref{eq:BwA}, we can omit $\frac{\alpha \log n}{n}$ on the left hand since it is far smaller than $\beta$:
 	\begin{align*}
 	&\Pr([B_{\bar{\sigma}} - A_{\bar{\sigma}}] >  \frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)
-	\leq (E[\exp(sZ_{ij})])^{|B_{\bar{\sigma}}|}(E[\exp(-sZ_{ij})])^{|A_{\bar{\sigma}}|} \exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
-	& =\exp(|B_{\bar{\sigma}}|(\frac{b\log n}{n})(e^s -1)) \exp(|A_{\bar{\sigma}}|)[\frac{a\log n}{n}] (e^{-s} - 1))\exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
+	\leq (\mathbb{E}[\exp(sZ_{ij})])^{|B_{\bar{\sigma}}|}(\mathbb{E}[\exp(-sZ_{ij})])^{|A_{\bar{\sigma}}|} \exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
+	& =\exp(|B_{\bar{\sigma}}|\frac{b\log n}{n}(e^s -1)) \exp(|A_{\bar{\sigma}}|\frac{a\log n}{n} (e^{-s} - 1))\exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
 	\end{align*}
 	Using $|B_{\bar{\sigma}}| = N_{\bar{\sigma}} + |A_{\bar{\sigma}}|$ we can further simplify the exponential term as
 	$$
@@ -605,8 +610,8 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	N_{\bar{\sigma}} (b(e^s - 1)-s\frac{\alpha}{\beta})]  + s \frac{C}{\beta}n
 	$$
 	Now we investigate the function $g_1(s) = b(e^s -1)+ a(e^{-s} - 1)$ and $g_2(s) = b(e^s - 1)-s\frac{\alpha}{\beta}$,
-	both takes zero values at $0$ and $g_1'(s) = (be^s - ae^{-s}), g_2'(s) = be^s -\frac{\alpha}{\beta}$.
-	Therefore $g_1'(0) = b-a<0, g_2'(0) = b - \frac{\alpha}{\beta} < 0$ and we can choose $0<s^*$ such that $g_1(s^*) < 0,g_2(s^*) < 0$.
+	both takes zero values at $s=0$ and $g_1'(s) = (be^s - ae^{-s}), g_2'(s) = be^s -\frac{\alpha}{\beta}$.
+	Therefore $g_1'(0) = b-a<0, g_2'(0) = b - \frac{\alpha}{\beta} < 0$ and we can choose $s^*>0$ such that $g_1(s^*) < 0,g_2(s^*) < 0$.
 	To compensate the influence of the term $sCn/\beta$ we only need to make sure that the order of $\frac{\log n}{n} \min\{|A_{\bar{\sigma}}|, N_{\bar{\sigma}}\}$ is larger than $n$.
 	This corresponds to the two conditions we have used.
 \end{proof}
@@ -621,8 +626,8 @@ If $\alpha<b\beta$, then it is not possible to recover $X$ from the samples when
 \end{proposition}
 
 \begin{proof}
-First observe that there are $\frac{n!}{(n/k)^k}$ balanced partitions, so one needs at least $\log_k \frac{n!}{(n/k)^k}=\Theta(n)$ bits to recover $X$.
-By Proposition~\ref{prop:1}, with probability $1-o(n^{-4})$, $\dist(\sigma^{(i)}, \Theta)< n/\log^{\delta}(n)$
+First observe that there are $\frac{n!}{(\frac{n}{k}!)^k}$ balanced partitions, so one needs at least $\log_k \frac{n!}{(\frac{n}{k}!)^k}=\Theta(n)$ bits to recover $X$.
+By Proposition~\ref{prop:1}, with probability $1-o(n^{-4})$, $\dist(\sigma^{(i)}, S_k(X))< n/\log^{\delta}(n)$
 for all $i\in[m]$. Therefore, each $\sigma^{(i)}$ takes at most
 $$
 T:=\sum_{j=0}^{n/\log^{\delta}(n)} \binom{n}{j}(k-1)^j
@@ -634,7 +639,7 @@ $$
 T=k^n P(Y\le n/\log^{\delta}(n))
 = k^n P(-Y\ge -n/\log^{\delta}(n)).
 $$
-The moment generating function of $-Y$ is $(\frac{1}{k}+\frac{k-1}{k}e^{-s})^n$. By Chernoff bound, for any $s>0$,
+The moment generating function of $-Y$ is $(\frac{1}{k}+\frac{k-1}{k}e^{-s})^n$. By Chernoff inequality, for any $s>0$,
 $$
 P(-Y\ge - n/\log^{\delta}(n)) \le
 (\frac{1}{k}+\frac{k-1}{k}e^{-s})^n
