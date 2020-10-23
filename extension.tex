@@ -93,7 +93,7 @@ Let $n$ and $m$ be positive integers such that $n$ is even. Let $p,q\in[0,1]$ be
 
 Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently from the Ising model on the {\em same} graph $G$.
 Our objective is to recover the underlying partition (or the ground truth) $X$ from the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$, and we would like to use the smallest possible number of samples to guarantee the exact recovery of $X$ up to a global permutation.
-Below we use the notation $P_{\SIBM}(A):=E_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $E_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the joint distribution of both $\sigma$ and $G$.
+Below we use the notation $P_{\SIBM}(A):=E_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $E_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the marginal distribution of $\sigma$.
 By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f \in S_k$.
 
 \begin{definition}[Exact recovery in SIBM]
@@ -106,6 +106,10 @@ $$
 and we call $P_{\SIBM}(\hat{X} \in S_k(X))$ the success probability of the recovery/decoding algorithm.
 \end{definition}
 
+To put it in other words, the error probability
+$P_{\SIBM}(\hat{X} \not\in S_k(X)) =
+\sum_{\{\sigma^{(1)},\dots,\sigma^{(m)}\}} \mathbbm{1}[\hat{X} \neq X]\prod_{i=1}^m P_{\SIBM}(\sigma = \sigma^{(i)}) 
+$ converges to $0$ as $n\to \infty$.
 
 As mentioned above, we consider the regime of $p=a\log n/n$ and $q=b\log n/n$, where $a>b> 0$ are constants. By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefor, if we cannot recover $X$ from $G$, then there is no hope to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
 
@@ -494,7 +498,7 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	Using Chernoff inequality we have
 	\begin{align*}
 	P(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})&
-	\leq (\mathbb{E}[\exp(-s Z_{ij})])^{N_1} (E[\exp(-s Z'_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1))) \\
+	\leq (\mathbb{E}[\exp(-s Z_{ij})])^{N_1} (\mathbb{E}[\exp(-s Z'_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1))) \\
 	&= \exp( \frac{\log n}{n}(1+o(1))(e^{-s}-1)(aN_1 + bN_2)+\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1)))
 	\end{align*}
 	Since $s > 0$ and $a>b$, we further have
@@ -667,7 +671,11 @@ P_{\SIBM}(\sigma \in S_k(X))=1-o(1) .
 $$
 \end{proposition}
 We have proved in Proposition~\ref{prop:1} that if $\alpha>b\beta$, then $\dist(\sigma, S_k(X)) \le n/\log^{\delta}(n)$
-with probability $1-o(1)$. Let $D(\sigma, X):= \{X = \arg\dist_{X'\in S(X)}(\sigma, S(X'))\}$.
+with probability $1-o(1)$. Let 
+\begin{equation}\label{eq:DsigmaX}
+D(\sigma, X):= \{X = \arg\dist_{X'\in S(X)}(\sigma, S(X'))\}
+\end{equation}
+
 By the symmetric property, to prove Proposition \ref{prop:1}
 we only need to show $P_{\SIBM}( 0 <\dist(\sigma, X) < \frac{n}{\log^{\delta} n} | D(\sigma, X))=o(1) $.
 This is guaranteed by the following proposition:
@@ -765,7 +773,7 @@ Following the main idea in Section \ref{sect:why}, we consider an enhanced concl
 	By Chernoff inequality, for $s>0$, we have
 	\begin{align*} 
 	& P_G(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t |\cI| \log n)\le
-	\frac{E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}]}{e^{st \log n}}  \\
+	\frac{\mathbb{E}[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}]}{e^{st \log n}}  \\
 	\le & \exp\Big(\frac{|\cI|\log n}{k} \big(a e^{-s}+b e^s -kst -a-b
 	+ O(\log^{-\delta}(n)) \big)\Big)  .
 	\end{align*}
@@ -1051,9 +1059,9 @@ Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\
 \end{theorem}
 \begin{proof}
 	we prove the following equivalent form:
-	$$
+	\begin{equation}\label{eq:conditionDist}
 	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ D(\sigma, X) ) = 1-o(1) .
-	$$
+	\end{equation}
 	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG'$ such that
 	
 	\noindent (i)
@@ -1070,20 +1078,20 @@ Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\
 	$\phi_i := \mathbbm{1}[\sigma_i \neq X_i]$ for $i\in[n]$, and
 	we want to estimate $\dist(\sigma,X)=\sum_{i=1}^n \phi_i$.
 	We define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
-	\begin{enumerate}
+	\begin{enumerate}[label=\arabic*)]
 		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. $\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
 		\item Conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $P(\underline{S}_i=1)=\underline{C}
 		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$. The constants $\bar{C}$ and $\underline{C}$ are defined in Equation \eqref{eq:qke}.
+		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$. The constants $\bar{C}$ and $\underline{C}$ are defined in \eqref{eq:qke}.
 	\end{enumerate}
 	By property 2), conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, we have
 	\begin{align*}
-	& E[\underline{S}_1 + \dots + \underline{S}_n] = \underline{C}
+	& \mathbb{E}[\underline{S}_1 + \dots + \underline{S}_n] = \underline{C}
 	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) , \quad
 	\Var(\underline{S}_1 + \dots + \underline{S}_n) \le \underline{C}
 	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big)
 	, \\
-	& E[\overline{S}_1 + \dots + \overline{S}_n] = \overline{C}
+	& \mathbb{E}[\overline{S}_1 + \dots + \overline{S}_n] = \overline{C}
 	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) , \quad
 	\Var(\overline{S}_1 + \dots + \overline{S}_n) \le \overline{C}
 	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) ,
@@ -1091,13 +1099,13 @@ Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\
 	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
 	By Proposition~\ref{prop:con}, for all $G\in\cG'\cap\cG_1$, we have 
 	\begin{align*}
-	& E[\underline{S}_1 + \dots + \underline{S}_n] = \Theta(n^{g(\beta)}) , \quad
+	& \mathbb{E}[\underline{S}_1 + \dots + \underline{S}_n] = \Theta(n^{g(\beta)}) , \quad
 	\Var(\underline{S}_1 + \dots + \underline{S}_n) = O(n^{g(\beta)}) , \\
-	& E[\overline{S}_1 + \dots + \overline{S}_n] = \Theta(n^{g(\beta)}) , \quad
+	& \mathbb{E}[\overline{S}_1 + \dots + \overline{S}_n] = \Theta(n^{g(\beta)}) , \quad
 	\Var(\overline{S}_1 + \dots + \overline{S}_n) = O(n^{g(\beta)}) 
 	\end{align*}
-	conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Since $g(\beta)\ge 0$ for all $0<\beta\le \beta^\ast$, by Chebyshev's inequality we know that both $\underline{S}_1 + \dots + \underline{S}_n=\Theta(n^{g(\beta)})$ and $\overline{S}_1 + \dots + \overline{S}_n=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-	From Lemma 5 of \cite{ye2020exact}, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG'\cap\cG_1$, $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on $D(\sigma, X)$. Finally, the theorem follows from $P(G\in\cG'\cap\cG_1)=1-o(1)$.
+	Since $g(\beta)\ge 0$ for all $0<\beta\le \beta^\ast$, by Chebyshev's inequality we know that both $\underline{S}_1 + \dots + \underline{S}_n=\Theta(n^{g(\beta)})$ and $\overline{S}_1 + \dots + \overline{S}_n=\Theta(n^{g(\beta)})$ with probability $1-o(1)$.
+	From \eqref{eq:qke} and Lemma 5 of \cite{ye2020exact}, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG'\cap\cG_1$, $P_{\sigma | G}(\dist(\sigma,X)=\Theta(n^{g(\beta)}) | D(\sigma, X)) = 1-o(1)$. Finally, \eqref{eq:conditionDist} follows from $P_G(\cG'\cap\cG_1)=1-o(1)$.
 	
 \end{proof}
 For $0<\beta<\beta^\ast$, we have $g(\beta)>0$, so Theorem~\ref{thm:dist} immediately implies that $P_{\SIBM}(\sigma \in S_k(X))=o(1)$. However, when $\beta=\beta^\ast$, we have $g(\beta^\ast)=0$. In this case, Theorem~\ref{thm:dist} tells us that
@@ -1161,27 +1169,40 @@ In this section, we prove that Algorithm~\ref{alg:ez} in Section~\ref{sect:multi
 	$$
 	Let $\hat{X}=\texttt{LearnSIBM}(\sigma^{(1)},\dots,\sigma^{(m)})$ be the output of Algorithm~\ref{alg:ez}. Then
 	$$
-	P(\hat{X} \in S_k(X)) = 1-o(1) .
+	P_{\SIBM}(\hat{X} \in S_k(X)) = 1-o(1) .
 	$$
 \end{proposition}
 
 By Proposition~\ref{prop:tt},
-if $\beta>\beta^\ast$, then $\sigma \in S_k(X) $ with probability $1-o(1)$, so $m=1$ sample suffices for recovery. In the rest of this section, we will focus on the case $\beta\le \beta^\ast$.
+if $\beta>\beta^\ast$, then $\sigma \in S_k(X) $ with probability $1-o(1)$, so $m=1$ sample suffices for recovery.
+In the rest of this section, we will focus on the case $\beta\le \beta^\ast$.
 
 In Proposition~\ref{prop:43} (or Proposition~\ref{prop:1}),
-we have shown that $\dist(\sigma^{(i)}, S_k(X)) =o(n)$
-for all $i\in[m]$ with probability $1-O(n^{-C})$ for any constant $C>0$,
+we have shown that $\dist(\sigma^{(i)}, S_k(X)) =O(n^{\theta})$
+for all $i\in[m]$ with probability $1-O(n^{-C})$ for any constant $C>0$ and $g(\beta) < \theta < 1$,
 but it is possible that $\sigma^{(1)}$ is close to $X$ while $\sigma^{(2)}$ is close to some $f(X)$.
-Step 1 (the alignment step) in the above algorithm eliminates such possibility:
-After the alignment step, with probability $1-O(n^{-C})$ only the following two scenarios will happen:
-Either
-$\dist(\sigma^{(i)}, X)=O(n^{\theta})$ for all $i\in[m]$ or $\dist(\sigma^{(i)}, f(X))=O(n^{\theta})$ for all $i\in[m]$
-where $f \in S_k(X) \backslash \{\textrm{id}\}$.
-Without loss of generality, we assume the former case, i.e., we assume that
+Step 1 (the alignment step) in the above algorithm eliminates such possibility. From Lemma \ref{lem:align}
+we assume that
 $\dist(\sigma^{(i)}, X) = O(n^{\theta})$ for all $i\in[m]$,
 and in the rest of this section we will prove that Algorithm~\ref{alg:ez} outputs $\hat{X}=X$ with probability $1-o(1)$.
-
-
+\begin{lemma}\label{lem:align}
+	If $D(\sigma^{(1)}, X)$ happens, then by Algorithm \ref{alg:ez}, $\dist(\sigma^{(i)}, X) = O(n^{\theta})$ happens with probability $1-o(1)$ for all $i\in[m]$.
+\end{lemma}
+\begin{proof}
+	Since $D(\sigma^{(1)}, X)$, from Proposition \ref{prop:43} with probability $1-o(1)$ such that $\dist(\sigma^{(1)}, X) = O(n^{\theta})$.
+	For $1<i\leq m$, if $D(\sigma^{(i)}, X)$, similarly $\dist(\sigma^{(i)}, X) = O(n^{\theta})$ with probability $1-o(1)$.
+	Otherwise $D(\sigma^{(i)}, f(X))$ holds for some $i\geq 2, f \neq \mathrm{id}$, then $\dist(\sigma^{(i)}, f(X)) = O(n^{\theta})$.
+	From the alignment step we have
+	\begin{align*}
+	\dist(\sigma^{(1)}, \sigma^{(i)}) \leq & \dist(\sigma^{(1)}, f^{-1}(\sigma^{(i)})) = \dist(f(\sigma^{(1)}), \sigma^{(i)}) \\
+	\leq & \dist(f(\sigma^{(1)}), f(X)) + \dist(\sigma^{(i)}, f(X)) \\
+	= & \dist(\sigma^{(1)}, X) + \dist(\sigma^{(i)}, f(X)) \\
+	= & O(n^{\theta})
+	\end{align*}
+	Therefore,
+	$\dist(X, f(X)) \leq \dist(X, \sigma^{(1)}) + \dist(\sigma^{(1)}, \sigma^{i}) + \dist(\sigma^{(i)}, f(X)) = O(n^{\theta})$,
+	a contradiction with $\dist(X, f(X))\geq \frac{2n}{k}$.
+\end{proof}
 Given the ground truth $X$, the graph $G$ and a vertex $i\in[n]$, define the neighbors of $i$ in $G$ as 
 \begin{equation} \label{eq:ngbi}
 \cN_i(G) := \{j\in[n]\setminus\{i\}:
@@ -1203,9 +1224,11 @@ i.e., $\Lambda_i(G, z)$ consists of all the samples for which the number of ``ba
 	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$ and every $i\in[n]$, 
 	\begin{equation} \label{eq:zr}
 	P_{\SIBM} (\sigma\in \Lambda_i(G, z)
-	| X = \arg\dist_{X'\in S(X)}(\sigma, S(X')))
-	> 1 - n^{-C} .
+	| D(\sigma, X)
+	)
+	> 1 - n^{-C}
 	\end{equation}
+	where $D(\sigma, X)$ is defined in \eqref{eq:DsigmaX}.
 \end{lemma}
 \begin{proof}
 	The conclusion for $k=2$ has been proved in Lemma 3 of \cite{ye2020exact}. Suppose $i$ belongs to the first community, and for the community
