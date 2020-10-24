@@ -11,8 +11,19 @@
 \DeclareMathOperator{\Var}{Var}
 \newcommand{\A}{\frac{a \log(n)}{n}}
 \newcommand{\B}{\frac{b \log(n)}{n}}
+\title{Exact recovery of Stochastic Block Model with Ising sampling}
 \begin{document}
-	\section{Introduction}	
+	\maketitle
+	\section{Introduction}
+	Based on Ising sampling, we propose a stochastic algorithm to achieve the exact recovery for stochastic block model (SBM).
+	The stochastic algorithm can be transformed to an optimization problem, which includes maximum likelihood and maximal modularity.
+	Besides, we give an unbiased convergent estimator of the parameters of SBM, which can be computed in constant time.
+	Finally, we use metropolis sampling to realize the theoretical Ising sampling and demonstrates the better performance of our method,
+	compared with other theoretically guaranteed algorithm.
+	
+	Stochastic Block Model (SBM) is one of statistical modeling for community detection problems.
+	It provides benchmark artificial dataset to evaluate different community detection algorithms.
+		
 	\section{Stochastic Ising BlockModel}\label{sec:sibm}
 	We consider a symmetric SBM model parameterized by $(n, k, p, q)$ where $p=\frac{a\log n}{n}, q=\frac{b\log n }{n}$.
 	
