@@ -408,7 +408,10 @@ By choosing $s = n^{\tilde{g}(\beta)/2}$ we have
 \end{align*}
 \section{A weaker conclusion than Theorem 3}
 In section \cite{ye2020exact}, there is some problem related with the proof. We try to prove a weaker version of Theorem 3.
-That is, when $\beta < \beta^*$, we will show that $P_{\SIBM}(\dist(\sigma, \pm X)\geq 1) = 1 - o(1)$.
+That is, when $\beta < \beta^*$, we will show that
+\begin{lemma}\label{lem:dist_sigma}
+$P_{\SIBM}(\dist(\sigma, \pm X)\geq 1) = 1 - o(1)$
+\end{lemma}
 The following discussion assumes $\dist(\sigma, X) \leq \frac{n}{2}$.
 Indeed, using proposition 10 in \cite{ye2020exact}, we can find $\cG_1$ such that $P(\cG_1) < n^{1-(\sqrt{a} - \sqrt{b})^2/2}$
 and for $G\not\in \cG_1$, for large enough $n$
@@ -429,10 +432,19 @@ P_{\sigma | G}(\dist(\sigma, X) \geq 1) \geq \frac{n^{g(\beta)}}{4+n^{g(\beta)}}
 $$
 Then
 \begin{align*}
-P_{\SIBM}(\dist(\sigma, X) = 0) & \leq P(\cG_1) + \sum_{G\not\in cG_1}P(G)(1-P_{\sigma|G}(\dist(\sigma, X)\geq 1))\\
+P_{\SIBM}(\dist(\sigma, X) = 0) & \leq P(\cG_1) + \sum_{G\not\in \cG_1}P(G)(1-P_{\sigma|G}(\dist(\sigma, X)\geq 1))\\
 & \leq n^{1-(\sqrt{a} - \sqrt{b})^2/2} + \frac{4}{4+n^{g(\beta)}} \\
 & \leq n^{1-(\sqrt{a} - \sqrt{b})^2/2} + 4n^{-g(\beta)} = o(1)
 \end{align*}
+We modify Lemma 7 as follows:
+\begin{lemma}
+If $u\beta < \beta^*$, then $P_{\SIBM}(T_+ \geq 1) = 1-o(1)$.
+Similarly, if $(m-u)\beta < \beta^*$, then $P_{\SIBM}(T_- \geq 1) = 1-o(1)$.
+\end{lemma}
+\begin{proof}
+	The idea is similar with Lemma \ref{lem:dist_sigma}. Firstly
+	we establish $\frac{P(T_+ = 1)}{P(T_+ = 0)} \geq C\sum_{i=1}^n \exp(u(B_i - A_i))$
+\end{proof}
 \begin{thebibliography}{1}
 	
 

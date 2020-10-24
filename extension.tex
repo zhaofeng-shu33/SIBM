@@ -802,7 +802,7 @@ I_1 \leq \sum_{\bar{\sigma} \in \Xi(v)} P_G( B_{\bar{\sigma}} - A_{\bar{\sigma}}
 For the second term,
 conditioned on $B_{\bar{\sigma}} - A_{\bar{\sigma}}    < 0, \forall \bar{\sigma} \in \Xi(v)$ we have
 \begin{align*}
-&\sum_{\bar{\sigma} \in \Xi(v)} \exp ( (\beta + \alpha \frac{\log n}{n})(B_{\bar{\sigma}} - A_{\bar{\sigma}} ) ) \\
+&\sum_{\bar{\sigma} \in \Xi(v)} \exp ( (\beta + \frac{\alpha \log n}{n})(B_{\bar{\sigma}} - A_{\bar{\sigma}} ) ) \\
 & = \sum_{tr\log n = -A_{\bar{\sigma}} }^{-1} \sum_{\bar{\sigma} \in \Xi(v)} \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}}  = tr \log n] \exp ( \beta  tr\log n)\leq \\ 
 &
 \sum_{tr\log n =\lfloor\tau\rfloor}^{-1} \sum_{\bar{\sigma} \in \Xi(v)}  \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}}  = tr \log n]
@@ -1044,7 +1044,155 @@ where equality $(a)$ follows from \eqref{eq:ThetaEbeta}, and $(b)$ follows from 
 Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\eqref{eq:mh2}.
 \end{proof}
 
+To prove the conclusion of this section, we need to introduce stronger results to bound
+$P_{\sigma | G}(\sigma_i \neq X_i)$. This is based on the "z-neighborhood" technique, which is illustrated as follows:
 
+Given the ground truth $X$, the graph $G$ and a vertex $i\in[n]$, define the neighbors of $i$ in $G$ as 
+\begin{equation} \label{eq:ngbi}
+\cN_i(G) := \{j\in[n]\setminus\{i\}:
+\{i,j\}\in E(G) \} .
+\end{equation}
+Given a sample $\sigma\in W^n$ and a graph $G$,  we define the set of ``bad" neighbors of the vertex $i$ in $G$ as
+$$
+\Omega_i(\sigma,G):=\{j\in \cN_i(G): 
+\sigma_j \neq X_j \} .
+$$
+Given a vertex $i\in[n]$, a graph $G$ and an integer $z>0$, we also define
+$$
+\Lambda_i(G, z):=\{ \sigma\in W^n: |\Omega_i(\sigma,G)| < z \} ,
+$$
+i.e., $\Lambda_i(G, z)$ consists of all the samples for which the number of ``bad" neighbors of the vertex $i$ in $G$ is less than $z$.
+
+\begin{lemma} \label{lm:us}
+	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $\beta\le \beta^\ast$.
+	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$ and every $i\in[n]$, 
+	\begin{equation} \label{eq:zr}
+	P_{\sigma, G} (\sigma\in \Lambda_i(G, z)
+	| D(\sigma, X)
+	)
+	> 1 - n^{-C}
+	\end{equation}
+	where $D(\sigma, X)$ is defined in \eqref{eq:DsigmaX}.
+\end{lemma}
+\begin{proof}
+	The conclusion for $k=2$ has been proved in Lemma 3 of \cite{ye2020exact}. Suppose $i$ belongs to the first community, and for the community
+	pair $(0, j)$, there is a $z_{j}$ from Lemma 3.
+	We can take $z = \sum_{j=1}^{k-1} z_j$ and Lemma \ref{lm:us} follows.
+\end{proof}
+We further define 
+\begin{align*}
+\Lambda(G, z) :=
+\bigcap_{i=1}^n
+\Lambda_i(G, z) .
+\end{align*}
+The following corollary follows immediately from Lemma~\ref{lm:us} and the union bound.
+\begin{corollary} \label{cr:1}
+	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
+	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$, 
+	$$
+	P_{\sigma, G} (\sigma\in \Lambda(G, z)
+	| D(\sigma, X) )
+	> 1 - n^{-C} .
+	$$
+\end{corollary}
+
+In the following lemma, we consider the conditional probability for $\sigma_i$:
+\begin{lemma} \label{lm:et}
+	Let $0<\theta<1$ be some constant and $1\leq r \leq k-1$. Then for large enough $n$ we have
+	\begin{align*}
+	\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
+	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
+	{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } \\
+	& \le \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big)
+	\end{align*}
+\end{lemma}
+
+\begin{proof}
+	Let $\cI: = \{i\in [n] | \bar{\sigma}_i \neq X_i\}$. Then $\dist(\bar{\sigma}, X) = |\cI|$.
+	Recall that in \eqref{eq:Ari}, we defined $A^r_i=A^r_i(G)$.
+	By definition, $\sigma \in  \Lambda_i(G,z)$ if and only if $|\cI\cap \cN_i(G)| < z$.
+	
+	We consider $\cI \in \cI'$, where $\cI' = \{\cI \in [n]\backslash\{i\} |
+	 |\cI|\le n^\theta, |\cI \cap \cN_i(G)| < z\, \forall i\}$.
+	$\bar{\sigma}'$ only differs with $\bar{\sigma}$ at
+	position $i$: $\bar{\sigma}' = \omega^r \cdot \bar{\sigma}$.
+	If we can show
+	\begin{equation} \label{eq:qk}
+	\begin{aligned}
+	\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
+	\frac{P_{\sigma|G}(\sigma= \bar{\sigma}') } { P_{\sigma|G}(\sigma= \bar{\sigma} ) } \\
+	& \le \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big) .
+	\end{aligned}
+	\end{equation}
+	then using 
+	$$
+	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
+	{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
+	= \frac{\sum_{\cI\in \cI'}\sum_{\dist(\sigma, X)=|\cI|} P_{\sigma|G}(\sigma= \bar{\sigma}'  ) }
+	{\sum_{\cI\in \cI'}\sum_{\dist(\sigma, X)=|\cI|} P_{\sigma|G}(\sigma = \bar{\sigma}) } 
+	$$
+	we can get Lemma \ref{lm:et}.
+	
+	Define
+	$$
+	A'^r_i := |\{ j \in [n]\backslash \{i\}:  \bar{\sigma}_j = \omega^r \cdot X_i \}|
+	$$
+	Since $|\cI\cap \cN_{i}(G)| \le z-1$, $|A'^r_i - A^r_i| \leq z-1$
+	\begin{equation} \label{eq:oo}
+	A^r_i-A^0_i-2(z-1) \le A'^r_i-A'^0_i\le A^r_i-A^0_i+2(z-1) .
+	\end{equation}
+	By \eqref{eq:isingma}, we have
+	\begin{align*}
+	\frac{P_{\sigma|G}(\sigma=  \bar{\sigma}' ) } { P_{\sigma|G}(\sigma= \bar{\sigma}) }
+	= & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)
+	+\frac{\alpha\log n}{n}O(n^{\theta})
+	\Big)
+	\\
+	\leq & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)+2z \Big)
+	\end{align*}
+	The other side of the inequality can be proved similarly.
+\end{proof}
+\begin{remark}
+	Suppose $\bar{\sigma}\in \Lambda(G,z) ,\dist(\bar{\sigma}, X) \le n^{\theta} $,
+	using \eqref{eq:qk}, we can get the conditional representation as
+	\begin{align*}
+	\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le
+	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \forall j \neq i  )}
+	{P_{\sigma|G}(\sigma_i= X_i | \sigma_j = \bar{\sigma}_j \forall j \neq i  )}
+	\\
+	& \le \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big)
+	\end{align*}
+	By large deviation theory, we can choose a positive number $\kappa$ such that $A_i^r - A_i^0 \geq -\kappa \log n$ with probability $1-o(\frac{1}{n})$.
+	Let $\cG = \{ -\kappa \log n\leq A_i^r - A_i^0 \leq 0,\forall i \in[n] \}$, from \eqref{eq:I_1} $P_G(\cG) = 1-o(1)$.
+	For any $G\in \cG$,
+	Since the numerator is much smaller than the denominator, we can find $\underline{C}, \bar{C}$ such that
+	$$
+	\frac{\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) }{1 + \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) } \le 
+	P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
+	\le \frac{\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big) }{1 + \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big) } 
+	$$
+	Choosing $\underline{C}(n)=\frac{\exp(-\kappa \log^2 n/n)}{1+\exp(2z(\beta+\frac{\alpha \log n}{n}))}$ and $\bar{C}(n)=\exp(2z(\beta+\frac{\alpha \log n}{n}))$
+	we have
+	$$
+\underline{C}(n)\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
+P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
+ \leq \bar{C}(n) \exp\Big(\beta (A^r_i-A^0_i ) \Big) 
+	$$
+	Further choosing $\underline{C}=\frac{\exp(-\kappa)}{1+\exp(2z(\beta+1))} \leq \underline{C}(n)$ and $\overline{C}=\exp(2z(\beta+1)) \geq \underline{C}(n)$,
+	which are constants that are independent of $n$.
+	$$
+	\underline{C}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
+	P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
+	\leq \bar{C} \exp\Big(\beta (A^r_i-A^0_i ) \Big) 
+	$$	
+	Summing over $r=1, \dots k-1$ we can get
+	\begin{equation} \label{eq:qke}
+	\underline{C}\sum_{r=1}^{k-1}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
+	P_{\sigma|G}(\sigma_i \neq  X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
+	\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(\beta (A^r_i-A^0_i ) \Big) 
+	\end{equation}
+
+\end{remark}
 \begin{theorem}  \label{thm:dist}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that
 	$\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $0<\beta\le \beta^\ast$.
@@ -1076,7 +1224,7 @@ Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\
 
 	We now define 
 	$\phi_i := \mathbbm{1}[\sigma_i \neq X_i]$ for $i\in[n]$, and
-	we want to estimate $\dist(\sigma,X)=\sum_{i=1}^n \phi_i$.
+	we want to estimate $\dist(\sigma, X)=\sum_{i=1}^n \phi_i$.
 	We define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
 	\begin{enumerate}[label=\arabic*)]
 		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. $\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
@@ -1203,132 +1351,8 @@ and in the rest of this section we will prove that Algorithm~\ref{alg:ez} output
 	$\dist(X, f(X)) \leq \dist(X, \sigma^{(1)}) + \dist(\sigma^{(1)}, \sigma^{i}) + \dist(\sigma^{(i)}, f(X)) = O(n^{\theta})$,
 	a contradiction with $\dist(X, f(X))\geq \frac{2n}{k}$.
 \end{proof}
-Given the ground truth $X$, the graph $G$ and a vertex $i\in[n]$, define the neighbors of $i$ in $G$ as 
-\begin{equation} \label{eq:ngbi}
-\cN_i(G) := \{j\in[n]\setminus\{i\}:
-\{i,j\}\in E(G) \} .
-\end{equation}
-Given a sample $\sigma\in W^n$ and a graph $G$,  we define the set of ``bad" neighbors of the vertex $i$ in $G$ as
-$$
-\Omega_i(\sigma,G):=\{j\in \cN_i(G): 
-\sigma_j \neq X_j \} .
-$$
-Given a vertex $i\in[n]$, a graph $G$ and an integer $z>0$, we also define
-$$
-\Lambda_i(G, z):=\{ \sigma\in W^n: |\Omega_i(\sigma,G)| < z \} ,
-$$
-i.e., $\Lambda_i(G, z)$ consists of all the samples for which the number of ``bad" neighbors of the vertex $i$ in $G$ is less than $z$.
 
-\begin{lemma} \label{lm:us}
-	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $\beta\le \beta^\ast$.
-	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$ and every $i\in[n]$, 
-	\begin{equation} \label{eq:zr}
-	P_{\SIBM} (\sigma\in \Lambda_i(G, z)
-	| D(\sigma, X)
-	)
-	> 1 - n^{-C}
-	\end{equation}
-	where $D(\sigma, X)$ is defined in \eqref{eq:DsigmaX}.
-\end{lemma}
-\begin{proof}
-	The conclusion for $k=2$ has been proved in Lemma 3 of \cite{ye2020exact}. Suppose $i$ belongs to the first community, and for the community
-	pair $(0, j)$, there is a $z_{j}$ from Lemma 3.
-	We can take $z = \sum_{j=1}^{k-1} z_j$ and Lemma \ref{lm:us} follows.
-\end{proof}
-We further define 
-\begin{align*}
-\Lambda(G, z) :=
-\bigcap_{i=1}^n
-\Lambda_i(G, z) .
-\end{align*}
-The following corollary follows immediately from Lemma~\ref{lm:us} and the union bound.
-\begin{corollary} \label{cr:1}
-	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
-	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$, 
-	$$
-	P_{\SIBM} (\sigma\in \Lambda(G, z)
-	| X = \arg\dist_{X'\in S(X)}(\sigma, S(X')) )
-	> 1 - n^{-C} .
-	$$
-\end{corollary}
 
-Recall that in \eqref{eq:Ari}, we defined $A^r_i=A^r_i(G):=|\cN_{i,r}(G)|$.
-By definition, $\sigma \in  \Lambda_i(G,z)$ if and only if $|\cI\cap \cN_i(G)| < z$.
-
-In the following lemma, we consider the marginal probability for $\sigma_i$:
-\begin{lemma} \label{lm:et}
-	Let $0<\theta<1$ be some constant and $1\leq r \leq k-1$. Then for large enough $n$ we have
-	\begin{align*}
-	\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
-	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
-	{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } \\
-	& \le \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big)
-	\end{align*}
-\end{lemma}
-
-\begin{proof}
-	We only need to show that for every $\cI\in [n]\setminus\{i\}$, satisfying $|\cI|\le n^\theta$ and
-	$|\cI \cap \cN_i(G)| < z$. $\dist(\bar{\sigma}, X) = |\cI|$, $\bar{\sigma}'$ only differs with $\bar{\sigma}$ at
-	position $i$: $\bar{\sigma}' = \omega^r \cdot \bar{\sigma}$.
-	\begin{equation} \label{eq:qk}
-	\begin{aligned}
-	\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
-	\frac{P_{\sigma|G}(\sigma= \bar{\sigma}') } { P_{\sigma|G}(\sigma= \bar{\sigma} ) } \\
-	& \le \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big) .
-	\end{aligned}
-	\end{equation}
-	Then using 
-	$$
-	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
-	{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
-	= \frac{\sum_{\cI\in [n]\setminus\{i\},|\cI|\le n^\theta,|\cI \cap \cN_i(G)| < z}\sum_{\dist(\sigma, X)=|\cI|} P_{\sigma|G}(\sigma= \bar{\sigma} ) }
-	{\sum_{\cI\in [n]\setminus\{i\},|\cI|\le n^\theta,|\cI \cap \cN_i(G)| < z}\sum_{\dist(\sigma, X)=|\cI|} P_{\sigma|G}(\sigma = \bar{\sigma}' ) } 
-	$$
-	we can get the conclusion.
-	
-	Define
-	$$
-	A'^r_i := |\{ j \in [n]\backslash \{i\}:  \bar{\sigma}_j = \omega^r \cdot X_i \}|
-	$$
-	Since $|\cI\cap \cN_{i}(G)| \le z-1$, $|A'^r_i - A^r_i| \leq z-1$
-	\begin{equation} \label{eq:oo}
-	A^r_i-A^0_i-2(z-1) \le A'^r_i-A'^0_i\le A^r_i-A^0_i+2(z-1) .
-	\end{equation}
-	By \eqref{eq:isingma}, we have
-	\begin{align*}
-	 \frac{P_{\sigma|G}(\sigma=  \bar{\sigma}' ) } { P_{\sigma|G}(\sigma= \bar{\sigma}) }
-	= & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)
-	-\frac{\alpha\log n}{n}
-	\Big)
-	\\
-	\leq & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)+2z \Big)
-	\end{align*}
-	The other hand of the inequality can be proved similarly.
-\end{proof}
-\begin{remark}
-	Conditioned on $\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} $,
-	using \eqref{eq:qk}, we can get the conditional representation as
-	\begin{align*}
-	\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
-	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \textrm{ for all } j \neq i  )}
-	{P_{\sigma|G}(\sigma_i= X_i | \sigma_j = \bar{\sigma}_j \textrm{ for all } j \neq i  )}
-	 \\
-	& \le \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big)
-	\end{align*}
-	Since the numerator is much smaller than the denominator, we can find $\underline{C}, \bar{C}$ such that
-	$$
-	\underline{C}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
-	P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \textrm{ for all } j \neq i )
-	\le \bar{C} \exp\Big(\beta (A^r_i-A^0_i ) \Big) 
-	$$
-	Summing over $r=1, \dots k-1$ we can get
-	\begin{equation} \label{eq:qke}
-	\underline{C}\sum_{r=1}^{k-1}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
-	P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \textrm{ for all } j \neq i )
-	\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(\beta (A^r_i-A^0_i ) \Big) 
-	\end{equation}
-	where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
-\end{remark}
 
 \noindent
 {\em Proof of Proposition~\ref{prop:nr}.}
