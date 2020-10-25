@@ -412,7 +412,7 @@ That is, when $\beta < \beta^*$, we will show that
 \begin{lemma}\label{lem:dist_sigma}
 $P_{\SIBM}(\dist(\sigma, \pm X)\geq 1) = 1 - o(1)$
 \end{lemma}
-The following discussion assumes $\dist(\sigma, X) \leq \frac{n}{2}$.
+
 Indeed, using proposition 10 in \cite{ye2020exact}, we can find $\cG_1$ such that $P(\cG_1) < n^{1-(\sqrt{a} - \sqrt{b})^2/2}$
 and for $G\not\in \cG_1$, for large enough $n$
 $$
@@ -443,7 +443,35 @@ Similarly, if $(m-u)\beta < \beta^*$, then $P_{\SIBM}(T_- \geq 1) = 1-o(1)$.
 \end{lemma}
 \begin{proof}
 	The idea is similar with Lemma \ref{lem:dist_sigma}. Firstly
-	we establish $\frac{P(T_+ = 1)}{P(T_+ = 0)} \geq C\sum_{i=1}^n \exp(u(B_i - A_i))$
+	we establish $\frac{P_{\sigma | G}(T_+ = 1)}{P_{\sigma | G}(T_+ = 0)} \geq C\sum_{i=1, X_i=1}^n \exp(u(B_i - A_i))$
+	We choose a set $\cG$ such that $P_G(\cG) = 1-o(1)$ and
+	\begin{equation}  \label{eq:chui}
+	P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
+	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
+	\text{~for all~} j\in[m]  \big) 
+	=1- o(1)
+	\end{equation}
+	First, we write $
+	\frac{P_{\sigma | G}(T_+ = 1)}{P_{\sigma | G}(T_+ = 0)} =
+	\sum_{i=1, X_i=1}^n \frac{P_{\sigma | G}( (\sigma_i^{(1)}, \dots ,\sigma_i^{(m)}) = v, (\sigma_j^{(1)}, \dots ,\sigma_j^{(m)}) \neq v, \forall j \neq i)}
+	{P_{\sigma | G}(T_+ = 0)}
+	$.
+	To bound the summation term, we only need to consider
+	$\bar{\sigma}^{(j)}\in  \Lambda(G, z)
+	\text{~and~} \dist(\bar{\sigma}^{(j)}, X) \le n^\theta
+	\text{~for all~} j\in[m]$.
+	That is, we consider
+	$$
+	\frac{P_{\sigma | G}( (\sigma_i^{(1)}, \dots ,\sigma_i^{(m)}) = v,  (\sigma_j^{(1)}, \dots ,\sigma_j^{(m)}) = (\bar{\sigma}_j^{(1)}, \dots ,\bar{\sigma}_j^{(m)}), \forall j \neq i)}
+	{\sum_{v' \neq v} P_{\sigma | G}((\sigma_i^{(1)}, \dots ,\sigma_i^{(m)}) = v',  (\sigma_j^{(1)}, \dots ,\sigma_j^{(m)}) = (\bar{\sigma}_j^{(1)}, \dots ,\bar{\sigma}_j^{(m)}), \forall j \neq i)}
+	$$
+	Since each sample is independent, the above equation is equal to
+	$$
+	\frac{ \prod_{r=1}^m	P_{\sigma | G}(\sigma_i^{(r)} = v_r, \sigma_j^{(r)} =\bar{\sigma}_j^{(r)}, \forall j \neq i)}
+	{\sum_{v' \neq v} \prod_{r=1}^m P_{\sigma | G}( \sigma_i^{(r)} = v'_r,
+	\sigma_j^{(r)} = \bar{\sigma}_j^{(r)}, \forall j \neq i)}
+	$$
+	Among all $v'$, we consider $v'$ is all one vector ($\sigma_i^{(r)} = X_i = 1$ for all $r=1, \dots, )$
 \end{proof}
 \begin{thebibliography}{1}
 	
