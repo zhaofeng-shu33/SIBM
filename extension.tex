@@ -1325,12 +1325,12 @@ By Proposition~\ref{prop:tt},
 if $\beta>\beta^\ast$, then $\sigma \in S_k(X) $ with probability $1-o(1)$, so $m=1$ sample suffices for recovery.
 In the rest of this section, we will focus on the case $\beta\le \beta^\ast$.
 
-In Proposition~\ref{prop:43} (or Proposition~\ref{prop:1}),
+In Proposition~\ref{prop:43},
 we have shown that $\dist(\sigma^{(i)}, S_k(X)) =O(n^{\theta})$
 for all $i\in[m]$ with probability $1-O(n^{-C})$ for any constant $C>0$ and $g(\beta) < \theta < 1$,
 but it is possible that $\sigma^{(1)}$ is close to $X$ while $\sigma^{(2)}$ is close to some $f(X)$.
 Step 1 (the alignment step) in the above algorithm eliminates such possibility. From Lemma \ref{lem:align}
-we assume that
+we can assume that
 $\dist(\sigma^{(i)}, X) = O(n^{\theta})$ for all $i\in[m]$,
 and in the rest of this section we will prove that Algorithm~\ref{alg:ez} outputs $\hat{X}=X$ with probability $1-o(1)$.
 \begin{lemma}\label{lem:align}
@@ -1379,19 +1379,19 @@ $$
 \Phi_i := |\{j\in[m]: \sigma_i^{(j)} \neq \omega^r \cdot X_i\}|
 $$
 as the number of samples for which $\sigma_i^{(j)} \neq X_i$.
-For an integer $u\in[m]$, we consider
+For a given integer $u\in[m]$, we consider
 %To give an upper bound of $P_{\SIBM} \big( \Phi_i \ge u \big)$ we consider:
 \begin{align*}
-P_{\SIBM}( \exists i \in [n], \Phi_i \ge u \big) \leq &P_{\SIBM}( \Phi_i \ge u , G \in \cG_{1}) + P(G \not\in \cG_{1}) \\
-\leq & E_G[P_{\sigma |G}(D_r)]+ O(n^{-C})
+P_{\SIBM}( \exists i \in [n], \Phi_i \ge u \big) \leq &P_{\SIBM}( \Phi_i \ge u , G \in \cG_{1}) + P_G(G \not\in \cG_{1}) \\
+\leq & \mathbb{E}_G[P_{\sigma |G}(D_u)]+ O(n^{-C})
 \end{align*}
 where the event $D_u: \exists i \in [n], \Phi_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m]$.
-To bound  $E_G[P_{\sigma |G}(D_u)]$,
-since
+To bound  $\mathbb{E}_G[P_{\sigma |G}(D_u)]$,
+we consider
 $$
 \{\Phi_i \ge u\} \subseteq
-\bigcup_{\cJ\subseteq[m], |\cJ|=u}\bigcup_{1\leq r \leq k-1}
-\{\sigma_i^{(j)} = \omega^r \cdot X_i \text{~for all~} j\in \cJ\} .
+\bigcup_{\cJ\subseteq[m], |\cJ|=u, \cJ=\cup_{r=1}^k J_r} 
+\{\sigma_i^{(j)} = \omega^r \cdot X_i \text{~for all~} j\in \cJ_r\} .
 $$
 by the union bound,
 \begin{align*}
@@ -1399,14 +1399,14 @@ by the union bound,
 \le &  \binom{m}{u}\sum_v \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i + 2z) \Big)
 \quad\quad\text{~for all~} i\in[n] \textrm{ by Lemma~\ref{lm:et}}.
 \end{align*}
-where $v=(u_1, \dots, u_{k-1})$ and $u_r = |\{j | \sigma_i^{(j)} = \omega^r \cdot X_i \}|, u=\sum_{r=1}^{k-1} u_r$.
+where  $v=(u_1, \dots, u_{k-1})$, $u_r = |\{j | \sigma_i^{(j)} = \omega^r \cdot X_i \}|, u=\sum_{r=1}^{k-1} u_r$.
 
-Using the union bound, we have
+We then have
 $$
 P_{\sigma|G} \big(D_u\big) \le 
 C  \sum_{v}\sum_{i=1}^n \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i ) \Big),
 $$
-where $C:=\binom{m}{u}\exp(2u\beta z)$ is a constant.
+where $C:=\binom{m}{u}\exp(2u (\beta + 1) z)$ is a constant.
 By Lemma \ref{lem:large}, if $u\beta>\beta^*$, there exists $\cG_v$ such that $P(G\not\in\cG_v) \leq 2n^{\tilde{g}_v(\beta)/2}$.
 and for every $G\in\cG_1 \cap \bigcap_{v}\cG_{v}$,
 $$
@@ -1419,7 +1419,7 @@ Further
 \begin{align*}
 P_{\SIBM}( \exists i \in [n], \Phi_i \ge u \big)
 \leq & E_G[P_{\sigma |G}(D_u)] + O(n^{-4}) \\
-\leq &  Cn^{g_v(\beta)/2} + \sum_{v} P(G \not\in \cG_v) + O(n^{-C}) = o(1)
+\leq &  C\sum_{v} n^{\tilde{g}_v(\beta)/2} + \sum_{v} P(G \not\in \cG_v) + O(n^{-C}) = o(1)
 \end{align*}
 We conclude that $P_{\SIBM} \big(\Phi_i \le u-1 \text{~for all~} i\in[n] \big)=1-o(1)$.
 
@@ -1818,7 +1818,7 @@ Thus Lemma \ref{lem:BijG} follows.
 \end{lemma}
 \begin{proof}
 	The monotonicity property comes from careful analysis on $g'_v$ and $g''_v>0$.
-	We have already known that $\beta' = \frac{\beta^*}{u}$ satisfies:
+	From \eqref{eq:beta_star}, we have already known that $\beta' = \frac{\beta^*}{u}$ satisfies:
 	$$
 	\frac{b e^{u\beta'} + a e^{-u\beta'}-a-b}{k}+1=0
 	$$
@@ -1828,26 +1828,60 @@ Thus Lemma \ref{lem:BijG} follows.
 	$$
 	
 	We use mathematical induction to show that $g_v(\beta') \leq 0$.
+	Define $L(\lambda_1, \dots, \lambda_r) = 1-r + \sum_{i=1}^{r} \exp(\lambda_i \beta^*) - \exp(\beta^*\sum_{i=1}^{r} \lambda_i )$.
 	Let $\lambda_i = \frac{u_i}{u} \in [0,1]$ and $\sum_{i=1}^{k-1} \lambda_i = 1$.
-	If only one $\lambda_i = 1$, then $g_v(\beta')$.
-	For $\lambda_i = 0, i=r,\dots, k-1$, if $r=2$, we have
-	$$
-	2-k + \sum_{i=1}^{k-1}\exp(\frac{u_i}{u} \beta^*) - \exp(\beta^*)
-	= -(1-\exp(\lambda_1 \beta^*))(1-\exp(\lambda_2 \beta^*))
-	$$
-	Since $\exp(\lambda_i \beta^*) \geq 1$, the above equation is negative.
-	Therefore, the conclusion holds when $r=2$.
-	Now suppose it holds for a certain $r$, consider the case for $r+1$.
-	We then have
+	Then $g_v(\beta') =\frac{b}{k} L(\lambda_1, \dots, \lambda_{k-1})$.
+	Firstly we have $L(\lambda_1) = 0$,
+	$
+	L(\lambda_2) = -(1-\exp(\lambda_1 \beta^*))(1-\exp(\lambda_2 \beta^*))
+	$
+	Since $\exp(\lambda_i \beta^*) \geq 1$, $L(\lambda_2)\leq 0$.
 	\begin{align*}
-	L(r+1) = 2-k + \sum_{i=1}^{k-1}\exp(\frac{u_i}{u} \beta^*) - \exp(\beta^*)
-	& = L(r)- (1-\exp(\sum_{i=1}^r \lambda_i \beta^*)) (1-\exp(\lambda_{r+1}\beta^*)) \leq 0
+	L(\lambda_1, \dots, \lambda_{r+1}) = L(\lambda_1, \dots, \lambda_r) - (1-\exp(\sum_{i=1}^r \lambda_i \beta^*)) (1-\exp(\lambda_{r+1}\beta^*)) \leq 0
 	\end{align*}
-	Therefore, we have proven that $g_v(\beta') \leq 0$.
+	Therefore, we have proven that $g_v(\beta') \leq 0$. Since $g_v(\beta)$
+	is a decreasing function in $[0, \bar{\beta}]$, it follows that
+	$\hat{\beta} \leq \beta' = \frac{\beta^*}{u}$.
 \end{proof}
 \begin{remark}
-	The function $g_v(\beta)$ reduces to common $g(\beta)$ if we choose $v=(1,0,\dots, 0)$.
+	The function $g_v(\beta)$ reduces to $g(\beta)$ (defined in \eqref{eq:gbeta}) if we choose $v=(1,0,\dots, 0)$.
+	Similarly to the definition of $\tilde{g}(\beta)$ in \eqref{eq:gbt}, we define
+	\begin{equation}
+	\tilde{g}_v(\beta) = \begin{cases}
+	g_v(\beta) & \beta < \bar{\beta} \\
+	g_v(\bar{\beta}) & \beta \geq \bar{\beta}\\
+	\end{cases}
+	\end{equation}
 \end{remark}
+\begin{lemma}\label{lem:fbeta_prop}
+	For $ t \in [u\frac{b-a}{k}, 0] $,
+	we have
+	\begin{equation}
+	P(\sum_{r=1}^{k-1} u_i A_i^r - u A_i^0 \geq t \log n) \leq \exp \Big(
+	\log n (f_{v,\beta}(t) - \beta t - 1) + O(\frac{\log n}{n})\Big)
+	\end{equation}
+	The function $f_{v,\beta}(t)$ satisfies $f_{v, \beta}(t) \leq \tilde{g}_v(\beta)$.
+	When $\beta > \beta^*$, we have $f_{v, \beta}(t) \leq \tilde{g}_v(\beta) < 0$.
+	$f_{v,\beta}(u(b-a)/k) = 1 + \beta u (b-a)/k$.
+\end{lemma}
+\begin{proof}
+	The expectation can be computed as follows:
+	\begin{align*}
+	\mathbb{E}[\exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))] &=\prod_{i=1}^{k-1}\left(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)\right)^{n/k}
+	\left(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta)\right)^{n/k} \\
+	&= \exp(\frac{n}{k} \left[\sum_{i=1}^{k-1}\log(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)) + \log(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta))\right])\\
+	& = \exp(\log n (g_v(\beta) - 1) + O(\frac{\log^2 n}{n}))
+	\end{align*}
+	By Chernoff inequality, we have
+	\begin{equation}\label{eq:f_def}
+	f_{v,\beta} = \min_{s \geq 0} (g_v(s) - st) + \beta t
+	\end{equation}
+	
+	Since $ t\leq 0$, the minimum value is taken for $s\leq \bar{\beta}$. Therefore, we can replace $g_v(s)$ with $\tilde{g}_v(s)$.
+
+	That is, $f_{v,\beta}(t) = \min_{s \geq 0} (\tilde{g}_v(s) - st) + \beta t \leq \tilde{g}_v(\beta) - \beta t + \beta t = \tilde{g}_v(\beta)$.
+	The special value $f_{v,\beta}(u(b-a)/k)$ can be computed directly from the definition \eqref{eq:f_def}. The solution to $g'(s) = u(b-a)/k$ is $s=0$.
+\end{proof}
 \begin{lemma}\label{lem:large}
 	Suppose $u\beta > \beta^*$. For every $v=(u_1, \dots, u_{k-1})$,
 	there exists a set $\cG_v$ such that $P(\cG_v) = 1-2n^{\tilde{g}_v(\beta)/2}$ and for every $G\in \cG_v$,
@@ -1871,40 +1905,7 @@ Thus Lemma \ref{lem:BijG} follows.
 	From Lemma \ref{lem:g_v_extension}, we know that $\hat{\beta}\leq \frac{\beta^*}{u}$.
 	Therefore, if $\beta > \frac{\beta^*}{u} \geq \hat{\beta}$, $\tilde{g}_v(\beta) < 0$ and our conclusion holds.
 \end{proof}
-\begin{lemma}\label{lem:fbeta_prop}
-	For $ t \in [u\frac{b-a}{k}, 0] $,
-	we have
-	$$
-	P(\sum_{r=1}^{k-1} u_i A_i^r - u A_i^0 \geq t \log n) \leq \exp(\log n (f_{v,\beta}(t) - \beta t - 1) + O(\frac{\log n}{n}))
-	$$.
-	The function $f_{v,\beta}(t)$ satisfies $f_{v, \beta}(t) \leq \tilde{g}_v(\beta)$.
-	When $\beta > \beta^*$, we have $f_{v, \beta}(t) \leq \tilde{g}_v(\beta) < 0$.
-	$f_{v,\beta}(u(b-a)/k) = 1 + \beta u (b-a)/k$.
-\end{lemma}
-\begin{proof}
-	The expectation can be computed as follows:
-	\begin{align*}
-	\mathbb{E}[\exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))] &=\prod_{i=1}^{k-1}\left(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)\right)^{n/k}
-	\left(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta)\right)^{n/k} \\
-	&= \exp(\frac{n}{k} \left[\sum_{i=1}^{k-1}\log(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)) + \log(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta))\right])\\
-	& = \exp(\log n (g_v(\beta) - 1) + O(\frac{\log^2 n}{n}))
-	\end{align*}
-	By Chernoff's Inequality, we have
-	\begin{equation}\label{eq:f_def}
-	f_{v,\beta} = \min_{s \geq 0} (g_v(s) - st) + \beta t
-	\end{equation}
-	
-	Since $ t\leq 0$, the minimum value is taken for $s\leq \bar{\beta}$. Therefore, we can replace $g_v(s)$ with $\tilde{g}_v(s)$ defined
-	as follows:
-	\begin{equation}
-	\tilde{g}_v(s) = \begin{cases}
-	g_v(s) & s < \bar{\beta} \\
-	g_v(\bar{\beta}) & s \geq \bar{\beta}\\
-	\end{cases}
-	\end{equation}
-	That is, $f_{v,\beta}(t) = \min_{s \geq 0} (\tilde{g}_v(s) - st) + \beta t \leq \tilde{g}_v(\beta) - \beta t + \beta t = \tilde{g}_v(\beta)$.
-	The special value $f_{v,\beta}(u(b-a)/k)$ can be computed directly from the definition \eqref{eq:f_def}. The solution to $g'(s) = u(b-a)/k$ is $s=0$.
-\end{proof}
+
 
 \bibliographystyle{plain}
 \bibliography{exportlist}
