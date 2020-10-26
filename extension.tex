@@ -1612,37 +1612,36 @@ conclusion.
 Assume that $\sqrt{a}-\sqrt{b}>\sqrt{k}$. Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$.
 If $0<\beta<\frac{1}{2}\log\frac{a}{b}$, then
 $$
-E \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
-= (1+o(1)) E \Big[   \exp\big(\beta (A^r_i-A^0_i) \big) \Big]
+\mathbb{E} \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+= (1+o(1)) \mathbb{E} \Big[   \exp\big(\beta (A^r_i-A^0_i) \big) \Big]
 = (1+o(1)) n^{g(\beta)-1}  .
 $$
 If $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
 \begin{align*}
-E \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+\mathbb{E} \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
 = O(n^{\tilde{g}(\beta)-1})  .
 \end{align*}
 \end{proposition}
 \begin{proof}
 
-Therefore, we only need to show that
-$E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))n^{g(\beta) - 1}$.
 
 The unconditional expectation result follows from \eqref{eq:gbetaminus1}.
-For the conditional expectation, we follow \eqref{eq:split_tlogn} and use Proposition~\ref{prop:99} to estimate
+For the conditional expectation, first we have
 $\mathbb{E}[\mathbbm{1}[A^r_i - A^0_i = t \log n]|~G\in\cG_1] = P_G(A^r_i - A^0_i = t \log n|~G\in\cG_1) = (1+o(1))P_G(A^r_i - A^0_i = t \log n)$
 by Lemma~\ref{lm:5t}.
 As a consequence,
 \begin{equation}  \label{eq:wf1}
 \begin{aligned}
-E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
+\mathbb{E} \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
 & =  \sum_{t\log n=-n/k}^{-1}
 P_G(A^r_i - A^0_i = t \log n)\exp\big(\beta t \log n \big)  \\
 & \asymp  \frac{1} {\sqrt{\log n}} \sum_{t\log n=-n/k}^{-1}
  \exp( (f_{\beta}(t) -1)\log n ) .
 \end{aligned}
 \end{equation}
-By Lemma~\ref{lm:ele}, $f_{\beta}(t)$ is a concave function and takes maximum at
-$t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}$. 
+By detailed analysis on $f'_{\beta}(t)$ and $f''_{\beta}(t)$,
+we conclude that $f_{\beta}(t)$ is a concave function and takes maximum at
+$t^\ast=\frac{b e^{\beta}-a e^{-\beta}}{k}$.
 $\exp( f_{\beta}(t) \log n)$ varies by a constant factor within a window of length $\Theta(1/\sqrt{\log n})$ around $t^\ast$, and
 then drops off geometrically fast beyond that window. Since $t\log n$ takes $\Theta(\sqrt{\log n})$ integer values when $t$ takes values in such a window, we have
 \begin{equation} \label{eq:wf2}
@@ -1651,25 +1650,23 @@ then drops off geometrically fast beyond that window. Since $t\log n$ takes $\Th
  \asymp \sqrt{\log n}
  \exp( f_{\beta}(t^\ast) \log n ) .
 \end{equation}
-Therefore, if $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}<0$,
+Therefore, if $t^\ast<0$,
 or equivalently $0<\beta<\frac{1}{2}\log\frac{a}{b}$, then
 $$
-E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
+\mathbb{E} \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
 n^{f_{\beta}(t^*)-1} = n^{g(\beta)-1}
 $$
 On the other hand,
-if $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}\ge 0$, or equivalently $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
+if $t^\ast\ge 0$, or equivalently $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
 $f_{\beta}(t)$ takes maximum value at $t=0$.
 $\exp( f_{\beta}(t) \log n)$ varies by a constant factor within a window of length $O(1/\sqrt{\log n})$ around $t=0$, and
 then drops off geometrically fast beyond that window. As a consequence,
 \begin{align*}
-E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
-n^{f_{\beta}(0)-1} = n^{\tilde{g}(\beta)-1}
+\mathbb{E} \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
+O(n^{f_{\beta}(0)-1}) = O(n^{\tilde{g}(\beta)-1})
 \end{align*}
 \end{proof}
-Due to the symmetric property, we have
-$E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = E \Big[\exp\big(\beta (A^r_j-A^0_j) \big) ~\Big|~ G\in\cG_1 \Big]$.
-Therefore, the following corollary follows immediately from Proposition~\ref{prop:df}:
+The following corollary follows immediately from Proposition~\ref{prop:df}:
 \begin{corollary} \label{cr:yy}
 For all $\beta>0$,
 \begin{align}
@@ -1686,22 +1683,22 @@ For all $\beta>0$,
 
 \begin{lemma}  \label{lm:5t}
 Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$.
-Then $P(A^r_i-A^0_i= t\log n~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i= t\log n)$ for all $t<0$ such that $t\log n$ is an integer.
+Then $P_G(A^r_i-A^0_i= t\log n~|~G\in\cG_1)= (1+o(1))P_G(A^r_i-A^0_i= t\log n)$ for all $t<0$ such that $t\log n$ is an integer.
 \end{lemma}
 
 \begin{proof}
 Note that 
 $$
-P(A^r_i-A^0_i= t\log n~|~G\in\cG_1)
-=\frac{P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log n \big)}{P(G\in\cG_1)} .
+P_G(A^r_i-A^0_i= t\log n~|~G\in\cG_1)
+=\frac{P_G \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log n \big)}{P(G\in\cG_1)} .
 $$
-By \eqref{eq:I_1}, we have $P(G\in\cG_1)=1-o(1)$, so
+By \eqref{eq:I_1}, we have $P_G(G\in\cG_1)=1-o(1)$, so
 \begin{align*}
-& P(A^r_i-A^0_i= t\log n~|~G\in\cG_1) \\
-= & (1+o(1)) P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log n \big) \\
-= & (1+o(1)) P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log n \big) P(A^r_i-A^0_i= t\log n) .
+& P_G(A^r_i-A^0_i= t\log n~|~G\in\cG_1) \\
+= & (1+o(1)) P_G \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log n \big) \\
+= & (1+o(1)) P_G \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log n \big) P_G(A^r_i-A^0_i= t\log n)
 \end{align*}
-Therefore, to prove the lemma we only need to show that $P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log n \big)=1-o(1)$. 
+Therefore, to prove the lemma we only need to show that $P_G \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log n \big)=1-o(1)$. 
 
 For $j\in[n]\setminus\{i\}$, define $\xi_{ij}=\xi_{ij}(G):=\mathbbm{1}[\{i,j\}\in E(G)]$ as the indicator function of the edge $\{i,j\}$ connected in graph $G$. We also define 
 $$
@@ -1742,14 +1739,14 @@ Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$. Suppose $i\neq j$, then
 \begin{lemma}\label{lem:BijG}
 	When $\beta < \beta^*$, we have
 \begin{align}
-E \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
-=E \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) \big] 
+\mathbb{E} \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
+=\mathbb{E} \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) \big] 
 \end{align}
 \end{lemma}
 \begin{proof}
 First we have
 \begin{align}
-E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
+\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
 &= \sum_{t=-2\frac{n}{k}}^{-1} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n | G \in \cG_1) \exp(\beta t \log n) \notag \\
 \text{ Corollary \ref{lem:ucBA} implies }&= (1+o(1))\sum_{t=-2\frac{n}{k}}^{-1} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) \exp(\beta t \log n)
 \end{align}
@@ -1757,7 +1754,7 @@ On the other hand, we suppose $X_i \neq X_j$ and we decompose $A^r_j = A'^r_j + 
 $\xi_{ij} \sim Bern(\frac{b\log n}{n})$.
 Then we have
 \begin{align*}
-E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = E[\exp(2\beta \xi_{ij})] E[\exp(\beta (A'^r_i - A^0_i)]
+\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = E[\exp(2\beta \xi_{ij})] E[\exp(\beta (A'^r_i - A^0_i)]
 E[\exp(\beta (A'^r_j - A^0_j)] \\
 & = (1+o(1))E[\exp(\beta(A'^r_i - A^0_i))] E[\exp(\beta(A'^r_j - A^0_j))]
 \end{align*}
@@ -1767,7 +1764,7 @@ E[\exp(\beta(A^r_i - A^0_i))] = (1+o(1)) \sum_{t=-n/k}^{-1} P(A^r_i - A^0_i = t 
 $$
 we have
 \begin{align*}
-E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = (1+o(1))
+\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = (1+o(1))
 \sum_{t_1=-n/k}^{0} P(A'^r_i - A^0_i = t_1 \log n)E[\exp(\beta t_1 \log n)] \\
 & \cdot
 \sum_{t_2=-n/k}^{-1} P(A'^r_j - A^0_j = t_2 \log n)E[\exp(\beta t_2 \log n)] \\
@@ -1790,7 +1787,7 @@ $$
 $$
 Therefore,
 $$
-E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] = (1+o(1))\sum_{t=-2\frac{n}{k}}^{-1} E[\exp(\beta t \log n)]
+\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] = (1+o(1))\sum_{t=-2\frac{n}{k}}^{-1} E[\exp(\beta t \log n)]
 P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) 
 $$
 Thus Lemma \ref{lem:BijG} follows. 
