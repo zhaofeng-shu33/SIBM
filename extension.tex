@@ -1801,7 +1801,6 @@ Thus Lemma \ref{lem:BijG} follows.
 
 
 \section{Auxiliary lemmas used in Section~\ref{sect:direct}}\label{ap:6}
-
 \begin{lemma}\label{lem:g_v_extension}
 	Given a $k-1$ length vector $v=(u_1, \dots, u_{k-1})$, where $u_i$ is a non-negative integer.
 	Let $u=\sum_{i=1}^{k-1} u_i$, $\sqrt{a} - \sqrt{b} > \sqrt{k}$.
@@ -1842,6 +1841,9 @@ Thus Lemma \ref{lem:BijG} follows.
 	Therefore, we have proven that $g_v(\beta') \leq 0$. Since $g_v(\beta)$
 	is a decreasing function in $[0, \bar{\beta}]$, it follows that
 	$\hat{\beta} \leq \beta' = \frac{\beta^*}{u}$.
+	
+	To show $g(\bar{\beta}) < 0$, we only need to show $g'_v(\beta') < 0$.
+	We have $g'_v(\beta') = \frac{1}{k} \sum_{i=1}^{k-1} u_i(b\exp(\frac{u_i}{u}\beta^*) - a\exp(\beta^*)) < 0$
 \end{proof}
 \begin{remark}
 	The function $g_v(\beta)$ reduces to $g(\beta)$ (defined in \eqref{eq:gbeta}) if we choose $v=(1,0,\dots, 0)$.
@@ -1856,11 +1858,15 @@ Thus Lemma \ref{lem:BijG} follows.
 \begin{lemma}\label{lem:fbeta_prop}
 	For $ t \in [u\frac{b-a}{k}, 0] $,
 	we have
-	\begin{equation}
+	\begin{equation}\label{eq:uAr}
 	P(\sum_{r=1}^{k-1} u_i A_i^r - u A_i^0 \geq t \log n) \leq \exp \Big(
-	\log n (f_{v,\beta}(t) - \beta t - 1) + O(\frac{\log n}{n})\Big)
+	\log n (f_{v,\beta}(t) - \beta t - 1) + O(\frac{\log^2 n}{n})\Big)
 	\end{equation}
-	The function $f_{v,\beta}(t)$ satisfies $f_{v, \beta}(t) \leq \tilde{g}_v(\beta)$.
+	The function $f_{v,\beta}(t)$ is defined by
+	\begin{equation}\label{eq:f_def}
+	f_{v,\beta}(t) = \min_{s \geq 0} (g_v(s) - st) + \beta t
+	\end{equation}
+	which satisfies $f_{v, \beta}(t) \leq \tilde{g}_v(\beta)$.
 	When $\beta > \beta^*$, we have $f_{v, \beta}(t) \leq \tilde{g}_v(\beta) < 0$.
 	$f_{v,\beta}(u(b-a)/k) = 1 + \beta u (b-a)/k$.
 \end{lemma}
@@ -1873,15 +1879,21 @@ Thus Lemma \ref{lem:BijG} follows.
 	& = \exp(\log n (g_v(\beta) - 1) + O(\frac{\log^2 n}{n}))
 	\end{align*}
 	By Chernoff inequality, we have
-	\begin{equation}\label{eq:f_def}
-	f_{v,\beta} = \min_{s \geq 0} (g_v(s) - st) + \beta t
+	\begin{equation}
+	P(\sum_{r=1}^{k-1} u_i A_i^r - u A_i^0 \geq t \log n) \leq \frac{\mathbb{E}[\exp(s(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))]}
+	{\exp(st \log n)} = \exp(\log n (g_v(s) - st -1) + O(\frac{\log^2 n}{n}))
 	\end{equation}
+	Therefore, \eqref{eq:uAr} holds.
 	
 	Since $ t\leq 0$, the minimum value is taken for $s\leq \bar{\beta}$. Therefore, we can replace $g_v(s)$ with $\tilde{g}_v(s)$.
 
 	That is, $f_{v,\beta}(t) = \min_{s \geq 0} (\tilde{g}_v(s) - st) + \beta t \leq \tilde{g}_v(\beta) - \beta t + \beta t = \tilde{g}_v(\beta)$.
-	The special value $f_{v,\beta}(u(b-a)/k)$ can be computed directly from the definition \eqref{eq:f_def}. The solution to $g'(s) = u(b-a)/k$ is $s=0$.
+	The special value $f_{v,\beta}(u(b-a)/k)$ can be computed directly from the definition \eqref{eq:f_def}. The solution to $g'_v(s) = u(b-a)/k$ is $s=0$
+	and the solution is unique from the monotonic property of $g_v(s)$ in $[0,\bar{\beta}]$.
 \end{proof}
+\begin{remark}
+	When $v=(1,0,\dots, 0)$, Lemma \ref{lem:fbeta_prop} reduces to Lemma \ref{lem:fb}.
+\end{remark}
 \begin{lemma}\label{lem:large}
 	Suppose $u\beta > \beta^*$. For every $v=(u_1, \dots, u_{k-1})$,
 	there exists a set $\cG_v$ such that $P(\cG_v) = 1-2n^{\tilde{g}_v(\beta)/2}$ and for every $G\in \cG_v$,
