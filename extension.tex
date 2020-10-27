@@ -1210,29 +1210,63 @@ P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall
 	\begin{equation}\label{eq:conditionDist}
 	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ D(\sigma, X) ) = 1-o(1) .
 	\end{equation}
-	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG'$ such that
-	
-	\noindent (i)
-	$P(G\in\cG') \ge 1- O(n^{-4})$.
-	
-	\noindent (ii) For every $G\in\cG'$, 
-	\begin{equation}  \label{eq:hs}
-	P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ D(\sigma, X) \big) 
-	=1- O(n^{-4}) ,
-	\end{equation}
+	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43}, \ref{prop:con} implies that there is an integer $z>0$ and a set $\cG'$ such that
+	\begin{enumerate}[label=\arabic*)]
+		\item $P(G\in\cG') \ge 1- O(n^{-4})$
+		\item For every $G\in\cG'$, 
+		\begin{equation}  \label{eq:hs}
+			P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)
+			\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ D(\sigma, X) \big) 
+			=1- O(n^{-4})
+		\end{equation}
+		\item For every $G\in\cG'$, $\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big)
+		=(1+o(1)) n^{g(\beta)}$
+	\end{enumerate}
 
-	We now define 
+
+	If we can show that
+	\begin{equation}\label{eq:distTheta}
+	P_{\sigma | G}(\dist(\sigma, X) = \Theta(n^{g(\beta)})
+	| \sigma \in  \Lambda(G, z)
+	\text{~and~} \dist(\sigma, X) \le n^\theta) = 1 - o(1)
+	\end{equation}
+	Then
+	\begin{align*}
+	&P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ D(\sigma, X) )  = o(1)
+	+ \sum_{G \in \cG'} P_G(G) P_{\sigma | G}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) | D(\sigma, X)) \\
+	& =o(1)
+	+ \sum_{G \in \cG'} P_G(G) P_{\sigma | G}(\dist(\sigma, X) = \Theta(n^{g(\beta)}),\sigma \in  \Lambda(G, z),
+	\dist(\sigma, X) \le n^\theta | D(\sigma, X)) \\
+	& = o(1)
+	+ \sum_{G \in \cG'} P_G(G) P_{\sigma | G}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) | \sigma \in  \Lambda(G, z),
+	\dist(\sigma, X) \le n^\theta) P(\sigma \in  \Lambda(G, z),
+	\dist(\sigma, X) \le n^\theta | D(\sigma, X)) \\
+	&= 1 - o(1)
+	\end{align*}
+	To establish \eqref{eq:distTheta}, we now define 
 	$\phi_i := \mathbbm{1}[\sigma_i \neq X_i]$ for $i\in[n]$, and
 	we want to estimate $\dist(\sigma, X)=\sum_{i=1}^n \phi_i$.
-	We define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
-	\begin{enumerate}[label=\arabic*)]
-		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. $\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-		\item Conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $P(\underline{S}_i=1)=\underline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$. The constants $\bar{C}$ and $\underline{C}$ are defined in \eqref{eq:qke}.
+	From \eqref{eq:qke} we have
+	\begin{equation}
+	\underline{C}\sum_{r=1}^{k-1}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
+	P_{\sigma|G}(\phi_i = 1 | \phi_j = \bar{\phi}_j \,\forall j \neq i )
+	\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(\beta (A^r_i-A^0_i ) \Big) 
+	\end{equation}
+	where $ \bar{\phi} \in D(\phi)$ and event $D(\phi)$ is defined as
+	$$
+	D(\phi): = \{\phi \in \{0, 1\}^n, \sum_{i=1}^n \bar{\phi}_i \leq n^{\theta},
+	\sum_{j\in N_i(G)}\phi_j < z \,\forall j \in [n] \}
+	$$
+	
+	We define Bernoulli random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
+	\begin{enumerate}[label=(\roman*)]
+		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $D(\phi)$.
+		$\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given $D(\phi)$.
+		\item $P(\underline{S}_i=1 | D(\phi)) =\underline{C}
+		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1 | D(\phi)) =\overline{C}
+		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$.
 	\end{enumerate}
-	By property 2), conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, we have
+	By property (ii), conditioning on $D(\phi)$, we have
 	\begin{align*}
 	& \mathbb{E}[\underline{S}_1 + \dots + \underline{S}_n] = \underline{C}
 	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) , \quad
@@ -1245,7 +1279,8 @@ P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall
 	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) ,
 	\end{align*}
 	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
-	By Proposition~\ref{prop:con}, for all $G\in\cG'\cap\cG_1$, we have 
+	From property 3), $G\in\cG'$, $\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) = (1+o(1))n^{g(\beta)}$,
+	we have 
 	\begin{align*}
 	& \mathbb{E}[\underline{S}_1 + \dots + \underline{S}_n] = \Theta(n^{g(\beta)}) , \quad
 	\Var(\underline{S}_1 + \dots + \underline{S}_n) = O(n^{g(\beta)}) , \\
@@ -1253,7 +1288,9 @@ P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall
 	\Var(\overline{S}_1 + \dots + \overline{S}_n) = O(n^{g(\beta)}) 
 	\end{align*}
 	Since $g(\beta)\ge 0$ for all $0<\beta\le \beta^\ast$, by Chebyshev's inequality we know that both $\underline{S}_1 + \dots + \underline{S}_n=\Theta(n^{g(\beta)})$ and $\overline{S}_1 + \dots + \overline{S}_n=\Theta(n^{g(\beta)})$ with probability $1-o(1)$.
-	From \eqref{eq:qke} and Lemma 5 of \cite{ye2020exact}, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG'\cap\cG_1$, $P_{\sigma | G}(\dist(\sigma,X)=\Theta(n^{g(\beta)}) | D(\sigma, X)) = 1-o(1)$. Finally, \eqref{eq:conditionDist} follows from $P_G(\cG'\cap\cG_1)=1-o(1)$.
+	From \eqref{eq:qke} and Lemma 5 of \cite{ye2020exact}, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on
+	$D(\phi)$.
+	Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG'\cap\cG_1$, $P_{\sigma | G}(\dist(\sigma,X)=\Theta(n^{g(\beta)}) | D(\sigma, X)) = 1-o(1)$. Finally, \eqref{eq:conditionDist} follows from $P_G(\cG'\cap\cG_1)=1-o(1)$.
 	
 \end{proof}
 For $0<\beta<\beta^\ast$, we have $g(\beta)>0$, so Theorem~\ref{thm:dist} immediately implies that $P_{\SIBM}(\sigma \in S_k(X))=o(1)$. However, when $\beta=\beta^\ast$, we have $g(\beta^\ast)=0$. In this case, Theorem~\ref{thm:dist} tells us that
@@ -1747,35 +1784,37 @@ Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$. Suppose $i\neq j$, then
 First we have
 \begin{align}
 \mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
-&= \sum_{t=-2\frac{n}{k}}^{-1} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n | G \in \cG_1) \exp(\beta t \log n) \notag \\
-\text{ Corollary \ref{lem:ucBA} implies }&= (1+o(1))\sum_{t=-2\frac{n}{k}}^{-1} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) \exp(\beta t \log n)
+&= \sum_{t \log n = -2\frac{n}{k} }^{-2} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n | G \in \cG_1) \exp(\beta t \log n) \notag \\
+% since $A^r_i - A^0_i < 0$ and $A^r_j - A^0_j$
+\text{ Corollary \ref{lem:ucBA} implies } &= (1+o(1))
+\sum_{t \log n = -2\frac{n}{k}}^{-2} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) \exp(\beta t \log n)
 \end{align}
-On the other hand, we suppose $X_i \neq X_j$ and we decompose $A^r_j = A'^r_j + \xi_{ij}, A^r_i = A'^r_i + \xi_{ij}$ where $\xi_{ij}$ is an indicator function of $\{i,j\} \in E(G)$. Then $A'^r_j, A'^r_i, A^r_j, A^r_i, \xi_{ij}$ are independent.
-$\xi_{ij} \sim Bern(\frac{b\log n}{n})$.
+On the other hand, we suppose $X_i \neq X_j$ and we decompose $A^r_j = A'^r_j + \xi_{ij}, A^r_i = A'^r_i + \xi_{ij}$ where $\xi_{ij}$ is an indicator function of $\{i,j\} \in E(G)$. Then $A'^r_j, A'^r_i, A^r_j, A^r_i, \xi_{ij}$ are independent, and
+$\xi_{ij}$ follows $\textrm{Bernoulli}(\frac{b\log n}{n})$.
 Then we have
 \begin{align*}
-\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = E[\exp(2\beta \xi_{ij})] E[\exp(\beta (A'^r_i - A^0_i)]
-E[\exp(\beta (A'^r_j - A^0_j)] \\
-& = (1+o(1))E[\exp(\beta(A'^r_i - A^0_i))] E[\exp(\beta(A'^r_j - A^0_j))]
+\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = \mathbb{E}[\exp(2\beta \xi_{ij})] \mathbb{E}[\exp(\beta (A'^r_i - A^0_i)]
+\mathbb{E}[\exp(\beta (A'^r_j - A^0_j)] \\
+& = (1+o(1))\mathbb{E}[\exp(\beta(A'^r_i - A^0_i))] \mathbb{E}[\exp(\beta(A'^r_j - A^0_j))]
 \end{align*}
 From Proposition \ref{prop:df} we have
 $$
-E[\exp(\beta(A^r_i - A^0_i))] = (1+o(1)) \sum_{t=-n/k}^{-1} P(A^r_i - A^0_i = t \log n)E[\exp(\beta t \log n)]
+\mathbb{E}[\exp(\beta(A'^r_i - A^0_i))] = (1+o(1)) \sum_{t \log n = -\frac{n}{k}}^{-1} P(A'^r_i - A^0_i = t \log n)\mathbb{E}[\exp(\beta t \log n)]
 $$
 we have
 \begin{align*}
 \mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = (1+o(1))
-\sum_{t_1=-n/k}^{0} P(A'^r_i - A^0_i = t_1 \log n)E[\exp(\beta t_1 \log n)] \\
+\sum_{t_1 \log n =-\frac{n}{k} }^{-1} P(A'^r_i - A^0_i = t_1 \log n)\mathbb{E}[\exp(\beta t_1 \log n)] \\
 & \cdot
-\sum_{t_2=-n/k}^{-1} P(A'^r_j - A^0_j = t_2 \log n)E[\exp(\beta t_2 \log n)] \\
-& = (1+o(1))  \sum_{t=-2\frac{n}{k}}^{-1} E[\exp(\beta t \log n)]\\
+\sum_{t_2 \log n=-\frac{n}{k}  }^{-1} P(A'^r_j - A^0_j = t_2 \log n)\mathbb{E}[\exp(\beta t_2 \log n)] \\
+& = (1+o(1))  \sum_{t \log n = -2\frac{n}{k}  }^{-2} \mathbb{E}[\exp(\beta t \log n)]\\
 & \cdot \sum_{\substack{t_1 + t_2 = t \\ t_1 < 0, t_2 < 0}}
 P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2\log n)
 \end{align*}
 Since 
 \begin{align*}
 P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n)
-&= \sum_{\substack{t_1 + t_2 + t_3 = t\\ t_3 \in\{0, 1\}}} P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2 \log n) P(2\xi_{ij} = t_3 \log n) \\
+&= \sum_{\substack{t_1 + t_2 + t_3 = t\\ t_3 \in\{0, 2\}}} P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2 \log n) P(2\xi_{ij} = t_3 \log n) \\
 &=(1+o(1)) \sum_{t_1 + t_2 = t} P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2 \log n)  \\
 \end{align*}
 From  Proposition \ref{prop:99}, $P(A'^r_i - A^r_i = t_1 \log n) \asymp \frac{1}{\sqrt{\log n}}\exp(f_{\beta}(t) - \beta t -1)$.
@@ -1787,7 +1826,7 @@ $$
 $$
 Therefore,
 $$
-\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] = (1+o(1))\sum_{t=-2\frac{n}{k}}^{-1} E[\exp(\beta t \log n)]
+\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] = (1+o(1))\sum_{t=-2\frac{n}{k}}^{-2} \mathbb{E}[\exp(\beta t \log n)]
 P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) 
 $$
 Thus Lemma \ref{lem:BijG} follows. 
