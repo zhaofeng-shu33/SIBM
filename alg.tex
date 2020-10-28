@@ -100,14 +100,15 @@
 	 \end{cases}
 	 $$
 	 Then the energy difference:
-	 \begin{align*}
+	 \begin{align}
 	 H(\bar{\sigma}') - H(\bar{\sigma}) &= 2[\sum_{j\in N_i(G)}\bar{\sigma}_i \cdot \bar{\sigma}_j - \frac{\alpha \log n}{\beta n}
-	 \sum_{\substack{j\not\in N_i(G) \\ j\neq i}} \bar{\sigma}_i \cdot \bar{\sigma}_j ] \\
+	 \sum_{\substack{j\not\in N_i(G) \\ j\neq i}} \bar{\sigma}_i \cdot \bar{\sigma}_j ] \notag\\
 	 & = 2 [\sum_{j\in N_i(G)}(1+\frac{\alpha \log n}{\beta n})\bar{\sigma}_i \cdot \bar{\sigma}_j - \frac{\alpha \log n}{\beta n}
-	 \sum_{j\neq i} \bar{\sigma}_i \cdot \bar{\sigma}_j ] 
-	 \end{align*}
+	 \sum_{j\neq i} \bar{\sigma}_i \cdot \bar{\sigma}_j ] \label{eq:energy_diff}
+	 \end{align}
 	 We use the conclusion that there are $\frac{n}{2} \bar{\sigma}_i$ takes value $1$ and $\frac{n}{2}\bar{\sigma}_i$ with value
 	 $-1$. Therefore, $\sum_{j\neq i} \bar{\sigma}_i \cdot\bar{\sigma}_j = -1$.
+	 
 	 On the other hand:
 	 $$
 	 \frac{P_{\sigma | G}(\sigma = \bar{\sigma'})}{P_{\sigma | G}(\sigma = \bar{\sigma})}
@@ -118,6 +119,13 @@
 	 \frac{P_{\sigma |G }(\sigma = X^{(\sim i)})}{P_{\sigma |G }(\sigma = X)}
 	 = \exp(2(\beta + \frac{\alpha \log n}{n})(B_i - A_i)-\frac{2\alpha \log n}{n})
 	 $$
+	 For general cases, we consider sparse graph such that there are $O(\log n)$ neighbors for each node.
+	 Also suppose that we store  attribute $m(\bar{\sigma})= |\{j \in [n], \bar{\sigma}_j = 1 \}|$.
+	 Then \eqref{eq:energy_diff} reduces to:
+	 \begin{equation}
+	 H(\bar{\sigma}') - H(\bar{\sigma}) = 2 [\bar{\sigma}_i(1+\frac{\alpha \log n}{\beta n}) \sum_{j\in N_i(G)}\bar{\sigma}_j - \frac{\alpha \log n}{\beta n}
+	 (\bar{\sigma}_i (2m-n)-1) ]
+	 \end{equation}
 	\end{remark}
 	The pseudo code of our algorithm is summarized in \ref{alg:m}. This algorithm requires the number of the communities $k$ to be known and the weight parameter $\frac{\alpha}{\beta}$ is given. We use the annealing techniques (cooling temperature) to increase $\beta$ at each outer loop, thus guarantee that $\beta > \beta^*$
 	if $\epsilon \in (0, 1)$ and $N$ are large. 
