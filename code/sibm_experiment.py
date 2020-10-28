@@ -20,49 +20,31 @@ class SIBM2:
         self.k = k
         for node_state in range(k):
             for i in range(self.n // k):
-                self.sigma[nodes[i * k + node_state]] = node_state
-        self.m = self.n / 2
+                self.sigma[nodes[i * k + node_state]] = 2 * node_state - 1
+        # node state is +1 or -1
+        self.m = self.n / 2 # number of +1
         self.mixed_param = self._alpha_divide_beta * np.log(self.n)
         self.mixed_param /= self.n
-    def _get_Js(self, sigma_i, sigma_j, w_s):
-        if sigma_i == sigma_j:
-            return 1
-        elif (w_s + sigma_i) % self.k == sigma_j:
-            return -1
-        else:
-            return 0
-    def get_dH(self, trial_location, w_s):
+    def get_dH(self, trial_location):
         _sum = 0
-        for i in range(self.n):
-            if self.G.has_edge(trial_location, i):
-                _sum += self._get_Js(self.sigma[trial_location], self.sigma[i], w_s)
-            elif trial_location != i:
-                _sum -= self.mixed_param * self._get_Js(self.sigma[trial_location], self.sigma[i], w_s)
+        w_s = self.sigma[trial_location]
+        for i in self.G[trial_location]:
+                _sum += self.sigma[i]
+        _sum *= w_s * (1 + self.mixed_param)
+        _sum -= self.mixed_param * (w_s * (2 * self.m - self.n)- 1)
         return _sum
-    def _get_Hamiltonian(self):
-        H_value = 0
-        for i in range(self.n):
-            for j in range(i + 1, self.n):
-                if self.sigma[i] != self.sigma[j]:
-                    continue
-                if self.G.has_edge(i, j):
-                    H_value -= 1
-                else:
-                    H_value += self.mixed_param
-        return H_value
     def _metropolis_single(self):
         # randomly select one position to inspect
         r = random.randint(0, self.n - 1)
-        # randomly select one new flipping state to inspect
-        w_s = random.randint(1, self.k - 1)
-        delta_H = self.get_dH(r, w_s)
+        delta_H = self.get_dH(r)
         if delta_H < 0:  # lower energy: flip for sure
-            self.sigma[r] = (w_s + self.sigma[r]) % self.k
+            self.sigma[r] *= -1
+            self.m += self.sigma[r]
         else:  # Higher energy: flip sometimes
             probability = np.exp(-1.0 * self._beta * delta_H)
             if np.random.rand() < probability:
-                self.sigma[r] = (w_s + self.sigma[r]) % self.k
-
+                self.sigma[r] *= -1
+                self.m += self.sigma[r]
     def metropolis(self, N=40):
         # iterate given rounds
         for _ in range(N):
@@ -75,7 +57,7 @@ if __name__ == "__main__":
     parser.add_argument('--a', type=float, default=16.0)
     parser.add_argument('--b', type=float, default=4.0)
     parser.add_argument('--n', type=int, default=300)
-    parser.add_argument('--k', type=int, default=2)
+    # parser.add_argument('--k', type=int, default=2)
     parser.add_argument('--alpha', type=float, default=8.0)
     parser.add_argument('--beta', type=float, default=1.0)
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
@@ -83,11 +65,11 @@ if __name__ == "__main__":
     parser.add_argument('--max_iter', type=int, default=100)
     args = parser.parse_args()
     averaged_acc = 0
+    k = 2
     for i in range(args.repeat):
-        G = sbm_graph(args.n, args.k, args.a, args.b)    
+        G = sbm_graph(args.n, k, args.a, args.b)    
         gt = get_ground_truth(G)
-        sibm = SIBM(G, args.k, estimate_a_b_indicator=False,
-                    _alpha=args.alpha, _beta=args.beta)
+        sibm = SIBM2(G, args.alpha, args.beta)
         sibm.metropolis(N=args.max_iter) # burn-in period
         averaged_inner_acc = 0
         for i in range(args.inner_repeat):
