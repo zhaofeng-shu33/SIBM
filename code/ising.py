@@ -121,14 +121,16 @@ class SIBM:
     def metropolis(self, N=40):
         # iterate given rounds
         for _ in range(N):
-            for r in range(self.n):
+            for _ in range(self.n):
+                # randomly select one position to inspect
+                r = random.randint(0, self.n - 1)
                 # randomly select one new flipping state to inspect
                 w_s = random.randint(1, self.k - 1)
                 delta_H = self.get_dH(r, w_s)
                 if delta_H < 0:  # lower energy: flip for sure
                     self.sigma[r] = (w_s + self.sigma[r]) % self.k
                 else:  # Higher energy: flip sometimes
-                    probability = np.exp(- self._beta * delta_H)
+                    probability = np.exp(-1.0 * self._beta * delta_H)
                     if np.random.rand() < probability:
                         self.sigma[r] = (w_s + self.sigma[r]) % self.k
             self._beta *= (1 + self.epsilon)
