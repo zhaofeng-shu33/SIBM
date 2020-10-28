@@ -21,7 +21,7 @@ if __name__ == "__main__":
         sibm = SIBM(G, args.k, estimate_a_b_indicator=False,
                     _alpha=args.alpha, _beta=args.beta)
         results = sibm.metropolis(N=args.max_iter)
-        acc =compare(gt, results)
+        acc = compare(gt, results)
         acc = int(acc) # for exact recovery
         averaged_acc += acc
     averaged_acc /= args.repeat
