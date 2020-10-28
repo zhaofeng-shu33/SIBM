@@ -57,7 +57,8 @@ def _estimate_a_b(graph):
     return (a, b)
 
 class SIBM:
-    def __init__(self, graph, k=2, estimate_a_b_indicator=True, epsilon=0.0):
+    def __init__(self, graph, k=2, estimate_a_b_indicator=True, epsilon=0.0,
+        _alpha=None, _beta=None):
         self.G = graph
         self.k = k
         self.epsilon = 0
@@ -77,6 +78,10 @@ class SIBM:
         else:
             self._beta = 1.2
             self._alpha_divide_beta = 13
+        if _beta != None:
+            self._beta = _beta
+        if _alpha != None:
+            self._alpha_divide_beta = _alpha / self._beta
         self.n = len(self.G.nodes)
         # randomly initiate a configuration
         self.sigma = [1 for i in range(self.n)]
