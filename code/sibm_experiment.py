@@ -71,13 +71,17 @@ if __name__ == "__main__":
         gt = get_ground_truth(G)
         sibm = SIBM2(G, args.alpha, args.beta)
         sibm.metropolis(N=args.max_iter) # burn-in period
-        averaged_inner_acc = 0
-        for i in range(args.inner_repeat):
-            sibm._metropolis_single()
-            inner_acc = compare(gt, sibm.sigma)
-            inner_acc = int(inner_acc) # for exact recovery
-            averaged_inner_acc += inner_acc
-        averaged_inner_acc /= args.inner_repeat
+        total_acc = 0
+        for j in range(1000):
+            averaged_inner_acc = 0
+            for i in range(args.inner_repeat):
+                sibm._metropolis_single()
+                inner_acc = compare(gt, sibm.sigma)
+                inner_acc = int(inner_acc) # for exact recovery
+                averaged_inner_acc += inner_acc
+            averaged_inner_acc /= args.inner_repeat
+            total_acc = (j * total_acc + averaged_inner_acc) / (j + 1)
+            print(total_acc)
         averaged_acc += averaged_inner_acc
     averaged_acc /= args.repeat
     print(averaged_acc)
