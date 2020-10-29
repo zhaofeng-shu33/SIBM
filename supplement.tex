@@ -501,6 +501,42 @@ Similarly, if $(m-u)\beta < \beta^*$, then $P_{\SIBM}(T_- \geq 1) = 1-o(1)$.
 	For all $G \in \cG \cap \cG'$, we have $P_{\sigma | G}(T_+ \geq 1) \geq (1+o(1)) \frac{Cn^{g(\beta)}}{2 + C n^{g(\beta)}}$.
 	Similar to Lemma \ref{lem:dist_sigma} we can show the conclusion that $P_{\SIBM}(T_+ \geq 1) = 1-o(1)$.
 \end{proof}
+\section{SIBM for modularity maximization}
+We define two-state Ising model by $P_{\sigma | G}(\sigma=\bar{\sigma}) = \frac{1}{Z_{\beta}}(-\beta H(\bar{\sigma}))$
+where $H(\bar{\sigma})$ is the Hamiltonian energy and $\beta$ is the inverse of the temperature ($\beta>0$).
+The Hamiltonian energy is defined by the modularity:
+\begin{equation}
+H(\bar{\sigma}) = - \sum_{\{i,j\} \in E(G) } (1-\frac{d_id_j}{2|E|} )\bar{\sigma}_i \cdot \bar{\sigma}_i + \sum_{\{i,j\} \not\in E(G) }\frac{d_id_j}{2|E|}  \bar{\sigma}_i \cdot \bar{\sigma}_i
+\end{equation}
+where $d_i$ is the degree of the $i-$ node and $2|E|=\sum_{i=1}^n d_i$.
+
+The limit of the coefficient is $(1-\frac{d_id_j}{2|E|} ) \to 1$ and $\frac{d_id_j}{2|E|} \to \frac{\log n}{n} \frac{a+b}{2}$, which satisfies
+$\frac{\alpha}{\beta}  = \frac{a+b}{2} > b$. We are more interested in the case when the coefficient does not take the limit value.
+For this model we have only one parameter $\beta$, and we expect that similar phase transition phenomenon occurs for a critical value of $\beta^*$.
+
+Similar to the analysis in III-A of \cite{ye2020exact}, the critical value can be empirically computed by comparing
+$\frac{P_{\sigma | G}(\sigma = X^{(\sim i)})}{P_{\sigma |G}(\sigma = X)}$ with $\frac{1}{n}$.
+
+First we consider when $\bar{\sigma}'$ only flips from $\bar{\sigma}$ at position $s$, then
+$\frac{P_{\sigma | G}(\bar{\sigma}')}{P_{\sigma |G}(\bar{\sigma})} = \exp(-\beta(H(\bar{\sigma}')-H(\bar{\sigma})))$
+where
+\begin{align*}
+H(\bar{\sigma}')-H(\bar{\sigma}) &= 2\sum_{j\in N_s(G)} \bar{\sigma}_s \bar{\sigma}_j - 2\sum_{j\neq s}\frac{d_jd_s}{2|E|} \bar{\sigma}_s \bar{\sigma}_j  \\
+&=2(A_s - B_i) + \frac{d_s^2}{|E|} - \frac{d_s\bar{\sigma}_s}{|E|}\sum_{j=1}^n d_j \bar{\sigma}_j
+\end{align*}
+We claim that $\frac{P_{\sigma | G}(\bar{\sigma}')}{P_{\sigma |G}(\bar{\sigma})} =(1+o(1))\exp(2\beta(B_i - A_i))$
+by showing that as $n\to \infty$ with probability $1-o(1)$ both 
+\begin{align}
+\frac{d_s^2}{|E|} &= o(1) \label{eq:dsE}\\
+\frac{d_s\bar{\sigma}_s}{|E|}\sum_{j=1}^n d_j \bar{\sigma}_j  &= o(1) \label{eq:sumds}
+\end{align}
+For \eqref{eq:dsE}, it decreases in $O(\frac{\log n}{n})$ and for 
+\eqref{eq:sumds} we first show that
+$\sum_{j=1}^n d_j \bar{\sigma}_j  = \sum_{X_i=X_j=1} z_{ij} - \sum_{X_i=X_j=-1} z_{ij}$.
+All $z_{ij} \sim Bern(\frac{a\log n}{n})$. Therefore,
+$\Var[\frac{1}{n}\sum_{j=1}^n d_j \bar{\sigma}_j] = O(\Var[z_{ij}]) = O(\frac{ \log n}{n})$.
+We also have $\frac{d_s \bar{\sigma}_s n}{|E|}$ converges to a constant value.
+Therefore, the asymptotic phase transition critical point is the same with the original SIBM model.
 \begin{thebibliography}{1}
 	
 

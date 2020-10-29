@@ -53,7 +53,9 @@ Let $n$ be a positive even integer, $W= \{1, \omega, \dots, \omega^{k-1}\}$ is a
 (ii) the vertices $i$ and $j$ in $G$ are connected with probability $p$ if $X_i=X_j$ and with probability $q$ if $X_i \neq X_j$, independently of other pairs of vertices.
 \end{definition}
  
-	From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x)), \forall f \in S_k$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $S_k(X)$.
+	From the symmetric property of SBM, the conditional distribution $P_G(G|X=x) = P_G(G|X=f(x)), \forall f \in S_k$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $S_k(X)$. On the other hand, since $X$ is uniformly distributed, MAP estimator of $X$ is equivalent with
+	ML estimator of $X$. Therefore, we can assume there is a ground truth
+	$X$ and write $P_G(G)$ briefly.
 
 In this paper, we focus on the regime of $p=a\log n/n$ and $q=b\log n/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ \cite{abbe2015community}.
 
@@ -91,9 +93,10 @@ Let $n$ and $m$ be positive integers such that $n$ is even. Let $p,q\in[0,1]$ be
 (ii) for every $i\in[m]$, each sample $\sigma^{(i)}=(\sigma_1^{(i)},\dots,\sigma_n^{(i)}) \in W^n$ is drawn independently according to the distribution \eqref{eq:isingma}.
 \end{definition}
 
-Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently from the Ising model on the {\em same} graph $G$.
+Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently
+from the Ising model on the {\em same} graph $G$.
 Our objective is to recover the underlying partition (or the ground truth) $X$ from the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$, and we would like to use the smallest possible number of samples to guarantee the exact recovery of $X$ up to a global permutation.
-Below we use the notation $P_{\SIBM}(A):=E_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $E_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the marginal distribution of $\sigma$.
+Below we use the notation $P_{\SIBM}(A):=\mathbb{E}_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $\mathbb{E}_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the marginal distribution of $\sigma$.
 By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f \in S_k$.
 
 \begin{definition}[Exact recovery in SIBM]
@@ -1166,11 +1169,11 @@ In the following lemma, we consider the conditional probability for $\sigma_i$:
 	Let $\cG = \{ -\kappa \log n\leq A_i^r - A_i^0 \leq 0,\forall i \in[n] \}$, from \eqref{eq:I_1} $P_G(\cG) = 1-o(1)$.
 	For any $G\in \cG$,
 	Since the numerator is much smaller than the denominator, we can find $\underline{C}, \bar{C}$ such that
-	$$
+	\begin{equation}\label{eq:swX}
 	\frac{\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) }{1 + \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) } \le 
 	P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
 	\le \frac{\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big) }{1 + \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big) } 
-	$$
+	\end{equation}
 	Choosing $\underline{C}(n)=\frac{\exp(-\kappa \log^2 n/n)}{1+\exp(2z(\beta+\frac{\alpha \log n}{n}))}$ and $\bar{C}(n)=\exp(2z(\beta+\frac{\alpha \log n}{n}))$
 	we have
 	$$
@@ -1180,11 +1183,11 @@ P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall
 	$$
 	Further choosing $\underline{C}=\frac{\exp(-\kappa)}{1+\exp(2z(\beta+1))} \leq \underline{C}(n)$ and $\overline{C}=\exp(2z(\beta+1)) \geq \underline{C}(n)$,
 	which are constants that are independent of $n$.
-	$$
+	\begin{equation}\label{eq:single_sigma}
 	\underline{C}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
 	P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
 	\leq \bar{C} \exp\Big(\beta (A^r_i-A^0_i ) \Big) 
-	$$	
+	\end{equation}
 	Summing over $r=1, \dots k-1$ we can get
 	\begin{equation} \label{eq:qke}
 	\underline{C}\sum_{r=1}^{k-1}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
@@ -1210,17 +1213,21 @@ P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall
 	\begin{equation}\label{eq:conditionDist}
 	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ D(\sigma, X) ) = 1-o(1) .
 	\end{equation}
-	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43}, \ref{prop:con} implies that there is an integer $z>0$ and a set $\cG'$ such that
+	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43}, Proposition~\ref{prop:con} and Lemma~\ref{lm:et}
+	implies that there is an integer $z>0$ and a set $\cG'$ such that
 	\begin{enumerate}[label=\arabic*)]
-		\item $P(G\in\cG') \ge 1- O(n^{-4})$
+		\item $P_G(\cG') =  1 - o(1)$
 		\item For every $G\in\cG'$, 
-		\begin{equation}  \label{eq:hs}
+		$
 			P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)
 			\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ D(\sigma, X) \big) 
-			=1- O(n^{-4})
-		\end{equation}
+			=1- o(1)
+		$
 		\item For every $G\in\cG'$, $\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big)
 		=(1+o(1)) n^{g(\beta)}$
+		\item For every $G\in\cG'$, $\underline{C}\sum_{r=1}^{k-1}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
+		P_{\sigma|G}(\sigma_i \neq  X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
+		\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(\beta (A^r_i-A^0_i ) \Big) $
 	\end{enumerate}
 
 
@@ -1246,7 +1253,7 @@ P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall
 	To establish \eqref{eq:distTheta}, we now define 
 	$\phi_i := \mathbbm{1}[\sigma_i \neq X_i]$ for $i\in[n]$, and
 	we want to estimate $\dist(\sigma, X)=\sum_{i=1}^n \phi_i$.
-	From \eqref{eq:qke} we have
+	From property 4) we have
 	\begin{equation}
 	\underline{C}\sum_{r=1}^{k-1}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
 	P_{\sigma|G}(\phi_i = 1 | \phi_j = \bar{\phi}_j \,\forall j \neq i )
@@ -1258,6 +1265,12 @@ P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall
 	\sum_{j\in N_i(G)}\phi_j < z \,\forall j \in [n] \}
 	$$
 	
+	Then \eqref{eq:distTheta} is equivalent with 
+	\begin{equation}\label{eq:phi_sum}
+	P_{\sigma | G}(\sum_{i=1}^n \phi_i = \Theta(n^{g(\theta)}) | D(\phi) ) = 1-o(1)
+	\end{equation}
+	
+		
 	We define Bernoulli random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
 	\begin{enumerate}[label=(\roman*)]
 		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $D(\phi)$.
@@ -1288,10 +1301,10 @@ P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall
 	\Var(\overline{S}_1 + \dots + \overline{S}_n) = O(n^{g(\beta)}) 
 	\end{align*}
 	Since $g(\beta)\ge 0$ for all $0<\beta\le \beta^\ast$, by Chebyshev's inequality we know that both $\underline{S}_1 + \dots + \underline{S}_n=\Theta(n^{g(\beta)})$ and $\overline{S}_1 + \dots + \overline{S}_n=\Theta(n^{g(\beta)})$ with probability $1-o(1)$.
-	From \eqref{eq:qke} and Lemma 5 of \cite{ye2020exact}, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on
-	$D(\phi)$.
-	Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG'\cap\cG_1$, $P_{\sigma | G}(\dist(\sigma,X)=\Theta(n^{g(\beta)}) | D(\sigma, X)) = 1-o(1)$. Finally, \eqref{eq:conditionDist} follows from $P_G(\cG'\cap\cG_1)=1-o(1)$.
-	
+	From \eqref{eq:qke} and Lemma 5 of \cite{ye2020exact},
+	we have $\sum_{i=1}^n \phi_i = \Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on
+	$D(\phi)$. That is, \eqref{eq:phi_sum} is proved.
+
 \end{proof}
 For $0<\beta<\beta^\ast$, we have $g(\beta)>0$, so Theorem~\ref{thm:dist} immediately implies that $P_{\SIBM}(\sigma \in S_k(X))=o(1)$. However, when $\beta=\beta^\ast$, we have $g(\beta^\ast)=0$. In this case, Theorem~\ref{thm:dist} tells us that
 $
@@ -1313,7 +1326,7 @@ Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P
 \begin{proof}
 	We prove an equivalent form
 	$$
-	P_{\SIBM}(\sigma = X | \dist(\sigma, X) \le n^{\theta}) \le \frac{1}{k}(1+o(1)) .
+	P_{\SIBM}(\sigma = X | D(\sigma, X)) \le \frac{1}{k}(1+o(1)) .
 	$$
 	By \eqref{eq:diffAr0}, we have
 	\begin{align*}
@@ -1324,21 +1337,21 @@ Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P
 	& = (1+o(1))\sum_{r=1}^{k-1} \exp\big(\beta^\ast (A^r_i-A^0_i) \big)  ,
 	\end{align*}
 	where the last equality holds for almost all $G$ since $|A^r_i-A^0_i|=O(\log n)$ with probability $1-o(1)$; see Lemma 9 in \cite{ye2020exact}.
-	Take $\cG_{\con}$ from Proposition~\ref{prop:con}. Then for every $G\in\cG_{\con}$,
+	Take $\cG_{1}$ from Proposition~\ref{prop:con}. Then for every $G\in\cG_{1}$,
 	\begin{align*}
-	\frac{\sum_{i=1}^n P_{\sigma|G}(T_{ir} )}
-	{P_{\sigma|G}(\sigma=X)}  = (1+o(1)) \sum_{i=1}^n \sum_{r=1}^{k-1}\exp\big(\beta^\ast (A^r_i-A^0_i) \big)  =k+o(1) .
+	\frac{\sum_{r=1}^{k-1}\sum_{i=1}^n P_{\sigma|G}(T_{ir} )}
+	{P_{\sigma|G}(\sigma=X)}  = (1+o(1)) \sum_{i=1}^n \sum_{r=1}^{k-1}\exp\big(\beta^\ast (A^r_i-A^0_i) \big)  =k-1+o(1) .
 	\end{align*}
-	As a consequence, for every $G\in\cG_{\con}$,
+	As a consequence, for every $G\in\cG_{1}$,
 	\begin{align*}
-	P_{\sigma|G} (\sigma= X | \dist(\sigma, X) \le n^{\theta}) <
+	P_{\sigma|G} (\sigma= X | D(\sigma, X) ) <
 	\frac {P_{\sigma|G}(\sigma=X)}
-	{P_{\sigma|G}(\sigma=X)+\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
-	=\frac{1}{k} (1+o(1)) .
+	{P_{\sigma|G}(\sigma=X)+\sum_{r=1}^{k-1}\sum_{i=1}^n P_{\sigma|G}(T_{ir})}
+	=\frac{1}{k} (1+o(1))
 	\end{align*}
-	By Proposition~\ref{prop:con}, $P(G\in\cG_{\con})=1-o(1)$, so
+	By Proposition~\ref{prop:con}, $P(G\in\cG_{1})=1-o(1)$, so
 	$$
-	P_{\SIBM}(\sigma= X | \dist(\sigma, X) \le n^{\theta} ) \le \frac{1}{k}(1+o(1)) .
+	P_{\SIBM}(\sigma= X | D(\sigma, X) ) \le \frac{1}{k}(1+o(1)) .
 	$$
 \end{proof}
 \section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
@@ -1474,25 +1487,22 @@ As a consequence, after the majority voting step in Algorithm~\ref{alg:ez}, $\ha
 	If there is a pair $i, i'\in[n]$ satisfying the following two conditions: (1) $\sigma_{i}^{(j)}=\sigma_{i'}^{(j)}$ for all $j\in[m]$ and (2) $X_i = \omega^{r_1}$ and $X_{i'} = \omega^{r_2}$ ($r_1 \neq r_2$), then it is not possible to distinguish
 	the case $X_i = \omega^{r_1}, X_{i'} = \omega^{r_2}$
 	from the case $X_i = \omega^{r_2}, X_{i'} = \omega^{r_1}$.
-	In other words, conditioning on the samples, the posterior probability of the ground truth being $\bar{X}$ is the same as that of the ground truth being $\hat{X}$ where $\hat{X}_{i} = \bar{X}_{i'}= \omega^{r_2}, \hat{X}_{i'} = \bar{X}_{i} = \omega^{r_1}, \hat{X}_j = \bar{X}_j$ for $j\neq i,i'$.
+	In other words, let the ground truth be $\bar{X}$, and define $\hat{X}_{i} = \bar{X}_{i'}= \omega^{r_2}, \hat{X}_{i'} = \bar{X}_{i} = \omega^{r_1}, \hat{X}_j = \bar{X}_j$ for $j\neq i,i'$. Then	$P_{\SIBM}(\sigma^{(1)}, \dots, \sigma^{(m)}|X=\bar{X}) = P_{\SIBM}(\sigma^{(1)}, \dots, \sigma^{(m)}|X=\hat{X})$ and ML estimator is unable to distinguish between $\bar{X}$
+	and $\hat{X}$.
 \end{lemma}
 \begin{proof}
-Observing data satisfying $\sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}$, we need to show the posterior probability
-\begin{equation}\label{eq:11}
-P(X=\bar{X} | \sigma^{(j)}, j\in[m]) =
-P(X=\hat{X} | \sigma^{(j)}, j\in[m])
-\end{equation}
-For a given graph $G$, we can find a 1-1 mapping $\pi$ which satisfies $ \bar{X}_{i_r} = \hat{X}_{\pi(i_r)}$.
-$\pi$ is a permutation restricted on $\{i,i'\}$ and is identity mapping on other indices.
-Then $\pi$ satisfies properties such as
-$\{\pi(i), \pi(j)\} \in E(\pi(G)) \iff \{i,j\} \in E(G)$, $Z_G(\alpha, \beta) = Z_{\pi(G)}(\alpha, \beta)$ and
+We define a 1-1 mapping $\pi$ which satisfies $ \bar{X}_{i} = \hat{X}_{\pi(i)}$.
+That is, $\pi$ is a permutation restricted on $\{i,i'\}$ and identity mapping on other indices.
+For a given graph $G$, The mapped graph $\pi(G)$ satisfies properties such as
+$\{\pi(i), \pi(j)\} \in E(\pi(G)) \iff \{i,j\} \in E(G)$. Then we can verify
+$Z_G(\alpha, \beta) = Z_{\pi(G)}(\alpha, \beta)$ and
 $$
-P_{\SSBM}(G  | X = \bar{X})=P_{\SSBM}(\pi(G) | X = \hat{X}),
+P_{G}(G  | X = \bar{X})=P_{G}(\pi(G) | X = \hat{X}),
 $$
 
-Using the Markov property of $X \to G \to \sigma$, we have
+Using the definition of SIBM, we have
 \begin{align*}
-P(X=\bar{X} | \sigma^{(j)}, j\in[m])& = \sum_{G \in \cG_{[n]}} P(X=\bar{X}) P_{\SSBM}(G  | X = \bar{X})\prod_{j=1}^m P_{\sigma | G}(\sigma =\sigma^{(j)})\\
+P_{\SIBM}(\sigma^{(1)}, \dots, \sigma^{(m)}|X=\bar{X}) & = \sum_{G \in \cG_{[n]}} P_{G}(G  | X = \bar{X})\prod_{j=1}^m P_{\sigma | G}(\sigma =\sigma^{(j)})\\
 \end{align*}
 If we can show that 
 \begin{equation}\label{eq:sigmaEqual}
@@ -1500,20 +1510,20 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{equation}
 Then 
 \begin{align*}
-P(X=\bar{X} | \sigma^{(j)}, j\in[m]) &
-= \sum_{G \in \cG_{[n]}} P(X=\hat{X})
-P_{\SSBM}(\pi(G)  | X = \hat{X})\prod_{j=1}^m P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})\\
-& = P(X=\hat{X} | \sigma^{(j)}, j\in[m])
+P_{\SIBM}(\sigma^{(1)}, \dots, \sigma^{(m)}|X=\hat{X}) &
+= \sum_{G \in \cG_{[n]}} 
+P_{G}(\pi(G)  | X = \hat{X})\prod_{j=1}^m P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})\\
+& = P_{\SIBM}(\sigma^{(1)}, \dots, \sigma^{(m)}|X=\bar{X})
 \end{align*}
 The key to prove Equation \eqref{eq:sigmaEqual} lies at the property
 $\sigma^{(j)}_{i} = \sigma^{(j)}_{i'}$.
-Let $c_G(\sigma, i,j) = \frac{1}{2}\delta_{\sigma_i\sigma_j}[(\beta + \frac{\alpha \log n}{n})\mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}]$
-and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i,i'\},j_1\neq j_2} c_G(\sigma, j_1, j_2) + c_G(\sigma, i, i'))$
+Let $c_G(\sigma, i,j) = \delta_{\sigma_i\sigma_j}[(\beta + \frac{\alpha \log n}{n})\mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}]$
+and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i,i'\},j_1 < j_2} c_G(\sigma, j_1, j_2) + c_G(\sigma, i, i'))$
 \begin{align*}
-P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s)) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s) ) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), s) + c_{\pi(G)}(\sigma^{(j)}, \pi(i'), s)) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_{\pi(G)}(\sigma^{(j)}, i, s) + c_{\pi(G)}(\sigma^{(j)}, i', s)) \\
+P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp\Big(\sum_{s=1,s\neq i,i'}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s)\Big) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp\Big(\sum_{s=1,s\neq i,i'}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s) \Big) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp\Big(\sum_{s=1,s\neq i,i'}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), s) + c_{\pi(G)}(\sigma^{(j)}, \pi(i'), s)\Big) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp\Big(\sum_{s=1,s\neq i,i'}^n c_{\pi(G)}(\sigma^{(j)}, i, s) + c_{\pi(G)}(\sigma^{(j)}, i', s)\Big) \\
 & = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{align*}
 \end{proof}
@@ -1532,64 +1542,66 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1,s\neq i
 \begin{proof}
 
 	We only prove the claims about $T_0$ since the proof for $T_r (r>0)$ is virtually identical.
-	The proof follows similar steps as the proof of Theorem~\ref{thm:dist}. All we need to do is to replace $\beta$ with $u\beta$ and consider
-	only the probability of $\sigma^{(j)}_i = \omega^r$. For the sake of completeness, we provide the proof here.
+	The proof follows similar steps as the proof of Theorem~\ref{thm:dist}. All we need to do is to replace $\beta$ with $u_s\beta$ and consider
+	only the probability of $\sigma^{(j)}_i = \omega^s$. For the sake of completeness, we provide the proof here.
 	
-	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG'$ such that
+	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43}, Proposition~\ref{prop:con} and Lemma~\ref{lm:et} implies that there is an integer $z>0$ and a set $\cG'$ such that
+	\begin{enumerate}[label=(\roman*)]
+		\item 	$P_G(\cG') \ge 1- O(n^{-4})$.
+		\item For every $G\in\cG'$, 
+		$P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
+		\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
+		\,\forall j\in[m] ~\big| D(\sigma^{(j)}, X)
+		\,\forall j\in[m]  \big)
+		=1- O(n^{-4})
+		$ where we can choose $\theta$ to be any constant in the open interval $(g(\beta), 1)$.
+		\item For every $G\in\cG'$, $\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big)
+		=(1+o(1)) n^{g(\beta)}$	
+		\item $\underline{C} \exp(\beta (A^s_i-A^0_i)) \leq P_{\sigma|G}(\sigma_i^{(j)} = \omega^s \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} )
+		\leq \bar{C} \exp(\beta (A^s_i-A^0_i))$ for all $i\in[n]$ and all $j\in[m]$.
+	\end{enumerate}
+
 	
-	\noindent (i)
-	$P(G\in\cG') \ge 1- O(n^{-4})$.
-	
-	\noindent (ii) For every $G\in\cG'$, 
-	\begin{equation}  \label{eq:ljrc}
-	\begin{aligned}
-	& P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m] ~\big| D(\sigma^{(j)}, X)
-	\text{~for all~} j\in[m]  \big) \\
-	& =1- O(n^{-4}) ,
-	\end{aligned}
-	\end{equation}
-	where we can choose $\theta$ to be any constant in the open interval $(g(\beta), 1)$.
 	By our assumption, there exists $s\neq 0$ such that
 	$u_s + u_0 = m$. That is, all $v^{(j)}$ takes values from $1$ or $\omega^s$.
-	By Lemma~\ref{lm:et}, we know that for all $i\in[n]$ and all $j\in[m]$,
-	$P_{\sigma|G}(\sigma_i^{(j)} = \omega^s \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} )$ differ from
-	$\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^s_i-A^0_i) \Big)$
-	by at most a constant factor. Since $|A^r_i-A^0_i|=O(\log n)$ with probability $1-o(1)$, the term $\frac{\alpha\log n}{n}(A^r_i-A^0_i)=o(1)$ and is negligible. Moreover, since the $m$ samples are independent given the graph $G$, there are $u_0$ samples which takes value $\sigma_i^{(j)} = 1$. Since the probability
-	$P_{\sigma|G}(\sigma_i^{(j)} = 1 \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} )$ is near 1, we conclude that
+	Moreover, since the $m$ samples are independent given the graph $G$, there are $u_0$ samples which takes value $\sigma_i^{(j)} = 1$.
+	From \eqref{eq:swX}
+	\begin{equation}
+	P_{\sigma|G}(\sigma_i^{(j)} = 1 \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X)) \geq \frac{1}{1+\exp((\beta + \frac{\alpha \log n}{n})(A_i^r - A_i^0 + 2z))}
+	\geq \frac{1}{1+\exp(2(\beta+1)z)} = \frac{1}{1+\bar{C}}
+	\end{equation}
+ 	we conclude that
 	\begin{align*}
-	& \underline{C}
+	& \frac{\underline{C}^{u_s}}{(1+\bar{C})^{u_0}}
 	\exp\big(u_s\beta (A^s_i-A^0_i) \big) \\
 	\le
 	& P_{\sigma|G} \big( (\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v ~\big|~ \sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 	\text{~for all~} j\in[m] \big) \\
-	\le & \overline{C}
+	\le & \overline{C}^{u_s}
 	\exp\big(u_s \beta (A^s_i-A^0_i) \big)
 	\end{align*}
-	for all $i\in[n]$, where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
+	for all $i\in[n]$.
 	Similar to Equation \eqref{eq:qke}. the above equation can be reformulated as follows:
 	For every $\bar{\sigma}^{(1)},\dots,\bar{\sigma}^{(m)}\in W^n$ such that $\bar{\sigma}^{(j)}\in  \Lambda(G, z)$
 	and $\dist(\bar{\sigma}^{(j)}, X) \le n^\theta$
 	for all $j\in[m]$,
 	\begin{equation} \label{eq:s56}
 	\begin{aligned}
-	& \underline{C}
+	& \underline{C}'
 	\exp\big( u_s  \beta (A^s_i-A^0_i) \big) \\
 	\le
 	& P_{\sigma|G} \big( (\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v ~\big|~ (\sigma_{i'}^{(1)},\dots,\sigma_{i'}^{(m)})= (\bar{\sigma}_{i'}^{(1)},\dots,\bar{\sigma}_{i'}^{(m)}) \text{~for all~} i'\neq i \big) \\
-	\le & \overline{C}
+	\le & \overline{C}'
 	\exp\big(u_s  \beta (A^s_i-A^0_i) \big).
 	\end{aligned}
 	\end{equation}
 	Define 
 	$\phi_i := \mathbbm{1}[(\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v]$ for $i\in[n]$.
-	we will have $T_0=\sum_{i=1}^n \phi_i=\Theta(n^{g(u_s\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
+	we will have $P_{G}(T_0=\sum_{i=1}^n \phi_i=\Theta(n^{g(u_s\beta)}) | \{\sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$. Combining this with \eqref{eq:ljrc}, we obtain that for every $G\in\cG'\cap\cG_{1}$,
-	$T_0=\Theta( n^{g(u_s\beta)})$ with probability $1-o(1)$ conditioning on $D(\sigma^{(j)}, X)$ for all $j\in[m]$.
-	Finally, the lemma follows from $P(G\in\cG'\cap\cG_{1})=1-o(1)$.
+	\text{~for all~} j\in[m]\})= 1-o(1)$  for every $G\in\cG'$.
+	Finally, the lemma follows from property (i) $P_G(\cG')=1-o(1)$.
 \end{proof}
 Using the above two lemmas, we obtain the following proposition:
 \begin{proposition}
@@ -1604,11 +1616,11 @@ Using the above two lemmas, we obtain the following proposition:
 	From Lemma \ref{lm:cvs}, we choose $v \in W^m$ such that it has $\lfloor \frac{m+1}{2} \rfloor$ coordinates being $1$
 	and $(m-\lfloor \frac{m+1}{2} \rfloor)$ coordinates being $\omega$.
 	Then $u_0 = \lfloor \frac{m+1}{2} \rfloor, u_1 = m - u_0$.
-	By detailed analysis, both $T_0, T_1$ are $\omega(1)$.
-	Therefore, we can find $\omega(1)$ pairs of $i, i'$ satisfying the following two conditions: (1) $\sigma_{i}^{(j)}=\sigma_{i'}^{(j)}$ for all $j\in[m]$ and
+	By detailed analysis, both $T_0, T_1$ intends to infinity as $n \to \infty$.
+	Therefore, we can find as many pairs of $i, i'$ satisfying the following two conditions as possible: (1) $\sigma_{i}^{(j)}=\sigma_{i'}^{(j)}$ for all $j\in[m]$ and
 	(2) $X_i = 1, X_{i'} = \omega$.
 	Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X_i = 1, X_{i'} = \omega$ from $X_i = \omega, X_{i'} = 1$
-	for $\omega(1)$ pairs of $i, i'$.
+	for these pairs of $i, i'$.
 	Therefore, the success probability of any recovery algorithm is $o(1)$.
 \end{proof}
 \appendix
