@@ -56,13 +56,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--a', type=float, default=16.0)
     parser.add_argument('--b', type=float, default=4.0)
-    parser.add_argument('--n', type=int, default=300)
+    parser.add_argument('--n', type=int, default=3200)
     # parser.add_argument('--k', type=int, default=2)
     parser.add_argument('--alpha', type=float, default=8.0)
     parser.add_argument('--beta', type=float, default=1.0)
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
-    parser.add_argument('--inner_repeat', type=int, default=1000, help='number of sigma generated for a given graph')
-    parser.add_argument('--max_iter', type=int, default=100)
+    parser.add_argument('--inner_repeat', type=int, default=10000, help='number of sigma generated for a given graph')
+    parser.add_argument('--outer_repeat', type=int, default=1000, help='number of log times')
+    parser.add_argument('--max_iter', type=int, default=100, help='burn-in period')
     args = parser.parse_args()
     averaged_acc = 0
     k = 2
@@ -70,9 +71,9 @@ if __name__ == "__main__":
         G = sbm_graph(args.n, k, args.a, args.b)    
         gt = get_ground_truth(G)
         sibm = SIBM2(G, args.alpha, args.beta)
-        sibm.metropolis(N=args.max_iter) # burn-in period
+        sibm.metropolis(N=args.max_iter)
         total_acc = 0
-        for j in range(1000):
+        for j in range(args.outer_repeat):
             averaged_inner_acc = 0
             for i in range(args.inner_repeat):
                 sibm._metropolis_single()
@@ -82,6 +83,6 @@ if __name__ == "__main__":
             averaged_inner_acc /= args.inner_repeat
             total_acc = (j * total_acc + averaged_inner_acc) / (j + 1)
             print(total_acc)
-        averaged_acc += averaged_inner_acc
+        averaged_acc += total_acc
     averaged_acc /= args.repeat
     print(averaged_acc)
