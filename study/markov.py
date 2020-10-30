@@ -32,7 +32,7 @@ class IsingModel:
         if delta_H < 0:  # lower energy: flip for sure
             self.sigma[r] *= -1
         else:  # Higher energy: flip sometimes
-            probability = np.exp(-1.0 * self._beta * delta_H)
+            probability = np.exp(-2.0 * self._beta * delta_H)
             if np.random.rand() < probability:
                 self.sigma[r] *= -1
     def metropolis(self, N=40):
@@ -82,14 +82,18 @@ class Markov(unittest.TestCase):
         state_vectors = [[1, 1, 1], [1, 1, -1], [1, -1, 1], [-1, 1, 1],
                          [1,-1, -1], [-1, 1, -1], [-1, -1, 1], [-1, -1, -1]]
         iteration_time = 100000
-        # np.random.seed(0)
+        np.random.seed(0)
         for _ in range(iteration_time):
             ising._metropolis_single()
             _pi[state_vectors.index(ising.sigma)] += 1
         _pi /= iteration_time
-        print(_pi)
-        print(p1, p2)
-        print(np.sum(_pi))
-        print(p1 * 2 + 6 * p2)
+        self.assertTrue(np.abs(_pi[0] - p1) < 0.01)
+        self.assertTrue(np.abs(_pi[1] - p2) < 0.01)
+        self.assertTrue(np.abs(_pi[2] - p2) < 0.01)
+        self.assertTrue(np.abs(_pi[3] - p2) < 0.01)
+        self.assertTrue(np.abs(_pi[4] - p2) < 0.01)
+        self.assertTrue(np.abs(_pi[5] - p2) < 0.01)
+        self.assertTrue(np.abs(_pi[6] - p2) < 0.01)
+        self.assertTrue(np.abs(_pi[7] - p1) < 0.01)
 if __name__ == '__main__':
     unittest.main()
