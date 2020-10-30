@@ -57,7 +57,8 @@ def _estimate_a_b(graph):
     return (a, b)
 
 class SIBM:
-    def __init__(self, graph, k=2, estimate_a_b_indicator=True, epsilon=0.0):
+    def __init__(self, graph, k=2, estimate_a_b_indicator=True, epsilon=0.0,
+        _alpha=None, _beta=None):
         self.G = graph
         self.k = k
         self.epsilon = 0
@@ -77,6 +78,10 @@ class SIBM:
         else:
             self._beta = 1.2
             self._alpha_divide_beta = 13
+        if _beta != None:
+            self._beta = _beta
+        if _alpha != None:
+            self._alpha_divide_beta = _alpha / self._beta
         self.n = len(self.G.nodes)
         # randomly initiate a configuration
         self.sigma = [1 for i in range(self.n)]
@@ -112,20 +117,25 @@ class SIBM:
                     H_value -= 1
                 else:
                     H_value += self.mixed_param
-        return H_value           
+        return H_value
+    def _metropolis_single(self):
+        # randomly select one position to inspect
+        r = random.randint(0, self.n - 1)
+        # randomly select one new flipping state to inspect
+        w_s = random.randint(1, self.k - 1)
+        delta_H = self.get_dH(r, w_s)
+        if delta_H < 0:  # lower energy: flip for sure
+            self.sigma[r] = (w_s + self.sigma[r]) % self.k
+        else:  # Higher energy: flip sometimes
+            probability = np.exp(-1.0 * self._beta * delta_H)
+            if np.random.rand() < probability:
+                self.sigma[r] = (w_s + self.sigma[r]) % self.k
+
     def metropolis(self, N=40):
         # iterate given rounds
         for _ in range(N):
-            for r in range(self.n):
-                # randomly select one new flipping state to inspect
-                w_s = random.randint(1, self.k - 1)
-                delta_H = self.get_dH(r, w_s)
-                if delta_H < 0:  # lower energy: flip for sure
-                    self.sigma[r] = (w_s + self.sigma[r]) % self.k
-                else:  # Higher energy: flip sometimes
-                    probability = np.exp(- self._beta * delta_H)
-                    if np.random.rand() < probability:
-                        self.sigma[r] = (w_s + self.sigma[r]) % self.k
+            for _ in range(self.n):
+                self._metropolis_single()
             self._beta *= (1 + self.epsilon)
         return self.sigma
 

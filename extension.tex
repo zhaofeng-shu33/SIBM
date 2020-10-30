@@ -53,9 +53,11 @@ Let $n$ be a positive even integer, $W= \{1, \omega, \dots, \omega^{k-1}\}$ is a
 (ii) the vertices $i$ and $j$ in $G$ are connected with probability $p$ if $X_i=X_j$ and with probability $q$ if $X_i \neq X_j$, independently of other pairs of vertices.
 \end{definition}
  
-	From the symmetric property of SBM, the conditional distribution $P(G|X=x) = P(G|X=f(x)), \forall f \in S_k$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $S_k(X)$.
+	From the symmetric property of SBM, the conditional distribution $P_G(G|X=x) = P_G(G|X=f(x)), \forall f \in S_k$. Therefore, it is only possible to recover $X$ from $G$ up to a global permutation. That is, it is only possible to recover $S_k(X)$. On the other hand, since $X$ is uniformly distributed, MAP estimator of $X$ is equivalent with
+	ML estimator of $X$. Therefore, we can assume there is a ground truth
+	$X$ and write $P_G(G)$ briefly.
 
-In this paper, we focus on the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ \cite{abbe2015community}.
+In this paper, we focus on the regime of $p=a\log n/n$ and $q=b\log n/n$, where $a>b> 0$ are constants. In this regime, it is well known that exact recovery of $X$ (up to a global permutation) from $G$ is possible if $\sqrt{a}-\sqrt{b} > \sqrt{k}$ \cite{abbe2015community}.
 
 Given a labeling $X$ of $n$ vertices, the SBM specifies how to generate a random graph on these $n$ vertices according to the labeling. In some sense, Ising model works in the opposite direction, i.e., given a graph $G$, Ising model defines a probability distribution on all possible labels of these $n$ vertices. 
 
@@ -64,12 +66,12 @@ Define an Ising model on a graph $G=([n],E(G))$ with parameters $\alpha,\beta>0$
 \begin{equation} \label{eq:isingma}
 P_{\sigma|G}(\sigma=\bar{\sigma})=\frac{1}{Z_G(\alpha,\beta)}
 \exp\Big(\beta\sum_{\{i,j\}\in E(G)} \delta_{\bar{\sigma}_i \bar{\sigma}_j}
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \delta_{\bar{\sigma}_i \bar{\sigma}_j} \Big),
+-\frac{\alpha\log n}{n} \sum_{\{i,j\}\notin E(G)} \delta_{\bar{\sigma}_i \bar{\sigma}_j} \Big),
 \end{equation}
 where the subscript in $P_{\sigma|G}$ indicates that the distribution depends on $G$, and 
 \begin{equation}  \label{eq:zg}
 Z_G(\alpha,\beta)=\sum_{\bar{\sigma} \in W^n} \exp\Big(\beta\sum_{\{i,j\}\in E(G)}\delta_{\bar{\sigma}_i \bar{\sigma}_j} 
--\frac{\alpha\log(n)}{n} \sum_{\{i,j\}\notin E(G)} \delta_{\bar{\sigma}_i \bar{\sigma}_j}  \Big) 
+-\frac{\alpha\log n}{n} \sum_{\{i,j\}\notin E(G)} \delta_{\bar{\sigma}_i \bar{\sigma}_j}  \Big) 
 \end{equation}
 is the normalizing constant.
 \end{definition}
@@ -91,9 +93,10 @@ Let $n$ and $m$ be positive integers such that $n$ is even. Let $p,q\in[0,1]$ be
 (ii) for every $i\in[m]$, each sample $\sigma^{(i)}=(\sigma_1^{(i)},\dots,\sigma_n^{(i)}) \in W^n$ is drawn independently according to the distribution \eqref{eq:isingma}.
 \end{definition}
 
-Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently from the Ising model on the {\em same} graph $G$.
+Notice that we only draw the graph $G$ once in SIBM, and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ are drawn independently
+from the Ising model on the {\em same} graph $G$.
 Our objective is to recover the underlying partition (or the ground truth) $X$ from the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$, and we would like to use the smallest possible number of samples to guarantee the exact recovery of $X$ up to a global permutation.
-Below we use the notation $P_{\SIBM}(A):=E_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $E_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the joint distribution of both $\sigma$ and $G$.
+Below we use the notation $P_{\SIBM}(A):=\mathbb{E}_G[P_{\sigma|G}(A)]$ for an event $A$, where the expectation $\mathbb{E}_G$ is taken with respect to the distribution given by SSBM. In other words, $P_{\sigma|G}$ is the conditional distribution of  $\sigma$ given a fixed $G$ while $P_{\SIBM}$ is the marginal distribution of $\sigma$.
 By definition, we have $P_{\SIBM}(\sigma=\bar{\sigma})=P_{\SIBM}(\sigma=f(\bar{\sigma}))$ for all $\bar{\sigma}\in W^n$ and $f \in S_k$.
 
 \begin{definition}[Exact recovery in SIBM]
@@ -106,11 +109,15 @@ $$
 and we call $P_{\SIBM}(\hat{X} \in S_k(X))$ the success probability of the recovery/decoding algorithm.
 \end{definition}
 
+To put it in other words, the error probability
+$P_{\SIBM}(\hat{X} \not\in S_k(X)) =
+\sum_{\{\sigma^{(1)},\dots,\sigma^{(m)}\}} \mathbbm{1}[\hat{X} \neq X]\prod_{i=1}^m P_{\SIBM}(\sigma = \sigma^{(i)}) 
+$ converges to $0$ as $n\to \infty$.
 
-As mentioned above, we consider the regime of $p=a\log(n)/n$ and $q=b\log(n)/n$, where $a>b> 0$ are constants. By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefor, if we cannot recover $X$ from $G$, then there is no hope to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
+As mentioned above, we consider the regime of $p=a\log n/n$ and $q=b\log n/n$, where $a>b> 0$ are constants. By definition, the ground truth $X$, the graph $G$ and the samples $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$ form a Markov chain $X\to G\to \{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Therefor, if we cannot recover $X$ from $G$, then there is no hope to recover $X$ from $\{\sigma^{(1)},\dots,\sigma^{(m)}\}$. Thus a necessary condition for the exact recovery in SIBM is $\sqrt{a}-\sqrt{b}> \sqrt{k}$, and we will limit ourselves to this case throughout the paper.
 
 \vspace*{.1in}
-\noindent{\bf Main Problem:} \emph{For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m^\ast)$?}
+\noindent{\bf Main Problem:} \emph{For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0$, what is the smallest sample size $m^\ast$ such that exact recovery is solvable for $\SIBM(n,k, a\log n/n, b\log n/n,\alpha,\beta,m^\ast)$?}
 
 \vspace*{.1in}  It is this optimal sample size problem that we address---and resolve---in this paper. 
 Our main results read as follows.
@@ -122,9 +129,9 @@ For any $a,b> 0$ such that $\sqrt{a}-\sqrt{b}> \sqrt{k}$ and any $\alpha,\beta>0
 \log\frac{a+b-k-\sqrt{(a+b-k)^2-4ab}}{2 b} \text{~~and~~}
 m^\ast := 2 \Big\lfloor \frac{\beta^\ast}{\beta} \Big\rfloor +1  .
 \end{equation}
-{\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta,m)$.
+{\bf Case (i) when $\alpha>b\beta$}: If $m\ge m^\ast$, then exact recovery is solvable in $O(n)$ time for $\SIBM(n,k, a\log n/n, \linebreak[4] b\log n/n,\alpha,\beta,m)$.
 If $\beta^\ast/\beta$ is not an integer and $m < m^*$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$. If $\beta^\ast/\beta$ is an integer and $m < m^* - 2$, then the success probability of all recovery algorithms approaches $0$ as $n\to\infty$.
-{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $~\SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{\delta}(n))$ for given $\delta \in (0, 1)$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
+{\bf Case (ii) when $\alpha<b\beta$}: Exact recovery of $~\SIBM(n,k, a\log n/n, b\log n/n,\alpha,\beta,m)$ is not solvable for any $m=O(\log^{\delta}(n))$ for given $\delta \in (0, 1)$, and in particular, it is not solvable for any constant $m$ that does not grow with $n$.
 \end{theorem}
 Note that the condition $\sqrt{a}-\sqrt{b} > \sqrt{k}$ guarantees that the term $\sqrt{(a+b-k)^2-4ab}$ in the definition of $\beta^\ast$ is a  real number.
 When $\alpha>b\beta$ and $\beta^\ast/\beta$ is not an integer,
@@ -134,7 +141,7 @@ Below we present an equivalent characterization of the recovery threshold in ter
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
 	Let 
 	$$
-	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
+	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n, k, a\log n/n, b\log n/n,\alpha,\beta,m).
 	$$
 	If $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, then there is an algorithm that recovers $X$ from the samples in $O(n)$ time with success probability $1-o(1)$. If $\lfloor \frac{m+1}{2} \rfloor \beta <\beta^\ast$, then the success probability of any recovery algorithm is $o(1)$. 
 \end{theorem}
@@ -145,7 +152,7 @@ Using careful analysis on the floor function, we can show that Theorem~\ref{thm:
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. Let $m$ be a constant integer that does not grow with $n$.
 Let 
 $$
-(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta,m).
+(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\}) \sim \SIBM(n,k, a\log n/n, b\log n/n,\alpha,\beta,m).
 $$
 Define
 \begin{equation}\label{eq:gbeta}
@@ -178,14 +185,14 @@ The ML algorithm makes Type I error when event \eqref{eq:1x} happens. We use log
 \sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} > (\frac{\alpha}{\beta} + o(1)) \frac{\log n}{n} \frac{k-1}{2k}n^2 =: c
 \end{equation}
 % \frac{k-1}{2k}n^2 = \sum_{(i,j)\in E, X_i \neq X_j} 1
-where $Z_{ij}$ i.i.d. $\sim \textrm{Bernoulli}(\frac{b\log n }{n})$, which represents the edge existence between different communities. The mean value on the left hand side is $\frac{b \log n }{n} \frac{k-1}{2k}n^2$. Therefore we can use large
+where $Z_{ij}$ i.i.d. $\sim \textrm{Bernoulli}(\frac{b\log n }{n})$, which represents the edge existence between different communities. The mean value on the left hand side is $\frac{b \log n }{n} \frac{k-1}{2k}n^2$. Therefore, we can use large
 deviation theory to bound the probability of \eqref{eq:Zij}. To be more specific, by Chernoff inequality we have
 \begin{equation}\label{eq:CZij}
-\Pr\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  c \right)\leq \frac{\mathbb{E}[\exp(t Z_{ij})]^{ \frac{k-1}{2k}n^2 }}{\exp(ct)}
+P_G\left(\sum_{(i,j)\in E, X_i \neq X_j} Z_{ij} >  c \right)\leq \frac{\mathbb{E}[\exp(t Z_{ij})]^{ \frac{k-1}{2k}n^2 }}{\exp(ct)}
 \end{equation}
 where $ t  = \log \frac{\alpha}{b\beta} > 0$ is chosen to minimize the function on the right hand side of \eqref{eq:CZij}. It follows that
 \begin{equation}\label{eq:nlogn}
-\Pr(\sum_{\substack{(i,j)\in E \\ X_i \neq X_j}} Z_{ij} >  c )\leq \exp(n\log n  \frac{k-1}{2k} (h_b(\frac{\alpha}{\beta}) + o(1)))
+P_G(\sum_{\substack{(i,j)\in E \\ X_i \neq X_j}} Z_{ij} >  c )\leq \exp(n\log n  \frac{k-1}{2k} (h_b(\frac{\alpha}{\beta}) + o(1)))
 \end{equation}
 where $h_b(x) = x - b - x \log\frac{x}{b}$. We can verify that $h_b(x) < 0 $ when $ x > b$.
 Therefore, we choose $\alpha > b \beta$	to make \eqref{eq:nlogn} decreases to zero as $n\to\infty$.
@@ -207,7 +214,7 @@ Since $P_{\sigma | G}(\dist(\bar{\sigma}, \Lambda)\geq \frac{n}{\log^{\delta} n}
 (k-1)\sum_{\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}}\exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)
 \leq (k-1)k^n \exp(-Cn) = o(1)$ for $C> \log k$, we conclude that
 $\dist(\sigma^{(i)}, \Lambda)< n/\log^{\delta}(n)$ for all $i\in[m]$ with probability $1-o(1)$ if $\alpha<b\beta$. See Proposition~\ref{prop:1} for a rigorous proof.
-In this case, each sample only take $\sum_{j=0}^{n/\log^{\delta}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{n/\log^{\delta}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log(n)}{\log^{\delta}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{\delta}(n)}{\log\log(n)})\ge \Omega(\log^{\delta'}(n))$ samples for $\delta'<\delta$. see Proposition~\ref{prop:ab} for a rigorous proof.
+In this case, each sample only take $\sum_{j=0}^{n/\log^{\delta}(n)}\binom{n}{j}j^{k-1}$ values, so each sample contains at most $\log_k(\sum_{j=0}^{n/\log^{\delta}(n)}\binom{n}{j}j^{k-1})=O(\frac{\log\log n}{\log^{\delta}(n)} n)$ bits of information about $X$. On the other hand, $X$ itself is uniformly distributed over a set of $\frac{n!}{(n/k)^k}$ vectors, so one needs at least $\log_k\frac{n!}{(n/k)^k}=\Theta(n)$ bits of information to recover $X$. Thus if $\alpha<b\beta$, then exact recovery of $X$ requires at least $\Omega(\frac{\log^{\delta}(n)}{\log\log n})\ge \Omega(\log^{\delta'}(n))$ samples for $\delta'<\delta$. see Proposition~\ref{prop:ab} for a rigorous proof.
 
 
 For the rest of this section, we will focus on the case $\alpha>b\beta$ and establish the sharp threshold on the sample complexity. We first analyze the typical behavior of one sample and explain how to prove Theorem~\ref{thm:wt3}. Then we use the method developed for the one sample case to analyze the distribution of multiple samples, which allows us to prove Theorem~\ref{thm:wt2}. Note that Theorem~\ref{thm:wt1} follows directly from Theorem~\ref{thm:wt2}.
@@ -225,23 +232,23 @@ A^r_i=A^r_i(G):=|\{j\in[n]\setminus\{i\}:\{i,j\}\in E(G), X_j=\omega^r \cdot X_i
 \end{equation}
 %	to represent the number of edges connected with $i$ whose two nodes differ by $\omega^r$.
 By definition,
-$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$, $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $r=1,\dots, k-1$, and they are independent.
+$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log n}{n})$, $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log n}{n})$ for $r=1,\dots, k-1$, and they are independent.
 
 We then have
 \begin{align}
 &\frac{P_{\sigma|G}(T_{ir})}
 {P_{\sigma|G}(\sigma=X)}
-= \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \nonumber\\
-&-\frac{\alpha\log(n)}{n} \Big) 
+= \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i) \nonumber\\
+&-\frac{\alpha\log n}{n} \Big) 
 = (1+o(1)) \exp ( \beta(A^r_i-A^0_i)) \label{eq:diffAr0}
 \end{align}
-By Chernoff inequality $ \Pr(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_i)) > 1) \leq (k-1)n\mathbb{E}_G[\exp (\beta (A^r_i-A^0_i))] $.
+By Chernoff inequality $ P_G(\sum_{i=1}^n\sum_{r=1}^{k-1}\exp ( \beta(A^r_i-A^0_i)) > 1) \leq (k-1)n\mathbb{E}_G[\exp (\beta (A^r_i-A^0_i))] $.
 \begin{align}
 &\mathbb{E}_G[\exp (\beta (A^r_i-A^0_i))]
-=\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^{\beta} \Big)^{n/k} \nonumber \\
-&\cdot \Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-\beta} \Big)^{n/k-1}\nonumber\\
+=\Big(1-\frac{b\log n}{n}+\frac{b\log n}{n} e^{\beta} \Big)^{n/k} \nonumber \\
+&\cdot \Big(1-\frac{a\log n}{n}+\frac{a\log n}{n} e^{-\beta} \Big)^{n/k-1}\nonumber\\
 & = 
-\exp\Big(\frac{\log(n)}{k} ( a e^{-\beta}+b e^{\beta} -a-b )
+\exp\Big(\frac{\log n}{k} ( a e^{-\beta}+b e^{\beta} -a-b )
 +o(1) \Big)\nonumber \\
 & = (1+o(1)) n^{g(\beta)-1} \label{eq:gbetaminus1}
 \end{align}
@@ -260,15 +267,15 @@ we need finer control by introducing some extra parameter which we can optimize.
 the event $D_r : = \sum_{i=1}^n\exp ( \beta(A^r_i-A^0_i)) > s$
 and we are going to give an upper bound of $P(D_r)$. We proceed as follows: 
 \begin{align*}
-&\Pr(D_r) = 
-\Pr(D_r| A_i^r - A_i^0 \geq 0, \exists i\in [n])
+&P_G(D_r) = 
+P_G(D_r| A_i^r - A_i^0 \geq 0, \exists i\in [n])
 \cdot I_1 \\
-&+ \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
-\Pr(  A_i^r - A_i^0  < 0 , \forall i \in [n] ) \\
+&+ P_G(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
+P_G(  A_i^r - A_i^0  < 0 , \forall i \in [n] ) \\
 & \leq I_1
-+ \Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
++ P_G(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])
 \end{align*}
-where $I_1 = \Pr( A_i^r - A_i^0 \geq 0, \exists i\in [n])$.
+where $I_1 = P_G( A_i^r - A_i^0 \geq 0, \exists i\in [n])$.
 To bound the two terms above, we need the following lemma, which can be proved by standard Chernoff inequality techniques:
 \begin{lemma}\label{lem:fb}
 	For $t\in [\frac{1}{k}(b-a), 0]$,
@@ -279,15 +286,15 @@ To bound the two terms above, we need the following lemma, which can be proved b
 	\end{align}
 	It follows that
 	\begin{align} 
-	& P(A^1_i-A^0_i\ge t\log(n))  \notag\\
-	\le &  \exp\Big(\log n \Big(f_{\beta}(t) -\beta t  - 1 + O\big(\frac{\log(n)}{n}\big) \Big)\Big) .
+	& P_G(A^1_i-A^0_i\ge t\log n)  \notag\\
+	\le &  \exp\Big(\log n \Big(f_{\beta}(t) -\beta t  - 1 + O\big(\frac{\log n}{n}\big) \Big)\Big) .
 	\end{align}
 \end{lemma}
 Choosing $t=0$ in Lemma \ref{lem:fb}, we have
-$\Pr(A^1_i-A^0_i\ge 0 ) \leq \exp(-\log n \frac{(\sqrt{a}-\sqrt{b})^2}{k})$.
+$P_G(A^1_i-A^0_i\ge 0 ) \leq \exp(-\log n \frac{(\sqrt{a}-\sqrt{b})^2}{k})$.
 Then
 \begin{align}\label{eq:I_1}
-I_1 \leq \sum_{i=1}^n \Pr( A_i^r - A_i^0 \geq 0) \leq n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}}
+I_1 \leq \sum_{i=1}^n P_G( A_i^r - A_i^0 \geq 0) \leq n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}}
 \end{align}
 For the second term,
 conditioned on $A_i^r - A_i^0  < 0, \forall i\in [n]$ we have
@@ -299,8 +306,8 @@ conditioned on $A_i^r - A_i^0  < 0, \forall i\in [n]$ we have
 \end{align}
 where $\tau =\frac{b-a}{k}\log n$ in short. Therefore
 \begin{align*}
-&\Pr(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])  \\
-&\leq\Pr(\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t\log n]\exp ( \beta  t\log n)  > \tilde{s} ) \\
+&P_G(D_r | A_i^r - A_i^0  < 0, \forall i\in [n])  \\
+&\leq P_G(\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i = t\log n]\exp ( \beta  t\log n)  > \tilde{s} ) \\
 & \leq \mathbb{E}[\sum_{t\log n =\tau}^{-1}\sum_{i=1}^n \mathbbm{1}[A^r_i - A^0_i= t\log n]\exp ( \beta  t\log n)] /  \tilde{s} \\
 & \leq \frac{a-b}{k}\log n \cdot n^{f_{\beta}(t) + o(1)} / \tilde{s} \textrm{ using Lemma \ref{lem:fb} }
 \end{align*}
@@ -318,7 +325,7 @@ The maximization of $f_{\beta}(t)$ is given by the following lemma:
 \end{lemma}
 By choosing $s = n^{\tilde{g}(\beta)/2}$ and using Lemma \ref{lem:tilde_g}, we have
 \begin{align*}
-\Pr( D_r) \leq  n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{\tilde{g}(\beta)/2 + o(1)} \leq 2n^{\tilde{g}(\beta)/4}
+P_G( D_r) \leq  n^{1-\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{\tilde{g}(\beta)/2 + o(1)} \leq 2n^{\tilde{g}(\beta)/4}
 \end{align*}
 Replacing $D_r$ by $\cup_{r=1}^{k-1} D_r$ in the above deduction we could get the same conclusion.
 That is, the probability of event
@@ -341,7 +348,7 @@ For $r>n^{\theta}$, we have
 $
 r!>(r/e)^r
 =\exp(r\log(r)-r)
->\exp(r(\theta)\log(n)-r)
+>\exp(r(\theta)\log n-r)
 =n^{r(\theta-o(1))} .
 $
 Taking these into the last inequality of \eqref{eq:nn}, we obtain that for all $r>n^{\theta}$,
@@ -351,7 +358,7 @@ E_G \Big[ \frac{P_{\sigma|G} ( \dist(\sigma, X) = r )}{P_{\sigma|G}(\sigma= X)} 
 < n^{r (g(\beta)+o(1))} /(r!) 
 < (k-1)^rn^{-r(\delta-o(1))} .
 $$
-This immediately implies that  $P_{\SIBM} (\dist(\sigma, \Gamma)<n^{\theta} ) = 1- o(1)$ for any $\delta>0$.
+This immediately implies that  $P_{\SIBM} (\dist(\sigma, S_k(X)))<n^{\theta} ) = 1- o(1)$ for any $\delta>0$.
 Since $g(\beta)<1$ for all $0<\beta\le\beta^\ast$,
 we have $P_{\SIBM} (\dist(\sigma, S_k(X))<n^{\theta} ) = 1- o(1)$ for all $\theta\in (g(\beta), 1)$.
 This improves upon the upper bound 
@@ -416,7 +423,7 @@ We prove that the number of samples needed for exact recovery of $X$ is at least
 Let $a>b>0$ and $\alpha,\beta>0$ be constants. Let $m$ be a positive integer that is upper bounded by some polynomial of $n$.
 Let 
 $$
-(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n, \alpha,\beta, m) .
+(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log n/n, b\log n/n, \alpha,\beta, m) .
 $$
 If $\alpha < b\beta$, then for any (arbitrarily large) $C>0$ and $0<\delta<1$, there exists $n_0(r)$ such that for all even integers $n>n_0(\delta, C)$,
 $$
@@ -433,9 +440,8 @@ $$
 For the case $\alpha < b \beta$, we only need to show $P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n
  \Big) \leq n^{-C}$.
- Let the event $M_1:= \exists \bar{\sigma}$ satisfying the condition of Lemma \ref{lem:small}
-  $s.t. P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$.
- Then by union bound, we have $P_{G}(M_1) \leq k^n\exp(-\tau(\alpha, \beta )n \log^{1-\delta} n )$ from Lemma \ref{lem:small}.
+ Let the event $M_1(G): \exists \bar{\sigma} \,s.t. P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$.
+Then by Lemma \ref{lem:small} and union bound, we have $P_{G}(M_1) \leq k^n\exp(-\tau(\alpha, \beta )n \log^{1-\delta} n )$.
  
 \begin{align*}
 &P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
@@ -443,25 +449,29 @@ For the case $\alpha < b \beta$, we only need to show $P_{\SIBM} \Big(\dist(\bar
 &\leq
 P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma')= \mathbf{1}_n, G \not\in M_1^c\Big) + P_G(M_1) \\
-&\leq \sum_{G \in M_1^c} P(G) k^n \exp(-Cn)P_{\sigma|G}(\sigma=\mathbf{1}_n) + P_G(M_1) \\
+&\leq \sum_{G \in M_1^c} P(G) k^n\exp(-Cn)P_{\sigma|G}(\sigma=\mathbf{1}_n) + P_G(M_1) \\
 & \leq k^n \exp(-Cn) (1 + o(1)) \leq n^{-r} \textrm{ for } C> \log k
 \end{align*}
 The case $\alpha > b \beta$ can be proved in the same way as above by applying Lemma \ref{lem:sigmaX}.
 \end{proof}
 \begin{lemma}\label{lem:small}
-	$\alpha< b \beta$. When $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Then
+	Suppose $\alpha< b \beta$ and $\bar{\sigma}$ satisfies $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$
+	where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$. Then the event
 	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$
-	happens with probability less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
+	happens with probability (w.r.t. SSBM) less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
 \end{lemma}
 \begin{proof}
 	Let $n_r = |\{\bar{\sigma}_i = w^r | i\in [n] \}|$. Then $n_0 \geq n_r$ for $r=1, \dots, k-1$ since  $\arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n$.
-	WLOG, suppose $n_0 \geq n_1 \dots \geq n_{k-1}$.
-	We are concerned with the number $N_{\bar{\sigma}} = \frac{1}{2}(n(n-1) - \sum_{r=0}^{k-1} n_r(n_r-1))
+	WLOG, we suppose $n_0 \geq n_1 \dots \geq n_{k-1}$.
+	Define $N_{\bar{\sigma}} = \frac{1}{2}(n(n-1) - \sum_{r=0}^{k-1} n_r(n_r-1))
 	=\frac{1}{2}(n^2 - \sum_{r=0}^{k-1} n_r^2)$.
 	Taking the $\log$ on both sides of $P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = \mathbf{1}_n)$ we can get
 	\begin{equation}\label{eq:small}
-	(\beta + \frac{\alpha \log n}{n}) \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j} Z_{ij} \leq \frac{\alpha \log n}{n} N_{\bar{\sigma}} + C n
+	(\beta + \frac{\alpha \log n}{n})
+	\left( \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i = X_j} Z_{ij} + \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i \neq X_j} Z'_{ij} \right)
+	\leq \frac{\alpha \log n}{n} N_{\bar{\sigma}} + C n
 	\end{equation}
+	where $Z_{ij} i.i.d \sim \textrm{Bernoulli}(\frac{a\log n}{n})$ and $Z'_{ij} i.i.d. \sim \textrm{Bernoulli}(\frac{b \log n}{n})$.
 	
 	Firstly we estimate the order of $N_{\bar{\sigma}}$, obviously $N_{\bar{\sigma}} \leq \frac{1}{2} n^2$.
 	Using the conclusion in Appendix A of \cite{chen2016information} we have
@@ -472,39 +482,45 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	n^2 - 2n_0(n-n_0) & n_0 > \frac{n}{2}
 	\end{cases}
 	\end{equation}
-	We have $n_0 \leq n - \frac{n}{\log^{\delta} n}$ and $n_0 \geq \frac{n}{k}$. When $n_0 > \frac{n}{2}$ we take $n_0 = n - \frac{n}{\log^{1/3} n}$
-	and we have $N_{\bar{\sigma}} \geq n_0 (n - n_0) = \frac{n^2}{\log^{\delta} n}(1+o(1))$. When $n_0 < \frac{n}{2}$ we take $n_0 = \frac{n}{2}$ such that
-	$N_{\bar{\sigma}} \geq \frac{n^2}{4}$. So generally we have $\frac{n^2}{\log^{\delta} n}(1+o(1)) \leq N_{\bar{\sigma}} \leq \frac{1}{2}n^2$.
-	The Bernoulli random variables are independent, taking either $Bern(\frac{a\log n}{n})$ or $Bern(\frac{b \log n}{n})$ depending on whether
-	$X_i$ equals to $X_j$.
-	Since $\frac{\log n}{n} N_{\bar{\sigma}}$ is dominated than $Cn$ we neglect inferior terms to rewrite \eqref{eq:small} as
-	\begin{equation}
-	\sum_{ \bar{\sigma}_i  \neq \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n}(1+o(1))
-	\end{equation}
-	Let $N_1$ be the number of random variables of $Z_{ij} \sim Bern(\frac{a\log n}{n})$.
-	and $N_2 = N_{\bar{\sigma}} - N_1$ is that of $Z_{ij} \sim Bern(\frac{b\log n}{n})$.
+	By assumption of $\dist(\bar{\sigma}, \mathbf{1}_n) \geq \frac{n}{\log^{\delta} n}$, we have $n_0 \leq n - \frac{n}{\log^{\delta} n}$
+	and $n_0 \geq \frac{n}{k}$ follows from $n_0 \geq n_r$.
+	When $n_0 > \frac{n}{2}$,
+	we have $N_{\bar{\sigma}} \geq n_0 (n - n_0) \geq \frac{n^2}{\log^{\delta} n}(1+o(1))$.
+	The second inequality is achieved if $n_0 = n - \frac{n}{\log^{1/3} n}$.
+	When $n_0 < \frac{n}{2}$,
+	$N_{\bar{\sigma}} \geq \frac{n^2 - nn_0}{2} \geq \frac{n^2}{4}$ and the second inequality is achieved when $n_0 = \frac{n}{2}$.
+	So generally we have $\frac{n^2}{\log^{\delta} n}(1+o(1)) \leq N_{\bar{\sigma}} \leq \frac{n^2}{4}$.
 	
-	Using Chernoff Inequality we have
+	Since $Cn = o(\frac{\log n}{n} N_{\bar{\sigma}})$ we can rewrite \eqref{eq:small} as
+	\begin{equation}
+	\left( \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i = X_j} -Z_{ij} + \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i \neq X_j} -Z'_{ij} \right)\geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n}(1+o(1))
+	\end{equation}
+	Let $N_1 = \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i = X_j} 1$
+	and $N_2 = \sum_{\bar{\sigma}_i  \neq \bar{\sigma}_j, X_i \neq X_j} 1 = N_{\bar{\sigma}} - N_1$
+	
+	Using Chernoff inequality we have
 	\begin{align*}
-	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})& \leq (E[\exp(-s Z_{ij})])^{N_1} (E[-exp(-s Z_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1))) \\
-	&= \exp( \frac{\log n}{n}(1+o(1))(\exp(-s)-1)(aN_1 + bN_2)+\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1)))
+	P(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})&
+	\leq (\mathbb{E}[\exp(-s Z_{ij})])^{N_1} (\mathbb{E}[\exp(-s Z'_{ij})])^{N_2} \exp(\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1))) \\
+	&= \exp( \frac{\log n}{n}(1+o(1))(e^{-s}-1)(aN_1 + bN_2)+\frac{\alpha}{\beta} \frac{\log n N_{\bar{\sigma}} s}{n}(1+o(1)))
 	\end{align*}
-	Since $s > 0$, we further have
+	Since $s > 0$ and $a>b$, we further have
 	\begin{align*}
-	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})
-	& \leq \exp( \frac{N_{\bar{\sigma}}\log n }{n}(b(\exp(-s)-1)+ \frac{\alpha}{\beta}s + o(1))) 
+	P(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})
+	& \leq \exp( \frac{N_{\bar{\sigma}}\log n }{n}(b(e^{-s}-1)+ \frac{\alpha}{\beta}s + o(1))) 
 	\end{align*}
 	Let $h_b(x) = x - b -x\log \frac{x}{b}$, which satisfies $h_b(x) < 0$ for $0<x<b$,
 	and take $s=-\log\frac{\alpha}{b\beta} > 0$, using 
 	$N_{\bar{\sigma}} \geq \frac{n^2}{\log^{1/3} n}$ we have
 	\begin{align*}
-	\Pr(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})&\leq \exp( N_{\bar{\sigma}} \frac{\log n}{n} h_b(\frac{\alpha}{\beta})(1+o(1))) \\
+	P(\sum_{ \bar{\sigma}_i  = \bar{\sigma}_j } -Z_{ij} \geq -\frac{\alpha}{\beta}\frac{\log n N_{\bar{\sigma}}}{n})&\leq \exp( N_{\bar{\sigma}} \frac{\log n}{n} h_b(\frac{\alpha}{\beta})(1+o(1))) \\
 	& \leq \exp (h_b(\frac{\alpha}{\beta}) n \log^{1-\delta} n (1+o(1)))
 	\end{align*}
 \end{proof}
 \begin{lemma}\label{lem:minus}
 	For SSBM$(n,k,p,q)$, suppose the ground truth label is $X$ while $\bar{\sigma}$ differs from $X$ in $|\cI|$ coordinate.
-	Let $I_{ij} = |\{r\in [n] | X_r = w^i, \sigma_r = w^j \}$ for $i\neq j$ and $I_{ii} = 0$.
+	Let $I_{ij} = |\{r\in [n] | X_r = w^i, \sigma_r = w^j \}$ for $i\neq j$ and $I_{ii} = 0$. We further denote the row sum as $I_i = \sum_{j=0}^{k-1} I_{ij}$ and
+	the column sum as $I'_i = \sum_{j=0}^{k-1} I_{ji}$.
 	Then
 	\begin{equation}\label{eq:general_expansion}
 \frac{P_{\sigma|G}(\sigma=\bar{\sigma})}{P_{\sigma|G}(\sigma=X)} = \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] - \frac{\alpha \log n}{n} N_{\bar{\sigma}})
@@ -512,17 +528,15 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	where 
 	\begin{align}
 	N_{\bar{\sigma}} &= \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 \label{eq:N_w} \\
-	B_{\bar{\sigma}} & \sim Binom(\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
-	A_{\bar{\sigma}} & \sim Binom(\frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
+	B_{\bar{\sigma}} & \sim \textrm{Bernoulli}(\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
+	A_{\bar{\sigma}} & \sim \textrm{Bernoulli}(\frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
 	\end{align}
-	We write the row sum $I_i = \sum_{j=0}^{k-1} I_{ij}$ and column sum $I'_i = \sum_{j=0}^{k-1} I_{ji}$.
 \end{lemma}
 \begin{proof}
 	$$ \log P_{\sigma|G}(\sigma=\bar{\sigma}) = (\beta + \frac{\alpha \log n}{n}) \sum_{\bar{\sigma}_i = \bar{\sigma}_j} Z_{ij}
 	- \frac{\alpha \log n}{n} \sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1  - \log Z_G(\alpha, \beta)
 	$$
 	where $Z_{ij}$ is Bernoulli random variable which takes value 1 if there is an edge between $i$ and $j$.
-	
 	For $\sigma = X$, we have
 	\begin{align*}
 	\sum_{X_i = X_j} Z_{ij} &= \sum_{X_i = X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij} + \sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij} \\
@@ -531,44 +545,52 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	For $\sigma = \bar{\sigma}$, we have
 	\begin{align*}
 	\sum_{\bar{\sigma}_i = \bar{\sigma}_j} Z_{ij} &= \sum_{X_i = X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij} + \sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij} \\
-	\sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1 &= \frac{1}{2} \sum_{i=0}^{k-1} (\frac{n}{k} - I_i + I_i') ( \frac{n}{k} - 1 - I_i + I_i')
+	\sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1 &= \frac{1}{2} \sum_{i=0}^{k-1} (I'_i + \frac{n}{k} - I_i) ( I'_i + \frac{n}{k} - I_i - 1)
 	\end{align*}
+	The term $|\{r\in [n] | X_r = \omega^i \}| = \frac{n}{k}$,
+	$|\{r\in [n] | X_r = \omega^i, \sigma_r \neq \omega^i \}| = I_i$,
+	$|\{r\in [n] | X_r \neq \omega^i, \sigma_r = \omega^i \}| = I'_i$.
+	Therefore,  $|\{r\in [n] | \sigma_r = \omega^i \}| = I'_i + \frac{n}{k} - I_i $.
 	Therefore, we get
 	$N_{\bar{\sigma}} = \sum_{\bar{\sigma}_i = \bar{\sigma}_j} 1  -\sum_{X_i = X_j} 1 = \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 $.
-	On the other hand, for $Z_{ij}$ in the sum $\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim Bern(q)$ and
-	$\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i' + \frac{1}{2} I'^2_i ]$;
-	for $Z_{ij}$ in the sum $\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim Bern(p)$ and
-	$\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i + \frac{1}{2} I^2_i ]$.
+	On the other hand, we show that $B_{\bar{\sigma}} - A_{\bar{\sigma}} = \sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij} - \sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij}$.
+	for $Z_{ij}$ in the sum $\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim \textrm{Bernoulli}(q)$ and
+	$\sum_{X_i \neq X_j, \bar{\sigma}_i = \bar{\sigma}_j} 1 = \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i' + \frac{1}{2} \sum_{j=0}^{k-1} I_{ji}(I'_i - I_{ji}) ]
+	=\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) $;
+	for $Z_{ij}$ in the sum $\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} Z_{ij}$, $Z_{ij} \sim \textrm{Bernoulli}(p)$ and
+	$\sum_{X_i = X_j, \bar{\sigma}_i \neq \bar{\sigma}_j} 1
+	= \sum_{i=0}^{k-1}[(\frac{n}{k} - I_i) I_i + \frac{1}{2} \sum_{j=0}^{k-1} I_{ij}(I_i - I_{ij}) ] 
+	= \frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij})$.
 \end{proof}
 \begin{lemma}\label{lem:sigmaX}
-		When $\dist(\bar{\sigma}, X) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in S_k(X)} \dist(\bar{\sigma}, \sigma') = X$. Show that
+		Let $\alpha > b \beta$. When $\dist(\bar{\sigma}, X) \geq \frac{n}{\log^{\delta} n}$ where $0<\delta < 1$ and $\arg\,\min_{\sigma'\in S_k(X)} \dist(\bar{\sigma}, \sigma') = X$. Show that
 	$P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = X)$
-	happens with probability less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
+	happens with probability (w.r.t. SSBM) less than $\exp(-\tau(\alpha,\beta) n \log^{1-\delta} n )$ where $C$ is an arbitrary constant, $\tau(\alpha,\beta)$ is a positive number.
 \end{lemma}
 \begin{proof}
-	Using Lemma \ref{lem:minus} we only need to consider the event:
+	Using Lemma \ref{lem:minus}, $P_{\sigma | G}(\sigma = \bar{\sigma} ) > \exp(-Cn) P_{\sigma | G}(\sigma = X)$ reduces to
 	\begin{equation}\label{eq:BwA}
 	(\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] >  \frac{\alpha \log n}{n} N_{\bar{\sigma}}  - Cn
 	\end{equation}
-	We divide the cases for $\bar{\sigma}$ to two cases:
+	We claim that $\bar{\sigma}$ must satisfy at least one of the following two conditions:
 	\begin{enumerate}
 		\item $\exists i\neq j$ s.t. $\frac{1}{k(k-1)}\frac{n}{\log^{\delta} n} \leq I_{ij} \leq \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$
 		\item $\exists i \neq j$ s.t. $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ and $I_{ji} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$
 	\end{enumerate}
 	If we have $\sigma = \bar{\sigma}$ which belongs to neither of the above two cases, then from condition 1 we have
-	$I_{ij} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ or $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
-	Since $\sum_{i,j} I_{ij} = |\cI| \geq \frac{n}{\log^{\delta} n}$ there should exist $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
+	$I_{ij} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ or $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$ for any $0 \leq i,j\leq k-1$.
+	Since $\sum_{i,j} I_{ij} = |\cI| \geq \frac{n}{\log^{\delta} n}$ there exists $i,j$ such that $I_{ij} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
 	Under such condition, if $I_{ji} > \frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
 	Let $X'$ be the vector which exchanges value of $w^i$ with $w^j$ in $X$. We consider
 	\begin{align*}
-	\dist(\bar{\sigma}, X') - \dist(\bar{\sigma}, X) &= |\{ r \in [n]|X=w^i, \bar{\sigma}_r \neq w^j \}| + |\{ r \in [n]|X=w^j, \bar{\sigma}_r \neq w^i \}| \\
-	&-|\{ r \in [n]|X=w^i, \bar{\sigma}_r \neq w^i \}| - |\{ r \in [n]|X=w^j, \bar{\sigma}_r \neq w^j \}| \\
+	\dist(\bar{\sigma}, X') - \dist(\bar{\sigma}, X) &= |\{ r \in [n]|X_r=w^i, \bar{\sigma}_r \neq w^j \}| + |\{ r \in [n]|X_r=w^j, \bar{\sigma}_r \neq w^i \}| \\
+	&-|\{ r \in [n]|X_r=w^i, \bar{\sigma}_r \neq w^i \}| - |\{ r \in [n]|X_r=w^j, \bar{\sigma}_r \neq w^j \}| \\
 	& = \frac{n}{k} - I_{ij} +  \frac{n}{k} - I_{ji} - I_i - I_j \\
 	& < \frac{2}{k(k-1)}\frac{n}{\log^{\delta} n} - I_i - I_j < 0
 	\end{align*}
 	which contracts with that $\bar{\sigma}$ is nearest to $X$.
 	Therefore, we should have $I_{ji} < \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n}$.
-	Now the $(i, j)$ pair satisfies condition 2, which contracts with $\bar{\sigma}$ belongs to neither of the two conditions.
+	Now the $(i, j)$ pair satisfies condition 2, which contracts with that $\bar{\sigma}$ satisfies neither of the two conditions.
 	
 	Under condition 1, we can get a lower bound on $|A_{\bar{\sigma}}|$ from \eqref{eq:A_w}. Let $I'_{ij} = I_{ij}$ for $i\neq j$ and
 	$I'_{ii} = \frac{n}{k} - I_i$. Then we can simply $|A_{\bar{\sigma}}|$ as:
@@ -579,15 +601,15 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	We further have $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{n}{k} - I_{ij})^2 + I^2_{ij}$ where
 	$I_{ij}$ satisfies condition 1. Therefore, $\sum_{i=0}^{k-1} \sum_{j=0}^{k-1} I'^2_{ij} \leq (k-1)\frac{n^2}{k^2} + (\frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2
 	+ (\frac{n}{k} - \frac{1}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{k} - \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
-	As a result, $A_{\bar{\sigma}} \geq \frac{2n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
+	As a result, $A_{\bar{\sigma}} \geq \frac{n^2}{k^2 (k-1)\log^\delta n}(1+o(1))$.
 	
-	Under condition 2, we can get a lower bound on $N_{\bar{\sigma}}$ from \eqref{eq:N_w}: $N_{\bar{\sigma}} \geq \frac{1}{2}(\frac{n}{k} - \frac{2}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{k^2}(1+o(1))$.
+	Under condition 2, we can get a lower bound on $N_{\bar{\sigma}}$ from \eqref{eq:N_w}: $N_{\bar{\sigma}} \geq \frac{1}{2}(\frac{n}{k} - \frac{2}{k(k-1)}\frac{n}{\log^{\delta} n})^2 = \frac{n^2}{2k^2}(1+o(1))$.
 	
-	Now we use Chernoff bound to process inequality \eqref{eq:BwA}, we can omit $\frac{\alpha \log n}{n}$ on the left hand since it is far smaller than $\beta$:
+	Now we use Chernoff inequality to bound \eqref{eq:BwA}, we can omit $\frac{\alpha \log n}{n}$ on the left hand since it is far smaller than $\beta$:
 	\begin{align*}
-	&\Pr([B_{\bar{\sigma}} - A_{\bar{\sigma}}] >  \frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)
-	\leq (E[\exp(sZ_{ij})])^{|B_{\bar{\sigma}}|}(E[\exp(-sZ_{ij})])^{|A_{\bar{\sigma}}|} \exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
-	& =\exp(|B_{\bar{\sigma}}|(\frac{b\log n}{n})(e^s -1)) \exp(|A_{\bar{\sigma}}|)[\frac{a\log n}{n}] (e^{-s} - 1))\exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
+	&P_G([B_{\bar{\sigma}} - A_{\bar{\sigma}}] >  \frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)
+	\leq (\mathbb{E}[\exp(sZ_{ij})])^{|B_{\bar{\sigma}}|}(\mathbb{E}[\exp(-sZ_{ij})])^{|A_{\bar{\sigma}}|} \exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
+	& =\exp(|B_{\bar{\sigma}}|\frac{b\log n}{n}(e^s -1)) \exp(|A_{\bar{\sigma}}|\frac{a\log n}{n} (e^{-s} - 1))\exp(-s(\frac{\alpha \log n}{\beta n} N_{\bar{\sigma}}  - \frac{C}{\beta}n)) \\
 	\end{align*}
 	Using $|B_{\bar{\sigma}}| = N_{\bar{\sigma}} + |A_{\bar{\sigma}}|$ we can further simplify the exponential term as
 	$$
@@ -595,8 +617,8 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	N_{\bar{\sigma}} (b(e^s - 1)-s\frac{\alpha}{\beta})]  + s \frac{C}{\beta}n
 	$$
 	Now we investigate the function $g_1(s) = b(e^s -1)+ a(e^{-s} - 1)$ and $g_2(s) = b(e^s - 1)-s\frac{\alpha}{\beta}$,
-	both takes zero values at $0$ and $g_1'(s) = (be^s - ae^{-s}), g_2'(s) = be^s -\frac{\alpha}{\beta}$.
-	Therefore $g_1'(0) = b-a<0, g_2'(0) = b - \frac{\alpha}{\beta} < 0$ and we can choose $0<s^*$ such that $g_1(s^*) < 0,g_2(s^*) < 0$.
+	both takes zero values at $s=0$ and $g_1'(s) = (be^s - ae^{-s}), g_2'(s) = be^s -\frac{\alpha}{\beta}$.
+	Therefore $g_1'(0) = b-a<0, g_2'(0) = b - \frac{\alpha}{\beta} < 0$ and we can choose $s^*>0$ such that $g_1(s^*) < 0,g_2(s^*) < 0$.
 	To compensate the influence of the term $sCn/\beta$ we only need to make sure that the order of $\frac{\log n}{n} \min\{|A_{\bar{\sigma}}|, N_{\bar{\sigma}}\}$ is larger than $n$.
 	This corresponds to the two conditions we have used.
 \end{proof}
@@ -605,26 +627,26 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 Let $a>b>0$ and $\alpha,\beta>0$ be constants. Let $m$ be a positive integer that is upper bounded by some polynomial of $n$.
 Let 
 $$
-(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log n/n, b\log n/n,\alpha,\beta, m) .
 $$
 If $\alpha<b\beta$, then it is not possible to recover $X$ from the samples when $m=O(\log^{\delta}(n))$ for $0 < \delta < 1$.
 \end{proposition}
 
 \begin{proof}
-First observe that there are $\frac{n!}{(n/k)^k}$ balanced partitions, so one needs at least $\log_k \frac{n!}{(n/k)^k}=\Theta(n)$ bits to recover $X$.
-By Proposition~\ref{prop:1}, with probability $1-o(n^{-4})$, $\dist(\sigma^{(i)}, \Theta)< n/\log^{\delta}(n)$
+First observe that there are $\frac{n!}{(\frac{n}{k}!)^k}$ balanced partitions, so one needs at least $\log_k \frac{n!}{(\frac{n}{k}!)^k}=\Theta(n)$ bits to recover $X$.
+By Proposition~\ref{prop:1}, with probability $1-o(n^{-4})$, $\dist(\sigma^{(i)}, S_k(X))< n/\log^{\delta}(n)$
 for all $i\in[m]$. Therefore, each $\sigma^{(i)}$ takes at most
 $$
 T:=\sum_{j=0}^{n/\log^{\delta}(n)} \binom{n}{j}(k-1)^j
 $$
-values, so each $\sigma^{(i)}$ contains at most $\log_k T$ bits of information. Next we prove that $\log_k T=O(\frac{\log\log(n)}{\log^{\delta}(n)} n)$, so we need at least $\Omega(\frac{\log^{\delta}(n)}{\log\log(n)})$ samples to recover $X$, which proves the proposition.
+values, so each $\sigma^{(i)}$ contains at most $\log_k T$ bits of information. Next we prove that $\log_k T=O(\frac{\log\log n}{\log^{\delta}(n)} n)$, so we need at least $\Omega(\frac{\log^{\delta}(n)}{\log\log n})$ samples to recover $X$, which proves the proposition.
 
 In order to upper bound $T$, we define a binomial random variable $Y\sim\Binom(n,\frac{k-1}{k})$. Then
 $$
 T=k^n P(Y\le n/\log^{\delta}(n))
 = k^n P(-Y\ge -n/\log^{\delta}(n)).
 $$
-The moment generating function of $-Y$ is $(\frac{1}{k}+\frac{k-1}{k}e^{-s})^n$. By Chernoff bound, for any $s>0$,
+The moment generating function of $-Y$ is $(\frac{1}{k}+\frac{k-1}{k}e^{-s})^n$. By Chernoff inequality, for any $s>0$,
 $$
 P(-Y\ge - n/\log^{\delta}(n)) \le
 (\frac{1}{k}+\frac{k-1}{k}e^{-s})^n
@@ -636,7 +658,7 @@ $$
 \log_k T\le n\Big(\log_k(1+(k-1)e^{-s})
 +\frac{ks}{\log^{\delta}(n)}\log_k e \Big) .
 $$
-Taking $s=\log\log(n)$ into this bound, we obtain that $\log_k T=O(\frac{\log\log(n)}{\log^{\delta}(n)} n)$.
+Taking $s=\log\log n$ into this bound, we obtain that $\log_k T=O(\frac{\log\log n}{\log^{\delta}(n)} n)$.
 \end{proof}
 
 \section{$\sigma \in S_k(X)$ with probability $1-o(1)$ when $\beta>\beta^\ast$} \label{sect:equal}
@@ -644,22 +666,27 @@ Taking $s=\log\log(n)$ into this bound, we obtain that $\log_k T=O(\frac{\log\lo
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\beta>\beta^\ast$ and $\alpha>b\beta$. 
 Let 
 $
-(X,G,\sigma) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
+(X,G,\sigma) \sim \SIBM(n,k, a\log n/n, b\log n/n,\alpha,\beta, 1) .
 $
 Then
 $$
 P_{\SIBM}(\sigma \in S_k(X))=1-o(1) .
 $$
 \end{proposition}
-We have proved in Proposition~\ref{prop:1} that if $\alpha>b\beta$, then $\dist(\sigma \in \Gamma) \le n/\log^{\delta}(n)$
-with probability $1-o(1)$. By the symmetric property, to prove Proposition \ref{prop:1}
-we only need to show $P_{\SIBM}( 0 <\dist(\sigma, X) < \frac{n}{\log^{\delta} n})=o(1) $.
+We have proved in Proposition~\ref{prop:1} that if $\alpha>b\beta$, then $\dist(\sigma, S_k(X)) \le n/\log^{\delta}(n)$
+with probability $1-o(1)$. Let 
+\begin{equation}\label{eq:DsigmaX}
+D(\sigma, X):= \{X = \arg\dist_{X'\in S(X)}(\sigma, S(X'))\}
+\end{equation}
+
+By the symmetric property, to prove Proposition \ref{prop:1}
+we only need to show $P_{\SIBM}( 0 <\dist(\sigma, X) < \frac{n}{\log^{\delta} n} | D(\sigma, X))=o(1) $.
 This is guaranteed by the following proposition:
 \begin{proposition} \label{prop:big}
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\beta>\beta^\ast$ and $\alpha>b\beta$. 
 Let 
 $
-(X,G,\sigma) \sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
+(X,G,\sigma) \sim \SIBM(n,k,a\log n/n, b\log n/n,\alpha,\beta, 1) .
 $
 There is an integer $n_0$ such that for every even integer $n>n_0$ and  every integer $1\le r \le n/\log^{\delta}(n)$,
 there is a set $\cG^{(r)}$ for which
@@ -681,7 +708,7 @@ $$
 $$
 By the union bound,
 $$
-P(G\in\cG)\ge 1-2 \sum_{r=1}^{n/\log^{\delta}(n)} (k-1)^rn^{r\tilde{g}(\beta)/4}
+P_G(\cG)\ge 1-2 \sum_{r=1}^{n/\log^{\delta}(n)} (k-1)^rn^{r\tilde{g}(\beta)/4}
 > 1- \frac{2 (k-1)n^{\tilde{g}(\beta)/4}}{1-(k-1)n^{\tilde{g}(\beta)/4}}
 =1-o(1),
 $$
@@ -704,92 +731,95 @@ $$
 {P_{\sigma|G}(\sigma=X)}=
 \sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] - \frac{\alpha \log n}{n} N_{\bar{\sigma}})
 $$
-Let $\bar{W} = \{w, \dots, w^{k-1}\}$, $\Xi(v) = \{ \sigma | \dist(\sigma, X) = dim(v),  \sigma_{i_j} = v_j \cdot X_{i_j}, j \in [r] \}$, and we consider the event
+Let $\bar{W} = W\backslash\{1\} = \{w, \dots, w^{k-1}\}$, $\Xi(v) = \{ \sigma | \dist(\sigma, X) = r,  \sigma_{i_j} = v_j \cdot X_{i_j}, j \in [r] \}$,
+and we consider the event
 $$
 D(v, s): \sum_{\bar{\sigma} \in \Xi(v)} \exp((\beta + \frac{\alpha \log n}{n}) [B_{\bar{\sigma}} - A_{\bar{\sigma}}]) > s
 $$
 where $v \in \bar{W}^r$ and $|\Xi(v)|=\binom{n}{r}$.
 
-Following the main idea in Section \ref{sect:why}, we consider an enhanced conclusion of Lemma \ref{lem:fb}.
+Following the main idea in Section \ref{sect:why}, we consider an enhanced conclusion of Lemma \ref{lem:fb}:
 \begin{lemma}\label{lem:enhanced_fb}
 	For $t\in [\frac{1}{k}(b-a), 0]$
 	and $ |\cI| \le n/\log^{\delta}(n)$
 	\begin{equation} \label{eq:upmpt}
 	\begin{aligned}
-	& P(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t |\cI| \log(n))  \\
-	\le & \exp\Big(I\log(n)
-	\Big(f_{\beta}(t) - \beta t -1	+ O(\log^{-\delta}(n)) \Big)\Big) .
+	& P_G(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t |\cI| \log n)  \\
+	\le & \exp\Big(|\cI| \log n
+	\Big(f_{\beta}(t) - \beta t -1	+ O(\log^{-\delta} n) \Big)\Big) .
 	\end{aligned}
 	\end{equation}
 \end{lemma}
 \begin{proof}
-	By definition, $A_{\bar{\sigma}}\sim\Binom(|A_{\bar{\sigma}}|,\frac{a\log(n)}{n})$ and
-	$B_{\bar{\sigma}}\sim\Binom(|B_{\bar{\sigma}}|,\frac{b\log(n)}{n})$, and they are independent. For $s>0$, the moment generating function of $B_{\bar{\sigma}}-A_{\bar{\sigma}}$ for $ |\cI| \le n/\log^{\delta}(n)$ can be bounded from above as follows:
+	By definition, $A_{\bar{\sigma}}\sim\Binom(|A_{\bar{\sigma}}|,\frac{a\log n}{n})$ and
+	$B_{\bar{\sigma}}\sim\Binom(|B_{\bar{\sigma}}|,\frac{b\log n}{n})$, and they are independent. For $s>0$, the moment generating function of $B_{\bar{\sigma}}-A_{\bar{\sigma}}$ for $ |\cI| \le n/\log^{\delta}(n)$ can be bounded from above as follows:
 	\begin{align*}
-	 E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}] 
-	& =\Big(1-\frac{b\log(n)}{n}+\frac{b\log(n)}{n} e^s \Big)^{|B_{\bar{\sigma}}|}
-	\Big(1-\frac{a\log(n)}{n}+\frac{a\log(n)}{n} e^{-s} \Big)^{|A_{\bar{\sigma}}|}  \\
-	& = \exp(\frac{\log n}{n}(|B_{\bar{\sigma}}|(be^s - b) + |A_{\bar{\sigma}}|(ae^{-s}-a) + |B_{\bar{\sigma}}|O(\frac{\log n}{n}) ))
+	 \mathbb{E}[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}] 
+	& =\Big(1-\frac{b\log n}{n}+\frac{b\log n}{n} e^s \Big)^{|B_{\bar{\sigma}}|}
+	\Big(1-\frac{a\log n}{n}+\frac{a\log n}{n} e^{-s} \Big)^{|A_{\bar{\sigma}}|}  \\
+	& = \exp(\frac{\log n}{n}\left(|B_{\bar{\sigma}}|(be^s - b) + |A_{\bar{\sigma}}|(ae^{-s}-a) + |B_{\bar{\sigma}}|O(\frac{\log n}{n}) \right))
 	\end{align*}
 	Using the conclusion that $|B_{\bar{\sigma}}|=\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji})$ and
 	$|A_{\bar{\sigma}}| = \frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij})$.
-	By estimating the order of residual term, $|A_{\bar{\sigma}}| = \frac{n}{k}|\cI| + O(I^2)$,
-	 $|B_{\bar{\sigma}}| = \frac{n}{k}|\cI| + O(I^2)$.
+	By estimating the order of residual term, $|A_{\bar{\sigma}}| = \frac{n}{k}|\cI| + O(|\cI|^2)$,
+	 $|B_{\bar{\sigma}}| = \frac{n}{k}|\cI| + O(|\cI|^2)$.
 	 
 	\begin{align*}
-	E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}] & \le
-	\exp(\frac{\log n}{n}((\frac{n}{k}|\cI| + O(|\cI|^2))(be^s - b) +(\frac{n}{k} |\cI| + O(|\cI|^2))(ae^{-s}-a) + \frac{n}{k}|\cI|O(\frac{\log n}{n}) ))
+	\mathbb{E}[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}] & \le
+	\exp(\frac{\log n}{n}\left((\frac{n}{k}|\cI| + O(|\cI|^2))(be^s - b) +(\frac{n}{k} |\cI| + O(|\cI|^2))(ae^{-s}-a) + \frac{n}{k}|\cI|O(\frac{\log n}{n}) \right))
 	 \\
 	& =
-	\exp\Big(\frac{|\cI| \log(n)}{k}(a e^{-s}+b e^s-a-b +
+	\exp\Big(\frac{|\cI| \log n}{k}(a e^{-s}+b e^s-a-b +
 	O(\log^{-\delta}(n))) \Big),
 	\end{align*}
 	The last equality follows from the assumption that $ |\cI| \le n/\log^{\delta}(n)$.
-	By Chernoff bound, for $s>0$, we have
+	By Chernoff inequality, for $s>0$, we have
 	\begin{align*} 
-	& P(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t |\cI| \log(n))\le
-	\frac{E[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}]}{e^{st \log(n)}}  \\
-	\le & \exp\Big(\frac{|\cI|\log(n)}{k} \big(a e^{-s}+b e^s -kst -a-b
+	& P_G(B_{\bar{\sigma}}-A_{\bar{\sigma}}\ge t |\cI| \log n)\le
+	\frac{\mathbb{E}[e^{s(B_{\bar{\sigma}}-A_{\bar{\sigma}})}]}{e^{st \log n}}  \\
+	\le & \exp\Big(\frac{|\cI|\log n}{k} \big(a e^{-s}+b e^s -kst -a-b
 	+ O(\log^{-\delta}(n)) \big)\Big)  .
 	\end{align*}
-	The rest of the proof is to find $s^\ast$ to minimize $a e^{-s}+b e^s -kst$ and take $s^\ast$ into the above bound. 
+	The rest of the proof is to find $s^\ast$ to minimize $a e^{-s}+b e^s -kst$ and take $s^\ast$ into the above bound.
+	This part is similar to the proof of Proposition 5 in \cite{ye2020exact} and we do not repeat it here.
 	\end{proof}
+The probability of $D(v, s)$ can be controlled as follows:
 \begin{align*}
-&\Pr(D(v,s)) = 
-\Pr(D(v,s)| B_{\bar{\sigma}} - A_{\bar{\sigma}}   \geq 0, \exists \bar{\sigma} \in \Xi(v))
+&P_G(D(v,s)) = 
+P_G(D(v,s)| B_{\bar{\sigma}} - A_{\bar{\sigma}}   \geq 0, \exists \bar{\sigma} \in \Xi(v))
 \cdot I_1 \\
-&+ \Pr(D(v,s) , B_{\bar{\sigma}} - A_{\bar{\sigma}}  < 0, \forall   \bar{\sigma} \in \Xi(v))
+&+ P_G(D(v,s) , B_{\bar{\sigma}} - A_{\bar{\sigma}}  < 0, \forall   \bar{\sigma} \in \Xi(v))
  \\
 & \leq I_1
-+ \Pr(D(v,s), B_{\bar{\sigma}} - A_{\bar{\sigma}}    < 0, \forall \bar{\sigma} \in \Xi(v))
++ P_G(D(v,s), B_{\bar{\sigma}} - A_{\bar{\sigma}}    < 0, \forall \bar{\sigma} \in \Xi(v))
 \end{align*}
-where $I_1 = \Pr( B_{\bar{\sigma}} - A_{\bar{\sigma}}  \geq 0, \exists   \bar{\sigma} \in \Xi(v) )$.
+where $I_1 = P_G( B_{\bar{\sigma}} - A_{\bar{\sigma}}  \geq 0, \exists   \bar{\sigma} \in \Xi(v) )$.
 
 We can bound $I_1$ by choosing $t=0$ in Lemma \ref{lem:enhanced_fb}, we have
-$\Pr( B_{\bar{\sigma}} - A_{\bar{\sigma}} \ge 0 ) \leq \exp(-r\log n \frac{(\sqrt{a}-\sqrt{b})^2}{k})$.
+$P_G( B_{\bar{\sigma}} - A_{\bar{\sigma}} \ge 0 ) \leq \exp(-r\log n \frac{(\sqrt{a}-\sqrt{b})^2}{k})$.
 Then
 \begin{align*}
-I_1 \leq \sum_{\bar{\sigma} \in \Xi(v)} \Pr( B_{\bar{\sigma}} - A_{\bar{\sigma}} \geq 0) \leq \binom{n}{r} n^{-r\frac{(\sqrt{a}-\sqrt{b})^2}{k}}
+I_1 \leq \sum_{\bar{\sigma} \in \Xi(v)} P_G( B_{\bar{\sigma}} - A_{\bar{\sigma}} \geq 0) \leq \binom{n}{r} n^{-r\frac{(\sqrt{a}-\sqrt{b})^2}{k}}
 \leq n^{r(1-\frac{(\sqrt{a}-\sqrt{b})^2}{k})}
 \end{align*}
 For the second term,
 conditioned on $B_{\bar{\sigma}} - A_{\bar{\sigma}}    < 0, \forall \bar{\sigma} \in \Xi(v)$ we have
 \begin{align*}
-&\sum_{\bar{\sigma} \in \Xi(v)} \exp ( (\beta + \alpha \frac{\log n}{n})(B_{\bar{\sigma}} - A_{\bar{\sigma}} ) ) \\
+&\sum_{\bar{\sigma} \in \Xi(v)} \exp ( (\beta + \frac{\alpha \log n}{n})(B_{\bar{\sigma}} - A_{\bar{\sigma}} ) ) \\
 & = \sum_{tr\log n = -A_{\bar{\sigma}} }^{-1} \sum_{\bar{\sigma} \in \Xi(v)} \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}}  = tr \log n] \exp ( \beta  tr\log n)\leq \\ 
 &
-\sum_{tr\log n =\tau}^{-1} \sum_{\bar{\sigma} \in \Xi(v)}  \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}}  = tr \log n]
+\sum_{tr\log n =\lfloor\tau\rfloor}^{-1} \sum_{\bar{\sigma} \in \Xi(v)}  \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}}  = tr \log n]
 \exp ( \beta  tr\log n) + n^{r+r\beta(b-a)/k} \textrm{ using } |\Xi(v)| = \binom{n}{r} \leq n^r
 \end{align*}
 where $\tau =\frac{b-a}{k}r\log n$ in short. Therefore,
 \begin{align*}
-&\Pr(D(v,s), B_{\bar{\sigma}} - A_{\bar{\sigma}}  < 0, \forall \bar{\sigma} \in \Xi(v))  \\
-&\leq\Pr(\sum_{t\log n =\tau}^{-1}\sum_{\bar{\sigma} \in \Xi(v)} \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}} = tr\log n]\exp ( \beta  t\log n)  > \tilde{s} ) \\
-& \leq \mathbb{E}[\sum_{t\log n =\tau}^{-1}\sum_{\bar{\sigma} \in \Xi(v)} \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}} = tr\log n]\exp ( \beta  t\log n)] /  \tilde{s} \\
-& \leq \frac{a-b}{k}r\log n \cdot n^{rf_{\beta}(t) + o(1)} / \tilde{s} \textrm{ using Lemma \ref{lem:fb} }
+&P_G(D(v,s), B_{\bar{\sigma}} - A_{\bar{\sigma}}  < 0, \forall \bar{\sigma} \in \Xi(v))  \\
+&\leq P_G(\sum_{t\log n =\lfloor\tau\rfloor}^{-1}\sum_{\bar{\sigma} \in \Xi(v)} \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}} = tr\log n]\exp ( \beta  t\log n)  > \tilde{s} ) \\
+& \leq \mathbb{E}[\sum_{t\log n =\lfloor\tau\rfloor}^{-1}\sum_{\bar{\sigma} \in \Xi(v)} \mathbbm{1}[B_{\bar{\sigma}} - A_{\bar{\sigma}} = tr\log n]\exp ( \beta  t\log n)] /  \tilde{s} \\
+& \leq \lfloor\frac{a-b}{k}r\log n\rfloor \cdot n^{rf_{\beta}(t) + o(1)} / \tilde{s} \textrm{ using Lemma \ref{lem:fb} }
 \end{align*}
 where $\tilde{s} = s - n^{r+r\beta(b-a)/k}$. 
-Choosing $s = O(n^{r\tilde{g}(\beta)/2})$ and using the following conclusion, which is an ehanced version of Lemma
+Choosing $s = O(n^{r\tilde{g}(\beta)/2})$ and using the following conclusion, which is an enhanced version of Lemma
 \ref{lem:tilde_g}.
 \begin{lemma}[Elementary properties of function $g(\beta), \tilde{g}(\beta), f_{\beta}(t)$] \label{lm:ele}
 Let $g(\beta)$ be defined in \eqref{eq:gbeta}, $\tilde{g}(\beta)$ be defined in \eqref{eq:gbt} and $f_{\beta}(t)$ be defined in \eqref{eq:fbetat}. Assume that $\sqrt{a}-\sqrt{b}>\sqrt{k}$.
@@ -801,7 +831,7 @@ Then,
 \item Denote the other root as $\beta'$. Then
 $\beta^\ast< \frac{1}{2}\log\frac{a}{b} <\beta'$.
 
-\item $g(\beta)<0$ for all $\beta^\ast< \beta \le \frac{1}{2}\log\frac{a}{b}$.
+\item $g(\beta)<0$ for all $\beta^\ast< \beta \le \beta'$.
 
 \item $\tilde{g}(\beta)<0$ for all $\beta>\beta^\ast$.
 
@@ -811,22 +841,17 @@ $\beta^\ast< \frac{1}{2}\log\frac{a}{b} <\beta'$.
 
 \item $f_{\beta}(t)\le \tilde{g}(\beta)$ for all $t\le 0$.
 
-\item If $\beta>\beta^\ast$, $f_{\beta}(t)\le \tilde{g}(\beta)<0$ for all $t\le 0$.
-
 \end{enumerate}
 \end{lemma}
-
+Then we could get
 \begin{align*}
-\Pr( D(v,s)) \leq  n^{r-r\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{r\tilde{g}(\beta)/2 + o(1)} \leq 2n^{r\tilde{g}(\beta)/4}
+P_G( D(v,s)) \leq  n^{r-r\frac{(\sqrt{a}-\sqrt{b})^2}{k}} + O(\log n)  \cdot n^{r\tilde{g}(\beta)/2 + o(1)} \leq 2n^{r\tilde{g}(\beta)/4}
 \end{align*}
-Consider the event:
-$$
-D_r: \frac{P_{\sigma | G}(\dist(\sigma, X) = r)}{P_{\sigma | G}(\sigma = X)} > n^{r\tilde{g}(\beta)/2},
-$$
-by union bound
+Therefore,
 \begin{align*}
-&P(\sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] - \frac{\alpha \log n}{n} N_{\bar{\sigma}}) > n^{r\tilde{g}(\beta)/2}) \\
-&\leq P(\sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}]) > n^{r\tilde{g}(\beta)/2}) \\
+P_G(\frac{P_{\sigma | G}(\dist(\sigma, X) = r)}{P_{\sigma | G}(\sigma = X)} \geq n^{r\tilde{g}(\beta)/2})
+&=P(\sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}] - \frac{\alpha \log n}{n} N_{\bar{\sigma}}) \geq n^{r\tilde{g}(\beta)/2}) \\
+&\leq P(\sum_{\dist(\bar{\sigma}, X)=r} \exp((\beta + \frac{\alpha \log n}{n})[B_{\bar{\sigma}} - A_{\bar{\sigma}}]) \geq n^{r\tilde{g}(\beta)/2}) \\
 &\leq \sum_{v \in \bar{W}^r} P(D(v, \frac{1}{(k-1)^r} n^{r\tilde{g}(\beta)/2})) \\
 & \leq 2(k-1)^r n^{r\tilde{g}(\beta)/4}
 \end{align*}
@@ -841,9 +866,9 @@ by union bound
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $\beta\le\beta^\ast$. Let $m$ be a constant integer that is independent of $n$.
 Let 
 $$
-(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log n/n, b\log n/n,\alpha,\beta, m) .
 $$
-Then for any $g(\beta) < \theta < 1$ and any (arbitrarily large constant) $C>0$, there exists $n_0(\theta, C)$ such that for all even integers $n>n_0(\theta, C)$,
+Then for any $g(\beta) < \theta < 1$ and any (arbitrarily large constant) $C>0$, there exists $n_0(\theta, C)$ such that for all integers $n>n_0(\theta, C)$,
 $$
 P_{\SIBM} \Big(\dist(\sigma^{(i)},S_k(X))<n^{\theta}
 \text{~for all~} i\in[m] \Big) \ge 1- n^{-C} .
@@ -869,7 +894,7 @@ This is guaranteed by the following proposition:
 Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
 Let 
 $$
-(X,G,\sigma) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n,\alpha,\beta, 1) .
+(X,G,\sigma) \sim \SIBM(n, k, a\log n/n, b\log n/n,\alpha,\beta, 1) .
 $$
 For any $g(\beta)<\theta<1$, there exists $n_0(\theta)$ such that
 for every even integer $n>n_0(\theta)$ and
@@ -894,7 +919,7 @@ $$
 $$
 By the union bound,
 $$
-P(G\in\cG_\theta)\ge 1-2 \sum_{r=n^{\theta}}^{n/\log^{\delta}(n)} (k-1)^rn^{-r\delta'}
+P_G(\cG_\theta)\ge 1-2 \sum_{r=n^{\theta}}^{n/\log^{\delta}(n)} (k-1)^rn^{-r\delta'}
 > 1-4 \Big(\frac{k-1}{n^{\delta'}}\Big)^{n^\theta}
 >1-n^{-C}
 $$
@@ -909,19 +934,20 @@ Thus we have shown that Proposition~\ref{prop:43} is implied by Proposition~\ref
 \begin{proof}
 The proof is similar with that of Proposition \ref{prop:big} with the exception that we use a tight bound
 $\binom{n}{r} < (\frac{en}{r})^r$ instead of $\binom{n}{r}< n^r$. For $r>n^{\theta}$, the former inequality
-can be transformed into $\binom{n}{r} < n^{r(1-\theta) + o(1)}$. By taking $s=n^{r(g(\beta) - \theta)/2}$ we can prove
+can be transformed into $\binom{n}{r} < n^{r(1-\theta) + o(1)}$. By taking $s=n^{r(g(\beta) - \theta)/2}$
+in the proof we can get
 Proposition \ref{prop:xz}.
 \end{proof}
 
 \section{Samples differ from $S_k(X)$ in $\Theta(n^{g(\beta)})$ coordinates when $\beta\le\beta^\ast$}  \label{sect:struct}
 Recall the definitions of $A^r_i$ in \eqref{eq:Ari}.
 By definition,
-$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log(n)}{n})$ and $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log(n)}{n})$ for $1\leq r \leq k-1$,
+$A^0_i\sim \Binom(\frac{n}{k}-1,\frac{a\log n}{n})$ and $A^r_i\sim \Binom(\frac{n}{k}, \frac{b\log n}{n})$ for $1\leq r \leq k-1$,
 and they are independent.
 Also note that $A^r_i$ are functions of the underlying graph $G$.
 
 \begin{proposition}  \label{prop:con}
-Let $(X,G)\sim \SSBM(n,k, a\log(n)/n, b\log(n)/n)$, where $\sqrt{a}-\sqrt{b} > \sqrt{k}$.
+Let $(X,G)\sim \SSBM(n,k, a\log n/n, b\log n/n)$, where $\sqrt{a}-\sqrt{b} > \sqrt{k}$.
 Suppose that $0< \beta \le \beta^\ast$.
 Then there is a set $\cG_{1}$ such that (i) $P(G \in \cG_{1}) = 1-O({1-(\sqrt{a}-\sqrt{b})^2/k})$ and (ii) for every $G\in \cG_{1}$, 
 $$
@@ -934,7 +960,7 @@ $$
 Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n] \}$.
 By \eqref{eq:I_1}, we have $P(G\in\cG_1)=1-O(n^{1-(\sqrt{a}-\sqrt{b})^2/k})$. We will prove that
 \begin{align}
-& E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
+& \mathbb{E} \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
 = (1+o(1)) n^{g(\beta)}  , \label{eq:cg} \\
 & \Var \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
 = o (n^{g(\beta)} ) .  \label{eq:sw}
@@ -950,250 +976,79 @@ Now we are left to prove \eqref{eq:sw}. Observe that
 = & \sum_{i=1}^n  \Var \big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] \\
 & \hspace*{1.2in} + \sum_{i,j\in[n],i\neq j}
 \Cov(\exp\big(\beta (A^r_i-A^0_i) \big), \exp\big(\beta (A^r_j-A^0_j) \big) ~\big|~ G\in\cG_1 ) \\
-\le & \sum_{i=1}^n E \big[ \exp\big(2\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] \\
+\le & \sum_{i=1}^n \mathbb{E} \big[ \exp\big(2\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] \\
 & \hspace*{1.2in} + \sum_{i,j\in[n],i\neq j}
 \Cov(\exp\big(\beta (A^r_i-A^0_i) \big), \exp\big(\beta (A^r_j-A^0_j) \big) ~\big|~ G\in\cG_1) .
 \end{aligned}
 \end{equation}
 By Corollary~\ref{cr:yy} in Appendix~\ref{ap:um}, for all $\beta>0$ we have
 $$
-\sum_{i=1}^n E[ \exp\big(2\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
+\sum_{i=1}^n \mathbb{E}[ \exp\big(2\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
 = O ( n^{\tilde{g}(2\beta)} ) .
 $$
 By Lemma~\ref{lm:ele}, $\tilde{g}(\beta)$ is a decreasing function, and it is strictly decreasing when $\beta\le\beta^\ast<\frac{1}{2}\log\frac{a}{b}$. Therefore, $g(\beta)=\tilde{g}(\beta)>\tilde{g}(2\beta)$ whenever $\beta\le\beta^\ast$. As a consequence, 
 \begin{equation} \label{eq:mh2}
-\sum_{i=1}^n E[ \exp\big(2\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
+\sum_{i=1}^n \mathbb{E}[ \exp\big(2\beta (A^r_i-A^0_i) \big) \big| G\in\cG_1]
 < o ( n^{g(\beta)} ) .
 \end{equation}
 
 
 
 Now we are left to bound the covariance of $\exp\big(\beta (A^r_i-A^0_i) \big)$ and $\exp\big(\beta (A^r_j-A^0_j) \big)$ for $i\neq j$.
-We consider the unconditional covariance first.
+We divide the discussion into four cases:
+\begin{enumerate}[label=(\roman*)]
+	\item $X_i = X_j$
+	\item $X_i = \omega^r \cdot X_j$ and $X_j = \omega^r \cdot X_i$
+	\item Only one of $X_i = \omega^r \cdot X_j$ and $X_j = \omega^r \cdot X_i$ holds
+	\item None of the above case
+\end{enumerate}
+If (iv) holds, then the covariance is zero since $A^r_i-A^0_i$ and $A^r_j-A^0_j$ are independent.
+For other three cases, their proof techniques are similar,
+and in the following we consider (ii) as an example.
 Define $\xi_{ij}=\xi_{ij}(G):=\mathbbm{1}[\{i,j\}\in E(G)]$ as the indicator function of the edge $\{i,j\}$ connected in graph $G$.
-Now suppose that\footnote{For the case of $X_i=X_j$, $A_i^0, A_j^0$ should be decomposed and can be handled in the same way.}
-$X_i\neq X_j$. Then we can decompose $A'^r_i$ and $A'^r_j$ as $A^r_i=A'^r_i+\xi_{ij}$ and $A^r_j=A'^r_j+\xi_{ij}$, where both $A'^r_i$ and $A'^r_j$ have distribution $\Binom(\frac{n}{k} - 1 , \frac{b\log(n)}{n})$,
+Then we can decompose $A'^r_i$ and $A'^r_j$ as $A^r_i=A'^r_i+\xi_{ij}$ and $A^r_j=A'^r_j+\xi_{ij}$, where both $A'^r_i$ and $A'^r_j$ have distribution
+$\Binom(\frac{n}{k} - 1 , \frac{b\log n}{n})$,
 and the five random variables $A^0_i, A^0_j, A'^r_i,A'^r_j$ and $\xi_{ij}$ are independent.
-Therefore,
+Therefore the unconditional expectation can be estimated by:
 \begin{align*}
 & \Cov(\exp\big(\beta (A^r_i-A^0_i) \big), \exp\big(\beta (A^r_j-A^0_j) \big) ) \\
-= & E[\exp\big(\beta (A^r_i-A^0_i+A^r_j-A^0_j) \big)] 
--E[\exp\big(\beta (A^r_i-A^0_i) \big)] E[\exp\big(\beta (A^r_j-A^0_j) \big)]   \\
-= & E[\exp\big(\beta (A'^r_i-A^0_i) \big)] E[\exp\big(\beta (A'^r_j-A^0_j) \big)]  \Big( E[\exp(2\beta \xi_{ij})] -
-\big(E[\exp(\beta \xi_{ij})]\big)^2 \Big) \\
-= & E[\exp\big(\beta (A'^r_i-A^0_i) \big)] E[\exp\big(\beta (A'^r_j-A^0_j) \big)] \\
+= & \mathbb{E}[\exp\big(\beta (A^r_i-A^0_i+A^r_j-A^0_j) \big)] 
+-\mathbb{E}[\exp\big(\beta (A^r_i-A^0_i) \big)] \mathbb{E}[\exp\big(\beta (A^r_j-A^0_j) \big)]   \\
+= & \mathbb{E}[\exp\big(\beta (A'^r_i-A^0_i) \big)] \mathbb{E}[\exp\big(\beta (A'^r_j-A^0_j) \big)]  \Big( \mathbb{E}[\exp(2\beta \xi_{ij})] -
+\big(\mathbb{E}[\exp(\beta \xi_{ij})]\big)^2 \Big) \\
+= & \mathbb{E}[\exp\big(\beta (A'^r_i-A^0_i) \big)] \mathbb{E}[\exp\big(\beta (A'^r_j-A^0_j) \big)] \\
 & \hspace*{1.2in}
-\Big( 1-\frac{b\log(n)}{n} + \frac{b\log(n)}{n} e^{2\beta} -
-\Big(1-\frac{b\log(n)}{n} + \frac{b\log(n)}{n} e^{\beta} \Big)^2 \Big) \\
-= & \Theta\Big( \frac{\log(n)}{n} \Big) E[\exp\big(\beta (A'^r_i-A^0_i) \big)] E[\exp\big(\beta (A'^r_j-A^0_j) \big)] \\
-= & \Theta\Big( \frac{\log(n)}{n} \Big) E[\exp\big(\beta (A^r_i-A^0_i) \big)] E[\exp\big(\beta (A^r_j-A^0_j) \big)]  ,
+\Big( 1-\frac{b\log n}{n} + \frac{b\log n}{n} e^{2\beta} -
+\Big(1-\frac{b\log n}{n} + \frac{b\log n}{n} e^{\beta} \Big)^2 \Big) \\
+= & \Theta\Big( \frac{\log n}{n} \Big) \mathbb{E}[\exp\big(\beta (A'^r_i-A^0_i) \big)] \mathbb{E}[\exp\big(\beta (A'^r_j-A^0_j) \big)] \\
+= & \Theta\Big( \frac{\log n}{n} \Big) \mathbb{E}[\exp\big(\beta (A^r_i-A^0_i) \big)] \mathbb{E}[\exp\big(\beta (A^r_j-A^0_j) \big)]  ,
 \end{align*} 
 where the last equality holds because $\exp\big(\beta (A'^r_i-A^0_i) \big)$ differs from $\exp\big(\beta (A^r_i-A^0_i) \big)$  by a factor of at most $e^{\beta}$. 
-By Lemma \ref{lm:5t} in Appendix~\ref{ap:um}, we have $E \big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 \big] 
-= (1+o(1)) E \big[  \exp\big(\beta (A^r_i-A^0_i) \big) \big]$ when $0<\beta\le\beta^\ast$.
-By Lemma \ref{lem:BijG} in Appendix~\ref{ap:um} we have $E[\exp\big(\beta (A^r_i-A^0_i+A^r_j-A^0_j) ~\big|~ G\in\cG_1 \big)] = (1+o(1)) E[\exp\big(\beta (A^r_i-A^0_i+A^r_j-A^0_j) \big)]$ when $0<\beta\le\beta^\ast$.
+By Lemma \ref{lm:5t} in Appendix~\ref{ap:um}, we have $\mathbb{E}[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\big|~ G\in\cG_1 ] 
+= (1+o(1)) \mathbb{E} [  \exp\big(\beta (A^r_i-A^0_i) \big) ]$ when $0<\beta\le\beta^\ast$.
+By Lemma \ref{lem:BijG} in Appendix~\ref{ap:um} we have $\mathbb{E}[\exp\big(\beta (A^r_i-A^0_i+A^r_j-A^0_j) ~\big|~ G\in\cG_1 \big)] = (1+o(1)) \mathbb{E}[\exp\big(\beta (A^r_i-A^0_i+A^r_j-A^0_j) \big)]$ when $0<\beta\le\beta^\ast$.
 Therefore,
 \begin{align*}
 & \Cov \big(\exp\big(\beta (A^r_i-A^0_i) \big), \exp\big(\beta (A^r_j-A^0_j)  \big) ~\big|~ G\in\cG_1 \big) \\
 = & (1+o(1)) \Cov \big(\exp\big(\beta (A^r_i-A^0_i) \big), \exp\big(\beta (A^r_j-A^0_j)  \big) \big) \\
-= & \Theta\Big( \frac{\log(n)}{n} \Big) E[\exp\big(\beta (A^r_i-A^0_i) \big)] E[\exp\big(\beta (A^r_j-A^0_j) \big)] .
+= & \Theta\Big( \frac{\log n}{n} \Big) \mathbb{E}[\exp\big(\beta (A^r_i-A^0_i) \big)] \mathbb{E}[\exp\big(\beta (A^r_j-A^0_j) \big)] .
 \end{align*}
 As a consequence,
 \begin{align*}
 & \sum_{i,j\in[n],i\neq j}
 \Cov \big(\exp\big(\beta (A^r_i-A^0_i) \big), \exp\big(\beta (A^r_j-A^0_j) \big) ~\big|~ G\in\cG_1 \big) \\
-= & \Theta\Big( \frac{\log(n)}{n} \Big) \sum_{i,j\in[n],i\neq j} \Big( E[\exp\big(\beta (A^r_i-A^0_i) \big)] E[\exp\big(\beta (A^r_j-A^0_j) \big)] \Big) \\
-\le & \Theta\Big( \frac{\log(n)}{n} \Big)
-\Big(\sum_{i=1}^n  E[\exp\big(\beta (A^r_i-A^0_i) \big)] \Big)^2 \\
-\overset{(a)}{=} & \Theta(n^{2g(\beta)-1} \log(n)) \\
+= & \Theta\Big( \frac{\log n}{n} \Big) \sum_{i,j\in[n],i\neq j} \Big( \mathbb{E}[\exp\big(\beta (A^r_i-A^0_i) \big)] \mathbb{E}[\exp\big(\beta (A^r_j-A^0_j) \big)] \Big) \\
+\le & \Theta\Big( \frac{\log n}{n} \Big)
+\Big(\sum_{i=1}^n  \mathbb{E}[\exp\big(\beta (A^r_i-A^0_i) \big)] \Big)^2 \\
+\overset{(a)}{=} & \Theta(n^{2g(\beta)-1} \log n) \\
 \overset{(b)}{=} & o(n^{g(\beta)})
 \end{align*}
 where equality $(a)$ follows from \eqref{eq:ThetaEbeta}, and $(b)$ follows from $g(\beta)<1$ when $0<\beta\le\beta^\ast$; see Lemma~\ref{lm:ele} (vi).
 Finally, \eqref{eq:sw} follows immediately from this bound and \eqref{eq:mh1}--\eqref{eq:mh2}.
 \end{proof}
 
-
-\begin{theorem}  \label{thm:dist}
-	Let $a,b,\alpha,\beta> 0$ be constants satisfying that
-	$\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $0<\beta\le \beta^\ast$.
-	Let 
-	$
-	(X,G,\sigma) \sim \SIBM(n, k, a\log(n)/n, b\log(n)/n, \alpha, \beta, 1) .
-	$
-	Then
-	$$
-	P_{\SIBM}(\dist(\sigma, S_k(X)) = \Theta(n^{g(\beta)}) ) = 1-o(1) .
-	$$
-\end{theorem}
-\begin{proof}
-	We prove the following equivalent form:
-	$$
-	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ X = \arg\dist_{X'\in S(X)}(\sigma, S(X')) ) = 1-o(1) .
-	$$
-	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG_{\good}$ such that
-	
-	\noindent (i)
-	$P(G\in\cG_{\good}) \ge 1- O(n^{-4})$.
-	
-	\noindent (ii) For every $G\in\cG_{\good}$, 
-	\begin{equation}  \label{eq:hs}
-	P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ X = \arg\dist_{X'\in S(X)}(\sigma, S(X')) \big) 
-	=1- O(n^{-4}) ,
-	\end{equation}
-
-	We now define 
-	$\phi_i := \mathbbm{1}[\sigma_i \neq X_i]$ for $i\in[n]$, and
-	we want to estimate $\dist(\sigma,X)=\sum_{i=1}^n \phi_i$.
-	From \eqref{eq:qke},
-	we have
-	\begin{equation}\label{eq:soon}
-	\underline{C}\sum_{r=1}^{k-1}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
-	P_{\sigma|G}(\phi_i = 1 | \sigma \in \Lambda(G, z),
-	\dist(\sigma, X) \leq n^{\theta})
-	\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(\beta (A^r_i-A^0_i ) \Big) 
-	\end{equation}
-	Given a fixed graph $G$ and a random sample $\sigma$, we will define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
-	\begin{enumerate}
-		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. $\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-		\item $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$.
-		\item Conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $P(\underline{S}_i=1)=\underline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$. The constants $\bar{C}$ and $\underline{C}$ are defined in Equation \eqref{eq:qke}.
-	\end{enumerate}
-	We will postpone the definition of random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ to the end of this proof. For now let us assume the existence of these random variables and prove the theorem.
-	By property 3), conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, we have
-	\begin{align*}
-	& E[\underline{S}_1 + \dots + \underline{S}_n] = \underline{C}
-	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) , \quad
-	\Var(\underline{S}_1 + \dots + \underline{S}_n) \le \underline{C}
-	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big)
-	, \\
-	& E[\overline{S}_1 + \dots + \overline{S}_n] = \overline{C}
-	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) , \quad
-	\Var(\overline{S}_1 + \dots + \overline{S}_n) \le \overline{C}
-	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) ,
-	\end{align*}
-	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
-	By Proposition~\ref{prop:con}, for all $G\in\cG_{\good}\cap\cG_{\con}$, we have 
-	\begin{align*}
-	& E[\underline{S}_1 + \dots + \underline{S}_n] = \Theta(n^{g(\beta)}) , \quad
-	\Var(\underline{S}_1 + \dots + \underline{S}_n) = O(n^{g(\beta)}) , \\
-	& E[\overline{S}_1 + \dots + \overline{S}_n] = \Theta(n^{g(\beta)}) , \quad
-	\Var(\overline{S}_1 + \dots + \overline{S}_n) = O(n^{g(\beta)}) 
-	\end{align*}
-	conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Since $g(\beta)\ge 0$ for all $0<\beta\le \beta^\ast$, by Chebyshev's inequality we know that both $\underline{S}_1 + \dots + \underline{S}_n=\Theta(n^{g(\beta)})$ and $\overline{S}_1 + \dots + \overline{S}_n=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Combining this with \eqref{eq:hs}, we obtain that for every $G\in\cG_{\good}\cap\cG_{\con}$, $\dist(\sigma,X)=\Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on $\{\dist(\sigma, X) \le n/k\}$. Finally, the theorem follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
-	
-	Now we are left to define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$.
-	First we define some auxiliary random variables.
-	For $i\in[n]$, let 
-	$\underline{R}_i=\underline{R}_i(\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n,G)$ be a Bernoulli random variable with parameter 
-	$$
-	\min \Big( \frac{\underline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} , 1 \Big) ,
-	$$
-	and let 
-	$\overline{R}_i=\overline{R}_i(\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n,G)$ be a Bernoulli random variable with parameter 
-	$$
-	\min \Big(\frac{1- \overline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=0|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} , 1 \Big) .
-	$$
-	Furthermore, let both $\underline{R}_i$ and $\overline{R}_i$ be independent of $\phi_i$.
-	For $i\in[n]$, define
-	$$
-	\underline{S}_i=\phi_i \underline{R}_i \quad
-	\text{and} \quad
-	\overline{S}_i = 1- (1-\phi_i) \overline{R}_i .
-	$$
-	Property 2) above directly follows from this definition.
-	Now condition on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$.
-	By \eqref{eq:soon} we have $\underline{R}_i =\frac{\underline{C}
-		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)}{P_{\sigma|G}(\phi_i=1|\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n)} $, one can see that no matter what values $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ take, the conditional probability of $\underline{S}_i=1$ given these variables is always $\underline{C}
-	\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$. Therefore, conditioning on the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$, $\underline{S}_i$ is independent of $\phi_1,\dots,\phi_{i-1},\phi_{i+1},\dots,\phi_n$ and it only depends on $\phi_i$. As a consequence, $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta}\}$. Thus, we have verified the three properties above for $\underline{S}_1,\dots, \underline{S}_n$. The arguments for $\overline{S}_1,\dots, \overline{S}_n$ are the same.
-
-\end{proof}
-For $0<\beta<\beta^\ast$, we have $g(\beta)>0$, so Theorem~\ref{thm:dist} immediately implies that $P_{\SIBM}(\sigma \in S_k(X))=o(1)$. However, when $\beta=\beta^\ast$, we have $g(\beta^\ast)=0$. In this case, Theorem~\ref{thm:dist} tells us that
-$
-P_{\SIBM}(\dist(\sigma, S_k(X)) = \Theta(1) ) = 1-o(1) ,
-$
-but this is not sufficient for us to draw any conclusion on $P_{\SIBM}(\sigma \in S_k(X))$.
-Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P_{\SIBM}(\sigma \in S_k(X))$ is bounded away from $1$.
-
-\begin{proposition}  \label{prop:zj}
-	Let $a,b,\alpha> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta^\ast$. Let 
-	$
-	(X,G,\sigma) \sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta^\ast, 1) .
-	$
-	Then 
-	$$
-	P_{\SIBM}(\sigma \in S_k(X)) \le \frac{1}{k}(1+o(1)) .
-	$$
-\end{proposition}
-\begin{proof}
-	We prove an equivalent form
-	$$
-	P_{\SIBM}(\sigma = X | \dist(\sigma, X) \le n^{\theta}) \le \frac{1}{k}(1+o(1)) .
-	$$
-	By \eqref{eq:diffAr0}, we have
-	\begin{align*}
-	\frac{P_{\sigma|G}(T_{ir})}
-	{P_{\sigma|G}(\sigma=X)}
-	& = \sum_{r=1}^{k-1}\exp\Big(\big(\beta^\ast+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i)
-	-\frac{\alpha\log(n)}{n} \Big) \\
-	& = (1+o(1))\sum_{r=1}^{k-1} \exp\big(\beta^\ast (A^r_i-A^0_i) \big)  ,
-	\end{align*}
-	where the last equality holds for almost all $G$ since $|A^r_i-A^0_i|=O(\log(n))$ with probability $1-o(1)$; see Lemma 9 in \cite{ye2020exact}.
-	Take $\cG_{\con}$ from Proposition~\ref{prop:con}. Then for every $G\in\cG_{\con}$,
-	\begin{align*}
-	\frac{\sum_{i=1}^n P_{\sigma|G}(T_{ir} )}
-	{P_{\sigma|G}(\sigma=X)}  = (1+o(1)) \sum_{i=1}^n \sum_{r=1}^{k-1}\exp\big(\beta^\ast (A^r_i-A^0_i) \big)  =k+o(1) .
-	\end{align*}
-	As a consequence, for every $G\in\cG_{\con}$,
-	\begin{align*}
-	P_{\sigma|G} (\sigma= X | \dist(\sigma, X) \le n^{\theta}) <
-	\frac {P_{\sigma|G}(\sigma=X)}
-	{P_{\sigma|G}(\sigma=X)+\sum_{i=1}^n P_{\sigma|G}(\sigma=X^{(\sim i)} )}
-	=\frac{1}{k} (1+o(1)) .
-	\end{align*}
-	By Proposition~\ref{prop:con}, $P(G\in\cG_{\con})=1-o(1)$, so
-	$$
-	P_{\SIBM}(\sigma= X | \dist(\sigma, X) \le n^{\theta} ) \le \frac{1}{k}(1+o(1)) .
-	$$
-\end{proof}
-\section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
-\label{sect:direct}
-In this section, we prove that Algorithm~\ref{alg:ez} in Section~\ref{sect:multi} is able to learn $\SIBM(n,k,a\log(n)/n, \linebreak[4] b\log(n)/n,\alpha,\beta, m)$ as long as $\sqrt{a}-\sqrt{b} > \sqrt{k}$,  $\alpha>b\beta$ and $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, where $\beta^\ast$ is defined in \eqref{eq:defstar}.
-
-\begin{proposition} \label{prop:nr}
-	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
-	Let $m$ be an integer such that $\lfloor \frac{m + 1}{2} \rfloor \beta>\beta^\ast$.
-	Let 
-	$$
-	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
-	$$
-	Let $\hat{X}=\texttt{LearnSIBM}(\sigma^{(1)},\dots,\sigma^{(m)})$ be the output of Algorithm~\ref{alg:ez}. Then
-	$$
-	P(\hat{X} \in S_k(X)) = 1-o(1) .
-	$$
-\end{proposition}
-
-By Proposition~\ref{prop:tt},
-if $\beta>\beta^\ast$, then $\sigma \in S_k(X) $ with probability $1-o(1)$, so $m=1$ sample suffices for recovery. In the rest of this section, we will focus on the case $\beta\le \beta^\ast$.
-
-In Proposition~\ref{prop:43} (or Proposition~\ref{prop:1}),
-we have shown that $\dist(\sigma^{(i)}, S_k(X)) =o(n)$
-for all $i\in[m]$ with probability $1-O(n^{-C})$ for any constant $C>0$,
-but it is possible that $\sigma^{(1)}$ is close to $X$ while $\sigma^{(2)}$ is close to some $f(X)$.
-Step 1 (the alignment step) in the above algorithm eliminates such possibility:
-After the alignment step, with probability $1-O(n^{-C})$ only the following two scenarios will happen:
-Either
-$\dist(\sigma^{(i)}, X)=O(n^{\theta})$ for all $i\in[m]$ or $\dist(\sigma^{(i)}, f(X))=O(n^{\theta})$ for all $i\in[m]$
-where $f \in S_k(X) \backslash \{\textrm{id}\}$.
-Without loss of generality, we assume the former case, i.e., we assume that
-$\dist(\sigma^{(i)}, X) = O(n^{\theta})$ for all $i\in[m]$,
-and in the rest of this section we will prove that Algorithm~\ref{alg:ez} outputs $\hat{X}=X$ with probability $1-o(1)$.
-
+To prove the conclusion of this section, we need to introduce stronger results to bound
+$P_{\sigma | G}(\sigma_i \neq X_i)$. This is based on the "z-neighborhood" technique, which is illustrated as follows:
 
 Given the ground truth $X$, the graph $G$ and a vertex $i\in[n]$, define the neighbors of $i$ in $G$ as 
 \begin{equation} \label{eq:ngbi}
@@ -1215,10 +1070,12 @@ i.e., $\Lambda_i(G, z)$ consists of all the samples for which the number of ``ba
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $\beta\le \beta^\ast$.
 	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$ and every $i\in[n]$, 
 	\begin{equation} \label{eq:zr}
-	P_{\SIBM} (\sigma\in \Lambda_i(G, z)
-	| X = \arg\dist_{X'\in S(X)}(\sigma, S(X')))
-	> 1 - n^{-C} .
+	P_{\sigma, G} (\sigma\in \Lambda_i(G, z)
+	| D(\sigma, X)
+	)
+	> 1 - n^{-C}
 	\end{equation}
+	where $D(\sigma, X)$ is defined in \eqref{eq:DsigmaX}.
 \end{lemma}
 \begin{proof}
 	The conclusion for $k=2$ has been proved in Lemma 3 of \cite{ye2020exact}. Suppose $i$ belongs to the first community, and for the community
@@ -1236,45 +1093,48 @@ The following corollary follows immediately from Lemma~\ref{lm:us} and the union
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
 	Given any $C>0$, there exists an integer $z>0$ such that for large enough $n$, 
 	$$
-	P_{\SIBM} (\sigma\in \Lambda(G, z)
-	| X = \arg\dist_{X'\in S(X)}(\sigma, S(X')) )
+	P_{\sigma, G} (\sigma\in \Lambda(G, z)
+	| D(\sigma, X) )
 	> 1 - n^{-C} .
 	$$
 \end{corollary}
 
-Recall that in \eqref{eq:Ari}, we defined $A^r_i=A^r_i(G):=|\cN_{i,r}(G)|$.
-By definition, $\sigma \in  \Lambda_i(G,z)$ if and only if $|\cI\cap \cN_i(G)| < z$.
-
-In the following lemma, we consider the marginal probability for $\sigma_i$:
+In the following lemma, we consider the conditional probability for $\sigma_i$:
 \begin{lemma} \label{lm:et}
 	Let $0<\theta<1$ be some constant and $1\leq r \leq k-1$. Then for large enough $n$ we have
 	\begin{align*}
-	\exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
+	\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
 	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
 	{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } \\
-	& \le \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
+	& \le \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big)
 	\end{align*}
 \end{lemma}
 
 \begin{proof}
-	We only need to show that for every $\cI\in [n]\setminus\{i\}$, satisfying $|\cI|\le n^\theta$ and
-	$|\cI \cap \cN_i(G)| < z$. $\dist(\bar{\sigma}, X) = |\cI|$, $\bar{\sigma}'$ only differs with $\bar{\sigma}$ at
+	Let $\cI: = \{i\in [n] | \bar{\sigma}_i \neq X_i\}$. Then $\dist(\bar{\sigma}, X) = |\cI|$.
+	Recall that in \eqref{eq:Ari}, we defined $A^r_i=A^r_i(G)$.
+	By definition, $\sigma \in  \Lambda_i(G,z)$ if and only if $|\cI\cap \cN_i(G)| < z$.
+	
+	We consider $\cI \in \cI'$, where $\cI' = \{\cI \in [n]\backslash\{i\} |
+	 |\cI|\le n^\theta, |\cI \cap \cN_i(G)| < z\, \forall i\}$.
+	$\bar{\sigma}'$ only differs with $\bar{\sigma}$ at
 	position $i$: $\bar{\sigma}' = \omega^r \cdot \bar{\sigma}$.
+	If we can show
 	\begin{equation} \label{eq:qk}
 	\begin{aligned}
-	\exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
+	\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
 	\frac{P_{\sigma|G}(\sigma= \bar{\sigma}') } { P_{\sigma|G}(\sigma= \bar{\sigma} ) } \\
-	& \le \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big) .
+	& \le \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big) .
 	\end{aligned}
 	\end{equation}
-	Then using 
+	then using 
 	$$
 	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
 	{ P_{\sigma|G}(\sigma_i=X_i, \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} ) } 
-	= \frac{\sum_{\cI\in [n]\setminus\{i\},|\cI|\le n^\theta,|\cI \cap \cN_i(G)| < z}\sum_{\dist(\sigma, X)=|\cI|} P_{\sigma|G}(\sigma= \bar{\sigma} ) }
-	{\sum_{\cI\in [n]\setminus\{i\},|\cI|\le n^\theta,|\cI \cap \cN_i(G)| < z}\sum_{\dist(\sigma, X)=|\cI|} P_{\sigma|G}(\sigma = \bar{\sigma}' ) } 
+	= \frac{\sum_{\cI\in \cI'}\sum_{\dist(\sigma, X)=|\cI|} P_{\sigma|G}(\sigma= \bar{\sigma}'  ) }
+	{\sum_{\cI\in \cI'}\sum_{\dist(\sigma, X)=|\cI|} P_{\sigma|G}(\sigma = \bar{\sigma}) } 
 	$$
-	we can get the conclusion.
+	we can get Lemma \ref{lm:et}.
 	
 	Define
 	$$
@@ -1286,35 +1146,263 @@ In the following lemma, we consider the marginal probability for $\sigma_i$:
 	\end{equation}
 	By \eqref{eq:isingma}, we have
 	\begin{align*}
-	 \frac{P_{\sigma|G}(\sigma=  \bar{\sigma}' ) } { P_{\sigma|G}(\sigma= \bar{\sigma}) }
+	\frac{P_{\sigma|G}(\sigma=  \bar{\sigma}' ) } { P_{\sigma|G}(\sigma= \bar{\sigma}) }
 	= & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)
-	-\frac{\alpha\log(n)}{n}
+	+\frac{\alpha\log n}{n}O(n^{\theta})
 	\Big)
 	\\
 	\leq & \exp\Big((\beta+\frac{\alpha\log n }{n})(A'^r_i-A'^0_i)+2z \Big)
 	\end{align*}
-	The other hand of the inequality can be proved similarly.
+	The other side of the inequality can be proved similarly.
 \end{proof}
 \begin{remark}
-	Conditioned on $\sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} $,
-	using Proposition \ref{prop:df}, the numerator $P_{\sigma | G}(\sigma_i = \omega^r \cdot X_i)$ is much smaller than the denominator
-	$P_{\sigma | G}(\sigma_ i = X_i)$.
-	Therefore, we can replace the fraction $x/y$ by $x/(x+y)$:
+	Suppose $\bar{\sigma}\in \Lambda(G,z) ,\dist(\bar{\sigma}, X) \le n^{\theta} $,
+	using \eqref{eq:qk}, we can get the conditional representation as
 	\begin{align*}
-	\exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le 
-	P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i | \sigma\in \Lambda(G,z) ,\dist(\sigma, X) \le n^{\theta} )
-	 \\
-	& \le \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i + 2z) \Big)
+	\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) & \le
+	\frac{P_{\sigma|G}(\sigma_i= \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \forall j \neq i  )}
+	{P_{\sigma|G}(\sigma_i= X_i | \sigma_j = \bar{\sigma}_j \forall j \neq i  )}
+	\\
+	& \le \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big)
 	\end{align*}
-	Summing over $r=1, \dots k-1$ we can get there exists $\underline{C}, \bar{C}$ such that
+	By large deviation theory, we can choose a positive number $\kappa$ such that $A_i^r - A_i^0 \geq -\kappa \log n$ with probability $1-o(\frac{1}{n})$.
+	Let $\cG = \{ -\kappa \log n\leq A_i^r - A_i^0 \leq 0,\forall i \in[n] \}$, from \eqref{eq:I_1} $P_G(\cG) = 1-o(1)$.
+	For any $G\in \cG$,
+	Since the numerator is much smaller than the denominator, we can find $\underline{C}, \bar{C}$ such that
+	\begin{equation}\label{eq:swX}
+	\frac{\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) }{1 + \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i - 2z) \Big) } \le 
+	P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
+	\le \frac{\exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big) }{1 + \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i + 2z) \Big) } 
+	\end{equation}
+	Choosing $\underline{C}(n)=\frac{\exp(-\kappa \log^2 n/n)}{1+\exp(2z(\beta+\frac{\alpha \log n}{n}))}$ and $\bar{C}(n)=\exp(2z(\beta+\frac{\alpha \log n}{n}))$
+	we have
+	$$
+\underline{C}(n)\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
+P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
+ \leq \bar{C}(n) \exp\Big(\beta (A^r_i-A^0_i ) \Big) 
+	$$
+	Further choosing $\underline{C}=\frac{\exp(-\kappa)}{1+\exp(2z(\beta+1))} \leq \underline{C}(n)$ and $\overline{C}=\exp(2z(\beta+1)) \geq \underline{C}(n)$,
+	which are constants that are independent of $n$.
+	\begin{equation}\label{eq:single_sigma}
+	\underline{C}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
+	P_{\sigma|G}(\sigma_i = \omega^r \cdot X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
+	\leq \bar{C} \exp\Big(\beta (A^r_i-A^0_i ) \Big) 
+	\end{equation}
+	Summing over $r=1, \dots k-1$ we can get
 	\begin{equation} \label{eq:qke}
 	\underline{C}\sum_{r=1}^{k-1}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
-	P_{\sigma|G}(\sigma_i \neq X_i | \sigma \in \Lambda(G, z),
-	\dist(\sigma, X) \leq n^{\theta})
+	P_{\sigma|G}(\sigma_i \neq  X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
 	\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(\beta (A^r_i-A^0_i ) \Big) 
 	\end{equation}
-	where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
+
 \end{remark}
+\begin{theorem}  \label{thm:dist}
+	Let $a,b,\alpha,\beta> 0$ be constants satisfying that
+	$\sqrt{a}-\sqrt{b} > \sqrt{k}$, $\alpha>b\beta$ and $0<\beta\le \beta^\ast$.
+	Let 
+	$
+	(X,G,\sigma) \sim \SIBM(n, k, a\log n/n, b\log n/n, \alpha, \beta, 1) .
+	$
+	Then
+	$$
+	P_{\SIBM}(\dist(\sigma, S_k(X)) = \Theta(n^{g(\beta)}) ) = 1-o(1) .
+	$$
+\end{theorem}
+\begin{proof}
+	we prove the following equivalent form:
+	\begin{equation}\label{eq:conditionDist}
+	P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ D(\sigma, X) ) = 1-o(1) .
+	\end{equation}
+	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43}, Proposition~\ref{prop:con} and Lemma~\ref{lm:et}
+	implies that there is an integer $z>0$ and a set $\cG'$ such that
+	\begin{enumerate}[label=\arabic*)]
+		\item $P_G(\cG') =  1 - o(1)$
+		\item For every $G\in\cG'$, 
+		$
+			P_{\sigma|G} \big( \sigma \in  \Lambda(G, z)
+			\text{~and~} \dist(\sigma, X) \le n^\theta ~\big|~ D(\sigma, X) \big) 
+			=1- o(1)
+		$
+		\item For every $G\in\cG'$, $\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big)
+		=(1+o(1)) n^{g(\beta)}$
+		\item For every $G\in\cG'$, $\underline{C}\sum_{r=1}^{k-1}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
+		P_{\sigma|G}(\sigma_i \neq  X_i | \sigma_j = \bar{\sigma}_j \,\forall j \neq i )
+		\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(\beta (A^r_i-A^0_i ) \Big) $
+	\end{enumerate}
+
+
+	If we can show that
+	\begin{equation}\label{eq:distTheta}
+	P_{\sigma | G}(\dist(\sigma, X) = \Theta(n^{g(\beta)})
+	| \sigma \in  \Lambda(G, z)
+	\text{~and~} \dist(\sigma, X) \le n^\theta) = 1 - o(1)
+	\end{equation}
+	Then
+	\begin{align*}
+	&P_{\SIBM}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) ~\big|~ D(\sigma, X) )  = o(1)
+	+ \sum_{G \in \cG'} P_G(G) P_{\sigma | G}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) | D(\sigma, X)) \\
+	& =o(1)
+	+ \sum_{G \in \cG'} P_G(G) P_{\sigma | G}(\dist(\sigma, X) = \Theta(n^{g(\beta)}),\sigma \in  \Lambda(G, z),
+	\dist(\sigma, X) \le n^\theta | D(\sigma, X)) \\
+	& = o(1)
+	+ \sum_{G \in \cG'} P_G(G) P_{\sigma | G}(\dist(\sigma, X) = \Theta(n^{g(\beta)}) | \sigma \in  \Lambda(G, z),
+	\dist(\sigma, X) \le n^\theta) P(\sigma \in  \Lambda(G, z),
+	\dist(\sigma, X) \le n^\theta | D(\sigma, X)) \\
+	&= 1 - o(1)
+	\end{align*}
+	To establish \eqref{eq:distTheta}, we now define 
+	$\phi_i := \mathbbm{1}[\sigma_i \neq X_i]$ for $i\in[n]$, and
+	we want to estimate $\dist(\sigma, X)=\sum_{i=1}^n \phi_i$.
+	From property 4) we have
+	\begin{equation}
+	\underline{C}\sum_{r=1}^{k-1}\exp\Big(\beta(A^r_i-A^0_i) \Big)  \le 
+	P_{\sigma|G}(\phi_i = 1 | \phi_j = \bar{\phi}_j \,\forall j \neq i )
+	\le \bar{C} \sum_{r=1}^{k-1}\exp\Big(\beta (A^r_i-A^0_i ) \Big) 
+	\end{equation}
+	where $ \bar{\phi} \in D(\phi)$ and event $D(\phi)$ is defined as
+	$$
+	D(\phi): = \{\phi \in \{0, 1\}^n, \sum_{i=1}^n \bar{\phi}_i \leq n^{\theta},
+	\sum_{j\in N_i(G)}\phi_j < z \,\forall j \in [n] \}
+	$$
+	
+	Then \eqref{eq:distTheta} is equivalent with 
+	\begin{equation}\label{eq:phi_sum}
+	P_{\sigma | G}(\sum_{i=1}^n \phi_i = \Theta(n^{g(\theta)}) | D(\phi) ) = 1-o(1)
+	\end{equation}
+	
+		
+	We define Bernoulli random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
+	\begin{enumerate}[label=(\roman*)]
+		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $D(\phi)$.
+		$\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given $D(\phi)$.
+		\item $P(\underline{S}_i=1 | D(\phi)) =\underline{C}
+		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1 | D(\phi)) =\overline{C}
+		\sum_{r=1}^{k-1}\exp\big(\beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$.
+	\end{enumerate}
+	By property (ii), conditioning on $D(\phi)$, we have
+	\begin{align*}
+	& \mathbb{E}[\underline{S}_1 + \dots + \underline{S}_n] = \underline{C}
+	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) , \quad
+	\Var(\underline{S}_1 + \dots + \underline{S}_n) \le \underline{C}
+	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big)
+	, \\
+	& \mathbb{E}[\overline{S}_1 + \dots + \overline{S}_n] = \overline{C}
+	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) , \quad
+	\Var(\overline{S}_1 + \dots + \overline{S}_n) \le \overline{C}
+	\sum_{r=1}^{k-1}\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) ,
+	\end{align*}
+	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
+	From property 3), $\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big) = (1+o(1))n^{g(\beta)}$,
+	we have 
+	\begin{align*}
+	& \mathbb{E}[\underline{S}_1 + \dots + \underline{S}_n] = \Theta(n^{g(\beta)}) , \quad
+	\Var(\underline{S}_1 + \dots + \underline{S}_n) = O(n^{g(\beta)}) , \\
+	& \mathbb{E}[\overline{S}_1 + \dots + \overline{S}_n] = \Theta(n^{g(\beta)}) , \quad
+	\Var(\overline{S}_1 + \dots + \overline{S}_n) = O(n^{g(\beta)}) 
+	\end{align*}
+	Since $g(\beta)\ge 0$ for all $0<\beta\le \beta^\ast$, by Chebyshev's inequality we know that both $\underline{S}_1 + \dots + \underline{S}_n=\Theta(n^{g(\beta)})$ and $\overline{S}_1 + \dots + \overline{S}_n=\Theta(n^{g(\beta)})$ with probability $1-o(1)$.
+	From \eqref{eq:qke} and Lemma 5 of \cite{ye2020exact},
+	we have $\sum_{i=1}^n \phi_i = \Theta(n^{g(\beta)})$ with probability $1-o(1)$ conditioning on
+	$D(\phi)$. That is, \eqref{eq:phi_sum} is proved.
+
+\end{proof}
+For $0<\beta<\beta^\ast$, we have $g(\beta)>0$, so Theorem~\ref{thm:dist} immediately implies that $P_{\SIBM}(\sigma \in S_k(X))=o(1)$. However, when $\beta=\beta^\ast$, we have $g(\beta^\ast)=0$. In this case, Theorem~\ref{thm:dist} tells us that
+$
+P_{\SIBM}(\dist(\sigma, S_k(X)) = \Theta(1) ) = 1-o(1) ,
+$
+but this is not sufficient for us to draw any conclusion on $P_{\SIBM}(\sigma \in S_k(X))$.
+Below we use Proposition~\ref{prop:zj} to prove that when $\beta=\beta^\ast$, $P_{\SIBM}(\sigma \in S_k(X))$ is bounded away from $1$.
+
+\begin{proposition}  \label{prop:zj}
+	Let $a,b,\alpha> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta^\ast$. Let 
+	$
+	(X,G,\sigma) \sim \SIBM(n,k, a\log n/n, b\log n/n,\alpha,\beta^\ast, 1) .
+	$
+	Then 
+	$$
+	P_{\SIBM}(\sigma \in S_k(X)) \le \frac{1}{k}(1+o(1)) .
+	$$
+\end{proposition}
+\begin{proof}
+	We prove an equivalent form
+	$$
+	P_{\SIBM}(\sigma = X | D(\sigma, X)) \le \frac{1}{k}(1+o(1)) .
+	$$
+	By \eqref{eq:diffAr0}, we have
+	\begin{align*}
+	\frac{P_{\sigma|G}(T_{ir})}
+	{P_{\sigma|G}(\sigma=X)}
+	& = \sum_{r=1}^{k-1}\exp\Big(\big(\beta^\ast+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i)
+	-\frac{\alpha\log n}{n} \Big) \\
+	& = (1+o(1))\sum_{r=1}^{k-1} \exp\big(\beta^\ast (A^r_i-A^0_i) \big)  ,
+	\end{align*}
+	where the last equality holds for almost all $G$ since $|A^r_i-A^0_i|=O(\log n)$ with probability $1-o(1)$; see Lemma 9 in \cite{ye2020exact}.
+	Take $\cG_{1}$ from Proposition~\ref{prop:con}. Then for every $G\in\cG_{1}$,
+	\begin{align*}
+	\frac{\sum_{r=1}^{k-1}\sum_{i=1}^n P_{\sigma|G}(T_{ir} )}
+	{P_{\sigma|G}(\sigma=X)}  = (1+o(1)) \sum_{i=1}^n \sum_{r=1}^{k-1}\exp\big(\beta^\ast (A^r_i-A^0_i) \big)  =k-1+o(1) .
+	\end{align*}
+	As a consequence, for every $G\in\cG_{1}$,
+	\begin{align*}
+	P_{\sigma|G} (\sigma= X | D(\sigma, X) ) <
+	\frac {P_{\sigma|G}(\sigma=X)}
+	{P_{\sigma|G}(\sigma=X)+\sum_{r=1}^{k-1}\sum_{i=1}^n P_{\sigma|G}(T_{ir})}
+	=\frac{1}{k} (1+o(1))
+	\end{align*}
+	By Proposition~\ref{prop:con}, $P(G\in\cG_{1})=1-o(1)$, so
+	$$
+	P_{\SIBM}(\sigma= X | D(\sigma, X) ) \le \frac{1}{k}(1+o(1)) .
+	$$
+\end{proof}
+\section{Exact recovery in $O(n)$ time when $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$}
+\label{sect:direct}
+In this section, we prove that Algorithm~\ref{alg:ez} in Section~\ref{sect:multi} is able to learn $\SIBM(n,k,a\log n/n, \linebreak[4] b\log n/n,\alpha,\beta, m)$ as long as $\sqrt{a}-\sqrt{b} > \sqrt{k}$,  $\alpha>b\beta$ and $\lfloor \frac{m+1}{2} \rfloor \beta>\beta^\ast$, where $\beta^\ast$ is defined in \eqref{eq:defstar}.
+
+\begin{proposition} \label{prop:nr}
+	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$.
+	Let $m$ be an integer such that $\lfloor \frac{m + 1}{2} \rfloor \beta>\beta^\ast$.
+	Let 
+	$$
+	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k, a\log n/n, b\log n/n,\alpha,\beta, m) .
+	$$
+	Let $\hat{X}=\texttt{LearnSIBM}(\sigma^{(1)},\dots,\sigma^{(m)})$ be the output of Algorithm~\ref{alg:ez}. Then
+	$$
+	P_{\SIBM}(\hat{X} \in S_k(X)) = 1-o(1) .
+	$$
+\end{proposition}
+
+By Proposition~\ref{prop:tt},
+if $\beta>\beta^\ast$, then $\sigma \in S_k(X) $ with probability $1-o(1)$, so $m=1$ sample suffices for recovery.
+In the rest of this section, we will focus on the case $\beta\le \beta^\ast$.
+
+In Proposition~\ref{prop:43},
+we have shown that $\dist(\sigma^{(i)}, S_k(X)) =O(n^{\theta})$
+for all $i\in[m]$ with probability $1-O(n^{-C})$ for any constant $C>0$ and $g(\beta) < \theta < 1$,
+but it is possible that $\sigma^{(1)}$ is close to $X$ while $\sigma^{(2)}$ is close to some $f(X)$.
+Step 1 (the alignment step) in the above algorithm eliminates such possibility. From Lemma \ref{lem:align}
+we can assume that
+$\dist(\sigma^{(i)}, X) = O(n^{\theta})$ for all $i\in[m]$,
+and in the rest of this section we will prove that Algorithm~\ref{alg:ez} outputs $\hat{X}=X$ with probability $1-o(1)$.
+\begin{lemma}\label{lem:align}
+	If $D(\sigma^{(1)}, X)$ happens, then by Algorithm \ref{alg:ez}, $\dist(\sigma^{(i)}, X) = O(n^{\theta})$ happens with probability $1-o(1)$ for all $i\in[m]$.
+\end{lemma}
+\begin{proof}
+	Since $D(\sigma^{(1)}, X)$, from Proposition \ref{prop:43} with probability $1-o(1)$ such that $\dist(\sigma^{(1)}, X) = O(n^{\theta})$.
+	For $1<i\leq m$, if $D(\sigma^{(i)}, X)$, similarly $\dist(\sigma^{(i)}, X) = O(n^{\theta})$ with probability $1-o(1)$.
+	Otherwise $D(\sigma^{(i)}, f(X))$ holds for some $i\geq 2, f \neq \mathrm{id}$, then $\dist(\sigma^{(i)}, f(X)) = O(n^{\theta})$.
+	From the alignment step we have
+	\begin{align*}
+	\dist(\sigma^{(1)}, \sigma^{(i)}) \leq & \dist(\sigma^{(1)}, f^{-1}(\sigma^{(i)})) = \dist(f(\sigma^{(1)}), \sigma^{(i)}) \\
+	\leq & \dist(f(\sigma^{(1)}), f(X)) + \dist(\sigma^{(i)}, f(X)) \\
+	= & \dist(\sigma^{(1)}, X) + \dist(\sigma^{(i)}, f(X)) \\
+	= & O(n^{\theta})
+	\end{align*}
+	Therefore,
+	$\dist(X, f(X)) \leq \dist(X, \sigma^{(1)}) + \dist(\sigma^{(1)}, \sigma^{i}) + \dist(\sigma^{(i)}, f(X)) = O(n^{\theta})$,
+	a contradiction with $\dist(X, f(X))\geq \frac{2n}{k}$.
+\end{proof}
+
+
 
 \noindent
 {\em Proof of Proposition~\ref{prop:nr}.}
@@ -1341,39 +1429,39 @@ $$
 \Phi_i := |\{j\in[m]: \sigma_i^{(j)} \neq \omega^r \cdot X_i\}|
 $$
 as the number of samples for which $\sigma_i^{(j)} \neq X_i$.
-For an integer $u\in[m]$, we consider
+For a given integer $u\in[m]$, we consider
 %To give an upper bound of $P_{\SIBM} \big( \Phi_i \ge u \big)$ we consider:
 \begin{align*}
-P_{\SIBM}( \exists i \in [n], \Phi_i \ge u \big) \leq &P_{\SIBM}( \Phi_i \ge u , G \in \cG_{1}) + P(G \not\in \cG_{1}) \\
-\leq & E_G[P_{\sigma |G}(D_r)]+ O(n^{-C})
+P_{\SIBM}( \exists i \in [n], \Phi_i \ge u \big) \leq &P_{\SIBM}( \Phi_i \ge u , G \in \cG_{1}) + P_G(G \not\in \cG_{1}) \\
+\leq & \mathbb{E}_G[P_{\sigma |G}(D_u)]+ O(n^{-C})
 \end{align*}
 where the event $D_u: \exists i \in [n], \Phi_i \ge u, \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} \text{~for all~} j\in[m]$.
-To bound  $E_G[P_{\sigma |G}(D_u)]$,
-since
+To bound  $\mathbb{E}_G[P_{\sigma |G}(D_u)]$,
+we consider
 $$
 \{\Phi_i \ge u\} \subseteq
-\bigcup_{\cJ\subseteq[m], |\cJ|=u}\bigcup_{1\leq r \leq k-1}
-\{\sigma_i^{(j)} = \omega^r \cdot X_i \text{~for all~} j\in \cJ\} .
+\bigcup_{\cJ\subseteq[m], |\cJ|=u, \cJ=\cup_{r=1}^k J_r} 
+\{\sigma_i^{(j)} = \omega^r \cdot X_i \text{~for all~} j\in \cJ_r\} .
 $$
 by the union bound,
 \begin{align*}
 & P_{\sigma|G}(D_u) \\
-\le &  \binom{m}{u}\sum_v \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i + 2z) \Big)
+\le &  \binom{m}{u}\sum_v \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i + 2z) \Big)
 \quad\quad\text{~for all~} i\in[n] \textrm{ by Lemma~\ref{lm:et}}.
 \end{align*}
-where $v=(u_1, \dots, u_{k-1})$ and $u_r = |\{j | \sigma_i^{(j)} = \omega^r \cdot X_i \}|, u=\sum_{r=1}^{k-1} u_r$.
+where  $v=(u_1, \dots, u_{k-1})$, $u_r = |\{j | \sigma_i^{(j)} = \omega^r \cdot X_i \}|, u=\sum_{r=1}^{k-1} u_r$.
 
-Using the union bound, we have
+We then have
 $$
 P_{\sigma|G} \big(D_u\big) \le 
-C  \sum_{v}\sum_{i=1}^n \exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i ) \Big),
+C  \sum_{v}\sum_{i=1}^n \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i ) \Big),
 $$
-where $C:=\binom{m}{u}\exp(2u\beta z)$ is a constant.
+where $C:=\binom{m}{u}\exp(2u (\beta + 1) z)$ is a constant.
 By Lemma \ref{lem:large}, if $u\beta>\beta^*$, there exists $\cG_v$ such that $P(G\not\in\cG_v) \leq 2n^{\tilde{g}_v(\beta)/2}$.
 and for every $G\in\cG_1 \cap \bigcap_{v}\cG_{v}$,
 $$
 P_{\sigma|G} \big(D_u\big) \le 
-C\sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i ) \Big) = C\sum_{v} n^{\tilde{g}_v(\beta)/2}.
+C\sum_{i=1}^n \exp\Big(u \big(\beta+\frac{\alpha\log n}{n} \big) (A^r_i-A^0_i ) \Big) = C\sum_{v} n^{\tilde{g}_v(\beta)/2}.
 $$
 in which $\tilde{g}_v(\beta) < 0$, since $u\beta > \beta^*$.
 
@@ -1381,7 +1469,7 @@ Further
 \begin{align*}
 P_{\SIBM}( \exists i \in [n], \Phi_i \ge u \big)
 \leq & E_G[P_{\sigma |G}(D_u)] + O(n^{-4}) \\
-\leq &  Cn^{g_v(\beta)/2} + \sum_{v} P(G \not\in \cG_v) + O(n^{-C}) = o(1)
+\leq &  C\sum_{v} n^{\tilde{g}_v(\beta)/2} + \sum_{v} P(G \not\in \cG_v) + O(n^{-C}) = o(1)
 \end{align*}
 We conclude that $P_{\SIBM} \big(\Phi_i \le u-1 \text{~for all~} i\in[n] \big)=1-o(1)$.
 
@@ -1394,30 +1482,27 @@ As a consequence, after the majority voting step in Algorithm~\ref{alg:ez}, $\ha
 \begin{lemma} \label{lm:qq}
 	Let 
 	$$
-	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k,a\log n/n, b\log n/n,\alpha,\beta, m) .
 	$$
 	If there is a pair $i, i'\in[n]$ satisfying the following two conditions: (1) $\sigma_{i}^{(j)}=\sigma_{i'}^{(j)}$ for all $j\in[m]$ and (2) $X_i = \omega^{r_1}$ and $X_{i'} = \omega^{r_2}$ ($r_1 \neq r_2$), then it is not possible to distinguish
 	the case $X_i = \omega^{r_1}, X_{i'} = \omega^{r_2}$
 	from the case $X_i = \omega^{r_2}, X_{i'} = \omega^{r_1}$.
-	In other words, conditioning on the samples, the posterior probability of the ground truth being $\bar{X}$ is the same as that of the ground truth being $\hat{X}$ where $\hat{X}_{i} = \bar{X}_{i'}= \omega^{r_2}, \hat{X}_{i'} = \bar{X}_{i} = \omega^{r_1}, \hat{X}_j = \bar{X}_j$ for $j\neq i,i'$.
+	In other words, let the ground truth be $\bar{X}$, and define $\hat{X}_{i} = \bar{X}_{i'}= \omega^{r_2}, \hat{X}_{i'} = \bar{X}_{i} = \omega^{r_1}, \hat{X}_j = \bar{X}_j$ for $j\neq i,i'$. Then	$P_{\SIBM}(\sigma^{(1)}, \dots, \sigma^{(m)}|X=\bar{X}) = P_{\SIBM}(\sigma^{(1)}, \dots, \sigma^{(m)}|X=\hat{X})$ and ML estimator is unable to distinguish between $\bar{X}$
+	and $\hat{X}$.
 \end{lemma}
 \begin{proof}
-Observing data satisfying $\sigma_{i_1}^{(j)}=\sigma_{i_r}^{(j)}$, we need to show the posterior probability
-\begin{equation}\label{eq:11}
-P(X=\bar{X} | \sigma^{(j)}, j\in[m]) =
-P(X=\hat{X} | \sigma^{(j)}, j\in[m])
-\end{equation}
-For a given graph $G$, we can find a 1-1 mapping $\pi$ which satisfies $ \bar{X}_{i_r} = \hat{X}_{\pi(i_r)}$.
-$\pi$ is a permutation restricted on $\{i,i'\}$ and is identity mapping on other indices.
-Then $\pi$ satisfies properties such as
-$\{\pi(i), \pi(j)\} \in E(\pi(G)) \iff \{i,j\} \in E(G)$, $Z_G(\alpha, \beta) = Z_{\pi(G)}(\alpha, \beta)$ and
+We define a 1-1 mapping $\pi$ which satisfies $ \bar{X}_{i} = \hat{X}_{\pi(i)}$.
+That is, $\pi$ is a permutation restricted on $\{i,i'\}$ and identity mapping on other indices.
+For a given graph $G$, The mapped graph $\pi(G)$ satisfies properties such as
+$\{\pi(i), \pi(j)\} \in E(\pi(G)) \iff \{i,j\} \in E(G)$. Then we can verify
+$Z_G(\alpha, \beta) = Z_{\pi(G)}(\alpha, \beta)$ and
 $$
-P_{\SSBM}(G  | X = \bar{X})=P_{\SSBM}(\pi(G) | X = \hat{X}),
+P_{G}(G  | X = \bar{X})=P_{G}(\pi(G) | X = \hat{X}),
 $$
 
-Using the Markov property of $X \to G \to \sigma$, we have
+Using the definition of SIBM, we have
 \begin{align*}
-P(X=\bar{X} | \sigma^{(j)}, j\in[m])& = \sum_{G \in \cG_{[n]}} P(X=\bar{X}) P_{\SSBM}(G  | X = \bar{X})\prod_{j=1}^m P_{\sigma | G}(\sigma =\sigma^{(j)})\\
+P_{\SIBM}(\sigma^{(1)}, \dots, \sigma^{(m)}|X=\bar{X}) & = \sum_{G \in \cG_{[n]}} P_{G}(G  | X = \bar{X})\prod_{j=1}^m P_{\sigma | G}(\sigma =\sigma^{(j)})\\
 \end{align*}
 If we can show that 
 \begin{equation}\label{eq:sigmaEqual}
@@ -1425,20 +1510,20 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{equation}
 Then 
 \begin{align*}
-P(X=\bar{X} | \sigma^{(j)}, j\in[m]) &
-= \sum_{G \in \cG_{[n]}} P(X=\hat{X})
-P_{\SSBM}(\pi(G)  | X = \hat{X})\prod_{j=1}^m P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})\\
-& = P(X=\hat{X} | \sigma^{(j)}, j\in[m])
+P_{\SIBM}(\sigma^{(1)}, \dots, \sigma^{(m)}|X=\hat{X}) &
+= \sum_{G \in \cG_{[n]}} 
+P_{G}(\pi(G)  | X = \hat{X})\prod_{j=1}^m P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})\\
+& = P_{\SIBM}(\sigma^{(1)}, \dots, \sigma^{(m)}|X=\bar{X})
 \end{align*}
 The key to prove Equation \eqref{eq:sigmaEqual} lies at the property
 $\sigma^{(j)}_{i} = \sigma^{(j)}_{i'}$.
-Let $c_G(\sigma, i,j) = \frac{1}{2}\delta_{\sigma_i\sigma_j}[(\beta + \frac{\alpha \log n}{n})\mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}]$
-and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i,i'\},j_1\neq j_2} c_G(\sigma, j_1, j_2) + c_G(\sigma, i, i'))$
+Let $c_G(\sigma, i,j) = \delta_{\sigma_i\sigma_j}[(\beta + \frac{\alpha \log n}{n})\mathbbm{1}[\{i,j\}\in E(G)]  - \frac{\alpha \log n}{n}]$
+and $C_G(\sigma) = \frac{1}{Z_G(\alpha, \beta)}\exp(\sum_{j_1, j_2 \not\in \{i,i'\},j_1 < j_2} c_G(\sigma, j_1, j_2) + c_G(\sigma, i, i'))$
 \begin{align*}
-P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s)) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s) ) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), s) + c_{\pi(G)}(\sigma^{(j)}, \pi(i'), s)) \\
-& = C_{\pi(G)}(\sigma^{(j)})\exp(\sum_{s=1,s\neq i,i'}^n c_{\pi(G)}(\sigma^{(j)}, i, s) + c_{\pi(G)}(\sigma^{(j)}, i', s)) \\
+P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp\Big(\sum_{s=1,s\neq i,i'}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s)\Big) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp\Big(\sum_{s=1,s\neq i,i'}^n c_G(\sigma^{(j)}, i, s) + c_G(\sigma^{(j)}, i', s) \Big) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp\Big(\sum_{s=1,s\neq i,i'}^n c_{\pi(G)}(\sigma^{(j)}, \pi(i), s) + c_{\pi(G)}(\sigma^{(j)}, \pi(i'), s)\Big) \\
+& = C_{\pi(G)}(\sigma^{(j)})\exp\Big(\sum_{s=1,s\neq i,i'}^n c_{\pi(G)}(\sigma^{(j)}, i, s) + c_{\pi(G)}(\sigma^{(j)}, i', s)\Big) \\
 & = P_{\sigma | \pi(G)}(\sigma =\sigma^{(j)})
 \end{align*}
 \end{proof}
@@ -1446,136 +1531,84 @@ P_{\sigma | G}(\sigma =\sigma^{(j)}) & = C_G(\sigma^{(j)})\exp(\sum_{s=1,s\neq i
 	Let $v=(v^{(1)},v^{(2)},\dots,v^{(m)})\in W^m$ be a vector of length $m$
 	and let $u_r:=|\{i\in[m]:v^{(i)}=\omega^r\}|$ be the number of $\omega^r$'s in $v$ for $r=0,1,\dots, k-1$.
 	Let $\sigma^{(1)},\dots,\sigma^{(m)}$ be the aligned samples of SIBM (see the alignment step in Algorithm~\ref{alg:ez}).
-	Without loss of generality we assume that the aligned samples satisfy  $\dist(\sigma^{(j)}, X) \le n^{\theta}$ for all $j\in[m]$.
+	Without loss of generality we assume that the aligned samples satisfy condition $D(\sigma^{(j)}, X)$ for all $j\in[m]$.
 	Define 
 	\begin{equation}  \label{eq:rl}
 	T_r:= | \{i\in[n]:(\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v, X_i=\omega^r \} | ,  \\
 	\end{equation}
-	If exists $s \neq r$ such that $u_r + u_s = m$ and $u_s\beta<\beta^\ast$, then
+	If there exists $s \neq r$ such that $u_r + u_s = m$ and $u_s\beta<\beta^\ast$, then
 	$P_{\SIBM}\big(T_r = \Theta(n^{g(u_s\beta)}) \big) = 1-o(1)$.
 \end{lemma}
 \begin{proof}
 
 	We only prove the claims about $T_0$ since the proof for $T_r (r>0)$ is virtually identical.
-	The proof follows the same steps as the proof of Theorem~\ref{thm:dist}. All we need to do is to replace $\beta$ with $u\beta$ in the proof of Theorem~\ref{thm:dist}. For the sake of completeness, we provide the proof here.
+	The proof follows similar steps as the proof of Theorem~\ref{thm:dist}. All we need to do is to replace $\beta$ with $u_s\beta$ and consider
+	only the probability of $\sigma^{(j)}_i = \omega^s$. For the sake of completeness, we provide the proof here.
 	
+	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43}, Proposition~\ref{prop:con} and Lemma~\ref{lm:et} implies that there is an integer $z>0$ and a set $\cG'$ such that
+	\begin{enumerate}[label=(\roman*)]
+		\item 	$P_G(\cG') \ge 1- O(n^{-4})$.
+		\item For every $G\in\cG'$, 
+		$P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
+		\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
+		\,\forall j\in[m] ~\big| D(\sigma^{(j)}, X)
+		\,\forall j\in[m]  \big)
+		=1- O(n^{-4})
+		$ where we can choose $\theta$ to be any constant in the open interval $(g(\beta), 1)$.
+		\item For every $G\in\cG'$, $\sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big)
+		=(1+o(1)) n^{g(\beta)}$	
+		\item $\underline{C} \exp(\beta (A^s_i-A^0_i)) \leq P_{\sigma|G}(\sigma_i^{(j)} = \omega^s \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} )
+		\leq \bar{C} \exp(\beta (A^s_i-A^0_i))$ for all $i\in[n]$ and all $j\in[m]$.
+	\end{enumerate}
+
 	
-	Corollary~\ref{cr:1} together with Proposition~\ref{prop:43} implies that there is an integer $z>0$ and a set $\cG_{\good}$ such that
-	
-	\noindent (i)
-	$P(G\in\cG_{\good}) \ge 1- O(n^{-4})$.
-	
-	\noindent (ii) For every $G\in\cG_{\good}$, 
-	\begin{equation}  \label{eq:ljrc}
-	\begin{aligned}
-	& P_{\sigma|G} \big( \sigma^{(j)}\in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m] ~\big| \dist(\sigma^{(j)}, X) \le n/k
-	\text{~for all~} j\in[m]  \big) \\
-	& =1- O(n^{-4}) ,
-	\end{aligned}
+	By our assumption, there exists $s\neq 0$ such that
+	$u_s + u_0 = m$. That is, all $v^{(j)}$ takes values from $1$ or $\omega^s$.
+	Moreover, since the $m$ samples are independent given the graph $G$, there are $u_0$ samples which takes value $\sigma_i^{(j)} = 1$.
+	From \eqref{eq:swX}
+	\begin{equation}
+	P_{\sigma|G}(\sigma_i^{(j)} = 1 \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X)) \geq \frac{1}{1+\exp((\beta + \frac{\alpha \log n}{n})(A_i^r - A_i^0 + 2z))}
+	\geq \frac{1}{1+\exp(2(\beta+1)z)} = \frac{1}{1+\bar{C}}
 	\end{equation}
-	where we can choose $\theta$ to be any constant in the open interval $(g(\beta), 1)$.
-	We define $[n]_r:=\{v\in[n]:X_v= \omega^r\}$ for $r=0, \dots, k-1$.
-	By Lemma~\ref{lm:et}, we know that for all $i\in[n]_0$, all $j\in[m]$ and $1\leq r \leq k-1$,
-	$P_{\sigma|G}(\sigma_i^{(j)} = \omega^r \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} )$ differ from
-	$\exp\Big(\big(\beta+\frac{\alpha\log(n)}{n} \big) (A^r_i-A^0_i) \Big)$
-	by at most a constant factor. Since $|A^r_i-A^0_i|=O(\log(n))$ with probability $1-o(1)$, the term $\frac{\alpha\log(n)}{n}(A^r_i-A^0_i)=o(1)$ and is negligible. Moreover, since the $m$ samples are independent given the graph $G$, there are $u_0$ samples which takes value $\sigma_i^{(j)} = 1$. Since the probability
-	$P_{\sigma|G}(\sigma_i^{(j)} = 1 \big| \sigma^{(j)}\in \Lambda(G,z) ,\dist(\sigma^{(j)}, X) \le n^{\theta} )$ is near 1, we conclude that
+ 	we conclude that
 	\begin{align*}
-	& \underline{C}
-	\exp\big(u_r\beta (A^r_i-A^0_i) \big) \\
+	& \frac{\underline{C}^{u_s}}{(1+\bar{C})^{u_0}}
+	\exp\big(u_s\beta (A^s_i-A^0_i) \big) \\
 	\le
 	& P_{\sigma|G} \big( (\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v ~\big|~ \sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
 	\text{~for all~} j\in[m] \big) \\
-	\le & \overline{C}
-	\exp\big(u_r \beta (A^r_i-A^0_i) \big)
+	\le & \overline{C}^{u_s}
+	\exp\big(u_s \beta (A^s_i-A^0_i) \big)
 	\end{align*}
-	for all $i\in[n]$, where $\underline{C}$ and $\overline{C}$ are constants that are independent of $n$.
-	Similar to Equation \eqref{eq:soon}. the above equation can be reformulated as follows:
+	for all $i\in[n]$.
+	Similar to Equation \eqref{eq:qke}. the above equation can be reformulated as follows:
 	For every $\bar{\sigma}^{(1)},\dots,\bar{\sigma}^{(m)}\in W^n$ such that $\bar{\sigma}^{(j)}\in  \Lambda(G, z)$
 	and $\dist(\bar{\sigma}^{(j)}, X) \le n^\theta$
 	for all $j\in[m]$,
 	\begin{equation} \label{eq:s56}
 	\begin{aligned}
-	& \underline{C}
-	\exp\big( u_r  \beta (A^r_i-A^0_i) \big) \\
+	& \underline{C}'
+	\exp\big( u_s  \beta (A^s_i-A^0_i) \big) \\
 	\le
 	& P_{\sigma|G} \big( (\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v ~\big|~ (\sigma_{i'}^{(1)},\dots,\sigma_{i'}^{(m)})= (\bar{\sigma}_{i'}^{(1)},\dots,\bar{\sigma}_{i'}^{(m)}) \text{~for all~} i'\neq i \big) \\
-	\le & \overline{C}
-	\exp\big(u_r  \beta (A^r_i-A^0_i) \big).
+	\le & \overline{C}'
+	\exp\big(u_s  \beta (A^s_i-A^0_i) \big).
 	\end{aligned}
 	\end{equation}
 	Define 
 	$\phi_i := \mathbbm{1}[(\sigma_i^{(1)},\dots,\sigma_i^{(m)})=v]$ for $i\in[n]$.
-
-	Given a fixed graph $G$ and random samples $\sigma^{(1)},\dots,\sigma^{(m)}$, we will define {\bf Bernoulli} random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ satisfying the following conditions:
-	\begin{enumerate}
-		\item $\underline{S}_1,\dots, \underline{S}_n$ are conditionally independent given the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-		\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-		\text{~for all~} j\in[m]\}$. $\overline{S}_1,\dots,\overline{S}_n$ are also conditionally independent given the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-		\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-		\text{~for all~} j\in[m]\}$.
-		\item $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$.
-		\item Conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-		\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-		\text{~for all~} j\in[m]\}$,
-		$P(\underline{S}_i=1)=\underline{C}
-		\exp\big(u_r \beta (A^r_i-A^0_i) \big)$ and $P(\overline{S}_i=1)=\overline{C}
-		\exp\big(u_r \beta (A^r_i-A^0_i) \big)$ for all $i\in[n]$.
-	\end{enumerate}
-	The construction of random variables $\underline{S}_1,\dots, \underline{S}_n$ and $\overline{S}_1,\dots,\overline{S}_n$ is rather similar to the one at the end of the proof of Theorem~\ref{thm:dist}, and we do not repeat it here. 
-	Define a set $[n]_+:=\{i\in[n]:X_i=1\}$.
-	Then $T_0=\sum_{i\in[n]_+} \phi_i$.
-	By property 3), conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
+	we will have $P_{G}(T_0=\sum_{i=1}^n \phi_i=\Theta(n^{g(u_s\beta)}) | \{\sigma^{(j)}\in  \Lambda(G, z)
 	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$, we have
-	\begin{align*}
-	& E\Big[ \sum_{i\in[n]_+}\underline{S}_i \Big] = \underline{C}
-	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big) , \quad
-	\Var \Big(\sum_{i\in[n]_+}\underline{S}_i \Big) \le \underline{C}
-	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big), \\
-	& E \Big[\sum_{i\in[n]_+} \overline{S}_i \Big] = \overline{C}
-	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big), \quad
-	\Var \Big(\sum_{i\in[n]_+} \overline{S}_i \Big) \le \overline{C}
-	\sum_{i\in[n]_+} \exp\big(u_r \beta (A^r_i-A^0_i) \big) ,
-	\end{align*}
-	where we use the fact that the variance of a Bernoulli random variable is always upper bounded by its expectation.
-	In Proposition~\ref{prop:con}, we have shown that for $ u_r \beta\le \beta^\ast$, there is a set $\cG_{\con}$ such that (i) $P(G \in \cG_{\con}) = 1-o(1)$ and (ii) for every $G\in \cG_{\con}$, 
-	$
-	\sum_{i=1}^n \exp\big(u_r \beta (A^r_i-A^0_i) \big)
-	=(1+o(1)) n^{g( u_r \beta)} .
-	$
-    Since the size of $[n]_0$ is $1/k$ of $[n]$, for every $G\in \cG_{\con}$, 
-	$
-	\sum_{i\in[n]_0} \exp\big(ku_r \beta (A^r_i-A^0_i) \big)
-	=\Theta (n^{g(u_r \beta)}) .
-	$
-	Therefore, for every $G\in\cG_{\good}\cap\cG_{\con}$, 
-	\begin{align*}
-	& E \Big[ \sum_{i\in[n]_+}\underline{S}_i \Big] = \Theta(n^{g(u_r \beta)}) , \quad
-	\Var \Big( \sum_{i\in[n]_+}\underline{S}_i \Big) = O( n^{g(u_r\beta)}) , \\
-	& E \Big[ \sum_{i\in[n]_+}\overline{S}_i \Big] = \Theta(n^{g(u_r\beta)}) , \quad
-	\Var \Big( \sum_{i\in[n]_+}\overline{S}_i \Big) = O( n^{g(u_r\beta)}) 
-	\end{align*}
-	conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$. Since $g(u_r\beta)> 0$ for all $u_r\beta< \beta^\ast$, by Chebyshev's inequality we know that both $\sum_{i\in[n]_+}\underline{S}_i=\Theta(n^{g(u_r\beta)})$ and
-	$\sum_{i\in[n]_+}\overline{S}_i=\Theta( n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$.
-	Since $\underline{S}_i\le \phi_i\le \overline{S}_i$ for all $i\in[n]$, we also have $T_0=\Theta(n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on the event $\{\sigma^{(j)}\in  \Lambda(G, z)
-	\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
-	\text{~for all~} j\in[m]\}$. Combining this with \eqref{eq:ljrc}, we obtain that for every $G\in\cG_{\good}\cap\cG_{\con}$,
-	$T_0=\Theta( n^{g(u_r\beta)})$ with probability $1-o(1)$ conditioning on $\dist(\sigma^{(j)}, X) \le n/k$ for all $j\in[m]$. Finally, the lemma follows from $P(G\in\cG_{\good}\cap\cG_{\con})=1-o(1)$.
+	\text{~for all~} j\in[m]\})= 1-o(1)$  for every $G\in\cG'$.
+	Finally, the lemma follows from property (i) $P_G(\cG')=1-o(1)$.
 \end{proof}
 Using the above two lemmas, we obtain the following proposition:
 \begin{proposition}
 	Let $a,b,\alpha,\beta> 0$ be constants satisfying that $\sqrt{a}-\sqrt{b} > \sqrt{k}$ and $\alpha>b\beta$. 
 	Let 
 	$$
-	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k,a\log(n)/n, b\log(n)/n,\alpha,\beta, m) .
+	(X,G,\{\sigma^{(1)},\dots,\sigma^{(m)}\})\sim \SIBM(n,k,a\log n/n, b\log n/n,\alpha,\beta, m) .
 	$$
 	If $\lfloor\frac{m+1}{2} \rfloor \beta<\beta^\ast$, then no algorithm can recover $X$ from the samples with constant success probability, i.e., the success probability of any algorithm is $o(1)$.
 \end{proposition}
@@ -1583,11 +1616,11 @@ Using the above two lemmas, we obtain the following proposition:
 	From Lemma \ref{lm:cvs}, we choose $v \in W^m$ such that it has $\lfloor \frac{m+1}{2} \rfloor$ coordinates being $1$
 	and $(m-\lfloor \frac{m+1}{2} \rfloor)$ coordinates being $\omega$.
 	Then $u_0 = \lfloor \frac{m+1}{2} \rfloor, u_1 = m - u_0$.
-	By detailed analysis, both $T_0, T_1$ are $\omega(1)$.
-	Therefore, we can find $\omega(1)$ pairs of $i, i'$ satisfying the following two conditions: (1) $\sigma_{i}^{(j)}=\sigma_{i'}^{(j)}$ for all $j\in[m]$ and
+	By detailed analysis, both $T_0, T_1$ intends to infinity as $n \to \infty$.
+	Therefore, we can find as many pairs of $i, i'$ satisfying the following two conditions as possible: (1) $\sigma_{i}^{(j)}=\sigma_{i'}^{(j)}$ for all $j\in[m]$ and
 	(2) $X_i = 1, X_{i'} = \omega$.
 	Then by Lemma~\ref{lm:qq}, it is not possible to distinguish $X_i = 1, X_{i'} = \omega$ from $X_i = \omega, X_{i'} = 1$
-	for $\omega(1)$ pairs of $i, i'$.
+	for these pairs of $i, i'$.
 	Therefore, the success probability of any recovery algorithm is $o(1)$.
 \end{proof}
 \appendix
@@ -1600,11 +1633,11 @@ Using the above two lemmas, we obtain the following proposition:
 We use $f(n)=\Theta(g(n))$ and $f(n)\asymp g(n)$ interchangeably if there is a constant $C>0$ such that $C^{-1}g(n)\le f(n)\le C g(n)$ for large enough $n$.
 
 \begin{proposition}  \label{prop:99}
-For any $t$ such that $t\log(n)$ is an integer and $|t|<100a$,
+For any $t$ such that $t\log n$ is an integer and $|t|<100a$,
 \begin{equation} \label{eq:ly}
 \begin{aligned}
-& P(A^1_i-A^0_i = t\log(n))  \\
-\asymp & \frac{1} {\sqrt{\log(n)}} \exp\Big(\log(n)
+& P(A^1_i-A^0_i = t\log n)  \\
+\asymp & \frac{1} {\sqrt{\log n}} \exp\Big(\log n
 \Big(f_{\beta}(t) - \beta t -1 \Big)\Big) .
 \end{aligned}
 \end{equation}
@@ -1628,70 +1661,67 @@ conclusion.
 Assume that $\sqrt{a}-\sqrt{b}>\sqrt{k}$. Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$.
 If $0<\beta<\frac{1}{2}\log\frac{a}{b}$, then
 $$
-E \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
-= (1+o(1)) E \Big[   \exp\big(\beta (A^r_i-A^0_i) \big) \Big]
+\mathbb{E} \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+= (1+o(1)) \mathbb{E} \Big[   \exp\big(\beta (A^r_i-A^0_i) \big) \Big]
 = (1+o(1)) n^{g(\beta)-1}  .
 $$
 If $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
 \begin{align*}
-E \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+\mathbb{E} \Big[  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
 = O(n^{\tilde{g}(\beta)-1})  .
 \end{align*}
 \end{proposition}
 \begin{proof}
 
-Therefore, we only need to show that
-$E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))n^{g(\beta) - 1}$.
 
 The unconditional expectation result follows from \eqref{eq:gbetaminus1}.
-For the conditional expectation, we follow \eqref{eq:split_tlogn} and use Proposition~\ref{prop:99} to estimate
-$\mathbb{E}[\mathbbm{1}[A^r_i - A^0_i = t \log n]|~G\in\cG_1] = \Pr(A^r_i - A^0_i = t \log n|~G\in\cG_1) = (1+o(1))\Pr(A^r_i - A^0_i = t \log n)$
+For the conditional expectation, first we have
+$\mathbb{E}[\mathbbm{1}[A^r_i - A^0_i = t \log n]|~G\in\cG_1] = P_G(A^r_i - A^0_i = t \log n|~G\in\cG_1) = (1+o(1))P_G(A^r_i - A^0_i = t \log n)$
 by Lemma~\ref{lm:5t}.
 As a consequence,
 \begin{equation}  \label{eq:wf1}
 \begin{aligned}
-E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
-& =  \sum_{t\log(n)=-n/k}^{-1}
-\Pr(A^r_i - A^0_i = t \log n)\exp\big(\beta t \log(n) \big)  \\
-& \asymp  \frac{1} {\sqrt{\log(n)}} \sum_{t\log(n)=-n/k}^{-1}
- \exp( (f_{\beta}(t) -1)\log(n) ) .
+\mathbb{E} \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big]
+& =  \sum_{t\log n=-n/k}^{-1}
+P_G(A^r_i - A^0_i = t \log n)\exp\big(\beta t \log n \big)  \\
+& \asymp  \frac{1} {\sqrt{\log n}} \sum_{t\log n=-n/k}^{-1}
+ \exp( (f_{\beta}(t) -1)\log n ) .
 \end{aligned}
 \end{equation}
-By Lemma~\ref{lm:ele}, $f_{\beta}(t)$ is a concave function and takes maximum at
-$t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}$. 
-$\exp( f_{\beta}(t) \log(n))$ varies by a constant factor within a window of length $\Theta(1/\sqrt{\log(n)})$ around $t^\ast$, and
-then drops off geometrically fast beyond that window. Since $t\log(n)$ takes $\Theta(\sqrt{\log(n)})$ integer values when $t$ takes values in such a window, we have
+By detailed analysis on $f'_{\beta}(t)$ and $f''_{\beta}(t)$,
+we conclude that $f_{\beta}(t)$ is a concave function and takes maximum at
+$t^\ast=\frac{b e^{\beta}-a e^{-\beta}}{k}$.
+$\exp( f_{\beta}(t) \log n)$ varies by a constant factor within a window of length $\Theta(1/\sqrt{\log n})$ around $t^\ast$, and
+then drops off geometrically fast beyond that window. Since $t\log n$ takes $\Theta(\sqrt{\log n})$ integer values when $t$ takes values in such a window, we have
 \begin{equation} \label{eq:wf2}
-\sum_{t\log(n)=-n/k}^{-1}
- \exp( f_{\beta}(t) \log(n) )
- \asymp \sqrt{\log(n)}
- \exp( f_{\beta}(t^\ast) \log(n) ) .
+\sum_{t\log n=-n/k}^{-1}
+ \exp( f_{\beta}(t) \log n )
+ \asymp \sqrt{\log n}
+ \exp( f_{\beta}(t^\ast) \log n ) .
 \end{equation}
-Therefore, if $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}<0$,
+Therefore, if $t^\ast<0$,
 or equivalently $0<\beta<\frac{1}{2}\log\frac{a}{b}$, then
 $$
-E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
+\mathbb{E} \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
 n^{f_{\beta}(t^*)-1} = n^{g(\beta)-1}
 $$
 On the other hand,
-if $t^\ast=\frac{b e^{k\beta}-a e^{-k\beta}}{k}\ge 0$, or equivalently $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
+if $t^\ast\ge 0$, or equivalently $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
 $f_{\beta}(t)$ takes maximum value at $t=0$.
-$\exp( f_{\beta}(t) \log(n))$ varies by a constant factor within a window of length $O(1/\sqrt{\log(n)})$ around $t=0$, and
+$\exp( f_{\beta}(t) \log n)$ varies by a constant factor within a window of length $O(1/\sqrt{\log n})$ around $t=0$, and
 then drops off geometrically fast beyond that window. As a consequence,
 \begin{align*}
-E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
-n^{f_{\beta}(0)-1} = n^{\tilde{g}(\beta)-1}
+\mathbb{E} \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
+O(n^{f_{\beta}(0)-1}) = O(n^{\tilde{g}(\beta)-1})
 \end{align*}
 \end{proof}
-Due to the symmetric property, we have
-$E \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = E \Big[\exp\big(\beta (A^r_j-A^0_j) \big) ~\Big|~ G\in\cG_1 \Big]$.
-Therefore, the following corollary follows immediately from Proposition~\ref{prop:df}:
+The following corollary follows immediately from Proposition~\ref{prop:df}:
 \begin{corollary} \label{cr:yy}
 For all $\beta>0$,
 \begin{align}
-& E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big)  \Big] 
+& \mathbb{E} \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big)  \Big] 
 = \Theta(n^{g(\beta)}) \label{eq:ThetaEbeta} \\
-& E \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
+& \mathbb{E} \Big[ \sum_{i=1}^n  \exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] 
 = O(n^{\tilde{g}(\beta)})
 \end{align}
 \end{corollary}
@@ -1702,22 +1732,22 @@ For all $\beta>0$,
 
 \begin{lemma}  \label{lm:5t}
 Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$.
-Then $P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
+Then $P_G(A^r_i-A^0_i= t\log n~|~G\in\cG_1)= (1+o(1))P_G(A^r_i-A^0_i= t\log n)$ for all $t<0$ such that $t\log n$ is an integer.
 \end{lemma}
 
 \begin{proof}
 Note that 
 $$
-P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1)
-=\frac{P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log(n) \big)}{P(G\in\cG_1)} .
+P_G(A^r_i-A^0_i= t\log n~|~G\in\cG_1)
+=\frac{P_G \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log n \big)}{P(G\in\cG_1)} .
 $$
-By \eqref{eq:I_1}, we have $P(G\in\cG_1)=1-o(1)$, so
+By \eqref{eq:I_1}, we have $P_G(G\in\cG_1)=1-o(1)$, so
 \begin{align*}
-& P(A^r_i-A^0_i= t\log(n)~|~G\in\cG_1) \\
-= & (1+o(1)) P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log(n) \big) \\
-= & (1+o(1)) P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log(n) \big) P(A^r_i-A^0_i= t\log(n)) .
+& P_G(A^r_i-A^0_i= t\log n~|~G\in\cG_1) \\
+= & (1+o(1)) P_G \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\}, A^r_i-A^0_i= t\log n \big) \\
+= & (1+o(1)) P_G \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log n \big) P_G(A^r_i-A^0_i= t\log n)
 \end{align*}
-Therefore, to prove the lemma we only need to show that $P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log(n) \big)=1-o(1)$. 
+Therefore, to prove the lemma we only need to show that $P_G \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log n \big)=1-o(1)$. 
 
 For $j\in[n]\setminus\{i\}$, define $\xi_{ij}=\xi_{ij}(G):=\mathbbm{1}[\{i,j\}\in E(G)]$ as the indicator function of the edge $\{i,j\}$ connected in graph $G$. We also define 
 $$
@@ -1737,13 +1767,13 @@ A'^0_j=\left\{
 $$
 Then $A'^r_j-A'^0_j$ differs from $A^r_j-A^0_j$ by at most $1$.
 Therefore, $A'^r_j-A'^0_j<-1$ implies that $A^r_j-A^0_j<0$,
-and so $P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log(n) \big) \ge P \big(A'^r_j-A'^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log(n) \big)$.
+and so $P \big(A^r_j-A^0_j<0\text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log n \big) \ge P \big(A'^r_j-A'^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log n \big)$.
 Now we only need to prove that the right-hand side is $1-o(1)$.
 Also note that the two sets of random variables $\{A'^r_j,A'^0_j:j\in[n]\setminus\{i\}\}$ and $\{A^r_i,A^0_i\}$ are independent,
-so $P \big(A'^r_j-A'^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log(n) \big)=P \big(A'^r_j-A^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\}  \big)$.
+so $P \big(A'^r_j-A'^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\} ~\big|~ A^r_i-A^0_i= t\log n \big)=P \big(A'^r_j-A^0_j<-1 \text{~for all~} j\in[n]\setminus\{i\}  \big)$.
 By definition, we have
-$A'^r_j\sim\Binom(\frac{n}{k}-\Theta(1),b\log(n)/n)$
-and $A'^0_j\sim\Binom(\frac{n}{k}-\Theta(1),a\log(n)/n)$ for all $j\in[n]\setminus\{i\}$.
+$A'^r_j\sim\Binom(\frac{n}{k}-\Theta(1),b\log n/n)$
+and $A'^0_j\sim\Binom(\frac{n}{k}-\Theta(1),a\log n/n)$ for all $j\in[n]\setminus\{i\}$.
 Then following exactly the same proof as that of \eqref{eq:I_1}, we have
 $$
 P \big(A'^r_j-A'^0_j <-1 \text{~for all~} j\in[n]\setminus\{i\}  \big)
@@ -1753,48 +1783,50 @@ This completes the proof of the lemma.
 \end{proof}
 Using the same techniques as in Lemma \ref{lm:5t}, we have the following corollary:
 \begin{corollary}\label{lem:ucBA}
-Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$. Suppose $i\neq j$, then $P(A^r_i-A^0_i + A^r_j - A^0_j= t\log(n)~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i + A^r_j - A^0_j= t\log(n))$ for all $t<0$ such that $t\log(n)$ is an integer.
+Let $\cG_1:=\{G:A^r_i-A^0_i<0\text{~for all~}i\in[n]\}$. Suppose $i\neq j$, then $P(A^r_i-A^0_i + A^r_j - A^0_j= t\log n~|~G\in\cG_1)= (1+o(1))P(A^r_i-A^0_i + A^r_j - A^0_j= t\log n)$ for all $t<0$ such that $t\log n$ is an integer.
 \end{corollary}
 \begin{lemma}\label{lem:BijG}
 	When $\beta < \beta^*$, we have
 \begin{align}
-E \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
-=E \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) \big] 
+\mathbb{E} \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
+=\mathbb{E} \big[  \exp\big(\beta (A^r_i-A^0_i + A^r_j - A^0_j) \big) \big] 
 \end{align}
 \end{lemma}
 \begin{proof}
 First we have
 \begin{align}
-E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
-&= \sum_{t=-2\frac{n}{k}}^{-1} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n | G \in \cG_1) \exp(\beta t \log n) \notag \\
-\text{ Corollary \ref{lem:ucBA} implies }&= (1+o(1))\sum_{t=-2\frac{n}{k}}^{-1} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) \exp(\beta t \log n)
+\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j) \big) ~\big|~ G\in\cG_1 \big] 
+&= \sum_{t \log n = -2\frac{n}{k} }^{-2} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n | G \in \cG_1) \exp(\beta t \log n) \notag \\
+% since $A^r_i - A^0_i < 0$ and $A^r_j - A^0_j$
+\text{ Corollary \ref{lem:ucBA} implies } &= (1+o(1))
+\sum_{t \log n = -2\frac{n}{k}}^{-2} P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) \exp(\beta t \log n)
 \end{align}
-On the other hand, we suppose $X_i \neq X_j$ and we decompose $A^r_j = A'^r_j + \xi_{ij}, A^r_i = A'^r_i + \xi_{ij}$ where $\xi_{ij}$ is an indicator function of $\{i,j\} \in E(G)$. Then $A'^r_j, A'^r_i, A^r_j, A^r_i, \xi_{ij}$ are independent.
-$\xi_{ij} \sim Bern(\frac{b\log n}{n})$.
+On the other hand, we suppose $X_i \neq X_j$ and we decompose $A^r_j = A'^r_j + \xi_{ij}, A^r_i = A'^r_i + \xi_{ij}$ where $\xi_{ij}$ is an indicator function of $\{i,j\} \in E(G)$. Then $A'^r_j, A'^r_i, A^r_j, A^r_i, \xi_{ij}$ are independent, and
+$\xi_{ij}$ follows $\textrm{Bernoulli}(\frac{b\log n}{n})$.
 Then we have
 \begin{align*}
-E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = E[\exp(2\beta \xi_{ij})] E[\exp(\beta (A'^r_i - A^0_i)]
-E[\exp(\beta (A'^r_j - A^0_j)] \\
-& = (1+o(1))E[\exp(\beta(A'^r_i - A^0_i))] E[\exp(\beta(A'^r_j - A^0_j))]
+\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = \mathbb{E}[\exp(2\beta \xi_{ij})] \mathbb{E}[\exp(\beta (A'^r_i - A^0_i)]
+\mathbb{E}[\exp(\beta (A'^r_j - A^0_j)] \\
+& = (1+o(1))\mathbb{E}[\exp(\beta(A'^r_i - A^0_i))] \mathbb{E}[\exp(\beta(A'^r_j - A^0_j))]
 \end{align*}
 From Proposition \ref{prop:df} we have
 $$
-E[\exp(\beta(A^r_i - A^0_i))] = (1+o(1)) \sum_{t=-n/k}^{-1} P(A^r_i - A^0_i = t \log n)E[\exp(\beta t \log n)]
+\mathbb{E}[\exp(\beta(A'^r_i - A^0_i))] = (1+o(1)) \sum_{t \log n = -\frac{n}{k}}^{-1} P(A'^r_i - A^0_i = t \log n)\mathbb{E}[\exp(\beta t \log n)]
 $$
 we have
 \begin{align*}
-E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = (1+o(1))
-\sum_{t_1=-n/k}^{0} P(A'^r_i - A^0_i = t_1 \log n)E[\exp(\beta t_1 \log n)] \\
+\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] & = (1+o(1))
+\sum_{t_1 \log n =-\frac{n}{k} }^{-1} P(A'^r_i - A^0_i = t_1 \log n)\mathbb{E}[\exp(\beta t_1 \log n)] \\
 & \cdot
-\sum_{t_2=-n/k}^{-1} P(A'^r_j - A^0_j = t_2 \log n)E[\exp(\beta t_2 \log n)] \\
-& = (1+o(1))  \sum_{t=-2\frac{n}{k}}^{-1} E[\exp(\beta t \log n)]\\
+\sum_{t_2 \log n=-\frac{n}{k}  }^{-1} P(A'^r_j - A^0_j = t_2 \log n)\mathbb{E}[\exp(\beta t_2 \log n)] \\
+& = (1+o(1))  \sum_{t \log n = -2\frac{n}{k}  }^{-2} \mathbb{E}[\exp(\beta t \log n)]\\
 & \cdot \sum_{\substack{t_1 + t_2 = t \\ t_1 < 0, t_2 < 0}}
 P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2\log n)
 \end{align*}
 Since 
 \begin{align*}
 P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n)
-&= \sum_{\substack{t_1 + t_2 + t_3 = t\\ t_3 \in\{0, 1\}}} P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2 \log n) P(2\xi_{ij} = t_3 \log n) \\
+&= \sum_{\substack{t_1 + t_2 + t_3 = t\\ t_3 \in\{0, 2\}}} P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2 \log n) P(2\xi_{ij} = t_3 \log n) \\
 &=(1+o(1)) \sum_{t_1 + t_2 = t} P(A'^r_i - A^r_i = t_1 \log n) P(A'^r_j - A^r_j = t_2 \log n)  \\
 \end{align*}
 From  Proposition \ref{prop:99}, $P(A'^r_i - A^r_i = t_1 \log n) \asymp \frac{1}{\sqrt{\log n}}\exp(f_{\beta}(t) - \beta t -1)$.
@@ -1806,7 +1838,7 @@ $$
 $$
 Therefore,
 $$
-E \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] = (1+o(1))\sum_{t=-2\frac{n}{k}}^{-1} E[\exp(\beta t \log n)]
+\mathbb{E} \big[  \exp\big(\beta (A^r_i - A^0_i + A^r_j - A^0_j ) \big) \big] = (1+o(1))\sum_{t=-2\frac{n}{k}}^{-2} \mathbb{E}[\exp(\beta t \log n)]
 P(A^r_i - A^0_i + A^r_j - A^0_j = t\log n) 
 $$
 Thus Lemma \ref{lem:BijG} follows. 
@@ -1817,7 +1849,6 @@ Thus Lemma \ref{lem:BijG} follows.
 
 
 \section{Auxiliary lemmas used in Section~\ref{sect:direct}}\label{ap:6}
-
 \begin{lemma}\label{lem:g_v_extension}
 	Given a $k-1$ length vector $v=(u_1, \dots, u_{k-1})$, where $u_i$ is a non-negative integer.
 	Let $u=\sum_{i=1}^{k-1} u_i$, $\sqrt{a} - \sqrt{b} > \sqrt{k}$.
@@ -1834,7 +1865,7 @@ Thus Lemma \ref{lem:BijG} follows.
 \end{lemma}
 \begin{proof}
 	The monotonicity property comes from careful analysis on $g'_v$ and $g''_v>0$.
-	We have already known that $\beta' = \frac{\beta^*}{u}$ satisfies:
+	From \eqref{eq:beta_star}, we have already known that $\beta' = \frac{\beta^*}{u}$ satisfies:
 	$$
 	\frac{b e^{u\beta'} + a e^{-u\beta'}-a-b}{k}+1=0
 	$$
@@ -1844,25 +1875,72 @@ Thus Lemma \ref{lem:BijG} follows.
 	$$
 	
 	We use mathematical induction to show that $g_v(\beta') \leq 0$.
+	Define $L(\lambda_1, \dots, \lambda_r) = 1-r + \sum_{i=1}^{r} \exp(\lambda_i \beta^*) - \exp(\beta^*\sum_{i=1}^{r} \lambda_i )$.
 	Let $\lambda_i = \frac{u_i}{u} \in [0,1]$ and $\sum_{i=1}^{k-1} \lambda_i = 1$.
-	If only one $\lambda_i = 1$, then $g_v(\beta')$.
-	For $\lambda_i = 0, i=r,\dots, k-1$, if $r=2$, we have
-	$$
-	2-k + \sum_{i=1}^{k-1}\exp(\frac{u_i}{u} \beta^*) - \exp(\beta^*)
-	= -(1-\exp(\lambda_1 \beta^*))(1-\exp(\lambda_2 \beta^*))
-	$$
-	Since $\exp(\lambda_i \beta^*) \geq 1$, the above equation is negative.
-	Therefore, the conclusion holds when $r=2$.
-	Now suppose it holds for a certain $r$, consider the case for $r+1$.
-	We then have
+	Then $g_v(\beta') =\frac{b}{k} L(\lambda_1, \dots, \lambda_{k-1})$.
+	Firstly we have $L(\lambda_1) = 0$,
+	$
+	L(\lambda_2) = -(1-\exp(\lambda_1 \beta^*))(1-\exp(\lambda_2 \beta^*))
+	$
+	Since $\exp(\lambda_i \beta^*) \geq 1$, $L(\lambda_2)\leq 0$.
 	\begin{align*}
-	L(r+1) = 2-k + \sum_{i=1}^{k-1}\exp(\frac{u_i}{u} \beta^*) - \exp(\beta^*)
-	& = L(r)- (1-\exp(\sum_{i=1}^r \lambda_i \beta^*)) (1-\exp(\lambda_{r+1}\beta^*)) \leq 0
+	L(\lambda_1, \dots, \lambda_{r+1}) = L(\lambda_1, \dots, \lambda_r) - (1-\exp(\sum_{i=1}^r \lambda_i \beta^*)) (1-\exp(\lambda_{r+1}\beta^*)) \leq 0
 	\end{align*}
-	Therefore, we have proven that $g_v(\beta') \leq 0$.
+	Therefore, we have proven that $g_v(\beta') \leq 0$. Since $g_v(\beta)$
+	is a decreasing function in $[0, \bar{\beta}]$, it follows that
+	$\hat{\beta} \leq \beta' = \frac{\beta^*}{u}$.
+	
+	To show $g(\bar{\beta}) < 0$, we only need to show $g'_v(\beta') < 0$.
+	We have $g'_v(\beta') = \frac{1}{k} \sum_{i=1}^{k-1} u_i(b\exp(\frac{u_i}{u}\beta^*) - a\exp(\beta^*)) < 0$
 \end{proof}
 \begin{remark}
-	The function $g_v(\beta)$ reduces to common $g(\beta)$ if we choose $v=(1,0,\dots, 0)$.
+	The function $g_v(\beta)$ reduces to $g(\beta)$ (defined in \eqref{eq:gbeta}) if we choose $v=(1,0,\dots, 0)$.
+	Similarly to the definition of $\tilde{g}(\beta)$ in \eqref{eq:gbt}, we define
+	\begin{equation}
+	\tilde{g}_v(\beta) = \begin{cases}
+	g_v(\beta) & \beta < \bar{\beta} \\
+	g_v(\bar{\beta}) & \beta \geq \bar{\beta}\\
+	\end{cases}
+	\end{equation}
+\end{remark}
+\begin{lemma}\label{lem:fbeta_prop}
+	For $ t \in [u\frac{b-a}{k}, 0] $,
+	we have
+	\begin{equation}\label{eq:uAr}
+	P(\sum_{r=1}^{k-1} u_i A_i^r - u A_i^0 \geq t \log n) \leq \exp \Big(
+	\log n (f_{v,\beta}(t) - \beta t - 1) + O(\frac{\log^2 n}{n})\Big)
+	\end{equation}
+	The function $f_{v,\beta}(t)$ is defined by
+	\begin{equation}\label{eq:f_def}
+	f_{v,\beta}(t) = \min_{s \geq 0} (g_v(s) - st) + \beta t
+	\end{equation}
+	which satisfies $f_{v, \beta}(t) \leq \tilde{g}_v(\beta)$.
+	When $\beta > \beta^*$, we have $f_{v, \beta}(t) \leq \tilde{g}_v(\beta) < 0$.
+	$f_{v,\beta}(u(b-a)/k) = 1 + \beta u (b-a)/k$.
+\end{lemma}
+\begin{proof}
+	The expectation can be computed as follows:
+	\begin{align*}
+	\mathbb{E}[\exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))] &=\prod_{i=1}^{k-1}\left(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)\right)^{n/k}
+	\left(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta)\right)^{n/k} \\
+	&= \exp(\frac{n}{k} \left[\sum_{i=1}^{k-1}\log(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)) + \log(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta))\right])\\
+	& = \exp(\log n (g_v(\beta) - 1) + O(\frac{\log^2 n}{n}))
+	\end{align*}
+	By Chernoff inequality, we have
+	\begin{equation}
+	P(\sum_{r=1}^{k-1} u_i A_i^r - u A_i^0 \geq t \log n) \leq \frac{\mathbb{E}[\exp(s(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))]}
+	{\exp(st \log n)} = \exp(\log n (g_v(s) - st -1) + O(\frac{\log^2 n}{n}))
+	\end{equation}
+	Therefore, \eqref{eq:uAr} holds.
+	
+	Since $ t\leq 0$, the minimum value is taken for $s\leq \bar{\beta}$. Therefore, we can replace $g_v(s)$ with $\tilde{g}_v(s)$.
+
+	That is, $f_{v,\beta}(t) = \min_{s \geq 0} (\tilde{g}_v(s) - st) + \beta t \leq \tilde{g}_v(\beta) - \beta t + \beta t = \tilde{g}_v(\beta)$.
+	The special value $f_{v,\beta}(u(b-a)/k)$ can be computed directly from the definition \eqref{eq:f_def}. The solution to $g'_v(s) = u(b-a)/k$ is $s=0$
+	and the solution is unique from the monotonic property of $g_v(s)$ in $[0,\bar{\beta}]$.
+\end{proof}
+\begin{remark}
+	When $v=(1,0,\dots, 0)$, Lemma \ref{lem:fbeta_prop} reduces to Lemma \ref{lem:fb}.
 \end{remark}
 \begin{lemma}\label{lem:large}
 	Suppose $u\beta > \beta^*$. For every $v=(u_1, \dots, u_{k-1})$,
@@ -1887,40 +1965,7 @@ Thus Lemma \ref{lem:BijG} follows.
 	From Lemma \ref{lem:g_v_extension}, we know that $\hat{\beta}\leq \frac{\beta^*}{u}$.
 	Therefore, if $\beta > \frac{\beta^*}{u} \geq \hat{\beta}$, $\tilde{g}_v(\beta) < 0$ and our conclusion holds.
 \end{proof}
-\begin{lemma}\label{lem:fbeta_prop}
-	For $ t \in [u\frac{b-a}{k}, 0] $,
-	we have
-	$$
-	P(\sum_{r=1}^{k-1} u_i A_i^r - u A_i^0 \geq t \log n) \leq \exp(\log(n) (f_{v,\beta}(t) - \beta t - 1) + O(\frac{\log n}{n}))
-	$$.
-	The function $f_{v,\beta}(t)$ satisfies $f_{v, \beta}(t) \leq \tilde{g}_v(\beta)$.
-	When $\beta > \beta^*$, we have $f_{v, \beta}(t) \leq \tilde{g}_v(\beta) < 0$.
-	$f_{v,\beta}(u(b-a)/k) = 1 + \beta u (b-a)/k$.
-\end{lemma}
-\begin{proof}
-	The expectation can be computed as follows:
-	\begin{align*}
-	\mathbb{E}[\exp(\beta(\sum_{r=1}^{k-1}u_i A_i^r - u A_i^0))] &=\prod_{i=1}^{k-1}\left(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)\right)^{n/k}
-	\left(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta)\right)^{n/k} \\
-	&= \exp(\frac{n}{k} \left[\sum_{i=1}^{k-1}\log(1-\frac{b\log n}{n}+\frac{b\log n}{n}\exp(u_i \beta)) + \log(1-\frac{a\log n}{n}+\frac{a\log n}{n}\exp(-u \beta))\right])\\
-	& = \exp(\log n (g_v(\beta) - 1) + O(\frac{\log^2 n}{n}))
-	\end{align*}
-	By Chernoff's Inequality, we have
-	\begin{equation}\label{eq:f_def}
-	f_{v,\beta} = \min_{s \geq 0} (g_v(s) - st) + \beta t
-	\end{equation}
-	
-	Since $ t\leq 0$, the minimum value is taken for $s\leq \bar{\beta}$. Therefore, we can replace $g_v(s)$ with $\tilde{g}_v(s)$ defined
-	as follows:
-	\begin{equation}
-	\tilde{g}_v(s) = \begin{cases}
-	g_v(s) & s < \bar{\beta} \\
-	g_v(\bar{\beta}) & s \geq \bar{\beta}\\
-	\end{cases}
-	\end{equation}
-	That is, $f_{v,\beta}(t) = \min_{s \geq 0} (\tilde{g}_v(s) - st) + \beta t \leq \tilde{g}_v(\beta) - \beta t + \beta t = \tilde{g}_v(\beta)$.
-	The special value $f_{v,\beta}(u(b-a)/k)$ can be computed directly from the definition \eqref{eq:f_def}. The solution to $g'(s) = u(b-a)/k$ is $s=0$.
-\end{proof}
+
 
 \bibliographystyle{plain}
 \bibliography{exportlist}

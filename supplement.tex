@@ -408,8 +408,11 @@ By choosing $s = n^{\tilde{g}(\beta)/2}$ we have
 \end{align*}
 \section{A weaker conclusion than Theorem 3}
 In section \cite{ye2020exact}, there is some problem related with the proof. We try to prove a weaker version of Theorem 3.
-That is, when $\beta < \beta^*$, we will show that $P_{\SIBM}(\dist(\sigma, \pm X)\geq 1) = 1 - o(1)$.
-The following discussion assumes $\dist(\sigma, X) \leq \frac{n}{2}$.
+That is, when $\beta < \beta^*$, we will show that
+\begin{lemma}\label{lem:dist_sigma}
+$P_{\SIBM}(\dist(\sigma, \pm X)\geq 1) = 1 - o(1)$
+\end{lemma}
+
 Indeed, using proposition 10 in \cite{ye2020exact}, we can find $\cG_1$ such that $P(\cG_1) < n^{1-(\sqrt{a} - \sqrt{b})^2/2}$
 and for $G\not\in \cG_1$, for large enough $n$
 $$
@@ -429,10 +432,111 @@ P_{\sigma | G}(\dist(\sigma, X) \geq 1) \geq \frac{n^{g(\beta)}}{4+n^{g(\beta)}}
 $$
 Then
 \begin{align*}
-P_{\SIBM}(\dist(\sigma, X) = 0) & \leq P(\cG_1) + \sum_{G\not\in cG_1}P(G)(1-P_{\sigma|G}(\dist(\sigma, X)\geq 1))\\
+P_{\SIBM}(\dist(\sigma, X) = 0) & \leq P(\cG_1) + \sum_{G\not\in \cG_1}P(G)(1-P_{\sigma|G}(\dist(\sigma, X)\geq 1))\\
 & \leq n^{1-(\sqrt{a} - \sqrt{b})^2/2} + \frac{4}{4+n^{g(\beta)}} \\
 & \leq n^{1-(\sqrt{a} - \sqrt{b})^2/2} + 4n^{-g(\beta)} = o(1)
 \end{align*}
+We modify Lemma 7 as follows:
+\begin{lemma}
+If $u\beta < \beta^*$, then $P_{\SIBM}(T_+ \geq 1) = 1-o(1)$.
+Similarly, if $(m-u)\beta < \beta^*$, then $P_{\SIBM}(T_- \geq 1) = 1-o(1)$.
+\end{lemma}
+\begin{proof}
+	The idea is similar with Lemma \ref{lem:dist_sigma}.
+	Let $\Lambda = \{(\sigma^{1}, \dots, \sigma^{m}) |
+	  \sigma^{(j)}\in  \Lambda(G, z)
+\text{~and~} \dist(\sigma^{(j)}, X) \le n^\theta
+\text{~for all~} j\in[m] 
+	\}$.
+	
+	Firstly
+	we establish $\frac{P_{\sigma | G}(T_+ = 1 | \Lambda ) }{P_{\sigma | G}(T_+ = 0 | \Lambda )} \geq C\sum_{i=1, X_i=1}^n \exp(u(B_i - A_i))$.
+	Or equivalently we show $\frac{P_{\sigma | G}(T_+ = 1, \Lambda ) }{P_{\sigma | G}(T_+ = 0, \Lambda )} \geq C\sum_{i=1, X_i=1}^n \exp(u(B_i - A_i))$.
+	
+	First, we write $$
+	\frac{P_{\sigma | G}(T_+ = 1, \Lambda )}{P_{\sigma | G}(T_+ = 0, \Lambda )} =
+	\sum_{i=1, X_i=1}^n \frac{P_{\sigma | G}( (\sigma_i^{(1)}, \dots ,\sigma_i^{(m)}) = v, (\sigma_j^{(1)}, \dots ,\sigma_j^{(m)}) \neq v, \forall j \neq i, \Lambda)}
+	{P_{\sigma | G}(T_+ = 0, \Lambda)}
+	$$.
+	To bound the summation term, we only need to consider
+	$\bar{\sigma}^{(j)}\in  \Lambda(G, z)
+	\text{~and~} \dist(\bar{\sigma}^{(j)}, X) \le n^\theta
+	\text{~for all~} j\in[m]$.
+	That is, we consider
+	$$
+	\frac{P_{\sigma | G}( (\sigma_i^{(1)}, \dots ,\sigma_i^{(m)}) = v,  (\sigma_j^{(1)}, \dots ,\sigma_j^{(m)}) = (\bar{\sigma}_j^{(1)}, \dots ,\bar{\sigma}_j^{(m)}), \forall j \neq i)}
+	{\sum_{v' \neq v} P_{\sigma | G}((\sigma_i^{(1)}, \dots ,\sigma_i^{(m)}) = v',  (\sigma_j^{(1)}, \dots ,\sigma_j^{(m)}) = (\bar{\sigma}_j^{(1)}, \dots ,\bar{\sigma}_j^{(m)}), \forall j \neq i)}
+	$$
+	Since each sample is independent, the above equation is equal to
+	$$
+	\frac{ \prod_{r=1}^m	P_{\sigma | G}(\sigma_i^{(r)} = v_r, \sigma_j^{(r)} =\bar{\sigma}_j^{(r)}, \forall j \neq i)}
+	{\sum_{v' \neq v} \prod_{r=1}^m P_{\sigma | G}( \sigma_i^{(r)} = v'_r,
+	\sigma_j^{(r)} = \bar{\sigma}_j^{(r)}, \forall j \neq i)}
+	$$
+	Among all $v'$, we consider $v'$ is all one vector ($\sigma_i^{(r)} = X_i = 1$ for all $r=1, \dots, )$. Then
+	$$
+ \underline{C}^u \exp(2u\beta(B_i - A_i)) \leq	\prod_{r=1}^m \frac{
+		P_{\sigma | G}(\sigma_i^{(r)} = v_r, \sigma_j^{(r)} =\bar{\sigma}_j^{(r)}, \forall j \neq i)}
+	{ P_{\sigma | G}( \sigma_i^{(r)} = X_i,
+		\sigma_j^{(r)} = \bar{\sigma}_j^{(r)}, \forall j \neq i)} \leq \bar{C}^u \exp(2u\beta(B_i - A_i))
+	$$
+	Therefore, we have
+	\begin{align*}
+	\frac{ \prod_{r=1}^m	P_{\sigma | G}(\sigma_i^{(r)} = v_r, \sigma_j^{(r)} =\bar{\sigma}_j^{(r)}, \forall j \neq i)}
+	{\sum_{v' \neq v} \prod_{r=1}^m P_{\sigma | G}( \sigma_i^{(r)} = v'_r,
+		\sigma_j^{(r)} = \bar{\sigma}_j^{(r)}, \forall j \neq i)} \geq & \frac{\underline{C}^u \exp(2u\beta(B_i - A_i))}{
+	1 - \bar{C}^u \exp(2u\beta(B_i - A_i))+ \sum_{r=1}^m \binom{m}{r} \bar{C}^r \exp(2r\beta(B_i - A_i))
+	} \\
+	& \geq C \exp(2u\beta(B_i - A_i))
+	\end{align*}
+	where $C = \frac{\underline{C}^u}{1- \bar{C}^u + \sum_{r=1}^m \binom{m}{r} \bar{C}^r }$
+	
+	Therefore, we have $\frac{P_{\sigma | G}(T_+ = 1 | \Lambda ) }{P_{\sigma | G}(T_+ = 0 | \Lambda )} \geq C\sum_{i=1, X_i=1}^n \exp(u(B_i - A_i))$.
+	We can choose a set $\cG'$ such that $C\sum_{i=1, X_i=1}^n \exp(u(B_i - A_i)) > \frac{C}{2}n^{g(u\beta)}$ since $u\beta < \beta^*$.
+	Then we get $P_{\sigma | G}(T_+\geq 1 | \Lambda) \geq \frac{Cn^{g(\beta)}}{2 + C n^{g(\beta)}} $
+	We choose a set $\cG$ such that $P_G(\cG) = 1-o(1)$ and
+	$ P_{\sigma|G} (\Lambda)
+	=1- o(1)
+	$
+	For all $G \in \cG \cap \cG'$, we have $P_{\sigma | G}(T_+ \geq 1) \geq (1+o(1)) \frac{Cn^{g(\beta)}}{2 + C n^{g(\beta)}}$.
+	Similar to Lemma \ref{lem:dist_sigma} we can show the conclusion that $P_{\SIBM}(T_+ \geq 1) = 1-o(1)$.
+\end{proof}
+\section{SIBM for modularity maximization}
+We define two-state Ising model by $P_{\sigma | G}(\sigma=\bar{\sigma}) = \frac{1}{Z_{\beta}}(-\beta H(\bar{\sigma}))$
+where $H(\bar{\sigma})$ is the Hamiltonian energy and $\beta$ is the inverse of the temperature ($\beta>0$).
+The Hamiltonian energy is defined by the modularity:
+\begin{equation}
+H(\bar{\sigma}) = - \sum_{\{i,j\} \in E(G) } (1-\frac{d_id_j}{2|E|} )\bar{\sigma}_i \cdot \bar{\sigma}_i + \sum_{\{i,j\} \not\in E(G) }\frac{d_id_j}{2|E|}  \bar{\sigma}_i \cdot \bar{\sigma}_i
+\end{equation}
+where $d_i$ is the degree of the $i-$ node and $2|E|=\sum_{i=1}^n d_i$.
+
+The limit of the coefficient is $(1-\frac{d_id_j}{2|E|} ) \to 1$ and $\frac{d_id_j}{2|E|} \to \frac{\log n}{n} \frac{a+b}{2}$, which satisfies
+$\frac{\alpha}{\beta}  = \frac{a+b}{2} > b$. We are more interested in the case when the coefficient does not take the limit value.
+For this model we have only one parameter $\beta$, and we expect that similar phase transition phenomenon occurs for a critical value of $\beta^*$.
+
+Similar to the analysis in III-A of \cite{ye2020exact}, the critical value can be empirically computed by comparing
+$\frac{P_{\sigma | G}(\sigma = X^{(\sim i)})}{P_{\sigma |G}(\sigma = X)}$ with $\frac{1}{n}$.
+
+First we consider when $\bar{\sigma}'$ only flips from $\bar{\sigma}$ at position $s$, then
+$\frac{P_{\sigma | G}(\bar{\sigma}')}{P_{\sigma |G}(\bar{\sigma})} = \exp(-\beta(H(\bar{\sigma}')-H(\bar{\sigma})))$
+where
+\begin{align*}
+H(\bar{\sigma}')-H(\bar{\sigma}) &= 2\sum_{j\in N_s(G)} \bar{\sigma}_s \bar{\sigma}_j - 2\sum_{j\neq s}\frac{d_jd_s}{2|E|} \bar{\sigma}_s \bar{\sigma}_j  \\
+&=2(A_s - B_i) + \frac{d_s^2}{|E|} - \frac{d_s\bar{\sigma}_s}{|E|}\sum_{j=1}^n d_j \bar{\sigma}_j
+\end{align*}
+We claim that $\frac{P_{\sigma | G}(\bar{\sigma}')}{P_{\sigma |G}(\bar{\sigma})} =(1+o(1))\exp(2\beta(B_i - A_i))$
+by showing that as $n\to \infty$ with probability $1-o(1)$ both 
+\begin{align}
+\frac{d_s^2}{|E|} &= o(1) \label{eq:dsE}\\
+\frac{d_s\bar{\sigma}_s}{|E|}\sum_{j=1}^n d_j \bar{\sigma}_j  &= o(1) \label{eq:sumds}
+\end{align}
+For \eqref{eq:dsE}, it decreases in $O(\frac{\log n}{n})$ and for 
+\eqref{eq:sumds} we first show that
+$\sum_{j=1}^n d_j \bar{\sigma}_j  = \sum_{X_i=X_j=1} z_{ij} - \sum_{X_i=X_j=-1} z_{ij}$.
+All $z_{ij} \sim Bern(\frac{a\log n}{n})$. Therefore,
+$\Var[\frac{1}{n}\sum_{j=1}^n d_j \bar{\sigma}_j] = O(\Var[z_{ij}]) = O(\frac{ \log n}{n})$.
+We also have $\frac{d_s \bar{\sigma}_s n}{|E|}$ converges to a constant value.
+Therefore, the asymptotic phase transition critical point is the same with the original SIBM model.
 \begin{thebibliography}{1}
 	
 

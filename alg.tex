@@ -11,8 +11,28 @@
 \DeclareMathOperator{\Var}{Var}
 \newcommand{\A}{\frac{a \log(n)}{n}}
 \newcommand{\B}{\frac{b \log(n)}{n}}
+\title{Exact recovery of Stochastic Block Model with Ising sampling}
 \begin{document}
-	\section{Introduction}	
+	\maketitle
+	\section{Introduction}
+	Based on Ising sampling, we propose a stochastic algorithm to achieve the exact recovery for stochastic block model (SBM).
+	The stochastic algorithm can be transformed to an optimization problem, which includes maximum likelihood and maximal modularity.
+	Besides, we give an unbiased convergent estimator of the parameters of SBM, which can be computed in constant time.
+	Finally, we use metropolis sampling to realize the theoretical Ising sampling and demonstrates the better performance of our method,
+	compared with other theoretically guaranteed algorithm.
+	
+	Stochastic Block Model (SBM) is one of statistical modeling for community detection problems.
+	It provides benchmark artificial dataset to evaluate different community detection algorithms.
+	Besides, SBM also inspires the design of algorithm for community detection tasks. These algorithms, such as
+	semi-definite relaxation, spectral clustering and label propagation, not only have theoretical guarantee when applied to SBM,
+	but perform well on dataset without SBM assumption. The study on the theoretical guarantee on SBM model can be divided between
+	exact recovery and partial recovery. For both cases, the asymptotic behavior of detection error
+	is analyzed when the scale of graph tends to infinity. There are already some well-known results of the exact recovery problem
+	on SBM.	To name but a few, Abbe and Mossel established the exact recovery region for a special sparse SBM with two communities.
+	Later on, the result is extended to general SBM with multiple communities.
+	
+	Besides theoretical study on SBM, in community detection maximal modularity is a popular detection method. The modularity is
+	a kind of criteria and object function. By 
 	\section{Stochastic Ising BlockModel}\label{sec:sibm}
 	We consider a symmetric SBM model parameterized by $(n, k, p, q)$ where $p=\frac{a\log n}{n}, q=\frac{b\log n }{n}$.
 	
@@ -80,14 +100,15 @@
 	 \end{cases}
 	 $$
 	 Then the energy difference:
-	 \begin{align*}
+	 \begin{align}
 	 H(\bar{\sigma}') - H(\bar{\sigma}) &= 2[\sum_{j\in N_i(G)}\bar{\sigma}_i \cdot \bar{\sigma}_j - \frac{\alpha \log n}{\beta n}
-	 \sum_{\substack{j\not\in N_i(G) \\ j\neq i}} \bar{\sigma}_i \cdot \bar{\sigma}_j ] \\
+	 \sum_{\substack{j\not\in N_i(G) \\ j\neq i}} \bar{\sigma}_i \cdot \bar{\sigma}_j ] \notag\\
 	 & = 2 [\sum_{j\in N_i(G)}(1+\frac{\alpha \log n}{\beta n})\bar{\sigma}_i \cdot \bar{\sigma}_j - \frac{\alpha \log n}{\beta n}
-	 \sum_{j\neq i} \bar{\sigma}_i \cdot \bar{\sigma}_j ] 
-	 \end{align*}
+	 \sum_{j\neq i} \bar{\sigma}_i \cdot \bar{\sigma}_j ] \label{eq:energy_diff}
+	 \end{align}
 	 We use the conclusion that there are $\frac{n}{2} \bar{\sigma}_i$ takes value $1$ and $\frac{n}{2}\bar{\sigma}_i$ with value
-	 $-1$. Therefore, $\sum_{j\neq i}]cdot \bar{\sigma}_i \bar{\sigma}_j = -1$.
+	 $-1$. Therefore, $\sum_{j\neq i} \bar{\sigma}_i \cdot\bar{\sigma}_j = -1$.
+	 
 	 On the other hand:
 	 $$
 	 \frac{P_{\sigma | G}(\sigma = \bar{\sigma'})}{P_{\sigma | G}(\sigma = \bar{\sigma})}
@@ -98,6 +119,13 @@
 	 \frac{P_{\sigma |G }(\sigma = X^{(\sim i)})}{P_{\sigma |G }(\sigma = X)}
 	 = \exp(2(\beta + \frac{\alpha \log n}{n})(B_i - A_i)-\frac{2\alpha \log n}{n})
 	 $$
+	 For general cases, we consider sparse graph such that there are $O(\log n)$ neighbors for each node.
+	 Also suppose that we store  attribute $m(\bar{\sigma})= |\{j \in [n], \bar{\sigma}_j = 1 \}|$.
+	 Then \eqref{eq:energy_diff} reduces to:
+	 \begin{equation}
+	 H(\bar{\sigma}') - H(\bar{\sigma}) = 2 [\bar{\sigma}_i(1+\frac{\alpha \log n}{\beta n}) \sum_{j\in N_i(G)}\bar{\sigma}_j - \frac{\alpha \log n}{\beta n}
+	 (\bar{\sigma}_i (2m-n)-1) ]
+	 \end{equation}
 	\end{remark}
 	The pseudo code of our algorithm is summarized in \ref{alg:m}. This algorithm requires the number of the communities $k$ to be known and the weight parameter $\frac{\alpha}{\beta}$ is given. We use the annealing techniques (cooling temperature) to increase $\beta$ at each outer loop, thus guarantee that $\beta > \beta^*$
 	if $\epsilon \in (0, 1)$ and $N$ are large. 
