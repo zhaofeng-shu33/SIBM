@@ -7,8 +7,10 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
 \newtheorem{remark}{Remark}
+\DeclareMathOperator{\SIBM}{SIBM}
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\dist}{dist}
 \newcommand{\A}{\frac{a \log(n)}{n}}
 \newcommand{\B}{\frac{b \log(n)}{n}}
 \title{Exact recovery of Stochastic Block Model with Ising sampling}
@@ -157,6 +159,63 @@
 		\end{algorithmic}
 	\end{algorithm}
 	Since the computation of $\Delta H(r,s)$ needs $O(n)$ time. The time complexity of Algorithm \ref{alg:m} is $Nn^2$.
+	\begin{remark}
+	In the above scheme, we use the probability $\min\{1, \exp(-\beta \Delta H))\}$ for update. Another choice is to use
+	the softmax (or Gibbs) probability to update. That is, the probability for position $r$ to transfer to state $\omega^s$ is
+	$$
+	P(\sigma_r \leftarrow \omega^s \cdot \sigma_r) = \frac{\exp(-\beta H(r, s))}{\sum_{r=0}^{k-1} \exp(-\beta H(r, s))}
+	$$
+	Instead of computing the energy term explicitly, we only need to compute the energy difference term:
+	$$
+	P(\sigma_r \leftarrow \omega^s \cdot \sigma_r) = \frac{\exp(-\beta \Delta H(r, s))}{\sum_{r=0}^{k-1} \exp(-\beta \Delta H(r, s))}
+	$$
+	where $\Delta H(r, 0) = 0$.
+	If $k=2$ and $\Delta H = 0$, then it is equally likely to preserve the original state or flip its value. For Metropolis way it is
+	definitely to flip its value.
+	\end{remark}
+	\section{error rate of SIBM}
+	In the original article about SIBM \cite{ye2020exact}, it is not focused on the upper bound of error rate
+	when exact recovery is (not) possible.
+	Here we state the results in finer statement. We consider $k$ community directly.
+	\begin{theorem}
+		Let $\alpha > b \beta$,
+		When $\beta > \beta^*$,
+		$P_{\SIBM}(\sigma \not\in S_k(X)) \leq (2 + o(1)) n^{\tilde{g}(\beta)/4}$
+	\end{theorem}
+	\begin{proof}
+		We only need to show that $P_{\SIBM}(\sigma \neq X | D(\sigma, X)) \leq (2 + o(1)) n^{\tilde{g}(\beta)/4}$
+		Since $P_{\SIBM}(\sigma \neq X | D(\sigma, X)) = P_{\SIBM}(\sigma \neq X, \dist(\sigma, X) \leq n/\log^{\delta}(n)  | D(\sigma, X))
+		+ P( \dist(\sigma, X) > n/\log^{\delta}(n) | D(\sigma, X))$.
+		For the second term, it is controlled by:
+		$P( \dist(\sigma, X) > n/\log^{\delta}(n) | D(\sigma, X))< n^{-C}$ for any $C>0$.
+		For the first term, we have
+		$P_{\SIBM}(\sigma \neq X, \dist(\sigma, X) \leq n/\log^{\delta}(n)  | D(\sigma, X)) =
+		P_{\SIBM}(\sigma \neq X  |  \dist(\sigma, X) \leq n/\log^{\delta}(n) ) P_{\SIBM}( \dist(\sigma, X) \leq n/\log^{\delta}(n) | D(\sigma, X))
+		\leq P_{\SIBM}(\sigma \neq X  |  \dist(\sigma, X) \leq n/\log^{\delta}(n) )$
+		$$
+		P_{\SIBM}(\sigma \neq X  |  \dist(\sigma, X) \leq n/\log^{\delta}(n) )
+		= \sum_{G\in G'} P_G(G)P_{\sigma |G }(\sigma \neq X  |  \dist(\sigma, X) \leq n/\log^{\delta}(n) ) + P(G'^c)
+		$$
+		where $P(G'^c) \leq \frac{2 n^{\tilde{g}(\beta)/4}}{1-n^{\tilde{g}(\beta)/4}}$.
+		$$
+		P_{\sigma | G}(\sigma \neq X  |  \dist(\sigma, X) \leq n/\log^{\delta}(n) ) 
+		= \sum_{r=1}^{n/\log^{\delta}(n)} P_{\sigma | G}(\dist(\sigma, X) = r |  \dist(\sigma, X) \leq n/\log^{\delta}(n) ) 
+		$$
+		Let $\ell = \sum_{r=1}^{n/\log^{\delta}(n)} P_{\sigma | G}(\dist(\sigma, X) = r |  \dist(\sigma, X) \leq n/\log^{\delta}(n) ) $
+		Since
+		$$
+		\frac{\ell}{1-\ell} = \frac{\ell}
+		{P_{\sigma | G}(\sigma = X |  \dist(\sigma, X) \leq n/\log^{\delta}(n) ) } \leq \frac{n^{\tilde{g}(\beta)/2}}{1-n^{\tilde{g}(\beta)/2}}
+		$$
+		$\ell \leq n^{\tilde{g}(\beta)/2}$.
+		Therefore, the dominate term is $2n^{\tilde{g}(\beta)/4}$
+	\end{proof}
+\begin{remark}
+	We can further enhance the result to
+	$$
+	P_{\SIBM}(\sigma \not\in S_k(X)) \leq (1 + o(1)) n^{\tilde{g}(\beta)/2}
+	$$
+\end{remark}
 	\section{Parameter Estimation for SBM}
 	In Section \ref{sec:sibm}, we have shown that when $\alpha > b \beta$ and $\beta > \beta^*$. The sample of SIBM aligns with $X$ with probability one
 	as $n\to \infty$. 

@@ -447,8 +447,8 @@ Then by Lemma \ref{lem:small} and union bound, we have $P_{G}(M_1) \leq k^n\exp(
 &P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma') = \mathbf{1}_n \Big) \\
 &\leq
-P_{\SIBM} \Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
-| \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma')= \mathbf{1}_n, G \not\in M_1^c\Big) + P_G(M_1) \\
+\sum_{G \not\in M_1^c}P_G(G) P_{\sigma | G}\Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
+| \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma')= \mathbf{1}_n\Big) + P_G(M_1) \\
 &\leq \sum_{G \in M_1^c} P(G) k^n\exp(-Cn)P_{\sigma|G}(\sigma=\mathbf{1}_n) + P_G(M_1) \\
 & \leq k^n \exp(-Cn) (1 + o(1)) \leq n^{-r} \textrm{ for } C> \log k
 \end{align*}
