@@ -5,6 +5,8 @@ from sbm import sbm_graph
 from sbm import compare, get_ground_truth
 import argparse
 
+
+
 class SIBM2:
     '''SIBM with two community'''
     def __init__(self, graph, _alpha, _beta):

@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{circledsteps}
+\usepackage{amsmath}
+\title{Markov and Ising model}
+\begin{document}
+\maketitle
+We can sample from a distribution using Metropolis algorithm. The underlining mechanism is
+based on Markov chain. We consider a complete graph with 3 nodes for an example.
+Each node takes value from $\{\pm 1\}$.
+\Circled{1} $(1,1,1)$,
+\Circled{2} $(1,1,-1)$,\Circled{3} $(1,-1,1)$,\Circled{4} $(-1,1,1)$,
+\Circled{5} $(1,-1,-1)$,\Circled{6} $(-1,1,-1)$,\Circled{7} $(-1,-1,1)$,
+\Circled{8} $(-1,-1,-1)$.
+We use the Ising model to describe the probabilty of each state
+$$
+P(\sigma) = \frac{1}{Z} \exp(\beta \sum_{(i,j) \in E(G)} \sigma_i \sigma_j)
+$$
+Then for \Circled{1}, \Circled{8}, the probability is
+$p_1 = \frac{e^{3\beta}}{2e^{3\beta} + 6 e^{-\beta}}$.
+For other six states, the probability is 
+$p_2 = \frac{e^{-\beta}}{2e^{3\beta} + 6 e^{-\beta}}$.
+We use Metropolis algorithm with random flip to generate this distribution with 8 states,
+the transition matrix $P$ is  $8\times 8$ and can be written as follows:
+$$
+\begin{pmatrix}
+1-e^{-4\beta} & \frac{1}{3} e^{-4\beta} & \frac{1}{3} e^{-4\beta} & \frac{1}{3} e^{-4\beta} & 0 & 0 & 0 & 0 \\
+\frac{1}{3} & 0 & 0 & 0 & \frac{1}{3} & \frac{1}{3} & 0 & 0 \\
+\frac{1}{3}& 0 & 0 & 0 & \frac{1}{3} & 0 & \frac{1}{3} & 0 \\
+\frac{1}{3} & 0 & 0 & 0 & 0 & \frac{1}{3} & \frac{1}{3} & 0 \\
+0 & \frac{1}{3} & \frac{1}{3} & 0 & 0 & 0 & 0 & \frac{1}{3} \\
+0 & \frac{1}{3} & 0 & \frac{1}{3} & 0 & 0 & 0 & \frac{1}{3} \\
+0 & 0 & \frac{1}{3} & \frac{1}{3} & 0 & 0 & 0 & \frac{1}{3} \\
+0 & 0 & 0 & 0 &  \frac{1}{3} e^{-4\beta} & \frac{1}{3} e^{-4\beta} & \frac{1}{3} e^{-4\beta} & 1-e^{-4\beta}
+\end{pmatrix}
+$$
+The steady state satisfies the equation $\pi P = \pi$ (where $\pi$ is a row vector).
+We can verify that $\pi = (p_1, p_2, p_2, p_2, p_2, p_2, p_2, p_1)$ is the solution.
+Acutally it satisifes the detailed balance condition: $\pi_i P_{ij} = \pi_j P_{ji}$.
+
+We can verify the above conclusion numerically by choosing $\beta = 0.1$, solving
+the eigenvector of $P^T$ givens that the eigenvector 1 corresponds to eigenvector $\pi^T$.
+Besides, we can simulate the Markov chain, collect samples and compute
+the empirical distribution from the samples.
+\end{document}
