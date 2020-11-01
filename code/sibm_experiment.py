@@ -60,7 +60,7 @@ if __name__ == "__main__":
     parser.add_argument('--b', type=float, default=4.0)
     parser.add_argument('--n', type=int, default=3200)
     # parser.add_argument('--k', type=int, default=2)
-    parser.add_argument('--alpha', type=float, default=8.0)
+    parser.add_argument('--alpha', type=float, default=2)
     parser.add_argument('--beta', type=float, default=1.0)
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
     parser.add_argument('--inner_repeat', type=int, default=10000, help='number of sigma generated for a given graph')
@@ -79,7 +79,7 @@ if __name__ == "__main__":
             averaged_inner_acc = 0
             for i in range(args.inner_repeat):
                 sibm._metropolis_single()
-                inner_acc = compare(gt, sibm.sigma)
+                inner_acc = np.abs(np.sum(sibm.sigma)) == sibm.n
                 inner_acc = int(inner_acc) # for exact recovery
                 averaged_inner_acc += inner_acc
             averaged_inner_acc /= args.inner_repeat
