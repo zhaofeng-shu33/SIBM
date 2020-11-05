@@ -464,7 +464,7 @@ Then by Lemma \ref{lem:small} and union bound, we have $P_{G}(M_1) \leq k^n\exp(
 \sum_{G \not\in M_1^c}P_G(G) P_{\sigma | G}\Big(\dist(\bar{\sigma}, \Lambda)\geq n/\log^{\delta}(n)
 | \arg\,\min_{\sigma'\in \Lambda} \dist(\bar{\sigma}, \sigma')= \mathbf{1}_n\Big) + P_G(M_1) \\
 &\leq \sum_{G \in M_1^c} P(G) k^n\exp(-Cn)P_{\sigma|G}(\sigma=\mathbf{1}_n) + P_G(M_1) \\
-& \leq k^n \exp(-Cn) (1 + o(1)) \leq n^{-r} \textrm{ for } C> \log k
+& \leq k^n \exp(-Cn) (1 + o(1)) \leq n^{-C} \textrm{ for } C> \log k
 \end{align*}
 The case $\alpha > b \beta$ can be proved in the same way as above by applying Lemma \ref{lem:sigmaX}.
 \end{proof}
@@ -963,7 +963,7 @@ Also note that $A^r_i$ are functions of the underlying graph $G$.
 \begin{proposition}  \label{prop:con}
 Let $(X,G)\sim \SSBM(n,k, a\log n/n, b\log n/n)$, where $\sqrt{a}-\sqrt{b} > \sqrt{k}$.
 Suppose that $0< \beta \le \beta^\ast$.
-Then there is a set $\cG_{1}$ such that (i) $P(G \in \cG_{1}) = 1-O({1-(\sqrt{a}-\sqrt{b})^2/k})$ and (ii) for every $G\in \cG_{1}$, 
+Then there is a set $\cG_{1}$ such that (i) $P(G \in \cG_{1}) = 1-O(n^{1-(\sqrt{a}-\sqrt{b})^2/k})$ and (ii) for every $G\in \cG_{1}$, 
 $$
 \sum_{i=1}^n \exp\big(\beta (A^r_i-A^0_i) \big)
 =(1+o(1)) n^{g(\beta)}
