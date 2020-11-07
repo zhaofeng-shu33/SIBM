@@ -19,6 +19,19 @@ def plot_alg_fix_b(alg_list, date):
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
 
+def draw_beta_phase_trans(date):
+    file_name = 'beta_trans-' + date + '.pickle'
+    f = open(os.path.join('build', file_name), 'rb')
+    data = pickle.load(f)
+    label_str = 'a = %.0f' % data['a']
+    plt.plot(data['beta_list'], data['acc_list'], label=label_str, linewidth=4)
+    plt.legend()
+    plt.xlabel('beta', size='large')
+    plt.ylabel('acc', size='large')
+    fig_name = 'beta_trans-' + date + '.svg'
+    plt.savefig(os.path.join('build', fig_name), transparent=True)
+    plt.show()
+
 def draw_phase_transation(file_name):
     with open(os.path.join('build', file_name), 'rb') as f:
         data = pickle.load(f)
@@ -50,12 +63,14 @@ if __name__ == '__main__':
     method_list = ['sdp', 'metropolis', 'asyn_fluid', 'bi', 'sdp2']
     parser = argparse.ArgumentParser()
     parser.add_argument('--action', choices=['phase_transition',
-        'compare'], default='phase_transition')
-    parser.add_argument('--method', choices=method_list)
+        'compare', 'beta_transition'], default='phase_transition')
+    parser.add_argument('--method', choices=method_list, default='metropolis')
     parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
     if args.action == 'phase_transition':
         file_name = args.method + '-transition-%s.pickle' % args.date
         draw_phase_transation(file_name)
+    elif args.action == 'beta_transition':
+        draw_beta_phase_trans(args.date)
     else:
         plot_alg_fix_b(method_list, args.date)

@@ -19,9 +19,12 @@ def save_data_to_pickle(file_name_prefix, data):
     with open(os.path.join('build', file_name), 'wb') as f:
         pickle.dump(data, f)
 
-def save_beta_transition_data(a, b, n, acc_list):
-    prefix = 'beta_trans_{0}_{1}_{2}'.format(a, b, n)
-    save_data_to_pickle(prefix, acc_list)
+def save_beta_transition_data(a, b, n, beta_list, acc_list):
+    prefix = 'beta_trans'
+    data = {'a': a, 'b': b, 'n': n,
+            'beta_list': beta_list, 'acc_list': acc_list
+           }
+    save_data_to_pickle(prefix, data)
 
 class SIBM2:
     '''SIBM with two community'''
@@ -133,6 +136,6 @@ if __name__ == "__main__":
         averaged_acc = get_acc(args.repeat, args.n, args.a, args.b,
                             args.alpha, beta, args.inner_repeat,
                             args.max_iter, args.thread_num)
-        acc_list.append(acc_list)
+        acc_list.append(averaged_acc)
         logging.info('a: {0}, b: {1}, n: {2}, beta: {3}, acc: {4} '.format(args.a, args.b, args.n, beta, averaged_acc))
-    save_beta_transition_data(args.a, args.b, args.n, acc_list)
+    save_beta_transition_data(args.a, args.b, args.n, beta_list, acc_list)
