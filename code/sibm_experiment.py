@@ -1,6 +1,7 @@
 import argparse
 import random
 from multiprocessing import Queue
+from multiprocessing import Process
 
 import numpy as np
 
@@ -61,48 +62,53 @@ def exact_compare(labels):
     # return 1 if labels = X or -X
     return np.sum(labels) == 0
 
-def task(graph, alpha, beta, m, _N, qu):
+def task(repeat, n, a, b, alpha, beta, m, _N, qu):
+    total_acc = 0
+    for _ in range(repeat):
+        G = sbm_graph(n, 2, a, b)
+        sibm = SIBM2(G, alpha, beta)
+        sibm.metropolis(N=_N)
+        acc = 0
+        for _ in range(m):
+            sibm._metropolis_single()
+            inner_acc = int(exact_compare(sibm.sigma)) # for exact recovery
+            acc += inner_acc
+        acc /= m
+        total_acc += acc
+    total_acc /= repeat
+    qu.put(total_acc)
+
+def get_acc(repeat, n, a, b, alpha, beta, m, _N, thread_num):
+    q = Queue()
+    process_list = []
+    assert(repeat % thread_num == 0)
+    inner_repeat = repeat // thread_num
+    for _ in range(thread_num):
+        t = Process(target=task,
+                    args=(inner_repeat, n, a, b, alpha, beta, m, _N, q))
+        process_list.append(t)
+        t.start()
     acc = 0
-    sibm = SIBM2(G, alpha, beta)
-    sibm.metropolis(N=_N)
-    for _ in range(m):
-        sibm._metropolis_single()
-        inner_acc = int(exact_compare(sibm.sigma)) # for exact recovery
-        acc += inner_acc
-    acc /= m
-    qu.put(acc)
+    for i in range(thread_num):
+        process_list[i].join()
+        acc += q.get()
+    acc /= thread_num
+    return acc
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--a', type=float, default=16.0)
     parser.add_argument('--b', type=float, default=4.0)
-    parser.add_argument('--n', type=int, default=1000)
+    parser.add_argument('--n', type=int, default=300)
     # parser.add_argument('--k', type=int, default=2)
     parser.add_argument('--alpha', type=float, default=8.0)
     parser.add_argument('--beta', type=float, default=1.0)
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
     parser.add_argument('--inner_repeat', type=int, default=1, help='number of sigma generated for a given graph, alias for m')
-    parser.add_argument('--outer_repeat', type=int, default=1000, help='number of times to generate samples using metropolis method')
     parser.add_argument('--max_iter', type=int, default=100, help='burn-in period')
+    parser.add_argument('--thread_num', type=int, default=1)
     args = parser.parse_args()
-    averaged_acc = 0
-    k = 2
-    for i in range(args.repeat):
-        G = sbm_graph(args.n, k, args.a, args.b)    
-        gt = get_ground_truth(G)
-        total_acc = 0
-        for j in range(args.outer_repeat):
-            averaged_inner_acc = 0
-            sibm = SIBM2(G, args.alpha, args.beta)
-            sibm.metropolis(N=args.max_iter)
-            for i in range(args.inner_repeat):
-                sibm._metropolis_single()
-                inner_acc = compare(gt, sibm.sigma)
-                inner_acc = int(inner_acc) # for exact recovery
-                averaged_inner_acc += inner_acc
-            averaged_inner_acc /= args.inner_repeat
-            total_acc = (j * total_acc + averaged_inner_acc) / (j + 1)
-            # print(total_acc)
-        averaged_acc += total_acc
-    averaged_acc /= args.repeat
+    averaged_acc = get_acc(args.repeat, args.n, args.a, args.b,
+                           args.alpha, args.beta, args.inner_repeat,
+                           args.max_iter, args.thread_num)
     print(averaged_acc)
