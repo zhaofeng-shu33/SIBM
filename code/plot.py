@@ -24,13 +24,41 @@ def draw_beta_phase_trans(date):
     f = open(os.path.join('build', file_name), 'rb')
     data = pickle.load(f)
     label_str = 'a = %.0f' % data['a']
+    beta_list = data['beta_list']
     plt.plot(data['beta_list'], data['acc_list'], label=label_str, linewidth=4)
+    draw_theoretical_beta_phase_trans(data['n'], data['a'], data['b'], beta_list[0], beta_list[-1])
     plt.legend()
-    plt.xlabel('beta', size='large')
+    plt.xlabel('$beta$', size='large')
     plt.ylabel('acc', size='large')
     fig_name = 'beta_trans-' + date + '.svg'
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
+
+    
+def draw_theoretical_beta_phase_trans(n, a, b, beta_s, beta_e):
+    # turning point
+    beta_bar = 0.5 * np.log(a / b)
+    # zero point
+    beta_star = np.log((a + b -2 - np.sqrt((a + b - 2) ** 2 - 4 * a * b)) / (2 * b))
+    g = lambda x: (b * np.exp(x) + a * np.exp(-x)) / 2 - (a + b) / 2 + 1
+    g_beta_bar = g(beta_bar)
+    beta_list_1 = np.linspace(beta_s, beta_star, num=50)
+    beta_list_2 = np.linspace(beta_star, beta_e, num=50)
+    acc_list_1 = np.zeros([50])
+    acc_list_2 = np.zeros([50])
+    for i, beta in enumerate(beta_list_1):
+        if g_beta_bar > -1 * g(beta):
+            acc_list_1[i] = np.power(n, g_beta_bar)
+        else:
+            acc_list_1[i] = np.power(n, -1 * g(beta))
+    for i, beta in enumerate(beta_list_2):
+        if beta < beta_bar:
+            acc_list_2[i] = 1 - np.power(n, g(beta) / 2)
+        else:
+            acc_list_2[i] = 1 - np.power(g_beta_bar / 2)
+    plt.plot(beta_list_1, acc_list_1)
+    plt.plot(beta_list_2, acc_list_2)
+    plt.plot([beta_star, beta_star], [0, 1])
 
 def draw_phase_transation(file_name):
     with open(os.path.join('build', file_name), 'rb') as f:
