@@ -52,7 +52,7 @@ class SIBM2:
         for i in self.G[trial_location]:
                 _sum += self.sigma[i]
         _sum *= w_s * (1 + self.mixed_param)
-        _sum -= self.mixed_param * (w_s * (2 * self.m - self.n)- 1)
+        _sum -= self.mixed_param * (w_s * (2 * self.m - self.n) - 1)
         return _sum
     def _metropolis_single(self):
         # randomly select one position to inspect
