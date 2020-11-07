@@ -134,5 +134,5 @@ if __name__ == "__main__":
                             args.alpha, beta, args.inner_repeat,
                             args.max_iter, args.thread_num)
         acc_list.append(acc_list)
-        logging.info('a: {0}, b: {1}, n: {2}, acc: {3} '.format(args.a, args.b, args.n, averaged_acc))
+        logging.info('a: {0}, b: {1}, n: {2}, beta: {3}, acc: {4} '.format(args.a, args.b, args.n, beta, averaged_acc))
     save_beta_transition_data(args.a, args.b, args.n, acc_list)
