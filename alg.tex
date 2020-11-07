@@ -4,6 +4,7 @@
 \usepackage{algorithmic}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{bbm}
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
 \newtheorem{remark}{Remark}
@@ -62,7 +63,7 @@
 	Therefore, if we can get a sample from SIBM, then we can use this sample as the estimator of $X$.
 	
 	The difficulty is that we cannot generate the sample exactly from its distribution \eqref{eq:isingma}. Therefore, some approximation is
-	necessary. The most common way to generate a Ising sample is using Metropolis sampling \cite{metropolis1953equation}.
+	necessary. The most common way to generate an Ising sample is using Metropolis sampling \cite{metropolis1953equation}.
 	In this article, we use Metropolis sampling to generate SIBM sample.
 	
 	From equation \eqref{eq:isingma}, we know that for $k$-state Ising model, the Hamiltonian can be written as:
@@ -635,16 +636,21 @@ g_1^T B g_1 = g_2^T B g_2 = -\sum_{i<j, j \not\in S(i)} B_{ij}
 \end{equation}
 since $B_{ij} = B_{ji}$ for $i\neq j$.
 
-We choose $y_i = \frac{g_i}{2}\sum_{j=1}^n B_{ij}g_j$.
+We choose $y_i = \frac{2z}{n}$.
 Then $y^T  g = 0$.
 
 Then
-$2\diag(y)- B - \frac{yy^T}{2z} = z^* I - \Gamma_1 - C - \Gamma $
-where $z^* = E[y_i]= n - 2b\log n$.
-Therefore, for the deterministic matrix $z^* I - C$, it has eigenvalue $0$, eigenvector $g$;
-eigenvalue $n-2b\log n $, eigenvector $\mathbf{1}$; eigenvalue $(a-b)\log n$ for other eigenvectors.
+$2\diag(y)- B - \frac{yy^T}{2z} = \frac{4z}{n} I - B - \frac{2z}{n^2}\mathbbm{1}\mathbbm{1}^T = C'-\Gamma'$
+where
+\begin{align}
+C' &= 2z^* I - C - \frac{z^*}{n}\mathbbm{1}\mathbbm{1}^T\\
+\Gamma' & =  \Gamma +  (2z^* - \frac{4z}{n}) I  +  (\frac{2z}{n^2} - \frac{z^*}{n})\mathbbm{1}\mathbbm{1}^T
+\end{align}
+Notice that $\Gamma'$ is a random matrix whose mean is zero, and we define $z^* = E[y_i]= n - 2b\log n$.
+Therefore, for the deterministic matrix $C'$, it has eigenvalue $0$, eigenvector $g$;
+eigenvalue $z^*$, eigenvector $\mathbf{1}$; eigenvalue $(a-b)\log n$ for other eigenvectors.
 
-We can also verify that $g$ is the eigenvector of random matrix $\Gamma_1 + \Gamma$.
+We can also verify that $g$ is the eigenvector of random matrix $\Gamma'$.
 
 
 Therefore, the condition $z^*I - C - \Gamma_1 - \Gamma \succeq 0$ is further equivalent to
@@ -671,7 +677,7 @@ Therefore, we have
 \end{align*}
 $\lambda_{\max}(yy^T/2z) = y^Ty/2z = O(1)$ with large probability.
 Therefore, we can neglect the matrix $yy^T/2z$ using the property of spectral norm.
-Indeed, to show $P(yy^T > 2Cz) = o(1)$ where $C$ is a constant,
+Indeed, to show $P(y^Ty > 2Cz) = o(1)$ where $C$ is a constant,
 using $2z = \sum_{i=1}^n y_i$
 we can write
 $P(\sum_{i=1}^n y_i^2 \geq C\sum_{i=1}^n y_i) \leq \sum_{i=1}^n P(y_i^2 \geq C y_i) = nP(y_1 \geq C)$

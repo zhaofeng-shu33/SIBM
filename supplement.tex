@@ -199,8 +199,8 @@ Some notation: $\Lambda := \{ \omega^j  \cdot \mathbf{1}_n | j=0, \dots,k-1\}$.
 	The log-likelyhood is
 	\begin{align}
 	\log p(z | \sigma) &= \log p \sum_{(i,j) \in E} \delta_{\sigma_i\sigma_j}
-	+ \log(1-p) \sum_{(i,j)\in E} \delta_{\sigma_i\sigma_j} 
-	+ \log q \sum_{(i,j) \not\in E} (1-\delta_{\sigma_i\sigma_j})
+	+ \log(1-p) \sum_{(i,j)\not\in E} \delta_{\sigma_i\sigma_j} 
+	+ \log q \sum_{(i,j) \in E} (1-\delta_{\sigma_i\sigma_j})
 	+\log (1-q) \sum_{(i,j) \not\in E} (1-\delta_{\sigma_i\sigma_j}) \\
 	& =C + \log\frac{p}{q} \sum_{(i,j) \in E} \delta_{\sigma_i\sigma_j}
 	-\frac{1-q}{1-p}\sum_{(i,j) \not\in E} \delta_{\sigma_i\sigma_j}
