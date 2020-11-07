@@ -1,15 +1,27 @@
 import argparse
+import logging
+import pickle
 import random
+import os
+from datetime import datetime
 from multiprocessing import Queue
 from multiprocessing import Process
 
 import numpy as np
 
 from sbm import sbm_graph
+from sbm import set_up_log
 from sbm import compare, get_ground_truth
 
+def save_data_to_pickle(file_name_prefix, data):
+    # save the data in pickle format
+    file_name = file_name_prefix + '-' + datetime.now().strftime('%Y-%m-%d') + '.pickle'
+    with open(os.path.join('build', file_name), 'wb') as f:
+        pickle.dump(data, f)
 
-
+def save_beta_transition_data(a, b, n, acc_list):
+    prefix = 'beta_trans_{0}_{1}_{2}'.format(a, b, n)
+    save_data_to_pickle(prefix, acc_list)
 
 class SIBM2:
     '''SIBM with two community'''
@@ -102,13 +114,25 @@ if __name__ == "__main__":
     parser.add_argument('--n', type=int, default=300)
     # parser.add_argument('--k', type=int, default=2)
     parser.add_argument('--alpha', type=float, default=8.0)
-    parser.add_argument('--beta', type=float, default=1.0)
+    parser.add_argument('--beta', type=float, default=1.0, nargs='+')
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
     parser.add_argument('--inner_repeat', type=int, default=1, help='number of sigma generated for a given graph, alias for m')
     parser.add_argument('--max_iter', type=int, default=100, help='burn-in period')
     parser.add_argument('--thread_num', type=int, default=1)
     args = parser.parse_args()
-    averaged_acc = get_acc(args.repeat, args.n, args.a, args.b,
-                           args.alpha, args.beta, args.inner_repeat,
-                           args.max_iter, args.thread_num)
-    print(averaged_acc)
+    set_up_log()
+    if type(args.beta) is float:
+        beta_list = [args.beta]
+    elif len(args.beta) == 3 and args.beta[-1] < args.beta[-2]:
+        # start, end, step
+        beta_list = np.arange(args.beta[0], args.beta[1], args.beta[2])
+    else:
+        beta_list = args.beta
+    acc_list = []
+    for beta in beta_list:
+        averaged_acc = get_acc(args.repeat, args.n, args.a, args.b,
+                            args.alpha, beta, args.inner_repeat,
+                            args.max_iter, args.thread_num)
+        acc_list.append(acc_list)
+        logging.info('a: {0}, b: {1}, n: {2}, acc: {3} '.format(args.a, args.b, args.n, averaged_acc))
+    save_beta_transition_data(args.a, args.b, args.n, acc_list)
