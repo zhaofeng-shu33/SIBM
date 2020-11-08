@@ -1713,17 +1713,20 @@ then drops off geometrically fast beyond that window. Since $t\log n$ takes $\Th
  \asymp \sqrt{\log n}
  \exp( f_{\beta}(t^\ast) \log n ) .
 \end{equation}
-Therefore, if $t^\ast<0$,
+Therefore, if $t^\ast < 0$,
 or equivalently $0<\beta<\frac{1}{2}\log\frac{a}{b}$, then
 $$
 \mathbb{E} \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
 n^{f_{\beta}(t^*)-1} = n^{g(\beta)-1}
 $$
 On the other hand,
-if $t^\ast\ge 0$, or equivalently $\beta\ge\frac{1}{2}\log\frac{a}{b}$, then
-$f_{\beta}(t)$ takes maximum value at $t=0$.
-$\exp( f_{\beta}(t) \log n)$ varies by a constant factor within a window of length $O(1/\sqrt{\log n})$ around $t=0$, and
-then drops off geometrically fast beyond that window. As a consequence,
+if $t^\ast > 0$, or equivalently $\beta > \frac{1}{2}\log\frac{a}{b}$, then
+$f_{\beta}(t)$ takes maximum value at $t=0$. Since $f_{\beta}(t)$ is concave, we have
+$f_{\beta}(t) \leq f_{\beta}(0) + f_{\beta}'(0)t$.
+Therefore, $\sum_{t\log n=-n/k}^{-1}
+\exp( (f_{\beta}(t) -1)\log n ) \leq n^{f_{\beta}(0)-1} \sum_{i=0}^{\infty } q^i \leq \frac{1}{1-q} n^{f_{\beta}(0)-1} $ 
+where $q=\exp(-f_{\beta}'(0)) < 1$.
+As a consequence,
 \begin{align*}
 \mathbb{E} \Big[\exp\big(\beta (A^r_i-A^0_i) \big) ~\Big|~ G\in\cG_1 \Big] = (1+o(1))
 O(n^{f_{\beta}(0)-1}) = O(n^{\tilde{g}(\beta)-1})
