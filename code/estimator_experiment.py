@@ -1,13 +1,37 @@
+import os
 import pickle
 import logging
 import argparse
+from datetime import datetime
 from multiprocessing import Queue
 from multiprocessing import Process
+
+import matplotlib.pyplot as plt
 
 from ising import estimate_a_b
 from sbm import sbm_graph
 from sbm import set_up_log
 from sibm_experiment import save_data_to_pickle
+
+def load_data_from_pickle(file_name_prefix):
+    # save the data in pickle format
+    file_name = file_name_prefix + '-' + datetime.now().strftime('%Y-%m-%d') + '.pickle'
+    with open(os.path.join('build', file_name), 'rb') as f:
+        return pickle.load(f)
+
+def plot_result(a_b_k_list, n_list, error_double_list):
+    for i in range(len(a_b_k_list)):
+        a, b, k = a_b_k_list[i]
+        error_list = error_double_list[i]
+        label_text = 'a={0},b={1},k={2}'.format(a, b, k)
+        plt.plot(n_list, error_list, label=label_text, linewidth=4)
+    plt.legend()
+    plt.xlabel('n', size='large')
+    plt.ylabel('square error', size='large')
+    date = datetime.now().strftime('%Y-%m-%d')
+    fig_name = 'estimator-error-' + date + '.svg'
+    plt.savefig(os.path.join('build', fig_name), transparent=True)
+    plt.show()
 
 def estimator_once(n, k, a, b, repeat):
     square_error = 0
@@ -26,16 +50,7 @@ def estimator_multiple(n_list, k, a, b, repeat, thread_num, qu):
         square_error_list.append(square_error)
     qu.put(square_error_list)
 
-if __name__ == '__main__':
-    set_up_log()
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--repeat', type=int, default=1000, help='number of times to generate the SBM graph')
-    parser.add_argument('--thread_num', type=int, default=1)
-    args = parser.parse_args()
-    n_list = [100, 200, 300, 400, 500, 1000, 2000, 3000, 4000, 5000, 10000]
-    a_b_k_list = [(16, 4, 2), (16, 4, 4)]
-    repeat = args.repeat
-    thread_num = args.thread_num
+def compute(n_list, a_b_k_list, repeat, thread_num):
     error_double_list = []
     index = 0
     for a, b, k in a_b_k_list:
@@ -58,5 +73,25 @@ if __name__ == '__main__':
                     error_double_list[index][j] = i * error_double_list[index][j] + error_list[j] / (i + 1)
         index += 1
 
-    dic = {'a_b_k_list': a_b_k_list, 'error_list': error_double_list}
+    dic = {'a_b_k_list': a_b_k_list, 'error_list': error_double_list, 'n_list': n_list}
     save_data_to_pickle('estimator', dic)
+    
+if __name__ == '__main__':
+    set_up_log()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--action', choices=['plot',
+        'compute'], default='compute')
+    parser.add_argument('--repeat', type=int, default=1000, help='number of times to generate the SBM graph')
+    parser.add_argument('--thread_num', type=int, default=1)
+    args = parser.parse_args()
+    n_list = [100, 200, 300, 400, 500, 1000, 2000, 3000, 4000, 5000, 10000]
+    a_b_k_list = [(16, 4, 2), (16, 4, 4)]
+    repeat = args.repeat
+    thread_num = args.thread_num
+    if args.action == 'compute':
+        compute(n_list, a_b_k_list, repeat, thread_num)
+    else:
+        dic = load_data_from_pickle('estimator')
+        error_double_list = dic['error_list']
+        plot_result(a_b_k_list, n_list, error_double_list)
+    
