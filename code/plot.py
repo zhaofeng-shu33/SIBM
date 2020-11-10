@@ -20,13 +20,14 @@ def plot_alg_fix_b(alg_list, date):
     plt.show()
 
 def draw_beta_phase_trans(date):
+    
     file_name = 'beta_trans-' + date + '.pickle'
     f = open(os.path.join('build', file_name), 'rb')
     data = pickle.load(f)
     label_str = 'a = %.0f' % data['a']
     beta_list = data['beta_list']
     plt.plot(data['beta_list'], data['acc_list'], label=label_str, linewidth=4)
-    draw_theoretical_beta_phase_trans(data['n'], data['a'], data['b'], beta_list[0], beta_list[-1])
+    # draw_theoretical_beta_phase_trans(data['n'], data['a'], data['b'], beta_list[0], beta_list[-1])
     plt.legend()
     plt.xlabel('$beta$', size='large')
     plt.ylabel('acc', size='large')
@@ -52,9 +53,11 @@ def draw_theoretical_beta_phase_trans(n, a, b, beta_s, beta_e):
             candidate += g(2 * beta)
         else:
             candidate += g_beta_bar
+        cabdidate_1 = np.power(n, candidate)
         candidate_2 = b * np.log(n) / np.power(n, 1 - g(beta)) * np.exp(2 * beta) * (np.exp(beta) - 1) ** 2
-        candidate_3 = 1 / (1 + np.power(n, g(beta)) - np.power(n, g(beta) / 2))
-        acc_list_1[i] = np.max([np.power(n, candidate), candidate_2, np.power(n, g_beta_bar), candidate_3])
+        scale_factor = 1 - np.log(n) ** 2 / (4 * n) * (a ** 2 * (np.exp(-beta) - 1) ** 2 + b ** 2 * (np.exp(beta) - 1) ** 2)
+        candidate_3 = 1 / (1 + scale_factor * np.power(n, g(beta)) - np.power(n, g(beta) / 2))
+        acc_list_1[i] = np.max([cabdidate_1, candidate_2, np.power(n, g_beta_bar), candidate_3])
     for i, beta in enumerate(beta_list_2):
         if beta < beta_bar:
             acc_list_2[i] = 1 - np.power(n, g(beta) / 2)
