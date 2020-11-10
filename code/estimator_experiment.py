@@ -1,3 +1,7 @@
+'''
+   parameter estimation validation for SSBM(n, k, p, q)
+   with p = a log(n)/ n, q = b log(n) / n
+'''
 import os
 import pickle
 import logging
@@ -26,10 +30,11 @@ def plot_result(a_b_k_list, n_list, error_double_list):
         label_text = 'a={0},b={1},k={2}'.format(a, b, k)
         plt.plot(n_list, error_list, label=label_text, linewidth=4)
     plt.legend()
+    plt.yscale('log')
     plt.xlabel('n', size='large')
     plt.ylabel('square error', size='large')
     date = datetime.now().strftime('%Y-%m-%d')
-    fig_name = 'estimator-error-' + date + '.svg'
+    fig_name = 'estimator-error-' + date + '.eps'
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
 

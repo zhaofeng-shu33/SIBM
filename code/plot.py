@@ -7,6 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def plot_alg_fix_b(alg_list, date):
+    '''compare different algorithms
+    '''
     for alg in alg_list:
         file_name = alg + '-transition-' + date + '.pickle'
         f = open(os.path.join('build', file_name), 'rb')
@@ -19,14 +21,30 @@ def plot_alg_fix_b(alg_list, date):
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
 
+def compute_empirical_beta(acc_list, beta_list):
+    start_index = 0
+    for i in range(len(acc_list)):
+        if acc_list[i] < 0.5 and acc_list[i + 1] > 0.5:
+            start_index = i
+            break
+    x_1 = beta_list[start_index]
+    x_2 = beta_list[start_index + 1]
+    y_1 = acc_list[start_index]
+    y_2 = acc_list[start_index + 1]
+    slope = (y_2 - y_1) / (x_2 - x_1)
+    beta = x_2 - (y_2 - 0.5) / slope
+    return beta
+
 def draw_beta_phase_trans(date):
-    
     file_name = 'beta_trans-' + date + '.pickle'
     f = open(os.path.join('build', file_name), 'rb')
     data = pickle.load(f)
-    label_str = 'a = %.0f' % data['a']
+    label_str = 'a = %.0f, b=%.0f, n=%d' % (data['a'], data['b'], data['n'])
     beta_list = data['beta_list']
-    plt.plot(data['beta_list'], data['acc_list'], label=label_str, linewidth=4)
+    acc_list = data['acc_list']
+    beta_star_empirical = compute_empirical_beta(acc_list, beta_list)
+    plt.plot(beta_list, acc_list, label=label_str, linewidth=4)
+    plt.scatter([beta_star_empirical], [0.5], c='red')
     # draw_theoretical_beta_phase_trans(data['n'], data['a'], data['b'], beta_list[0], beta_list[-1])
     plt.legend()
     plt.xlabel('$beta$', size='large')
