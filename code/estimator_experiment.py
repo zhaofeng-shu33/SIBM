@@ -45,7 +45,7 @@ if __name__ == '__main__':
         inner_repeat = repeat // thread_num
         for _ in range(thread_num):
             t = Process(target=estimator_multiple,
-                        args=(n_list, k, a, b, inner_repeat, q))
+                        args=(n_list, k, a, b, inner_repeat, thread_num, q))
             process_list.append(t)
             t.start()
         for i in range(thread_num):
