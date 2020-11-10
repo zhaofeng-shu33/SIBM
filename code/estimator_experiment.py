@@ -75,7 +75,7 @@ def compute(n_list, a_b_k_list, repeat, thread_num):
                 error_double_list.append(error_list)
             else:
                 for j in range(len(n_list)):
-                    error_double_list[index][j] = i * error_double_list[index][j] + error_list[j] / (i + 1)
+                    error_double_list[index][j] = (i * error_double_list[index][j] + error_list[j]) / (i + 1)
         index += 1
 
     dic = {'a_b_k_list': a_b_k_list, 'error_list': error_double_list, 'n_list': n_list}
