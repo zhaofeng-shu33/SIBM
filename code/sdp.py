@@ -4,8 +4,12 @@ try:
     from sdp_admm_py import sdp1_admm_py
 except ImportError:
     pass
-from cvxopt import matrix, solvers
-solvers.options['show_progress'] = False
+try:
+    from cvxopt import matrix, solvers
+    solvers.options['show_progress'] = False
+except ImportError:
+    pass
+
 def solve_sdp_cvx(G):
     B = construct_B(G)
     n = B.shape[0]
