@@ -116,10 +116,11 @@ ListGraph* sbm_graph(int n, int k, int a, int b) {
 }
 int main() {
     ListGraph* g = sbm_graph(100, 2, 16, 4);
-    int cnt = 0;
-    for(ListGraph::EdgeIt e(*g); e != INVALID; ++e) {
-        cnt++;
+    SIBM2 sibm(*g, 8, 1);
+    sibm.metropolis(100);
+    for (int i = 0; i < 100; i++) {
+        std::cout << sibm.sigma[i] << ',';
     }
-    std::cout << cnt << std::endl;
+    std::cout << '\n';
     delete g;
 }

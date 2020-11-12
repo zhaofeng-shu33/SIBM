@@ -45,7 +45,7 @@ def draw_beta_phase_trans(date):
     beta_star_empirical = compute_empirical_beta(acc_list, beta_list)
     plt.plot(beta_list, acc_list, label=label_str, linewidth=4)
     plt.scatter([beta_star_empirical], [0.5], c='red')
-    # draw_theoretical_beta_phase_trans(data['n'], data['a'], data['b'], beta_list[0], beta_list[-1])
+    draw_theoretical_beta_phase_trans(data['n'], data['a'], data['b'], beta_list[0], beta_list[-1])
     plt.legend()
     plt.xlabel('$beta$', size='large')
     plt.ylabel('acc', size='large')
@@ -72,10 +72,10 @@ def draw_theoretical_beta_phase_trans(n, a, b, beta_s, beta_e):
         else:
             candidate += g_beta_bar
         cabdidate_1 = np.power(n, candidate)
-        candidate_2 = b * np.log(n) / np.power(n, 1 - g(beta)) * np.exp(2 * beta) * (np.exp(beta) - 1) ** 2
+        # candidate_2 = b * np.log(n) / np.power(n, 1 - g(beta)) * np.exp(2 * beta) * (np.exp(beta) - 1) ** 2
         scale_factor = 1 - np.log(n) ** 2 / (4 * n) * (a ** 2 * (np.exp(-beta) - 1) ** 2 + b ** 2 * (np.exp(beta) - 1) ** 2)
         candidate_3 = 1 / (1 + scale_factor * np.power(n, g(beta)) - np.power(n, g(beta) / 2))
-        acc_list_1[i] = np.max([cabdidate_1, candidate_2, np.power(n, g_beta_bar), candidate_3])
+        acc_list_1[i] = cabdidate_1 + np.power(n, g_beta_bar) + candidate_3
     for i, beta in enumerate(beta_list_2):
         if beta < beta_bar:
             acc_list_2[i] = 1 - np.power(n, g(beta) / 2)
