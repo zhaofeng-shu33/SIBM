@@ -3,7 +3,17 @@ import argparse
 import logging
 
 import numpy as np
+from matplotlib import pyplot as plt
+
 from sbm import sbm_graph
+
+def theoretical(n, a, b):
+    beta_star = np.log((a + b -2 - np.sqrt((a + b - 2) ** 2 - 4 * a * b)) / (2 * b))
+    beta = np.linspace(0, beta_star)
+    coeffient = 1 - np.log(n) ** 2 / (4 * n) * (a ** 2 * (np.exp(-1 * beta) - 1) ** 2 + b ** 2 * (np.exp(beta) - 1) ** 2)
+    plt.plot(beta, coeffient)
+    plt.show()
+
 def get_average(G, a, b, beta, filter_positive=True):
     n = len(G.nodes)
     L = np.zeros([n])
@@ -25,8 +35,8 @@ if __name__ == "__main__":
     parser.add_argument('--a', type=float, default=16.0)
     parser.add_argument('--b', type=float, default=4.0)
     parser.add_argument('--n', type=int, default=1000)
-    parser.add_argument('--beta', type=float, default=0.4)
-    parser.add_argument('--repeat', type=int, default=1000, help='number of times to generate the SBM graph')
+    parser.add_argument('--beta', type=float, default=0.1)
+    parser.add_argument('--repeat', type=int, default=1500, help='number of times to generate the SBM graph')
     args = parser.parse_args()
     val = 0
     for _ in range(args.repeat):
