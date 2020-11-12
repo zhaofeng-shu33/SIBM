@@ -1,6 +1,7 @@
 '''
    parameter estimation validation for SSBM(n, k, p, q)
    with p = a log(n)/ n, q = b log(n) / n
+   python3 estimator_experiment.py --action compute --repeat 1000 --thread_num 20
 '''
 import os
 import pickle
@@ -17,9 +18,9 @@ from sbm import sbm_graph
 from sbm import set_up_log
 from sibm_experiment import save_data_to_pickle
 
-def load_data_from_pickle(file_name_prefix):
+def load_data_from_pickle(file_name_prefix, date):
     # save the data in pickle format
-    file_name = file_name_prefix + '-' + datetime.now().strftime('%Y-%m-%d') + '.pickle'
+    file_name = file_name_prefix + '-' + date + '.pickle'
     with open(os.path.join('build', file_name), 'rb') as f:
         return pickle.load(f)
 
@@ -31,6 +32,7 @@ def plot_result(a_b_k_list, n_list, error_double_list):
         plt.plot(n_list, error_list, label=label_text, linewidth=4)
     plt.legend()
     plt.yscale('log')
+    plt.xscale('log')
     plt.xlabel('n', size='large')
     plt.ylabel('square error', size='large')
     date = datetime.now().strftime('%Y-%m-%d')
@@ -88,6 +90,7 @@ if __name__ == '__main__':
         'compute'], default='compute')
     parser.add_argument('--repeat', type=int, default=1000, help='number of times to generate the SBM graph')
     parser.add_argument('--thread_num', type=int, default=1)
+    parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
     n_list = [100, 200, 300, 400, 500, 1000, 2000, 3000, 4000, 5000, 10000]
     a_b_k_list = [(16, 4, 2), (16, 4, 4)]
@@ -96,7 +99,7 @@ if __name__ == '__main__':
     if args.action == 'compute':
         compute(n_list, a_b_k_list, repeat, thread_num)
     else:
-        dic = load_data_from_pickle('estimator')
+        dic = load_data_from_pickle('estimator', args.date)
         error_double_list = dic['error_list']
         plot_result(a_b_k_list, n_list, error_double_list)
     
