@@ -1,8 +1,12 @@
-Consider $k=2$,
+Consider $k=2$, where $B_i \sim Binom(\frac{n}{2}, b\frac{\log n}{n})$
+
+ and $A_i \sim Binom(\frac{n}{2}, a\frac{\log n}{n})$
+
+
 
 Unconditional expectation:
 $$
-E[\sum_{i=1}^n \exp(\beta(B_i - A_i))] = (1-\frac{\log^2 n}{4n}(a^2(a^{-\beta}-1)^2+b^2(e^{\beta}-1)^2))n^{g(\beta)}
+E[\sum_{i=1}^n \exp(\beta(B_i - A_i))] = (1-\frac{\log^2 n}{4n}(a^2(e^{-\beta}-1)^2+b^2(e^{\beta}-1)^2))n^{g(\beta)}
 $$
 Therefore
 $$

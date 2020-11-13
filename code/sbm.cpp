@@ -53,17 +53,16 @@ class SIBM2 {
         }
         void _metropolis_single() {
             // randomly select one position to inspect
-            std::default_random_engine generator;
-            std::uniform_int_distribution<int> distribution(0, n - 1);        
-            int r = distribution(generator);
+            int r = std::rand() % n;
             double delta_H = get_dH(r);
             if (delta_H < 0) { // lower energy: flip for sure
                 sigma[r] *= -1;
                 m += sigma[r];
             } else {  // Higher energy: flip sometimes
                 double probability = exp(-1.0 * _beta * delta_H);
-                std::default_random_engine generator;
-                std::uniform_int_distribution<int> distribution(0, 1);        
+                std::random_device dev;
+                std::default_random_engine generator(dev());
+                std::uniform_real_distribution<double> distribution(0, 1);        
                 if (distribution(generator) < probability) {
                     sigma[r] *= -1;
                     m += sigma[r];
