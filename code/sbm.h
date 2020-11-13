@@ -6,6 +6,7 @@
 #include <lemon/list_graph.h>
 
 using namespace lemon;
+
 class SIBM2 {
     // SIBM with two community
     public: // make all members and functions public for quick prototyping
@@ -86,6 +87,13 @@ bool same_community(int n, int k, int i, int j) {
     }
     return false;
 }
+
+bool exact_compare(std::vector<int> labels) {
+    // return 1 if labels = X or -X
+    int result = std::accumulate(labels.begin(), labels.end(), 0);
+    return result == 0;
+}
+
 ListGraph* sbm_graph(int n, int k, int a, int b) {
     double p = 1.0 * a * log(n) / n;
     double q = 1.0 * b * log(n) / n;
@@ -113,13 +121,23 @@ ListGraph* sbm_graph(int n, int k, int a, int b) {
     }
     return g;
 }
-int main() {
-    ListGraph* g = sbm_graph(100, 2, 16, 4);
-    SIBM2 sibm(*g, 8, 1);
-    sibm.metropolis(100);
-    for (int i = 0; i < 100; i++) {
-        std::cout << sibm.sigma[i] << ',';
+
+double task_cpp(int repeat, int n, double a, double b, double alpha, double beta, int m, int _N) {
+    double total_acc = 0;
+    for (int i = 0; i < repeat; i++) {
+        ListGraph* G = sbm_graph(n, 2, a, b);
+        SIBM2 sibm(*G, alpha, beta);
+        sibm.metropolis(_N);
+        double acc = 0;
+        for (int j = 0; j < repeat; j++) {
+            sibm._metropolis_single();
+            double inner_acc = double(exact_compare(sibm.sigma)); // for exact recovery
+            acc += inner_acc;
+        }
+        acc /= m;
+        total_acc += acc;
+        delete G;
     }
-    std::cout << '\n';
-    delete g;
+    total_acc /= repeat;
+    return total_acc;
 }
