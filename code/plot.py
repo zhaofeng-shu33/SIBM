@@ -67,21 +67,13 @@ def draw_theoretical_beta_phase_trans(n, a, b, beta_s, beta_e):
     acc_list_2 = np.zeros([50])
     epsilon = 0.7
     for i, beta in enumerate(beta_list_1):
-        candidate = -2 * epsilon * g(beta)
-        if 2 * beta < beta_bar:
-            candidate += g(2 * beta)
-        else:
-            candidate += g_beta_bar
-        cabdidate_1 = np.power(n, candidate)
-        # candidate_2 = b * np.log(n) / np.power(n, 1 - g(beta)) * np.exp(2 * beta) * (np.exp(beta) - 1) ** 2
-        scale_factor = 1 - np.log(n) ** 2 / (4 * n) * (a ** 2 * (np.exp(-beta) - 1) ** 2 + b ** 2 * (np.exp(beta) - 1) ** 2)
-        candidate_3 = 1 / (1 + scale_factor * np.power(n, g(beta)) - np.power(n, g(beta) * epsilon))
-        acc_list_1[i] = cabdidate_1 + np.power(n, g_beta_bar) + candidate_3
+        cabdidate_1 = np.power(n, -1 * g(beta))
+        acc_list_1[i] = np.max([cabdidate_1, np.power(n, g_beta_bar)])
     for i, beta in enumerate(beta_list_2):
         if beta < beta_bar:
             acc_list_2[i] = 1 - np.power(n, g(beta) / 2)
         else:
-            acc_list_2[i] = 1 - np.power(g_beta_bar / 2)
+            acc_list_2[i] = 1 - np.power(n, g_beta_bar / 2)
     plt.plot(beta_list_1, acc_list_1)
     plt.plot(beta_list_2, acc_list_2)
     plt.plot([beta_star, beta_star], [0, 1])
