@@ -21,3 +21,11 @@ $$
 
 Adding connection with maximum likelihood model.
 
+
+
+Let $\mathcal{G} = \{ B_i - A_i < 0, i=1,\dots, n \}$
+
+Conditional expectation (does it work for $\beta > \beta^*$ ?)
+$$
+E[\sum_{i=1}^n \exp(\beta(B_i - A_i)) | G \in \mathcal{G}] = (1+o(1))n^{g(\beta)}
+$$

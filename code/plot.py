@@ -49,7 +49,7 @@ def draw_beta_phase_trans(date):
     plt.legend()
     plt.xlabel('$beta$', size='large')
     plt.ylabel('acc', size='large')
-    fig_name = 'beta_trans-' + date + '.svg'
+    fig_name = 'beta_trans-' + date + '.eps'
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
 
@@ -65,8 +65,9 @@ def draw_theoretical_beta_phase_trans(n, a, b, beta_s, beta_e):
     beta_list_2 = np.linspace(beta_star, beta_e, num=50)
     acc_list_1 = np.zeros([50])
     acc_list_2 = np.zeros([50])
+    epsilon = 0.7
     for i, beta in enumerate(beta_list_1):
-        candidate = -1 * g(beta)
+        candidate = -2 * epsilon * g(beta)
         if 2 * beta < beta_bar:
             candidate += g(2 * beta)
         else:
@@ -74,7 +75,7 @@ def draw_theoretical_beta_phase_trans(n, a, b, beta_s, beta_e):
         cabdidate_1 = np.power(n, candidate)
         # candidate_2 = b * np.log(n) / np.power(n, 1 - g(beta)) * np.exp(2 * beta) * (np.exp(beta) - 1) ** 2
         scale_factor = 1 - np.log(n) ** 2 / (4 * n) * (a ** 2 * (np.exp(-beta) - 1) ** 2 + b ** 2 * (np.exp(beta) - 1) ** 2)
-        candidate_3 = 1 / (1 + scale_factor * np.power(n, g(beta)) - np.power(n, g(beta) / 2))
+        candidate_3 = 1 / (1 + scale_factor * np.power(n, g(beta)) - np.power(n, g(beta) * epsilon))
         acc_list_1[i] = cabdidate_1 + np.power(n, g_beta_bar) + candidate_3
     for i, beta in enumerate(beta_list_2):
         if beta < beta_bar:
