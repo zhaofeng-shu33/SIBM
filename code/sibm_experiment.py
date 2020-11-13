@@ -75,7 +75,9 @@ class SIBM2:
 
 def exact_compare(labels):
     # return 1 if labels = X or -X
-    return np.sum(labels) == 0
+    n2 = int(len(labels) / 2)
+    labels_inner = np.array(labels)
+    return np.sum(labels_inner) == 0 and np.abs(np.sum(labels_inner[:n2])) == n2
 
 def task(repeat, n, a, b, alpha, beta, m, _N, qu):
     total_acc = 0
