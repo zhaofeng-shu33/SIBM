@@ -90,7 +90,15 @@ bool same_community(int n, int k, int i, int j) {
 
 bool exact_compare(std::vector<int> labels) {
     // return 1 if labels = X or -X
-    int result = std::accumulate(labels.begin(), labels.end(), 0);
+    int result = 0;
+    int n2 = labels.size() / 2;
+    for (int i = 0; i < n2; i++) {
+        result += labels[i];
+    }
+    if (int(abs(result)) != n2) {
+        return false;
+    }
+    result = std::accumulate(labels.begin(), labels.end(), 0);
     return result == 0;
 }
 
