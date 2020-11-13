@@ -38,6 +38,11 @@ def get_multiple_values(n, a, b, beta, repeat, qu):
         val_list.append(get_average(G, a, b, beta))
     qu.put(val_list)
 
+def g(x, a, b):
+    tmp = (b * np.exp(x) + a * np.exp(-x)) / 2 - (a + b) / 2 + 1
+    min_val = 1 - (np.sqrt(a) - np.sqrt(b)) ** 2 / 2
+    return np.min([tmp, min_val])
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--a', type=float, default=16.0)
@@ -53,8 +58,7 @@ if __name__ == "__main__":
     beta = args.beta
     repeat = args.repeat
     thread_num = args.thread_num
-    n = args.n
-    g = lambda x: (b * np.exp(x) + a * np.exp(-x)) / 2 - (a + b) / 2 + 1
+    n = args.n    
     q = Queue()
     process_list = []
     assert(repeat % thread_num == 0)
@@ -69,6 +73,6 @@ if __name__ == "__main__":
         process_list[i].join()
         val_list = q.get()
         total_val_list.extend(val_list)
-    mean_value = np.mean(total_val_list) / np.power(n, g(beta))
-    var_value = np.var(total_val_list) / np.power(n, g(2 * beta))
+    mean_value = np.mean(total_val_list) / np.power(n, g(beta, a, b))
+    var_value = np.var(total_val_list) / np.power(n, g(2 * beta, a, b))
     print(mean_value, var_value)
