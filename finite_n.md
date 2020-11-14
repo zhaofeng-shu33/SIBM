@@ -29,3 +29,20 @@ Conditional expectation (does it work for $\beta > \beta^*$ ?)
 $$
 E[\sum_{i=1}^n \exp(\beta(B_i - A_i)) | G \in \mathcal{G}] = (1+o(1))n^{g(\beta)}
 $$
+
+
+
+We conduct an experiment to verify multiple samples $m>1$ and $k=2$:
+
+We choose $n=3200, a=16, b=4, m=3$.
+
+the empirical beta $\hat{\beta} = 0.0999$ while the theoretical transition point is $\beta^*/2 = 0.0991$
+$$
+\beta^*= \log(\frac{a + b -2 - \sqrt{(a + b - 2)^2 - 4 a b)}}{2  b})
+$$
+
+
+The acc versus $\beta$ near 0.1 is shown in the following figure (the red point is the empirical transition point):
+
+![](./beta_trans-2020-11-14.svg)
+
