@@ -1,10 +1,23 @@
 import unittest
+
+import numpy as np
 import networkx as nx
 
 from sbm import sbm_graph
 from ising import SIBM
 from sdp import sdp2, solve_sdp_cvx
 from sbm import get_ground_truth, compare
+from sibm_experiment import majority_voting
+from sklearn.utils._testing import assert_array_equal
+
+class TestSIBMExperiment(unittest.TestCase):
+    def test_majority_voting(self):
+        a = [[1, -1, 1, -1], [1, 1, 1, -1], [1, -1, 1, -1]]
+        assert_array_equal(majority_voting(a), np.array([1, -1, 1, -1], dtype=int))
+        a = [[1, -1, 1, -1], [1, 1, 1, -1], [1, -1, 1, 1]]
+        assert_array_equal(majority_voting(a), np.array([1, -1, 1, -1], dtype=int))
+        a = [[1, -1, 1, -1]]
+        assert_array_equal(majority_voting(a), np.array([1, -1, 1, -1], dtype=int))
 
 class TestIsing(unittest.TestCase):
     def test_ising(self):

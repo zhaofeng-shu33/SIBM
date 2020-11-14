@@ -79,30 +79,45 @@ def exact_compare(labels):
     labels_inner = np.array(labels)
     return np.sum(labels_inner) == 0 and np.abs(np.sum(labels_inner[:n2])) == n2
 
-def task(repeat, n, a, b, alpha, beta, m, _N, qu):
+def majority_voting(labels_list):
+    # all samples align with the first
+    labels_np = np.array(labels_list, dtype=int)
+    m = len(labels_list)
+    for i in range(1, m):
+        if np.dot(labels_np[0, :], labels_np[i, :]) < 0:
+            labels_np[i, :] *= -1
+    voting_result = np.sum(labels_np, axis=0) > 0
+    return 2 * np.asarray(voting_result, dtype=int) - 1
+
+def task(repeat, n, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu):
     total_acc = 0
     for _ in range(repeat):
         G = sbm_graph(n, 2, a, b)
         sibm = SIBM2(G, alpha, beta)
         sibm.metropolis(N=_N)
         acc = 0
-        for _ in range(m):
+        sample_list = []
+        for _ in range(num_of_sibm_samples * m):
             sibm._metropolis_single()
-            inner_acc = int(exact_compare(sibm.sigma)) # for exact recovery
+            sample_list.append(sibm.sigma.copy())
+        for i in range(num_of_sibm_samples):
+            # collect nearly independent samples
+            candidates_samples = [sample_list[i + j * num_of_sibm_samples] for j in range(m)]
+            inner_acc = int(exact_compare(majority_voting(candidates_samples))) # for exact recovery
             acc += inner_acc
-        acc /= m
+        acc /= num_of_sibm_samples
         total_acc += acc
     total_acc /= repeat
     qu.put(total_acc)
 
-def get_acc(repeat, n, a, b, alpha, beta, m, _N, thread_num):
+def get_acc(repeat, n, a, b, alpha, beta, num_of_sibm_samples, m, _N, thread_num):
     q = Queue()
     process_list = []
     assert(repeat % thread_num == 0)
     inner_repeat = repeat // thread_num
     for _ in range(thread_num):
         t = Process(target=task,
-                    args=(inner_repeat, n, a, b, alpha, beta, m, _N, q))
+                    args=(inner_repeat, n, a, b, alpha, beta, num_of_sibm_samples, m, _N, q))
         process_list.append(t)
         t.start()
     acc = 0
@@ -121,7 +136,8 @@ if __name__ == "__main__":
     parser.add_argument('--alpha', type=float, default=8.0)
     parser.add_argument('--beta', type=float, default=1.0, nargs='+')
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
-    parser.add_argument('--inner_repeat', type=int, default=1, help='number of sigma generated for a given graph, alias for m')
+    parser.add_argument('--inner_repeat', type=int, default=1, help='number of sigma generated for a given graph')
+    parser.add_argument('--m', type=int, default=1, help='samples used for majority voting, odd number')
     parser.add_argument('--max_iter', type=int, default=100, help='burn-in period')
     parser.add_argument('--thread_num', type=int, default=1)
     args = parser.parse_args()
@@ -136,7 +152,7 @@ if __name__ == "__main__":
     acc_list = []
     for beta in beta_list:
         averaged_acc = get_acc(args.repeat, args.n, args.a, args.b,
-                            args.alpha, beta, args.inner_repeat,
+                            args.alpha, beta, args.inner_repeat, args.m,
                             args.max_iter, args.thread_num)
         acc_list.append(averaged_acc)
         logging.info('a: {0}, b: {1}, n: {2}, beta: {3}, acc: {4} '.format(args.a, args.b, args.n, beta, averaged_acc))
