@@ -91,7 +91,7 @@ class SIBMk:
         # node state is 0, 1, \dots, k-1
         self.m = [self.n / k for i in range(k)] # each number of w^s
         self.mixed_param = self._alpha_divide_beta * np.log(self.n)
-        self.mixed_param /= self.n
+        self.mixed_param /= self.n       
     def get_dH(self, trial_location, w_s):
         _sum = 0
         sigma_r = self.sigma[trial_location]
@@ -134,7 +134,6 @@ def exact_compare(labels):
     return np.sum(labels_inner) == 0 and np.abs(np.sum(labels_inner[:n2])) == n2
 
 def exact_compare_k(labels, k):
-    print(labels)
     n = len(labels)
     nk = n // k
     labels_inner = np.array(labels)
@@ -156,8 +155,11 @@ def majority_voting(labels_list):
 def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
     total_acc = 0
     for _ in range(repeat):
-        G = sbm_graph(n, 2, a, b)
-        sibm = SIBMk(G, alpha, beta, k)
+        G = sbm_graph(n, k, a, b)
+        if k == 2:
+            sibm = SIBM2(G, alpha, beta)
+        else:
+            sibm = SIBMk(G, alpha, beta, k)
         sibm.metropolis(N=_N)
         acc = 0
         sample_list = []
@@ -168,7 +170,7 @@ def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
             # collect nearly independent samples
             candidates_samples = [sample_list[i + j * num_of_sibm_samples] for j in range(m)]
             if len(candidates_samples) == 1:
-                inner_acc = int(exact_compare_k(candidates_samples[0],k))
+                inner_acc = int(exact_compare_k(candidates_samples[0], k))
             else:
                 inner_acc = int(exact_compare(majority_voting(candidates_samples))) # for exact recovery
             acc += inner_acc
