@@ -95,7 +95,7 @@ class SIBMk:
     def get_dH(self, trial_location, w_s):
         _sum = 0
         sigma_r = self.sigma[trial_location]
-        w_s_sigma_r = (w_s + self.sigma[trial_location]) % self.k
+        w_s_sigma_r = (w_s + sigma_r) % self.k
         for i in self.G[trial_location]:
             if sigma_r == self.sigma[i]:
                 _sum += 1
@@ -129,11 +129,20 @@ class SIBMk:
 
 def exact_compare(labels):
     # return 1 if labels = X or -X
-    print(labels)
     n2 = int(len(labels) / 2)
     labels_inner = np.array(labels)
     return np.sum(labels_inner) == 0 and np.abs(np.sum(labels_inner[:n2])) == n2
 
+def exact_compare_k(labels, k):
+    print(labels)
+    n = len(labels)
+    nk = n // k
+    labels_inner = np.array(labels)
+    for i in range(k):
+        candidate = labels[nk * i]
+        if np.any(labels_inner[nk * i : nk * (i + 1)] != candidate):
+            return False
+    return True
 def majority_voting(labels_list):
     # all samples align with the first
     labels_np = np.array(labels_list, dtype=int)
@@ -148,10 +157,7 @@ def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
     total_acc = 0
     for _ in range(repeat):
         G = sbm_graph(n, 2, a, b)
-        if k == 2:
-            sibm = SIBM2(G, alpha, beta)
-        else:
-            sibm = SIBMk(G, alpha, beta, k)
+        sibm = SIBMk(G, alpha, beta, k)
         sibm.metropolis(N=_N)
         acc = 0
         sample_list = []
@@ -162,7 +168,7 @@ def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
             # collect nearly independent samples
             candidates_samples = [sample_list[i + j * num_of_sibm_samples] for j in range(m)]
             if len(candidates_samples) == 1:
-                inner_acc = int(exact_compare(candidates_samples[0]))
+                inner_acc = int(exact_compare_k(candidates_samples[0],k))
             else:
                 inner_acc = int(exact_compare(majority_voting(candidates_samples))) # for exact recovery
             acc += inner_acc
