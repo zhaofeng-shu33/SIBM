@@ -69,7 +69,7 @@ class SIBM:
                 a, b = k, k
             square_term = (a + b - k)**2 - 4 * a * b
             if square_term > 0:
-                _beta_star = np.log((a + b - k - np.sqrt(square_term)/ (2 * b)))
+                _beta_star = np.log((a + b - k - np.sqrt(square_term))/ (2 * b))
                 self._beta = 1.2 * _beta_star
                 self._alpha_divide_beta = 13 * b
             else:
