@@ -46,3 +46,12 @@ The acc versus $\beta$ near 0.1 is shown in the following figure (the red point 
 
 ![](./beta_trans-2020-11-14.svg)
 
+| community detection estimator | parameter            | property            | error bound            | apprixmation | convergence               |
+| ----------------------------- | -------------------- | ------------------- | ---------------------- | ------------ | ------------------------- |
+| $\hat{X}^*$                   | $(\gamma, \beta)$    | stochastic          | $n^{g(\bar{\beta})/2}$ | Metropolis   | Markov chain steady state |
+| $\hat{X}'$                    | $(\gamma)$           | deterministic       | $n^{g(\bar{\beta})}$   | SDP          |                           |
+| $\hat{X}''$                   | $()$                 | deterministic       | $n^{2g(\bar{\beta})}$  | SDP          | SDP dual theory [1]       |
+| $\hat{X}^+$                   | $(\gamma, \beta, m)$ | stochastic ensemble | ?                      | ?            | ?                         |
+
+[1] Hajek, Bruce, Yihong Wu, and Jiaming Xu. "Achieving exact cluster recovery threshold via semidefinite programming: Extensions." *IEEE Transactions on Information Theory* 62.10 (2016): 5918-5937.
+
