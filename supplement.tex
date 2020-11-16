@@ -560,6 +560,46 @@ $$
 $$
 with large probability.
 
+\begin{lemma}\label{lem:specialCase}
+	If $\gamma> b$ and $\beta > \beta^*$, there exists a set $\cG'_n$ such that
+	$P_G(\cG'_n) \geq 1 - (1+o(1))n^{\tilde{g}(\beta)/2}$ and for every $G\in \cG'_n$
+	\begin{equation}
+	\frac{P_{\sigma |G } (\sigma = \bar{\sigma}')}{P_{\sigma |G } (\sigma = X)} \leq n^{\tilde{g}(\beta)/2-1}
+	\end{equation}
+	where $\dist(\bar{\sigma}',X)=1$.
+\end{lemma}
+\begin{proof}
+	From \eqref{eq:Pratio}, we only need to show that
+	\begin{equation}\label{eq:beta_HP}
+	P_G( \exp(-\beta(H(\bar{\sigma}') - H(\bar{\sigma}))) \geq n^{\tilde{g}(\beta)/2-1}) \leq (1+o(1))n^{\tilde{g}(\beta)/2}
+	\end{equation}
+	Taking $\bar{\sigma}=X$ in Lemma \ref{lem:lemmaDiff}, we have
+	\begin{equation}\label{eq:energy_diff}
+	H(\bar{\sigma}') - H(\bar{\sigma}) = (1+\gamma \frac{\log n}{n})(A^0_r - A^s_r) + \gamma\frac{\log n}{n}
+	\end{equation}
+	where $A_r^0 \sim Binom(\frac{n}{k}-1, \frac{a \log n}{n})$ and $A^s_r \sim Binom(\frac{n}{k}, \frac{b \log n}{n})$.
+	Therefore, \eqref{eq:beta_HP} is equivalent with
+	\begin{equation}\label{eq:pgAs}
+	P_G\big(A^s_r - A_r^0 \geq t\log n\big)
+	\leq (1+o(1))n^{\tilde{g}(\beta)/2}
+	\end{equation}
+	where $t=(1+o(1))\frac{1}{\beta}(\frac{\tilde{g}(\beta)}{2} -1)>\beta\frac{b-a}{k}+1$ and the $o(1)$ term is not random.
+	\eqref{eq:pgAs} follows directly from Lemma \ref{lem:fb}.
+	\begin{lemma}\label{lem:fb}
+		For $t\in [\frac{1}{k}(b-a), 0]$,
+		define a function
+		\begin{align}
+		&f_{\beta}(t):=\frac{1}{k}\sqrt{k^2t^2+4ab} -\frac{a+b}{k} +1 +\beta t  \notag\\
+		&-t\big(\log(\sqrt{k^2t^2+4ab}+kt)-\log(2b) \big). \label{eq:fbetat}
+		\end{align}
+		It follows that
+		\begin{align} 
+		& P_G(A^1_r-A^0_r\ge t\log n)  \notag\\
+		\le &  \exp\Big(\log n \Big(f_{\beta}(t) -\beta t  - 1 + O\big(\frac{\log n}{n}\big) \Big)\Big) .
+		\end{align}
+		In particular, $P_G(A^1_r-A^0_r\ge 0 ) \leq n^{-\frac{(\sqrt{a}-\sqrt{b})^2}{k}} $.
+	\end{lemma}	
+\end{proof}
 \begin{thebibliography}{1}
 	
 

@@ -55,3 +55,23 @@ The acc versus $\beta$ near 0.1 is shown in the following figure (the red point 
 
 [1] Hajek, Bruce, Yihong Wu, and Jiaming Xu. "Achieving exact cluster recovery threshold via semidefinite programming: Extensions." *IEEE Transactions on Information Theory* 62.10 (2016): 5918-5937.
 
+
+
+We have already shown that when $\beta = \beta^*$,
+
+$P_{SIBM}(\sigma = X | D(\sigma, X)) \leq \frac{1}{k}(1+o(1))$.
+
+Simulation results show that it actually takes the equality.
+
+That is: $P_{SIBM}(\sigma = X | D(\sigma, X)) = \frac{1}{k}(1+o(1))$
+
+This result can be used to empirically calculating $\beta^*$ by selecting the acc = $\frac{1}{k}$.
+
+Below is the simulation result for $k=3$:
+
+![](./beta_trans-2020-11-16.svg)
+
+As we can see, the empirical $\beta*$ (computed by letting acc = 1/3) is very near to the theoretical
+
+vertical red line.
+

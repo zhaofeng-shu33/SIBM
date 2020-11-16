@@ -21,10 +21,11 @@ def plot_alg_fix_b(alg_list, date):
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
 
-def compute_empirical_beta(acc_list, beta_list):
+def compute_empirical_beta(acc_list, beta_list, k=2):
     start_index = 0
+    y_value = 1.0 / k
     for i in range(len(acc_list)):
-        if acc_list[i] < 0.5 and acc_list[i + 1] > 0.5:
+        if acc_list[i] < y_value and acc_list[i + 1] > y_value:
             start_index = i
             break
     x_1 = beta_list[start_index]
@@ -32,34 +33,34 @@ def compute_empirical_beta(acc_list, beta_list):
     y_1 = acc_list[start_index]
     y_2 = acc_list[start_index + 1]
     slope = (y_2 - y_1) / (x_2 - x_1)
-    beta = x_2 - (y_2 - 0.5) / slope
+    beta = x_2 - (y_2 - y_value) / slope
     return beta
 
-def draw_beta_phase_trans(date):
+def draw_beta_phase_trans(date, pic_format='eps'):
     file_name = 'beta_trans-' + date + '.pickle'
     f = open(os.path.join('build', file_name), 'rb')
     data = pickle.load(f)
-    label_str = 'a = %.0f, b=%.0f, n=%d' % (data['a'], data['b'], data['n'])
+    label_str = 'a = %.0f, b=%.0f, n=%d, k=%d' % (data['a'], data['b'], data['n'], data['k'])
     beta_list = data['beta_list']
     acc_list = data['acc_list']
-    beta_star_empirical = compute_empirical_beta(acc_list, beta_list)
+    beta_star_empirical = compute_empirical_beta(acc_list, beta_list, data['k'])
     plt.plot(beta_list, acc_list, label=label_str, linewidth=4)
-    plt.scatter([beta_star_empirical], [0.5], c='red')
-    draw_theoretical_beta_phase_trans(data['n'], data['a'], data['b'], beta_list[0], beta_list[-1])
+    plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red')
+    draw_theoretical_beta_phase_trans(data['n'], data['k'], data['a'], data['b'], beta_list[0], beta_list[-1])
     plt.legend()
     plt.xlabel('$beta$', size='large')
     plt.ylabel('acc', size='large')
-    fig_name = 'beta_trans-' + date + '.eps'
+    fig_name = 'beta_trans-' + date + '.' + pic_format
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
 
     
-def draw_theoretical_beta_phase_trans(n, a, b, beta_s, beta_e):
+def draw_theoretical_beta_phase_trans(n, k, a, b, beta_s, beta_e):
     # turning point
     beta_bar = 0.5 * np.log(a / b)
     # zero point
-    beta_star = np.log((a + b -2 - np.sqrt((a + b - 2) ** 2 - 4 * a * b)) / (2 * b))
-    g = lambda x: (b * np.exp(x) + a * np.exp(-x)) / 2 - (a + b) / 2 + 1
+    beta_star = np.log((a + b - k - np.sqrt((a + b - k) ** 2 - 4 * a * b)) / (2 * b))
+    g = lambda x: (b * np.exp(x) + a * np.exp(-x)) / k - (a + b) / k + 1
     g_beta_bar = g(beta_bar)
     beta_list_1 = np.linspace(beta_s, beta_star, num=50)
     beta_list_2 = np.linspace(beta_star, beta_e, num=50)
@@ -110,12 +111,13 @@ if __name__ == '__main__':
     parser.add_argument('--action', choices=['phase_transition',
         'compare', 'beta_transition'], default='phase_transition')
     parser.add_argument('--method', choices=method_list, default='metropolis')
+    parser.add_argument('--format', choices=['eps', 'svg'], default='eps')
     parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
     if args.action == 'phase_transition':
         file_name = args.method + '-transition-%s.pickle' % args.date
         draw_phase_transation(file_name)
     elif args.action == 'beta_transition':
-        draw_beta_phase_trans(args.date)
+        draw_beta_phase_trans(args.date, args.format)
     else:
         plot_alg_fix_b(method_list, args.date)

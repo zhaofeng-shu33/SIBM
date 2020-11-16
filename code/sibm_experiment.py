@@ -19,9 +19,9 @@ def save_data_to_pickle(file_name_prefix, data):
     with open(os.path.join('build', file_name), 'wb') as f:
         pickle.dump(data, f)
 
-def save_beta_transition_data(a, b, n, beta_list, acc_list):
+def save_beta_transition_data(a, b, n, k, beta_list, acc_list):
     prefix = 'beta_trans'
-    data = {'a': a, 'b': b, 'n': n,
+    data = {'a': a, 'b': b, 'n': n, 'k': k,
             'beta_list': beta_list, 'acc_list': acc_list
            }
     save_data_to_pickle(prefix, data)
@@ -231,4 +231,4 @@ if __name__ == "__main__":
                             args.max_iter, args.thread_num)
         acc_list.append(averaged_acc)
         logging.info('a: {0}, b: {1}, n: {2}, beta: {3}, acc: {4} '.format(args.a, args.b, args.n, beta, averaged_acc))
-    save_beta_transition_data(args.a, args.b, args.n, beta_list, acc_list)
+    save_beta_transition_data(args.a, args.b, args.n, args.k, beta_list, acc_list)
