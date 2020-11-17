@@ -137,7 +137,7 @@ double task_cpp(int repeat, int n, double a, double b, double alpha, double beta
         SIBM2 sibm(*G, alpha, beta);
         sibm.metropolis(_N);
         double acc = 0;
-        for (int j = 0; j < repeat; j++) {
+        for (int j = 0; j < m; j++) {
             sibm._metropolis_single();
             double inner_acc = double(exact_compare(sibm.sigma)); // for exact recovery
             acc += inner_acc;

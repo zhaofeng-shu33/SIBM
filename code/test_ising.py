@@ -9,6 +9,25 @@ from sdp import sdp2, solve_sdp_cvx
 from sbm import get_ground_truth, compare
 from sibm_experiment import majority_voting, exact_compare_k
 from sklearn.utils._testing import assert_array_equal
+skip_sibm_c = False
+try:
+    from sibm_c import task_cpp_wrapper
+except ImportError:
+    skip_sibm_c = True
+
+@unittest.skipIf(skip_sibm_c, 'skip cython wrapper test')
+class TestSIBM_C(unittest.TestCase):
+    def test_task_cpp_wrapper(self):
+        repeat = 2
+        inner_repeat = 4
+        n = 500
+        a = 16
+        b = 4
+        alpha = 8
+        beta = 0.4
+        _N = 40
+        acc = task_cpp_wrapper(repeat, n, a, b, alpha, beta, inner_repeat, _N)
+        self.assertAlmostEqual(acc, 1.0)
 
 class TestSIBMExperiment(unittest.TestCase):
     def test_majority_voting(self):

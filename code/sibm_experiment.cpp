@@ -1,12 +1,13 @@
 #include "sbm.h"
 
 int main() {
-    ListGraph* g = sbm_graph(100, 2, 16, 4);
-    SIBM2 sibm(*g, 8, 1);
-    sibm.metropolis(100);
-    for (int i = 0; i < 100; i++) {
-        std::cout << sibm.sigma[i] << ',';
-    }
-    std::cout << '\n';
-    delete g;
+    int repeat = 400;
+    int n = 3000;
+    double a = 16;
+    double b = 4;
+    double alpha = 8;
+    double beta = 0.4;
+    int m = 1000; // inner repeat;
+    int _N = 40;
+    std::cout << task_cpp(repeat, n, a, b, alpha, beta, m, _N) << '\n';
 }
