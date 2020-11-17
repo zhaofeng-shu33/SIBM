@@ -26,7 +26,7 @@ def save_data_to_pickle(file_name_prefix, data):
         pickle.dump(data, f)
 
 def save_beta_transition_data(a, b, n, k, beta_list, acc_list):
-    prefix = 'beta_trans_a_{0}_b_{1}_n_{2}_k{3}'.format(a, b, n, k)
+    prefix = 'beta_trans_a_{0}_b_{1}_n_{2}_k_{3}'.format(a, b, n, k)
     data = {'a': a, 'b': b, 'n': n, 'k': k,
             'beta_list': beta_list, 'acc_list': acc_list
            }
