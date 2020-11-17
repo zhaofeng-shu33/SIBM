@@ -13,11 +13,11 @@ from sbm import sbm_graph
 from sbm import set_up_log
 from sbm import compare, get_ground_truth
 
-has_cpp_wrapper = False
+has_cpp_wrapper = True
 try:
     from sibm_c import task_cpp_wrapper
 except ImportError:
-    has_cpp_wrapper = True
+    has_cpp_wrapper = False
 
 def save_data_to_pickle(file_name_prefix, data):
     # save the data in pickle format

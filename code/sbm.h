@@ -105,8 +105,9 @@ bool exact_compare(std::vector<int> labels) {
 ListGraph* sbm_graph(int n, int k, int a, int b) {
     double p = 1.0 * a * log(n) / n;
     double q = 1.0 * b * log(n) / n;
-    std::default_random_engine generator;
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);    
+    std::random_device dev;
+    std::default_random_engine generator(dev());
+    std::uniform_real_distribution<double> distribution(0, 1);
     ListGraph* g = new ListGraph();
     for (int i = 0; i < n; i++) {
         g->addNode();
