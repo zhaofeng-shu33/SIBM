@@ -44,7 +44,7 @@ def get_file_name_list(keyword_1, keyword_2):
     return Ls
 
 def draw_beta_phase_trans(date, pic_format='eps', theoretical=False):
-    file_name_list = get_file_name_list('beta_trans-', date + '.pickle')
+    file_name_list = get_file_name_list('beta_trans', date + '.pickle')
     for file_name in file_name_list:
         f = open(os.path.join('build', file_name), 'rb')
         data = pickle.load(f)
@@ -52,7 +52,7 @@ def draw_beta_phase_trans(date, pic_format='eps', theoretical=False):
         beta_list = data['beta_list']
         acc_list = data['acc_list']
         beta_star_empirical = compute_empirical_beta(acc_list, beta_list, data['k'])
-        plt.plot(beta_list, acc_list, label=label_str, linewidth=4)
+        plt.plot(beta_list, acc_list, label=label_str, linewidth=1)
         plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red')
     if theoretical:
         draw_theoretical_beta_phase_trans(data['n'], data['k'], data['a'], data['b'], beta_list[0], beta_list[-1])
