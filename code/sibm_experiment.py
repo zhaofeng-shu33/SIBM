@@ -13,6 +13,12 @@ from sbm import sbm_graph
 from sbm import set_up_log
 from sbm import compare, get_ground_truth
 
+has_cpp_wrapper = False
+try:
+    from sibm_c import task_cpp_wrapper
+except ImportError:
+    has_cpp_wrapper = True
+
 def save_data_to_pickle(file_name_prefix, data):
     # save the data in pickle format
     file_name = file_name_prefix + '-' + datetime.now().strftime('%Y-%m-%d') + '.pickle'
@@ -153,6 +159,13 @@ def majority_voting(labels_list):
     return 2 * np.asarray(voting_result, dtype=int) - 1
 
 def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
+    if k == 2 and m == 1 and has_cpp_wrapper:
+        total_acc = task_cpp_wrapper(repeat, n, a, b, alpha, beta, num_of_sibm_samples, _N)
+        if qu is not None:
+            qu.put(total_acc)
+            return
+        else:
+            return total_acc
     total_acc = 0
     for _ in range(repeat):
         G = sbm_graph(n, k, a, b)
