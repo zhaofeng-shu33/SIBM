@@ -187,7 +187,10 @@ def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
         else:
             for _ in range(num_of_sibm_samples):
                 sibm._metropolis_single()
-                inner_acc = int(exact_compare_k(sibm.sigma, k))
+                if k == 2:
+                    inner_acc = int(exact_compare(sibm.sigma))
+                else:
+                    inner_acc = int(exact_compare_k(sibm.sigma, k))
         acc += inner_acc
         acc /= num_of_sibm_samples
         total_acc += acc
