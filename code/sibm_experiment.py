@@ -184,6 +184,7 @@ def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
                 # collect nearly independent samples
                 candidates_samples = [sample_list[i + j * num_of_sibm_samples] for j in range(m)]
                 inner_acc = int(exact_compare(majority_voting(candidates_samples))) # for exact recovery
+                acc += inner_acc
         else:
             for _ in range(num_of_sibm_samples):
                 sibm._metropolis_single()
@@ -191,7 +192,7 @@ def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
                     inner_acc = int(exact_compare(sibm.sigma))
                 else:
                     inner_acc = int(exact_compare_k(sibm.sigma, k))
-        acc += inner_acc
+                acc += inner_acc
         acc /= num_of_sibm_samples
         total_acc += acc
     total_acc /= repeat
