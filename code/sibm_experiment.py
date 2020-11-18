@@ -175,18 +175,20 @@ def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
             sibm = SIBMk(G, alpha, beta, k)
         sibm.metropolis(N=_N)
         acc = 0
-        sample_list = []
-        for _ in range(num_of_sibm_samples * m):
-            sibm._metropolis_single()
-            sample_list.append(sibm.sigma.copy())
-        for i in range(num_of_sibm_samples):
-            # collect nearly independent samples
-            candidates_samples = [sample_list[i + j * num_of_sibm_samples] for j in range(m)]
-            if len(candidates_samples) == 1:
-                inner_acc = int(exact_compare_k(candidates_samples[0], k))
-            else:
+        if m > 1:
+            sample_list = []
+            for _ in range(num_of_sibm_samples * m):
+                sibm._metropolis_single()
+                sample_list.append(sibm.sigma.copy())
+            for i in range(num_of_sibm_samples):
+                # collect nearly independent samples
+                candidates_samples = [sample_list[i + j * num_of_sibm_samples] for j in range(m)]
                 inner_acc = int(exact_compare(majority_voting(candidates_samples))) # for exact recovery
-            acc += inner_acc
+        else:
+            for _ in range(num_of_sibm_samples):
+                sibm._metropolis_single()
+                inner_acc = int(exact_compare_k(sibm.sigma, k))
+        acc += inner_acc
         acc /= num_of_sibm_samples
         total_acc += acc
     total_acc /= repeat
@@ -227,9 +229,12 @@ if __name__ == "__main__":
     parser.add_argument('--inner_repeat', type=int, default=1, help='number of sigma generated for a given graph')
     parser.add_argument('--m', type=int, default=1, help='samples used for majority voting, odd number')
     parser.add_argument('--max_iter', type=int, default=100, help='burn-in period')
+    parser.add_argument('--disable_c_binding', type=bool, default=False, const=True, nargs='?')
     parser.add_argument('--thread_num', type=int, default=1)
     args = parser.parse_args()
     set_up_log()
+    if args.disable_c_binding:
+        has_cpp_wrapper = False
     if type(args.beta) is float:
         beta_list = [args.beta]
     elif len(args.beta) == 3 and args.beta[-1] < args.beta[-2]:
