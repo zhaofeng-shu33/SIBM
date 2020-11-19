@@ -75,3 +75,17 @@ As we can see, the empirical $\beta*$ (computed by letting acc = 1/3) is very ne
 
 vertical red line.
 
+
+
+We want to verify that as $n$ becomes large, the acc line will approach the step function at $\beta=\beta^*$:
+
+![](./beta_trans-2020-11-17.svg)
+
+This figure is not satisfied in the sense that the figure for $\beta>\beta^*$ tends to have lower acc
+
+as $n$ increases. It could be explained as the finite effect of $\beta_n=(1+\gamma \frac{\log n}{n})\beta$
+
+As $n$ becomes larger, the equivalent $\beta_n$ becomes smaller.
+
+But this figure indeed show that $P(\sigma=X)=0.5$ at $\beta=\beta^*$.
+
