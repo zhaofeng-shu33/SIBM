@@ -3,6 +3,7 @@ import logging
 import pickle
 import random
 import os
+from itertools import permutations
 from datetime import datetime
 from multiprocessing import Queue
 from multiprocessing import Process
@@ -148,12 +149,34 @@ def exact_compare_k(labels, k):
         if np.any(labels_inner[nk * i : nk * (i + 1)] != candidate):
             return False
     return True
+
+def majority_voting_k(labels_list, k):
+    # all samples align with the first
+    labels_np = np.array(labels_list, dtype=int)
+    m, n = labels_np.shape
+    for i in range(1, m):
+        max_tmp = -1
+        optimal_f = None
+        for f in permutations(range(k)):
+            tmp = 0
+            for j in range(n):
+                tmp += (f[labels_np[i, j]] == labels_np[0, j])
+            if tmp > max_tmp:
+                max_tmp = tmp
+                optimal_f = f
+        for j in range(n):
+            labels_np[i, j] = f[labels_np[i, j]] # alignment
+    # majority vote at each coordinate
+    voting_result = np.zeros([n])
+    for i in range(n):
+        voting_result[i] = np.argmax(np.bincount(labels_np[:, i]))
+
 def majority_voting(labels_list):
     # all samples align with the first
     labels_np = np.array(labels_list, dtype=int)
     m = len(labels_list)
     for i in range(1, m):
-        if np.dot(labels_np[0, :], labels_np[i, :]) < 0:
+        if np.dot(labels_np[0, :], labels_np[i, :]) < 0: # alignment
             labels_np[i, :] *= -1
     voting_result = np.sum(labels_np, axis=0) > 0
     return 2 * np.asarray(voting_result, dtype=int) - 1
@@ -169,30 +192,27 @@ def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
     total_acc = 0
     for _ in range(repeat):
         G = sbm_graph(n, k, a, b)
-        if k == 2:
-            sibm = SIBM2(G, alpha, beta)
-        else:
-            sibm = SIBMk(G, alpha, beta, k)
-        sibm.metropolis(N=_N)
+        sibm_object_list = []
+        for _ in range(m):
+            if k == 2:
+                sibm = SIBM2(G, alpha, beta)
+            else:
+                sibm = SIBMk(G, alpha, beta, k)
+            sibm.metropolis(N=_N)
+            sibm_object_list.append(sibm)
         acc = 0
-        if m > 1:
-            sample_list = []
-            for _ in range(num_of_sibm_samples * m):
+
+        for _ in range(num_of_sibm_samples):
+            candidates_samples = []
+            for sibm in sibm_object_list:                   
                 sibm._metropolis_single()
-                sample_list.append(sibm.sigma.copy())
-            for i in range(num_of_sibm_samples):
-                # collect nearly independent samples
-                candidates_samples = [sample_list[i + j * num_of_sibm_samples] for j in range(m)]
-                inner_acc = int(exact_compare(majority_voting(candidates_samples))) # for exact recovery
-                acc += inner_acc
-        else:
-            for _ in range(num_of_sibm_samples):
-                sibm._metropolis_single()
-                if k == 2:
-                    inner_acc = int(exact_compare(sibm.sigma))
-                else:
-                    inner_acc = int(exact_compare_k(sibm.sigma, k))
-                acc += inner_acc
+                candidates_samples.append(sibm.sigma)
+            if k == 2:
+                inner_acc = int(exact_compare(majority_voting(candidates_samples)))
+            else:
+                inner_acc = int(exact_compare_k(majority_voting_k(candidates_samples, k), k))
+            acc += inner_acc
+
         acc /= num_of_sibm_samples
         total_acc += acc
     total_acc /= repeat

@@ -402,18 +402,18 @@ $$
 	\end{equation}
 \end{lemma}
 \begin{proof}
-	$T=\sum_{i,j,k} Y_{ijk}$ where the summation is over $i \in S_1$ and $j \in S_2$. Therefore, $E[T] = n\binom{n}{2}pq^2$
+	$T=\sum_{i,j,k} Y_{ijk}$ where the summation is over $i \in S_1$ and $j,k \in S_2$. Therefore, $E[T] = n\binom{n}{2}pq^2$
 	To compute the variance of $T$ we need to compute $E[T^2] = \sum_{i,j,k}\sum_{i',j',k'} Y_{ijk}Y_{i'j'k'}$.
 	There are 6 cases for $E[Y_{ijk}Y_{i'j'k'}]$
 	\begin{enumerate}
 		\item $\{i,j,k\} = \{i',j',k'\}$ then $E[Y_{ijk}Y_{i'j'k'}] = pq^2$.
 		There are $n\binom{n}{2}$ such terms in the double sum.
 		\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 1 element in common and the element $\in S_1$, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^4$.
-		There are $6n\binom{n}{4}$ such terms in the double sum.
+		There are $6n\binom{n}{4}$ such terms in the double sum. ($\binom{4}{2}=6$)
 		\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 1 element in common and the element $\in S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^4$.
 		There are $12\binom{n}{2}\binom{n}{3}$ such terms in the double sum.
 		\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 2 element in common and the two elements are both $\in S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = pq^4$.
-There are $2\binom{n}{2}\binom{n}{2}$ such terms in the double sum.		
+There are $2\binom{n}{2}\binom{n}{2}$ such terms in the double sum.
 \item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 2 element in common and one is in $S_1$, the other is in $S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^3$.
 There are $6n\binom{n}{3}$ such terms in the double sum.		
 \item If $\{i,j,k\}$ and $\{i',j',k'\}$ have 0 element in common, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^4$.
