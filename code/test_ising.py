@@ -7,7 +7,7 @@ from sbm import sbm_graph
 from ising import SIBM
 from sdp import sdp2, solve_sdp_cvx
 from sbm import get_ground_truth, compare
-from sibm_experiment import majority_voting, exact_compare_k
+from sibm_experiment import majority_voting, exact_compare_k, majority_voting_k
 from sklearn.utils._testing import assert_array_equal
 skip_sibm_c = False
 try:
@@ -44,6 +44,13 @@ class TestSIBMExperiment(unittest.TestCase):
         self.assertTrue(exact_compare_k(a, 3))
         a = [0, 0, 0, 2, 2, 2, 1, 1, 1]
         self.assertTrue(exact_compare_k(a, 3))
+    def test_majority_voting_k(self):
+        a = [[0, 0, 0, 1, 1, 1, 2, 2, 2]]
+        assert_array_equal(majority_voting_k(a, 3), np.array([0, 0, 0, 1, 1, 1, 2, 2, 2], dtype=int))
+        a = [[0, 0, 0, 1, 1, 1, 2, 2, 2], [1, 1, 1, 0, 0, 0, 2, 2, 2]]
+        assert_array_equal(majority_voting_k(a, 3), np.array([0, 0, 0, 1, 1, 1, 2, 2, 2], dtype=int))
+        a = [[0, 0, 0, 1, 1, 1, 2, 2, 2], [1, 1, 1, 0, 0, 0, 2, 2, 2], [1, 0, 0, 1, 1, 1, 2, 2, 2]]
+        assert_array_equal(majority_voting_k(a, 3), np.array([0, 0, 0, 1, 1, 1, 2, 2, 2], dtype=int))
 
 class TestIsing(unittest.TestCase):
     def test_ising(self):

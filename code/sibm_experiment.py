@@ -165,11 +165,12 @@ def majority_voting_k(labels_list, k):
                 max_tmp = tmp
                 optimal_f = f
         for j in range(n):
-            labels_np[i, j] = f[labels_np[i, j]] # alignment
+            labels_np[i, j] = optimal_f[labels_np[i, j]] # alignment
     # majority vote at each coordinate
     voting_result = np.zeros([n])
     for i in range(n):
         voting_result[i] = np.argmax(np.bincount(labels_np[:, i]))
+    return voting_result
 
 def majority_voting(labels_list):
     # all samples align with the first
@@ -202,11 +203,12 @@ def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
             sibm_object_list.append(sibm)
         acc = 0
 
-        for _ in range(num_of_sibm_samples):
-            candidates_samples = []
-            for sibm in sibm_object_list:                   
+        candidates_samples = []
+        for sibm in sibm_object_list:
+            candidates_samples.append(sibm.sigma)
+        for _ in range(num_of_sibm_samples):            
+            for sibm in sibm_object_list:
                 sibm._metropolis_single()
-                candidates_samples.append(sibm.sigma)
             if k == 2:
                 inner_acc = int(exact_compare(majority_voting(candidates_samples)))
             else:
