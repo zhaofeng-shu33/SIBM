@@ -228,22 +228,40 @@ ListGraph* sbm_graph(int n, int k, int a, int b) {
     return g;
 }
 
-double task_cpp(int repeat, int n, double a, double b, double alpha, double beta, int m, int _N) {
+double task_cpp(int repeat, int n, int k, double a, double b, double alpha, double beta, int m, int _N) {
     double total_acc = 0;
-    for (int i = 0; i < repeat; i++) {
-        ListGraph* G = sbm_graph(n, 2, a, b);
-        SIBM2 sibm(*G, alpha, beta);
-        sibm.metropolis(_N);
-        double acc = 0;
-        for (int j = 0; j < m; j++) {
-            sibm._metropolis_single();
-            double inner_acc = double(exact_compare(sibm.sigma)); // for exact recovery
-            acc += inner_acc;
+    if (k == 2) {
+        for (int i = 0; i < repeat; i++) {
+            ListGraph* G = sbm_graph(n, 2, a, b);
+            SIBM2 sibm(*G, alpha, beta);
+            sibm.metropolis(_N);
+            double acc = 0;
+            for (int j = 0; j < m; j++) {
+                sibm._metropolis_single();
+                double inner_acc = double(exact_compare(sibm.sigma)); // for exact recovery
+                acc += inner_acc;
+            }
+            acc /= m;
+            total_acc += acc;
+            delete G;
         }
-        acc /= m;
-        total_acc += acc;
-        delete G;
+    } else {
+        for (int i = 0; i < repeat; i++) {
+            ListGraph* G = sbm_graph(n, k, a, b);
+            SIBMk sibm(*G, alpha, beta, k);
+            sibm.metropolis(_N);
+            double acc = 0;
+            for (int j = 0; j < m; j++) {
+                sibm._metropolis_single();
+                double inner_acc = double(exact_compare_k(sibm.sigma, k)); // for exact recovery
+                acc += inner_acc;
+            }
+            acc /= m;
+            total_acc += acc;
+            delete G;
+        }
     }
+
     total_acc /= repeat;
     return total_acc;
 }
