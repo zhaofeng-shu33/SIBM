@@ -10,3 +10,11 @@ TEST(SIBM, Rest) {
     EXPECT_TRUE(exact_compare(sibm.sigma));
     delete g;
 }
+TEST(SIBMk, Simple) {
+    int k = 3;
+    ListGraph* g = sbm_graph(300, k, 20, 4);
+    SIBMk sibm(*g, 8, 1, k);
+    sibm.metropolis(100);
+    EXPECT_TRUE(exact_compare_k(sibm.sigma, k));
+    delete g;
+}

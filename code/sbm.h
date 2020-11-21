@@ -80,6 +80,90 @@ class SIBM2 {
         }
 };
 
+class SIBMk {
+    // SIBM with two community
+    public: // make all members and functions public for quick prototyping
+        ListGraph& G;
+        double _beta;
+        double _alpha_divide_beta;
+        double mixed_param;
+        int n;
+        int k;
+        std::vector<int> m;
+        std::vector<int> sigma;
+        SIBMk(ListGraph& graph, double alpha, double beta, int _k=2): G(graph) {
+            _beta = beta;
+            _alpha_divide_beta = alpha / _beta;
+            k = _k;
+            n = countNodes(G);
+            // randomly initiate a configuration
+            for (int i = 0; i < n; i++) {
+                sigma.push_back(0);
+            }
+            m.push_back(n);
+            for (int i = 1; i < k; i++) {
+                m.push_back(0);
+            }
+            std::default_random_engine generator;
+            std::uniform_int_distribution<int> distribution(0, k - 1);        
+            for (int i = 0; i < n; i++) {
+                int candidate = distribution(generator);
+                if (candidate > 0) {
+                    sigma[i] = candidate;      
+                    m[i]--;
+                }
+            }
+            // node state is 0, 1, \dots, k-1
+            mixed_param = _alpha_divide_beta * log(n);
+            mixed_param /= n;
+        }
+        double get_dH(int trial_location, int w_s) {
+            double _sum = 0;
+            int sigma_r = sigma[trial_location];
+            int w_s_sigma_r = (w_s + sigma_r) % k;
+            for(ListGraph::OutArcIt arc(G, G.nodeFromId(trial_location)); arc != INVALID; ++arc) {
+                int i = G.id(G.target(arc));
+                if (sigma_r == sigma[i]) {
+                    _sum += 1;
+                } else if (w_s_sigma_r == sigma[i]) {
+                    _sum -= 1;
+                }
+            }
+            _sum *= (1 + mixed_param);
+            _sum += mixed_param * (m[w_s_sigma_r] - m[sigma_r] + 1);
+            return _sum;
+        }
+        void _metropolis_single() {
+            // randomly select one position to inspect
+            int r = std::rand() % n;
+            int w_s = std::rand() % (k - 1) + 1;
+            double delta_H = get_dH(r, w_s);
+            if (delta_H < 0) { // lower energy: flip for sure
+                m[sigma[r]]--;
+                sigma[r] = (w_s + sigma[r]) % k;
+                m[sigma[r]]++;
+            } else {  // Higher energy: flip sometimes
+                double probability = exp(-1.0 * _beta * delta_H);
+                std::random_device dev;
+                std::default_random_engine generator(dev());
+                std::uniform_real_distribution<double> distribution(0, 1);        
+                if (distribution(generator) < probability) {
+                    m[sigma[r]]--;
+                    sigma[r] = (w_s + sigma[r]) % k;
+                    m[sigma[r]]++;
+                }
+            }
+        }
+        void metropolis(int N=40) {
+            // iterate given rounds
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < n; j++) {
+                    this->_metropolis_single();
+                }
+            }
+        }
+};
+
 bool same_community(int n, int k, int i, int j) {
     int com = n / k;
     if (i / com == j / com) {
@@ -100,6 +184,19 @@ bool exact_compare(std::vector<int> labels) {
     }
     result = std::accumulate(labels.begin(), labels.end(), 0);
     return result == 0;
+}
+
+bool exact_compare_k(std::vector<int> labels, int k) {
+    int n = labels.size();
+    int nk = n / k;
+    for (int i = 0; i < k; i++) {
+        int candidate = labels[nk * i];
+        for(int j = nk * i + 1; j < nk * (i + 1); j++) {
+            if (labels[j] != candidate)
+                return false;
+        }
+    }
+    return true;
 }
 
 ListGraph* sbm_graph(int n, int k, int a, int b) {
