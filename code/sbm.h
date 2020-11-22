@@ -2,6 +2,7 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <algorithm>
 
 #include <lemon/list_graph.h>
 
@@ -229,6 +230,43 @@ ListGraph* sbm_graph(int n, int k, int a, int b) {
         }
     }
     return g;
+}
+
+void majority_voting_k(const std::vector<std::vector<int>>& labels_list, int k, std::vector<int>& voting_result) {
+    // all samples align with the first
+    int m = labels_list.size();
+    int n = labels_list[0].size();
+    std::vector<int> optimal_f;
+    for (int i = 1; i < m; i ++) {
+        int max_tmp = -1;        
+        int* perm = new int[k];
+        for (int j = 0; j < k; j++) {
+            perm[j] = j;
+        }
+        while (std::next_permutation(perm, perm + k)) {
+            int tmp = 0;
+            for (int j = 0; j < n; j++) {
+                if (perm[labels_list[i][j]] == labels_list[0][j])
+                    tmp++;
+            }
+            if (tmp > max_tmp) {
+                max_tmp = tmp;
+                std::copy(perm, perm + k, optimal_f.begin());
+            }
+        }
+        delete perm;
+    }
+    // majority vote at each coordinate
+    int* bincount = new int[k];
+    for (int i = 0; i < n; i++) {
+        std::fill(bincount, bincount + k, 0);
+        bincount[labels_list[0][i]]++;
+        for (int j = 1; j < m; j++) {
+            bincount[optimal_f[labels_list[j][i]]]++;
+        }
+        voting_result[i] = std::max_element(bincount, bincount + k) - bincount;
+    }
+    delete bincount;
 }
 
 double task_cpp(int repeat, int n, int k, double a, double b, double alpha, double beta, int m, int _N) {
