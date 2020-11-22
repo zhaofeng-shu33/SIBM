@@ -104,13 +104,15 @@ class SIBMk {
             for (int i = 1; i < k; i++) {
                 m.push_back(0);
             }
-            std::default_random_engine generator;
+            std::random_device dev;
+            std::default_random_engine generator(dev());
             std::uniform_int_distribution<int> distribution(0, k - 1);        
             for (int i = 0; i < n; i++) {
                 int candidate = distribution(generator);
                 if (candidate > 0) {
                     sigma[i] = candidate;      
-                    m[i]--;
+                    m[0]--;
+                    m[candidate]++;
                 }
             }
             // node state is 0, 1, \dots, k-1
