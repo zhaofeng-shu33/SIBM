@@ -28,7 +28,8 @@ class SIBM2 {
             }
             k = 2;
             m = n; // number of +1
-            std::default_random_engine generator;
+            std::random_device dev;
+            std::default_random_engine generator(dev());
             std::uniform_int_distribution<int> distribution(0, 1);        
             for (int i = 0; i < n; i++) {
                 int candidate = distribution(generator);
