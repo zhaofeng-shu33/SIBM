@@ -236,14 +236,15 @@ void majority_voting_k(const std::vector<std::vector<int>*>& labels_list, int k,
     // all samples align with the first
     int m = labels_list.size();
     int n = labels_list[0]->size();
-    std::vector<int> optimal_f(k);
+    std::vector<std::vector<int>> optimal_f;
     for (int i = 1; i < m; i ++) {
+        std::vector<int> optimal_f_i(k);
         int max_tmp = -1;        
         int* perm = new int[k];
         for (int j = 0; j < k; j++) {
             perm[j] = j;
         }
-        while (std::next_permutation(perm, perm + k)) {
+        do {
             int tmp = 0;
             for (int j = 0; j < n; j++) {
                 if (perm[(*labels_list[i])[j]] == (*labels_list[0])[j])
@@ -251,10 +252,11 @@ void majority_voting_k(const std::vector<std::vector<int>*>& labels_list, int k,
             }
             if (tmp > max_tmp) {
                 max_tmp = tmp;
-                std::copy(perm, perm + k, optimal_f.begin());
+                std::copy(perm, perm + k, optimal_f_i.begin());
             }
-        }
+        } while (std::next_permutation(perm, perm + k));
         delete perm;
+        optimal_f.push_back(optimal_f_i);
     }
     // majority vote at each coordinate
     int* bincount = new int[k];
@@ -262,7 +264,7 @@ void majority_voting_k(const std::vector<std::vector<int>*>& labels_list, int k,
         std::fill(bincount, bincount + k, 0);
         bincount[(*labels_list[0])[i]]++;
         for (int j = 1; j < m; j++) {
-            bincount[optimal_f[(*labels_list[j])[i]]]++;
+            bincount[optimal_f[j - 1][(*labels_list[j])[i]]]++;
         }
         voting_result[i] = std::max_element(bincount, bincount + k) - bincount;
     }
@@ -271,7 +273,7 @@ void majority_voting_k(const std::vector<std::vector<int>*>& labels_list, int k,
 
 double task_cpp(int repeat, int n, int k, double a, double b, double alpha, double beta, int num_of_sibm_samples, int m,  int _N) {
     double total_acc = 0;
-    if (k == 2) {
+    if (k == 2 && m == 1) {
         for (int i = 0; i < repeat; i++) {
             ListGraph* G = sbm_graph(n, 2, a, b);
             SIBM2 sibm(*G, alpha, beta);
@@ -313,7 +315,7 @@ double task_cpp(int repeat, int n, int k, double a, double b, double alpha, doub
                     SIBMk sibm(*G, alpha, beta, k);
                     sibm.metropolis(_N);
                     sibm_list.push_back(sibm);
-                }                
+                }
                 double acc = 0;
                 std::vector<std::vector<int>*> candidates_samples;
                 for(SIBMk& sibm : sibm_list) {

@@ -31,6 +31,23 @@ TEST(SIBMk, Simple) {
     EXPECT_TRUE(exact_compare_k(sibm.sigma, k));
     delete g;
 }
+TEST(Util, majority_voting_2) {
+    std::vector<int> voting_result;
+    voting_result.resize(4);
+    int _a1[] = {0, 0, 1, 1};
+    int _a2[] = {1, 0, 0, 0};
+    int _a3[] = {0, 0, 1, 1};
+    std::vector<int> b1(_a1, _a1 + 4);
+    std::vector<int> b2(_a2, _a2 + 4);
+    std::vector<int> b3(_a3, _a3 + 4);
+    std::vector<std::vector<int>*> a;
+    a.push_back(&b1);
+    a.push_back(&b2);
+    a.push_back(&b3);
+    majority_voting_k(a, 2, voting_result);
+    int ground_truth[] = {0, 0, 1, 1};
+    EXPECT_TRUE(vector_equal_array(voting_result, ground_truth, 4));
+}
 
 TEST(Util, majority_voting_k) {
     std::vector<int> voting_result;
