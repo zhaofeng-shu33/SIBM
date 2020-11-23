@@ -183,8 +183,8 @@ def majority_voting(labels_list):
     return 2 * np.asarray(voting_result, dtype=int) - 1
 
 def task(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N, qu=None):
-    if m == 1 and has_cpp_wrapper:
-        total_acc = task_cpp_wrapper(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, _N)
+    if has_cpp_wrapper:
+        total_acc = task_cpp_wrapper(repeat, n, k, a, b, alpha, beta, num_of_sibm_samples, m, _N)
         if qu is not None:
             qu.put(total_acc)
             return

@@ -330,7 +330,7 @@ double task_cpp(int repeat, int n, int k, double a, double b, double alpha, doub
                 acc /= num_of_sibm_samples;
                 total_acc += acc;
                 delete G;
-            }            
+            }
         }
     }
 
