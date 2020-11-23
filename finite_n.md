@@ -89,3 +89,44 @@ As $n$ becomes larger, the equivalent $\beta_n$ becomes smaller.
 
 But this figure indeed show that $P(\sigma=X)=0.5$ at $\beta=\beta^*$.
 
+
+
+## Preliminary results on Cramer Rao bound
+
+Suppose the label vector $X$ is known, we observe $z_{ij}$. Based on the observation, estimating $p, q$ (aka $a,b$) is decomposed.
+
+The deduction is based on $k=2$.
+
+From
+$$
+P_G(Z = z| X) = p^{\sum_{X_i = X_j} z_{ij}}q^{\sum_{X_i \neq X_j} z_{ij}} 
+\quad \cdot (1-p)^{\sum_{X_i = X_j} (1-z_{ij})}(1-q)^{\sum_{X_i \neq X_j} (1-z_{ij})} \label{eq:GmL}
+$$
+
+
+We have
+$$
+\frac{\partial P_G(Z=z|X)}{\partial p} = \sum_{X_i = X_j} [z_{ij}(\frac{1}{p}+\frac{1}{1-p}) - p(\frac{1}{p}+\frac{1}{1-p})]
+$$
+The Fisher information for $p$ is
+$$
+I_{11} = E[(\frac{\partial P_G(Z=z|X)}{\partial p})^2] = \frac{1}{p(1-p)}\frac{n}{2}(\frac{n}{2}-1)
+$$
+Due to some independence we have $I_{12}=I_{21}=0$ while
+$$
+I_{22}=E[(\frac{\partial P_G(Z=z|X)}{\partial q})^2] = \frac{1}{q(1-q)}\frac{n^2}{4}
+$$
+Therefore, the variance for any unbiased estimator for $p,q$ respectively is bounded below by $O(\frac{1}{n^2})$ if $p,q$ are constant.
+
+If $p=\frac{a \log n}{n}, q=\frac{b \log n}{n}$. By parameter transformation we can get
+
+ the variance for any unbiased estimator for $a,b$ respectively is bounded below by $O(\frac{1}{n \log n})$.
+
+Based on the estimator by counting the number of edges and triangles, I could not estimate the order of
+
+$\mathrm{Var}[\hat{a}]$ and $\mathrm{Var}[\hat{b}]$.
+
+But I guess they could not achieve Cramer Rao bound with known $X$, this bound can be computed explicitly. (Do I need to draw a Cramer Rao bound in the simulation?)
+
+
+
