@@ -232,11 +232,11 @@ ListGraph* sbm_graph(int n, int k, int a, int b) {
     return g;
 }
 
-void majority_voting_k(const std::vector<std::vector<int>>& labels_list, int k, std::vector<int>& voting_result) {
+void majority_voting_k(const std::vector<std::vector<int>*>& labels_list, int k, std::vector<int>& voting_result) {
     // all samples align with the first
     int m = labels_list.size();
-    int n = labels_list[0].size();
-    std::vector<int> optimal_f;
+    int n = labels_list[0]->size();
+    std::vector<int> optimal_f(k);
     for (int i = 1; i < m; i ++) {
         int max_tmp = -1;        
         int* perm = new int[k];
@@ -246,7 +246,7 @@ void majority_voting_k(const std::vector<std::vector<int>>& labels_list, int k, 
         while (std::next_permutation(perm, perm + k)) {
             int tmp = 0;
             for (int j = 0; j < n; j++) {
-                if (perm[labels_list[i][j]] == labels_list[0][j])
+                if (perm[(*labels_list[i])[j]] == (*labels_list[0])[j])
                     tmp++;
             }
             if (tmp > max_tmp) {
@@ -260,16 +260,16 @@ void majority_voting_k(const std::vector<std::vector<int>>& labels_list, int k, 
     int* bincount = new int[k];
     for (int i = 0; i < n; i++) {
         std::fill(bincount, bincount + k, 0);
-        bincount[labels_list[0][i]]++;
+        bincount[(*labels_list[0])[i]]++;
         for (int j = 1; j < m; j++) {
-            bincount[optimal_f[labels_list[j][i]]]++;
+            bincount[optimal_f[(*labels_list[j])[i]]]++;
         }
         voting_result[i] = std::max_element(bincount, bincount + k) - bincount;
     }
     delete bincount;
 }
 
-double task_cpp(int repeat, int n, int k, double a, double b, double alpha, double beta, int m, int _N) {
+double task_cpp(int repeat, int n, int k, double a, double b, double alpha, double beta, int num_of_sibm_samples, int m,  int _N) {
     double total_acc = 0;
     if (k == 2) {
         for (int i = 0; i < repeat; i++) {
@@ -277,29 +277,60 @@ double task_cpp(int repeat, int n, int k, double a, double b, double alpha, doub
             SIBM2 sibm(*G, alpha, beta);
             sibm.metropolis(_N);
             double acc = 0;
-            for (int j = 0; j < m; j++) {
+            for (int j = 0; j < num_of_sibm_samples; j++) {
                 sibm._metropolis_single();
                 double inner_acc = double(exact_compare(sibm.sigma)); // for exact recovery
                 acc += inner_acc;
             }
-            acc /= m;
+            acc /= num_of_sibm_samples;
             total_acc += acc;
             delete G;
         }
     } else {
-        for (int i = 0; i < repeat; i++) {
-            ListGraph* G = sbm_graph(n, k, a, b);
-            SIBMk sibm(*G, alpha, beta, k);
-            sibm.metropolis(_N);
-            double acc = 0;
-            for (int j = 0; j < m; j++) {
-                sibm._metropolis_single();
-                double inner_acc = double(exact_compare_k(sibm.sigma, k)); // for exact recovery
-                acc += inner_acc;
+        if (m == 1) {
+            for (int i = 0; i < repeat; i++) {
+                ListGraph* G = sbm_graph(n, k, a, b);
+                SIBMk sibm(*G, alpha, beta, k);
+                sibm.metropolis(_N);
+                double acc = 0;
+                for (int j = 0; j < num_of_sibm_samples; j++) {
+                    sibm._metropolis_single();
+                    double inner_acc = double(exact_compare_k(sibm.sigma, k)); // for exact recovery
+                    acc += inner_acc;
+                }
+                acc /= num_of_sibm_samples;
+                total_acc += acc;
+                delete G;
             }
-            acc /= m;
-            total_acc += acc;
-            delete G;
+        }
+        else {
+            std::vector<int> voting_result;
+            voting_result.resize(n);
+            for (int i = 0; i < repeat; i++) {
+                ListGraph* G = sbm_graph(n, k, a, b);
+                std::vector<SIBMk> sibm_list;
+                for (int j = 0; j < m; j++) {
+                    SIBMk sibm(*G, alpha, beta, k);
+                    sibm.metropolis(_N);
+                    sibm_list.push_back(sibm);
+                }                
+                double acc = 0;
+                std::vector<std::vector<int>*> candidates_samples;
+                for(SIBMk& sibm : sibm_list) {
+                    candidates_samples.push_back(&sibm.sigma);
+                }
+                for (int j = 0; j < num_of_sibm_samples; j++) {
+                    for(SIBMk& sibm : sibm_list) {
+                        sibm._metropolis_single();
+                    }
+                    majority_voting_k(candidates_samples, k, voting_result);
+                    double inner_acc = double(exact_compare_k(voting_result, k)); // for exact recovery
+                    acc += inner_acc;
+                }
+                acc /= num_of_sibm_samples;
+                total_acc += acc;
+                delete G;
+            }            
         }
     }
 

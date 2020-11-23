@@ -25,11 +25,12 @@ def load_data_from_pickle(file_name_prefix, date):
         return pickle.load(f)
 
 def plot_result(a_b_k_list, n_list, error_double_list):
+    color_list = ['r', 'b']
     for i in range(len(a_b_k_list)):
         a, b, k = a_b_k_list[i]
         error_list = error_double_list[i]
         label_text = 'a={0},b={1},k={2}'.format(a, b, k)
-        plt.plot(n_list, error_list, label=label_text, linewidth=4)
+        plt.plot(n_list, error_list, label=label_text, linewidth=4, color=color_list[i])
     plt.legend()
     plt.yscale('log')
     plt.xscale('log')

@@ -4,17 +4,6 @@
 #include "sbm.h"
 using namespace lemon;
 
-std::vector<std::vector<int>> vector_from_array(int arr[][9], int m) {
-    std::vector<std::vector<int>> a_v;
-    for (int i = 0; i < m; i++) {
-        std::vector<int> a_v_v;
-        for (int j = 0; j < 9; j++) {
-            a_v_v.push_back(arr[i][j]);
-        }
-        a_v.push_back(a_v_v);
-    }
-    return a_v;
-}
 
 bool vector_equal_array(const std::vector<int>& a_v, int arr[], int m) {
     if (a_v.size() != m)
@@ -47,16 +36,22 @@ TEST(Util, majority_voting_k) {
     std::vector<int> voting_result;
     voting_result.resize(9);
     int ground_truth[] = {0, 0, 0, 1, 1, 1, 2, 2, 2};
-    int _a[][9] = {{0, 0, 0, 1, 1, 1, 2, 2, 2}};
-    std::vector<std::vector<int>> a = vector_from_array(_a, 1);
+    int _a1[] = {0, 0, 0, 1, 1, 1, 2, 2, 2};
+    int _a2[] = {1, 1, 1, 0, 0, 0, 2, 2, 2};
+    int _a3[] = {1, 0, 0, 1, 1, 1, 2, 2, 2};
+    std::vector<int> b1(_a1, _a1 + 9);
+    std::vector<int> b2(_a2, _a2 + 9);
+    std::vector<int> b3(_a3, _a3 + 9);
+
+    std::vector<std::vector<int>*> a;
+    a.push_back(&b1);
     majority_voting_k(a, 3, voting_result);
     EXPECT_TRUE(vector_equal_array(voting_result, ground_truth, 9));
-    int _a2[][9] = {{0, 0, 0, 1, 1, 1, 2, 2, 2}, {1, 1, 1, 0, 0, 0, 2, 2, 2}};
-    a = vector_from_array(_a2, 1);
+    a.push_back(&b2);
     majority_voting_k(a, 3, voting_result);
     EXPECT_TRUE(vector_equal_array(voting_result, ground_truth, 9));
-    int _a3[][9] = {{0, 0, 0, 1, 1, 1, 2, 2, 2}, {1, 1, 1, 0, 0, 0, 2, 2, 2}, {1, 0, 0, 1, 1, 1, 2, 2, 2}};
-    a = vector_from_array(_a3, 1);
+
+    a.push_back(&b3);
     majority_voting_k(a, 3, voting_result);
     EXPECT_TRUE(vector_equal_array(voting_result, ground_truth, 9));
 }
