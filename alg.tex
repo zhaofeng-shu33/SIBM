@@ -412,18 +412,18 @@ $$
 		There are $6n\binom{n}{4}$ such terms in the double sum. ($\binom{4}{2}=6$)
 		\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 1 element in common and the element $\in S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^4$.
 		There are $12\binom{n}{2}\binom{n}{3}$ such terms in the double sum.
-		\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 2 element in common and the two elements are both $\in S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = pq^4$.
+		\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 2 elements in common and the two elements are both $\in S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = pq^4$.
 There are $2\binom{n}{2}\binom{n}{2}$ such terms in the double sum.
-\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 2 element in common and one is in $S_1$, the other is in $S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^3$.
-There are $6n\binom{n}{3}$ such terms in the double sum.		
+\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have exactly 2 elements in common and one is in $S_1$, the other is in $S_2$, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^3$.
+There are $6n\binom{n}{3}$ such terms in the double sum.
 \item If $\{i,j,k\}$ and $\{i',j',k'\}$ have 0 element in common, then $E[Y_{ijk}Y_{i'j'k'}] = p^2q^4$.
-There are $2\binom{n}{2}\binom{n}{4}$ such terms in the double sum.		
+There are $12\binom{n}{2}\binom{n}{4}$ such terms in the double sum.
 	\end{enumerate}
 To verify we have covered all cases, note that the sum adds up to $(n\binom{n}{2})^2$:
 % Mathematica Code:
 % Simplify[n^2 (n-1)/2 + 12 Binomial[n,2] Binomial[n,3] + 6 n Binomial[n,4] + Binomial[n,4] Binomial[n,2]*12 + 6 n Binomial[n,3]+ 2 Binomial[n,2]^2]
 $$
-n\binom{n}{2} + 6n\binom{n}{4} + 12\binom{n}{2} \binom{n}{3} + 2(\binom{n}{2})^2 + 6n\binom{n}{3} + 2\binom{n}{2}\binom{n}{4} = \left(n\binom{n}{2}\right)^2
+n\binom{n}{2} + 6n\binom{n}{4} + 12\binom{n}{2} \binom{n}{3} + 2(\binom{n}{2})^2 + 6n\binom{n}{3} + 12\binom{n}{2}\binom{n}{4} = \left(n\binom{n}{2}\right)^2
 $$
 \end{proof}
 \begin{lemma}\label{lem:SBM_tr_counting_3}
