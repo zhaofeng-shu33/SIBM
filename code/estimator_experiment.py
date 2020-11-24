@@ -11,6 +11,7 @@ from datetime import datetime
 from multiprocessing import Queue
 from multiprocessing import Process
 
+import numpy as np
 import matplotlib.pyplot as plt
 
 from ising import estimate_a_b
@@ -24,13 +25,21 @@ def load_data_from_pickle(file_name_prefix, date):
     with open(os.path.join('build', file_name), 'rb') as f:
         return pickle.load(f)
 
-def plot_result(a_b_k_list, n_list, error_double_list):
+def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False):
     color_list = ['r', 'b']
     for i in range(len(a_b_k_list)):
         a, b, k = a_b_k_list[i]
+        if theoretical and k == 2:
+            linewidth = 1
+            error_list_t = []
+            for n in n_list:
+                error_list_t.append(4 * (a + b) / (n * np.log(n)))
+            plt.plot(n_list, error_list_t, label='CR bound, k=2', linewidth=linewidth, color=color_list[i], linestyle='dashed')
+        else:
+            linewidth = 4
         error_list = error_double_list[i]
         label_text = 'a={0},b={1},k={2}'.format(a, b, k)
-        plt.plot(n_list, error_list, label=label_text, linewidth=4, color=color_list[i])
+        plt.plot(n_list, error_list, label=label_text, linewidth=linewidth, color=color_list[i])
     plt.legend()
     plt.yscale('log')
     plt.xscale('log')
@@ -91,6 +100,7 @@ if __name__ == '__main__':
         'compute'], default='compute')
     parser.add_argument('--repeat', type=int, default=1000, help='number of times to generate the SBM graph')
     parser.add_argument('--thread_num', type=int, default=1)
+    parser.add_argument('--theoretical', type=bool, default=False, const=True, nargs='?')
     parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
     n_list = [100, 200, 300, 400, 500, 1000, 2000, 3000, 4000, 5000, 10000]
@@ -102,5 +112,5 @@ if __name__ == '__main__':
     else:
         dic = load_data_from_pickle('estimator', args.date)
         error_double_list = dic['error_list']
-        plot_result(a_b_k_list, n_list, error_double_list)
+        plot_result(a_b_k_list, n_list, error_double_list, args.theoretical)
     

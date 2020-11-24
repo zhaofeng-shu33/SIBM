@@ -67,7 +67,7 @@ That is: $P_{SIBM}(\sigma = X | D(\sigma, X)) = \frac{1}{k}(1+o(1))$
 
 This result can be used to empirically calculating $\beta^*$ by selecting the acc = $\frac{1}{k}$.
 
-Below is the simulation result for $k=3$:
+Below is the simulation result for $k=3$: ($\beta^*=0.223$)
 
 ![](./beta_trans-2020-11-16.svg)
 
@@ -122,9 +122,13 @@ If $p=\frac{a \log n}{n}, q=\frac{b \log n}{n}$. By parameter transformation we 
 
  the variance for any unbiased estimator for $a,b$ respectively is bounded below by $O(\frac{1}{n \log n})$.
 
+
+
 Based on the estimator by counting the number of edges and triangles, I could not estimate the order of
 
-$\mathrm{Var}[\hat{a}]$ and $\mathrm{Var}[\hat{b}]$.
+$\mathrm{Var}[\hat{a}]$ and $\mathrm{Var}[\hat{b}]$. But we have $\mathrm{Var}[\hat{a}] + \mathrm{Var}[\hat{b}]\geq \frac{4(a+b)}{n \log n}$
+
+![](./estimator.png)
 
 But I guess they could not achieve Cramer Rao bound with known $X$, this bound can be computed explicitly. (Do I need to draw a Cramer Rao bound in the simulation?)
 
