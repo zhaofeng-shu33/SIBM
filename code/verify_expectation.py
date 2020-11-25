@@ -12,8 +12,8 @@ from sbm import sbm_graph
 def theoretical(n, a, b):
     beta_star = np.log((a + b -2 - np.sqrt((a + b - 2) ** 2 - 4 * a * b)) / (2 * b))
     beta = np.linspace(0, beta_star)
-    coeffient = 1 - np.log(n) ** 2 / (4 * n) * (a ** 2 * (np.exp(-1 * beta) - 1) ** 2 + b ** 2 * (np.exp(beta) - 1) ** 2)
-    plt.plot(beta, coeffient)
+    coefficient = 1 - np.log(n) ** 2 / (4 * n) * (a ** 2 * (np.exp(-1 * beta) - 1) ** 2 + b ** 2 * (np.exp(beta) - 1) ** 2)
+    plt.plot(beta, coefficient)
     plt.show()
 
 def get_average(G, a, b, beta, filter_positive=True):
@@ -31,11 +31,31 @@ def get_average(G, a, b, beta, filter_positive=True):
     val = np.sum(np.exp(beta * L))
     return val
 
-def get_multiple_values(n, a, b, beta, repeat, qu):
+def get_average_k(G, a, b, k, beta):
+    # G should have multiple communities
+    # \sum_{i=1}^n exp(beta * (A^{1}_i + A^{2}_i - 2 * A^{0}_i))
+    n = len(G.nodes)
+    L = np.zeros([n])
+    kminus1 = k - 1
+    for u, v in G.edges:
+        if G.nodes[u]['block'] == G.nodes[v]['block']:
+            L[u] -= kminus1
+            L[v] -= kminus1
+        else:
+            L[u] += 1
+            L[v] += 1
+    val = np.sum(np.exp(beta * L))
+    return val
+
+def get_multiple_values(n, a, b, k, beta, repeat, action, qu):
     val_list = []
     for _ in range(repeat):
-        G = sbm_graph(n, 2, a, b)
-        val_list.append(get_average(G, a, b, beta))
+        if action == 'normal':
+            G = sbm_graph(n, 2, a, b)
+            val_list.append(get_average(G, a, b, beta))
+        elif action == 'mixed':
+            G = sbm_graph(n, k, a, b)
+            val_list.append(get_average_k(G, a, b, k, beta))
     qu.put(val_list)
 
 def g(x, a, b):
@@ -45,8 +65,10 @@ def g(x, a, b):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument('--action', choices=['normal', 'mixed'], default='normal')
     parser.add_argument('--a', type=float, default=16.0)
     parser.add_argument('--b', type=float, default=4.0)
+    parser.add_argument('--k', type=int, default=2)
     parser.add_argument('--n', type=int, default=1000)
     parser.add_argument('--beta', type=float, default=0.1)
     parser.add_argument('--repeat', type=int, default=1500, help='number of times to generate the SBM graph')
@@ -55,6 +77,7 @@ if __name__ == "__main__":
     val_list = []
     a = args.a
     b = args.b
+    k = args.k
     beta = args.beta
     repeat = args.repeat
     thread_num = args.thread_num
@@ -65,7 +88,7 @@ if __name__ == "__main__":
     inner_repeat = repeat // thread_num
     for _ in range(thread_num):
         t = Process(target=get_multiple_values,
-                    args=(n, a, b, beta, inner_repeat, q))
+                    args=(n, a, b, k, beta, inner_repeat, args.action, q))
         process_list.append(t)
         t.start()
     total_val_list = []
@@ -73,6 +96,9 @@ if __name__ == "__main__":
         process_list[i].join()
         val_list = q.get()
         total_val_list.extend(val_list)
-    mean_value = np.mean(total_val_list) / np.power(n, g(beta, a, b))
-    var_value = np.var(total_val_list) / np.power(n, g(2 * beta, a, b))
-    print(mean_value, var_value)
+    if args.action == 'normal':
+        mean_value = np.mean(total_val_list) / np.power(n, g(beta, a, b))
+        var_value = np.var(total_val_list) / np.power(n, g(2 * beta, a, b))
+        print(mean_value, var_value)
+    elif args.action == 'mixed':
+        print(np.mean(total_val_list))
