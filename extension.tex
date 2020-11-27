@@ -1,5 +1,6 @@
 \documentclass{article}
 \input{macros.tex}
+%\usepackage{bookmark}
 \title{Stochastic Ising Block Model on Multiple Communities}
 \author{Feng Zhao, Min Ye, Shao-Lun Huang}
 \begin{document}
@@ -503,7 +504,7 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	The second inequality is achieved if $n_0 = n - \frac{n}{\log^{\delta} n}$.
 	When $n_0 < \frac{n}{2}$,
 	$N_{\bar{\sigma}} \geq \frac{n^2 - nn_0}{2} \geq \frac{n^2}{4}$ and the second inequality is achieved when $n_0 = \frac{n}{2}$.
-	So generally we have $\frac{n^2}{\log^{\delta} n}(1+o(1)) \leq N_{\bar{\sigma}} \leq \frac{n^2}{4}$.
+	So generally we have $\frac{n^2}{\log^{\delta} n}(1+o(1)) \leq N_{\bar{\sigma}} \leq \frac{n^2}{2}$.
 	
 	Since $Cn = o(\frac{\log n}{n} N_{\bar{\sigma}})$ we can rewrite \eqref{eq:small} as
 	\begin{equation}
@@ -1460,7 +1461,7 @@ $$
 by the union bound,
 \begin{align*}
 & P_{\sigma|G}(D_u) \\
-\le &  \binom{m}{u}\sum_v \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i + 2z) \Big)
+\le &  \binom{m}{u}\sum_v \exp\Big(\big(\beta+\frac{\alpha\log n}{n} \big) (\sum_{r=1}^{k-1} u_r A^r_i- u A^0_i + 2uz) \Big)
 \quad\quad\text{~for all~} i\in[n] \textrm{ by Lemma~\ref{lm:et}}.
 \end{align*}
 where  $v=(u_1, \dots, u_{k-1})$, $u_r = |\{j | \sigma_i^{(j)} = \omega^r \cdot X_i \}|, u=\sum_{r=1}^{k-1} u_r$.

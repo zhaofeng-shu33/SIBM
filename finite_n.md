@@ -71,7 +71,7 @@ Below is the simulation result for $k=3$: ($\beta^*=0.223$)
 
 ![](./beta_trans-2020-11-16.svg)
 
-As we can see, the empirical $\beta*$ (computed by letting acc = 1/3) is very near to the theoretical
+As we can see, the empirical $\beta^*$ (computed by letting acc = 1/3) is very near to the theoretical
 
 vertical red line.
 

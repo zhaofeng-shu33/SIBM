@@ -259,6 +259,8 @@ if __name__ == "__main__":
     parser.add_argument('--thread_num', type=int, default=1)
     args = parser.parse_args()
     set_up_log()
+    if args.n % args.k != 0:
+        raise ValueError('n %k != 0')
     if args.disable_c_binding:
         has_cpp_wrapper = False
     if type(args.beta) is float:

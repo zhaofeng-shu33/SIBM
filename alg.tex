@@ -430,7 +430,7 @@ $$
 	Consider a 3 community SBM$(3n, p, q)$ and count the number of triangles $T$ which has a node in $S_1$, one node in $S_2$ and one node in $S_3$.
 	Then the variance of $T$ is
 	\begin{equation}\label{eq:SBM_tr_counting_three}
-	\Var[T] = q^3 n^3 + 3q^4 n^3(n-1) + 3q^5 n^3 (n-1)^2 - n^3(3n^2-3n+1)q^6
+	\Var[T] = n^3 q^3  + 3n^3(n-1) q^4  + 3 n^3 (n-1)^2 q^5 - n^3(3n^2-3n+1)q^6
 	\end{equation}
 \end{lemma}
 \begin{proof}
@@ -446,6 +446,10 @@ $$
 	\item If $\{i,j,k\}$ and $\{i',j',k'\}$ have 0 element in common, then $E[Y_{ijk}Y_{i'j'k'}] = q^6$.
 	There are $8\binom{n}{2}^3$ such terms in the double sum.		
 \end{enumerate}	
+To verify we have covered all cases, note that the sum adds up to $n^6$:
+$$
+6(\binom{n}{2})n^2  + 8(\binom{n}{2})^3 + 12n(\binom{n}{2})^2 +  n^3 = n^6
+$$
 \end{proof}
 \begin{theorem}
 	For a SBM$(n, k, p, q)$ where $p=\frac{a\log n}{n}, q = \frac{b\log n}{n}$. The number of triangles is $T$.
@@ -464,12 +468,13 @@ $$
 	The convergence of $\frac{T_i}{\log ^3 n}$ comes from Lemma \ref{lem:ER_tr_counting}.
 	For $T_{ij}$ we use the conclusion from Lemma \ref{lem:SBM_tr_counting_cross}.
 	We replace $n$ with $n/k$, $p=a\frac{\log n}{n}$, $q=b\frac{\log n}{n}$ in Equation \eqref{eq:SBM_tr_counting_cross}.
-	$\Var[T_{ij}] \sim \frac{ab^2}{2k^3} \log^3 n$. Since the expectation of $\frac{T_{ij}}{\log^3 n}$ is $(n/k)\binom{n/k}{2}pq^2/(\log^3 n)
-	=\frac{n-1}{n}\frac{ab^3}{k^3}$. By Chebyshev's inequality we can show that 
-	$$
-	\Pr( \Big|\frac{T_{ij}}{\log^3 n} - \frac{n-1}{n}\frac{ab^3}{k^3} \Big| > \epsilon) \leq \frac{\Var[T_{ij} / \log^3 n]}{\epsilon^2} = \frac{1}{\epsilon^2}
-	O(\frac{1}{\log^3 n})
-	$$
+$\Var[T_{ij}] \sim \frac{ab^2}{2k^3} \log^3 n$. Since the expectation of $\frac{T_{ij}}{\log^3 n}$ is $(n/k)\binom{n/k}{2}pq^2/(\log^3 n)
+=\frac{n-1}{2n}\frac{ab^2}{k^3}$. By Chebyshev's inequality we can show that 
+\begin{align*}
+P( \Big|\frac{T_{ij}}{\log^3 n} - \frac{n-1}{2n}\frac{ab^2}{k^3} \Big| > \epsilon) &\leq \frac{\Var[T_{ij} / \log^3 n]}{\epsilon^2} \\
+& = \frac{1}{\epsilon^2}
+O(\frac{1}{\log^3 n})
+\end{align*}
 	Therefore, $\frac{T_{ij}}{\log^3 n} $ converges to $\frac{1}{2}(a/k)(b/k)^2$
 	
 	To prove $\frac{T_{ijk}}{\log^3 n}\to (b/k)^3$, from Lemma \ref{lem:SBM_tr_counting_3} we can get $\Var[T_{ijk}] = O(\log^5 n)$
