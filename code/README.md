@@ -15,3 +15,13 @@ See Figure 4
 Abbe, Emmanuel, Afonso S. Bandeira, and Georgina Hall. "Exact recovery in the stochastic block model." IEEE Transactions on Information Theory 62.1 (2015): 471-487.
 
 ![](./sdp2.png)
+
+## Parameter estimation MSE experiment
+```
+python3 estimator_experiment --action compute
+```
+
+## Ising model on SBM, phase transition experiment
+```
+python3 --n 9000 --repeat 2100 --inner_repeat 6000 --a 16 --b 4 --k 2 --m 1
+```

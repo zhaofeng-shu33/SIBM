@@ -719,6 +719,38 @@ where $z_i \sim Bern(\frac{\alpha \log n}{n})$ and $x_i \sim Bern(\frac{\beta \l
 This limit can be estimated as $(1+o(1))n^{-\frac{(\sqrt{\alpha}-\sqrt{\beta})^2}{2}}$.
 Therefore, $P(\lambda_{\max}(\Gamma) \geq (a-b)\log n)\leq n^{-r} + (1+o(1))n^{1-\frac{(\sqrt{\alpha}-\sqrt{\beta})^2}{2}} = o(1)$
 if $\sqrt{\alpha} - \sqrt{\beta} > \sqrt{2}$ is satisfied.
+\section{SBM with multiple equal-sized clusters}
+Using the notation of \cite{hajek2016achieving}, we consider the SDP relation for SBM with multiple equal-sized clusters
+\begin{align}
+\max & <A,Z> \notag \\
+s.t. & Z \succeq 0, \notag\\
+&Z_{ii} = 1,  && i \in [n] \notag\\
+&Z_{ij} \geq 0, && i,j \in [n] \notag\\
+&Z \mathbf{1} = K\mathbf{1} \label{eq:AZ}
+\end{align}
+Its dual problem can be written as:
+\begin{align}
+\min & \sum_{i=1}^n d_i + K \sum_{i=1}^n \lambda_i\notag \\
+& D + \lambda \mathbf{1}^T - B - A \succeq 0, \textrm{ where } D=\diag(d_1, \dots, d_n), \lambda=(\lambda_1, \dots, \lambda_n) \notag \\
+& B_{ij} \geq 0\label{eq:dualAZ}
+\end{align}
+When $Z^*$ is the optimal solution to \eqref{eq:AZ}, the optimal value for the primal problem is $\sum_{k=1}^r (\xi^*_k)^T A \xi^*_k
+= \sum_{k=1}^r\sum_{i \in C_k} e(i, C_k) $. On the other hand, we choose
+\begin{align}
+d_i &= e(i, C_k) - r_i + 2\alpha_k  - \frac{1}{K} \sum_{i \in C_k} r_i \\
+\lambda_i &= \frac{2}{K}(r_i - \alpha_k)
+\end{align}
+Then the optimal value for \eqref{eq:dualAZ} is also $\sum_{k=1}^r\sum_{i \in C_k} e(i, C_k) $.
+
+We only need to verify $B, D, \lambda$ satisfy the constraint of \eqref{eq:dualAZ}.
+$B$ is chosen by the following rule:
+\begin{equation}
+B_{ij} = \begin{cases}
+0 & (i,j) \in C_k \textrm{ for some } k \\
+y_{kk'}(i) + z_{kk'}(j) & \textrm{ where } i \in C_k, j \in C_{k'}
+\end{cases}
+\end{equation}
+The intermediate parameter $y,z,\alpha,r_i$ can be defined properly.
 
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
