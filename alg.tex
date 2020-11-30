@@ -618,7 +618,7 @@ s.t. & X_{ii} = X_{i,n+1} \textrm{ for } i = 1, \dots, n\\
 By using Lagrange dual theorem, its dual problem can be written as:
 \begin{align*}
 \min \, & z \\
-s.t. & \begin{pmatrix}
+s.t.\, & \widetilde{T} = \begin{pmatrix}
 2\diag(y) - B & -y \\
 -y & z 
 \end{pmatrix}\succeq 0
@@ -641,54 +641,42 @@ g_1^T B g_1 = g_2^T B g_2 = -\sum_{i<j, j \not\in S(i)} B_{ij}
 \end{equation}
 since $B_{ij} = B_{ji}$ for $i\neq j$.
 
-We choose $y_i = \frac{2z}{n}$.
-Then $y^T  g = 0$.
+We should choose $y_i$ such that $\widetilde{T} g_1 = 0 $ and $\widetilde{T} g_2 = 0$.
+$y_i = (Bg_2)_i$ for $i \leq \frac{n}{2}$ 
+and
+$y_i = -(Bg_1)_i$ for $i > \frac{n}{2}$.
 
+Then we can verify that $y^T  g = 0$.
+
+We first investigate the matrix $2\diag(y) - B$ and we define $z^* = 2E[y_i]= n - 2b\log n$.
 Then
-$2\diag(y)- B - \frac{yy^T}{2z} = \frac{4z}{n} I - B - \frac{2z}{n^2}\mathbbm{1}\mathbbm{1}^T = C'-\Gamma'$
+$2\diag(y)- B = C'-\Gamma'$
 where
 \begin{align}
-C' &= 2z^* I - C - \frac{z^*}{n}\mathbbm{1}\mathbbm{1}^T\\
-\Gamma' & =  \Gamma +  (2z^* - \frac{4z}{n}) I  +  (\frac{2z}{n^2} - \frac{z^*}{n})\mathbbm{1}\mathbbm{1}^T
+C' &= z^* I - C \\
+\Gamma' & =  \Gamma +  \diag\{z^* - 2y_1, \dots, z^* - 2y_n\} I 
 \end{align}
-Notice that $\Gamma'$ is a random matrix whose mean is zero, and we define $z^* = E[y_i]= n - 2b\log n$.
-Therefore, for the deterministic matrix $C'$, it has eigenvalue $0$, eigenvector $g$;
+Notice that $\Gamma'$ is a random matrix whose mean is zero.
+For the deterministic matrix $C'$, it has eigenvalue $0$, eigenvector $g$;
 eigenvalue $z^*$, eigenvector $\mathbf{1}$; eigenvalue $(a-b)\log n$ for other eigenvectors.
 
-We can also verify that $g$ is the eigenvector of random matrix $\Gamma'$.
+We can also verify that $g$ is the eigenvector of random matrix $\Gamma'$ since $(2\diag(y) - B)g=0$.
 
 
-Therefore, the condition $z^*I - C - \Gamma_1 - \Gamma \succeq 0$ is further equivalent to
+Therefore, the condition $C' - \Gamma' \succeq 0$ is further equivalent to
 \begin{equation}\label{eq:g1}
-(a-b)\log n \geq u^T (\Gamma_1 + \Gamma) u, \forall ||u||_2 = 1, u \perp g
+(a-b)\log n \geq u^T \Gamma' u, \forall ||u||_2 = 1, u \perp g
 \end{equation}
-The random matrix $\Gamma_1$ has the following form:
-\begin{align*}
-\Gamma_1 =& \sum_{i<j, j\in S(i)}
-\begin{pmatrix}
-0 & y_iy_j/2z \\
-y_iy_j/2z & 0
-\end{pmatrix} \\
-+& \sum_{i<j, j\not\in S(i)}
-\begin{pmatrix}
-2(\alpha_{ij}^- - (2\B-1)) & y_iy_j/2z \\
-y_iy_j/2z & 2(\alpha_{ij}^- - (2\B-1))
-\end{pmatrix} + \diag\{y_1^2, \dots, y_n^2\}/2z
-\end{align*}
-Therefore, we have
-\begin{align*}
-\Gamma_1 + \Gamma =& \sum_{i<j, j\in S(i)} (\alpha_{ij}^+ - (2\A-1))\Delta_{ij}
-+\sum_{i<j, j\not\in S(i)} ( (2\B-1) - \alpha_{ij}^-)\Delta_{ij}^- + yy^T/2z
-\end{align*}
-$\lambda_{\max}(yy^T/2z) = y^Ty/2z = O(1)$ with large probability.
-Therefore, we can neglect the matrix $yy^T/2z$ using the property of spectral norm.
-Indeed, to show $P(y^Ty > 2Cz) = o(1)$ where $C$ is a constant,
-using $2z = \sum_{i=1}^n y_i$
-we can write
-$P(\sum_{i=1}^n y_i^2 \geq C\sum_{i=1}^n y_i) \leq \sum_{i=1}^n P(y_i^2 \geq C y_i) = nP(y_1 \geq C)$
-by union bound.
-We can show that $P(y_1 \geq C)$ decreases exponentially fast, so that
-.
+The non-diagonal part of $\Gamma'$ is equal to $2(A-E(A))$, whose spectral norm is $O(\sqrt{\log n})$.
+Therefore, we only need to consider the diagonal term of $\Gamma'$ which is equal to guarantee:
+$
+\sum_{i=1}^{n/2} (X_i - Z_i) \geq 0
+$ with large probability where $X_i \sim Bernoulli(\A), Z_i \sim Bernoulli(\B)$.
+Thus, we have shown that $2\diag(y) - B \succeq 0$.
+
+Then we use Cauchy Interlacing theorem to show that $\widetilde{T}$ is semi-positive definite.
+% http://matrix.skku.ac.kr/Series-E/Monthly-E.pdf
+Since $\widetilde{T}$ has at least two eigenvalues equal to 0, it must be the two smallest and our conclusion follows.
 
 \section{Enhancement of Abbe's conclusion}\label{sec:original}
 In Abbe's original formulation, he proposed a SDP algorithm which has theoretical
