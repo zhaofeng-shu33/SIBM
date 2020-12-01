@@ -34,11 +34,11 @@ def project_cone(Y):
     vals = (vals + np.abs(-vals)) / 2
     return vectors @ np.diag(vals) @ vectors.T
 
-def sdp2(G, rho = 0.1, max_iter = 1000, tol=1e-4):
+def sdp2(G, kappa=1.0, rho = 0.1, max_iter = 1000, tol=1e-4):
     '''only for two communties
     rho: ADMM penalty parameter
     '''
-    B = construct_B(G)
+    B = construct_B(G, kappa)
     n = len(G.nodes)
     X = np.zeros([n, n])
     U = np.zeros([n, n])

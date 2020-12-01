@@ -1,5 +1,13 @@
 import argparse
 import numpy as np
+
+from multiprocessing import Queue
+from multiprocessing import Process
+
+from sbm import sbm_graph
+from sdp import sdp2
+from sibm_experiment import exact_compare_k
+
 def SDP_side_info():
     n = 128
     n2 = int(n / 2)
@@ -50,12 +58,50 @@ def Eig_verification(k=3):
     val, vec = np.linalg.eig(B)
     print(val)
 
+def get_acc_sdp2(repeat, n, a, b, kappa, queue=None):
+    acc = 0
+    for _ in range(repeat):
+        graph = sbm_graph(n, 2, a, b)
+        results = sdp2(graph, kappa)
+        acc += float(exact_compare_k(results, 2))
+    acc /= repeat
+    if queue:
+        queue.put(acc)
+    return acc
+
+def get_acc(repeat, n, a, b, kappa, thread_num):
+    if thread_num == 1:
+        return get_acc_sdp2(repeat, n, a, b, kappa)
+    q = Queue()
+    process_list = []
+    assert(repeat % thread_num == 0)
+    inner_repeat = repeat // thread_num
+    for _ in range(thread_num):
+        t = Process(target=get_acc_sdp2,
+                    args=(inner_repeat, n, a, b, kappa, q))
+        process_list.append(t)
+        t.start()
+    acc = 0
+    for i in range(thread_num):
+        process_list[i].join()
+        acc += q.get()
+    acc /= thread_num
+    return acc
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--k', type=int, default=2)
-    parser.add_argument('--action', choices=['eig', 'side'], default='side')
+    parser.add_argument('--n', type=int, default=120)
+    parser.add_argument('--a', type=float, default=16)
+    parser.add_argument('--b', type=float, default=4)
+    parser.add_argument('--kappa', type=float, default=1)
+    parser.add_argument('--thread_num', type=int, default=1)
+    parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
+    parser.add_argument('--action', choices=['eig', 'side', 'sdp'], default='side')
     args = parser.parse_args()
     if args.action == 'side':
         SDP_side_info()
     if args.action == 'eig':
         Eig_verification(args.k)
+    if args.action == 'sdp':
+        print(get_acc(args.repeat, args.n, args.a, args.b, args.kappa, args.thread_num))
