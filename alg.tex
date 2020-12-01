@@ -554,7 +554,9 @@ Using Lemma \ref{lem:Cabd}, we can get all eigenvalues of $C$ as $\lambda_2=\fra
 (omit the eigenvalue corresponding to $g$). If $\kappa = 0$, then $C$ has negative eigenvalue and it is impossible for
 $C-\Gamma \succeq 0 $ to hold
 with large probability. The minimum requirement for this is that $\kappa > b\frac{\log n}{n}$.
-This condition has been verified previously.
+This condition has been verified previously. Actually we need $\lambda_1 \geq \lambda_2$, and we obtain
+$\kappa > \frac{a+b}{2} \frac{\log n}{n}$.
+
 $\min_{u \perp g, ||u||_2=1} u^T C u = \min\{\lambda_1, \lambda_2\} := t$
 Similar to the analysis in Section \ref{sec:original}, the non-diagonal term of the random matrix $\Gamma$ is $(1+\kappa)(A-E[A])$ and its
 spectral norm is bounded by $c\sqrt{\log n}$ with large probability.
@@ -594,12 +596,12 @@ B & = \sum_{i<j, j\in S(i)} \alpha_{ij}^+ \Delta_{ij} + \sum_{i<j, j\not\in S(i)
 where $\Delta_{ij} = -(e_i - e_j)(e_i - e_j)^T $.
 The matrix $C$ and $\Gamma$ has the following form:
 \begin{align*}
-C &=  \sum_{i<j, j \in S(i)}\left(2\A-1\right)\Delta_{ij}+\sum_{i<j, j \notin S(i)} \left(2\B-1\right) \Delta_{ij}\\
-\Gamma &=  \sum_{i<j, j \in S(i)}\left( \alpha^{+}_{ij} - \left(2\A-1\right) \right) \cdot \Delta_{ij} + \sum_{i<j, j \notin S(i)} \left(\alpha^{-}_{ij}-\left(2\B-1\right)\right) \cdot \Delta_{ij}
+C &=  \sum_{i<j, j \in S(i)}\left((1+\kappa)\A-\kappa\right)\Delta_{ij}+\sum_{i<j, j \notin S(i)} \left((1+\kappa)\B-\kappa\right) \Delta_{ij}\\
+\Gamma &=  \sum_{i<j, j \in S(i)}\left( \alpha^{+}_{ij} - \left((1+\kappa)\A-\kappa\right) \right) \cdot \Delta_{ij} + \sum_{i<j, j \notin S(i)} \left(\alpha^{-}_{ij}-\left((1+\kappa)\B-\kappa\right)\right) \cdot \Delta_{ij}
 \end{align*}
 We can compute the eigen-decomposition of $C$ using Lemma \ref{lem:Cabd}. The conclusion is that
-$C$ has all-one eigenvector, with 0 as eigenvalue. $C$ also has an eigenvalue $n-2b\log n$ with eigenvector $g$.
-All other eigenvectors of $C$ belong to eigenvalue $n-(a+b)\log n $.
+$C$ has all-one eigenvector, with 0 as eigenvalue. $C$ also has an eigenvalue $\kappa n-(1+\kappa)b\log n$ with eigenvector $g$.
+All other eigenvectors of $C$ belong to eigenvalue $n\kappa-\frac{1+\kappa}{2}(a+b)\log n $.
 
 Now we relax to SDP problem, inspired by 3.1 of \cite{rendl2010semidefinite}.
 That is, we consider an extension of $\tilde{B}$ of $(n+1)\times (n+1)$ dimension.
@@ -625,8 +627,7 @@ s.t.\, & \widetilde{T} = \begin{pmatrix}
 \end{align*}
 where $y$ is a vector.
 
-We can use the equivalent condition to write the constraint as
-$2\diag(y)-B - \frac{yy^T}{z} \succeq 0$.
+
 Let $g_1 = (0, 0 ,\dots, 0, 1, \dots, 1)$ be the vector corresponding to the ground truth.
 We take $z = g_1^T B g_1$
 
@@ -641,14 +642,14 @@ g_1^T B g_1 = g_2^T B g_2 = -\sum_{i<j, j \not\in S(i)} B_{ij}
 \end{equation}
 since $B_{ij} = B_{ji}$ for $i\neq j$.
 
-We should choose $y_i$ such that $\widetilde{T} g_1 = 0 $ and $\widetilde{T} g_2 = 0$.
+We should choose $y_i$ such that $\widetilde{T} \binom{g_1}{1} = 0 $ and $\widetilde{T} \binom{g_2}{1} = 0$.
 $y_i = (Bg_2)_i$ for $i \leq \frac{n}{2}$ 
 and
 $y_i = -(Bg_1)_i$ for $i > \frac{n}{2}$.
 
 Then we can verify that $y^T  g = 0$.
 
-We first investigate the matrix $2\diag(y) - B$ and we define $z^* = 2E[y_i]= n - 2b\log n$.
+We first investigate the matrix $2\diag(y) - B$ and we define $z^* = 2E[y_i]= \kappa n - (1+\kappa)b\log n$.
 Then
 $2\diag(y)- B = C'-\Gamma'$
 where
@@ -658,19 +659,23 @@ C' &= z^* I - C \\
 \end{align}
 Notice that $\Gamma'$ is a random matrix whose mean is zero.
 For the deterministic matrix $C'$, it has eigenvalue $0$, eigenvector $g$;
-eigenvalue $z^*$, eigenvector $\mathbf{1}$; eigenvalue $(a-b)\log n$ for other eigenvectors.
+eigenvalue $z^*$, eigenvector $\mathbf{1}$; eigenvalue $\frac{1+\kappa}{2}(a-b)\log n$ for other eigenvectors.
 
-We can also verify that $g$ is the eigenvector of random matrix $\Gamma'$ since $(2\diag(y) - B)g=0$.
+We can also verify that $g$ is the eigenvector of random matrix $\Gamma'$ since $(2\diag(y) - B)g=0$ ($\widetilde{T} \binom{g_1 - g_2}{0} = 0$).
 
 
 Therefore, the condition $C' - \Gamma' \succeq 0$ is further equivalent to
 \begin{equation}\label{eq:g1}
-(a-b)\log n \geq u^T \Gamma' u, \forall ||u||_2 = 1, u \perp g
+\frac{1+\kappa}{2}(a-b)\log n \geq u^T \Gamma' u, \forall ||u||_2 = 1, u \perp g
 \end{equation}
-The non-diagonal part of $\Gamma'$ is equal to $2(A-E(A))$, whose spectral norm is $O(\sqrt{\log n})$.
+
+We need to make sure that $z^* > \frac{1+\kappa}{2}(a-b)\log n$, which is approximately equivalent with
+$\kappa > \frac{a+b}{2} \frac{\log n}{n}$.
+
+The non-diagonal part of $\Gamma'$ is equal to $(1+\kappa)(A-E(A))$, whose spectral norm is $O(\sqrt{\log n})$.
 Therefore, we only need to consider the diagonal term of $\Gamma'$ which is equal to guarantee:
 $
-\sum_{i=1}^{n/2} (X_i - Z_i) \geq 0
+\sum_{i=1}^{n/2} (X_i - Z_i) \geq \kappa
 $ with large probability where $X_i \sim Bernoulli(\A), Z_i \sim Bernoulli(\B)$.
 Thus, we have shown that $2\diag(y) - B \succeq 0$.
 
