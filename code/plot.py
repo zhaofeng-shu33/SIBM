@@ -6,6 +6,38 @@ from datetime import datetime
 import numpy as np
 import matplotlib.pyplot as plt
 
+def plot_g_function(a, b, k, end_point=None, fig_format='svg'):
+    g = lambda x: (b * np.exp(x) + a * np.exp(-x)) / k - (a + b) / k + 1
+    beta_bar = 0.5 * np.log(a / b)
+    # zero point
+    beta_star = np.log((a + b - k - np.sqrt((a + b - k) ** 2 - 4 * a * b)) / (2 * b))
+    beta_2 = np.log((a + b - k + np.sqrt((a + b - k) ** 2 - 4 * a * b)) / (2 * b))
+    if end_point is None:
+        end_point = beta_2 * 1.2
+    x = np.linspace(0, end_point)
+    fig, ax = plt.subplots()
+
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)    
+    ax.plot(x, g(x), label='$g(\\beta)$', color='red', linewidth=2)
+    x2 = np.zeros([51])
+    x2[:50] = np.linspace(0, beta_bar, num=50)
+    y2 = g(x2) + 0.02
+    x2[50] = end_point
+    y2[50] = g(beta_bar)
+    ax.plot(x2, y2, label='$\\tilde{g}(\\beta)$', color='green', linewidth=2)
+    ax.plot([beta_bar, beta_bar], [-0.1 + g(beta_bar), g(x2[50]) - 0.1],
+             label='$\\beta=\\bar{\\beta}$', linestyle='--')
+    # draw the x-axis
+    ax.plot([0, x2[50]], [0, 0], linestyle='--', color='black')
+    ax.text(beta_star, 0, '$\\beta^*$', fontsize=16)
+    plt.xlabel('$\\beta$', fontsize=12)
+    plt.xlim(0, end_point + 0.05)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig('build/g-{0}-{1}-{2}.{3}'.format(int(a), int(b), k, fig_format))
+    plt.show()
+
 def plot_alg_fix_b(alg_list, date):
     '''compare different algorithms
     '''
@@ -132,9 +164,12 @@ if __name__ == '__main__':
     method_list = ['sdp', 'metropolis', 'asyn_fluid', 'bi', 'sdp2']
     parser = argparse.ArgumentParser()
     parser.add_argument('--action', choices=['phase_transition',
-        'compare', 'beta_transition'], default='phase_transition')
+        'compare', 'beta_transition', 'plot_g_function'], default='phase_transition')
     parser.add_argument('--method', choices=method_list, default='metropolis')
     parser.add_argument('--format', choices=['eps', 'svg'], default='eps')
+    parser.add_argument('--a', type=float, default=16.0)
+    parser.add_argument('--b', type=float, default=4.0)
+    parser.add_argument('--k', type=int, default=2)
     parser.add_argument('--theoretical', const=True, default=False, nargs='?')
     parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
@@ -143,5 +178,7 @@ if __name__ == '__main__':
         draw_phase_transation(file_name)
     elif args.action == 'beta_transition':
         draw_beta_phase_trans(args.date, args.format, args.theoretical)
+    elif args.action == 'plot_g_function':
+        plot_g_function(args.a, args.b, args.k, fig_format=args.format)
     else:
         plot_alg_fix_b(method_list, args.date)
