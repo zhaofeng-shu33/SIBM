@@ -104,7 +104,7 @@ if __name__ == '__main__':
     parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
     n_list = [100, 200, 300, 400, 500, 1000, 2000, 3000, 4000, 5000, 10000]
-    a_b_k_list = [(16, 4, 2), (16, 4, 4)]
+    a_b_k_list = [(16, 4, 2), (16, 4, 4), (20, 4, 4)]
     repeat = args.repeat
     thread_num = args.thread_num
     if args.action == 'compute':
