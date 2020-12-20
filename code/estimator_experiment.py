@@ -1,7 +1,7 @@
 '''
    parameter estimation validation for SSBM(n, k, p, q)
    with p = a log(n)/ n, q = b log(n) / n
-   python3 estimator_experiment.py --action compute --repeat 1000 --thread_num 20
+   LOGLEVEL=ERROR python3 estimator_experiment.py --action compute --repeat 1000 --thread_num 20
 '''
 import os
 import pickle
@@ -26,7 +26,7 @@ def load_data_from_pickle(file_name_prefix, date):
         return pickle.load(f)
 
 def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False):
-    color_list = ['r', 'b']
+    color_list = ['r', 'b', 'g']
     for i in range(len(a_b_k_list)):
         a, b, k = a_b_k_list[i]
         if theoretical and k == 2:

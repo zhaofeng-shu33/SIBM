@@ -103,8 +103,8 @@ def draw_beta_phase_trans(date, pic_format='eps', theoretical=False):
     plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red')
 
     plt.legend()
-    plt.xlabel('$beta$', size='large')
-    plt.ylabel('acc', size='large')
+    plt.xlabel('$\\beta$', size='large')
+    plt.ylabel('accuracy', size='large')
     fig_name = 'beta_trans-' + date + '.' + pic_format
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
@@ -129,8 +129,8 @@ def draw_theoretical_beta_phase_trans(n, k, a, b, beta_s, beta_e):
             acc_list_2[i] = 1 - np.power(n, g(beta) / 2)
         else:
             acc_list_2[i] = 1 - np.power(n, g_beta_bar / 2)
-    plt.plot(beta_list_1, acc_list_1, label='acc upper bound', color='purple', linewidth=2)
-    plt.plot(beta_list_2, acc_list_2, label='acc lower bound', color='darkgreen', linewidth=2)
+    plt.plot(beta_list_1, acc_list_1, label='accuracy upper bound', color='purple', linewidth=2)
+    plt.plot(beta_list_2, acc_list_2, label='accuracy lower bound', color='darkgreen', linewidth=2)
     plt.plot([beta_star, beta_star], [0, 1], label='phase transition line', color='red', linewidth=2)
 
 def draw_phase_transation(file_name):
