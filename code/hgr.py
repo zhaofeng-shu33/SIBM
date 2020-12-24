@@ -3,12 +3,12 @@ import networkx as nx
 
 from sbm import sbm_graph
 
-def hgr(G, p, q, N=100):
+def hgr(G, p, q, N=200):
     n = len(G.nodes)
-    hy = np.zeros([n])
+    hy = np.zeros([N])
     # Monte-Carlo simulation
     y_matrix = 2 * np.random.randint(0, 2, size=(n, N)) - 1
-    # modify y_1 to 1
+    # fix y_1 to 1
     y_matrix[0, :] = 1
     A = nx.adjacency_matrix(G).toarray()
     A_prime = np.ones([n, n]) - np.eye(n) - A
@@ -22,11 +22,18 @@ def hgr(G, p, q, N=100):
     return np.asarray(symbols > 0, dtype=int)
 
 if __name__ == '__main__':
-    n = 100
-    a = 16
-    b = 4
-    G = sbm_graph(n, 2, a, b)
-    p = a * np.log(n) / n
-    q = b * np.log(n) / n
+    # n = 100
+    # a = 16
+    # b = 4
+    # G = sbm_graph(n, 2, a, b)
+    # p = a * np.log(n) / n
+    # q = b * np.log(n) / n
+
+    n = 4
+    p = 0.7
+    q = 0.3
+    G = nx.Graph()
+    G.add_edge(0, 1)
+    G.add_edge(2, 3)
     labels = hgr(G, p, q)
     print(labels)
