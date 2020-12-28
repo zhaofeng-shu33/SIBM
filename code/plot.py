@@ -6,7 +6,7 @@ from datetime import datetime
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-import matplotlib.transforms as transform
+from scipy import ndimage
 
 from sbm import sbm_graph, get_agraph
 from ising import SIBM
@@ -167,14 +167,12 @@ def show_animation():
     N = 250
     for i in range(1, N):
         im1 = mpimg.imread('build/am/%03d.png' % i)
-        rotate = transform.Affine2D().rotate_deg(90)
-        imax1 = ax1.imshow(im1)
-        imax1.set_transform(rotate + ax1.transData)
+        im1_rot = ndimage.rotate(im1, 90)
+        imax1 = ax1.imshow(im1_rot)
         im2 = mpimg.imread('build/am/energy-%03d.png' % i)
         ax2.imshow(im2)
-        plt.show()
-        import pdb
-        pdb.set_trace()
+        plt.savefig('build/am/whole-%03d.png' % i)
+        plt.clf()
 
 def _animation_metropolis_inner(G, labels, n_index):
     ag = get_agraph(G, labels)
