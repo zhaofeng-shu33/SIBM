@@ -54,8 +54,14 @@ def draw_metropolis():
         graph.nodes[i]['estimated_block'] = results[i]
     draw(graph)
 
-def draw(graph):
+def get_agraph(graph, node_color_index=None):
+    '''
+    Parameters
+    ----------
+    graph: networkx graph object
+    '''
     has_estimated_block = graph.nodes[0].get('estimated_block') is not None
+    # Graphviz AGraph
     ag = nx.nx_agraph.to_agraph(graph)
     ag.graph_attr['outputorder'] = 'edgesfirst'
     ag.graph_attr['bgcolor'] = 'transparent'
@@ -64,10 +70,13 @@ def draw(graph):
     ag.edge_attr['color'] = 'gray'
     ag.edge_attr['penwidth'] = 0.3
     # coloring the node according to estimator block
+    color_list = ['red', 'blue', 'green']
     if has_estimated_block:
-        color_list = ['red', 'green', 'blue']
         for n in ag.nodes_iter():
             n.attr['color'] = color_list[int(n.attr['estimated_block'])]
+    elif node_color_index is not None:
+        for n in ag.nodes_iter():
+            n.attr['color'] = color_list[node_color_index[int(str(n))]]
     # weighting the edges according to block
     for e in ag.edges_iter():
         n1 = ag.get_node(e[0])
@@ -78,6 +87,10 @@ def draw(graph):
         else:
             e.attr['weight'] = 1
             e.attr['len'] = 1
+    return ag
+
+def draw(graph):
+    ag = get_agraph(graph)
     ag.write('build/a.dot')
     ag.layout()
     ag.draw('build/a.eps')

@@ -5,6 +5,11 @@ from datetime import datetime
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import matplotlib.transforms as transform
+
+from sbm import sbm_graph, get_agraph
+from ising import SIBM
 
 def plot_g_function(a, b, k, end_point=None, fig_format='svg'):
     g = lambda x: (b * np.exp(x) + a * np.exp(-x)) / k - (a + b) / k + 1
@@ -133,6 +138,49 @@ def draw_theoretical_beta_phase_trans(n, k, a, b, beta_s, beta_e):
     plt.plot(beta_list_2, acc_list_2, label='accuracy lower bound', color='darkgreen', linewidth=2)
     plt.plot([beta_star, beta_star], [0, 1], label='phase transition line', color='red', linewidth=2)
 
+def animation_metropolis(n, k, a, b):
+    G = sbm_graph(n, k, a, b)
+    sibm = SIBM(G, k)
+    # draw initial configuration with random labels
+    skip_draw_count = 5
+    N = 250
+    energy_list = []
+    # get initial energy
+    energy_list.append(sibm._get_Hamiltonian())
+    for i in range(N):
+        for _ in range(skip_draw_count):
+            sibm._metropolis_single()
+        _animation_metropolis_inner(G, sibm.sigma, i)
+        energy_list.append(sibm._get_Hamiltonian())
+        # plot energy versus time(i)
+        plt.plot(list(range(i + 2)), energy_list)
+        plt.savefig('build/am/energy-%03d.png' % (i + 1))
+        plt.clf()
+    # create the final video by the following command
+    # ffmpeg -r 20 -i %d.png -pix_fmt yuv420p -vf "crop=trunc(iw/2)*2:trunc(ih/2)*2" output.mp4
+
+def show_animation():
+    fig = plt.figure()
+    ax1 = fig.add_subplot(1, 2, 1)
+    ax2 = fig.add_subplot(1, 2, 2)
+    # check the number of images
+    N = 250
+    for i in range(1, N):
+        im1 = mpimg.imread('build/am/%03d.png' % i)
+        rotate = transform.Affine2D().rotate_deg(90)
+        imax1 = ax1.imshow(im1)
+        imax1.set_transform(rotate + ax1.transData)
+        im2 = mpimg.imread('build/am/energy-%03d.png' % i)
+        ax2.imshow(im2)
+        plt.show()
+        import pdb
+        pdb.set_trace()
+
+def _animation_metropolis_inner(G, labels, n_index):
+    ag = get_agraph(G, labels)
+    ag.layout()
+    ag.draw('build/am/%03d.png' % (n_index))
+
 def draw_phase_transation(file_name):
     with open(os.path.join('build', file_name), 'rb') as f:
         data = pickle.load(f)
@@ -164,12 +212,13 @@ if __name__ == '__main__':
     method_list = ['sdp', 'metropolis', 'asyn_fluid', 'bi', 'sdp2']
     parser = argparse.ArgumentParser()
     parser.add_argument('--action', choices=['phase_transition',
-        'compare', 'beta_transition', 'plot_g_function'], default='phase_transition')
+        'compare', 'beta_transition', 'plot_g_function', 'animation_metropolis'], default='phase_transition')
     parser.add_argument('--method', choices=method_list, default='metropolis')
     parser.add_argument('--format', choices=['eps', 'svg'], default='eps')
     parser.add_argument('--a', type=float, default=16.0)
     parser.add_argument('--b', type=float, default=4.0)
     parser.add_argument('--k', type=int, default=2)
+    parser.add_argument('--n', type=int, default=200)
     parser.add_argument('--theoretical', const=True, default=False, nargs='?')
     parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
@@ -180,5 +229,7 @@ if __name__ == '__main__':
         draw_beta_phase_trans(args.date, args.format, args.theoretical)
     elif args.action == 'plot_g_function':
         plot_g_function(args.a, args.b, args.k, fig_format=args.format)
+    elif args.action == 'animation_metropolis':
+        animation_metropolis(args.n, args.k, args.a, args.b)
     else:
         plot_alg_fix_b(method_list, args.date)
