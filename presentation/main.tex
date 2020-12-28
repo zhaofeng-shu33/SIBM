@@ -42,8 +42,6 @@ numberstyle=\tiny\color{mygray}
 	In statistical physics, Ising model refers to the magnetic spins that can be in one of two states (+1 or -1).
 	
 	$T_c$: critical temperature.
-
-	$H = \mu\mathbb{E}[\sum_{i=1}^n \sigma_i]$: magnetic moment changes sharply
 	
 	\end{columns}
 \begin{figure}
@@ -59,11 +57,18 @@ numberstyle=\tiny\color{mygray}
 \end{figure}
 \end{frame}
 \begin{frame}
-\frametitle{2D Ising model}
+\frametitle{2D Ising model}	
+\begin{block}{spontaneous magnetization}
+	$M = \frac{1}{N} \sum_{i=1}^N \sigma_i$: spontaneous magnetization for $N\to \infty$:
+	\begin{enumerate}
+		\item $T< T_c$, $M>0$, spontaneous magnetization exists;
+		\item $T> T_c$, $M=0$, no spontaneous magnetization.
+	\end{enumerate}
+\end{block}
+Simulation
 \begin{figure}
-%\includegraphics[width=0.8\textwidth]{pic/reproducibility_in_Science.jpg}
+\includegraphics[width=0.6\textwidth]{monte-carlo-ising-6.png}
 \end{figure}
-Scientific computing domain is more portable than other fields. However...
 \end{frame}
 \begin{frame}
 \frametitle{Challenges in Experiment Reproducibility}
