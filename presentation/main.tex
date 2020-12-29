@@ -5,6 +5,8 @@
 \usepackage{subcaption}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{algorithmic}
+
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \lstset{
 numbers=left,
@@ -30,6 +32,7 @@ numberstyle=\tiny\color{mygray}
 \end{frame}
 
 \section{Background}
+\subsection{Ising model}
 \begin{frame}
 \frametitle{Ising model}
 	\begin{columns}
@@ -57,7 +60,42 @@ numberstyle=\tiny\color{mygray}
 \end{figure}
 \end{frame}
 \begin{frame}
-\frametitle{2D Ising model}	
+\frametitle{Canonical ensemble}
+\begin{columns}
+	\column{0.5\textwidth}
+The distribution of particles:
+\begin{equation*}
+P(\sigma = \bar{\sigma}) = \frac{1}{Z} \exp(-\beta H(\bar{\sigma}))
+\end{equation*}
+\begin{itemize}
+	\item $Z$: partition function
+	\item $\beta$: inverse temperature
+	\item $H$: Hamiltonian energy
+	\item $\sigma \in \{\pm 1\}^n$: particle state 
+\end{itemize}
+	\column{0.5\textwidth}
+	\begin{tabular}{ccc}
+		No & Micro state & Macro state ($H$) \\
+		1 & $\uparrow\uparrow\uparrow$ & -3 \\
+		2 & $\uparrow\uparrow\downarrow$ & 1 \\
+		3 & $\uparrow\downarrow\uparrow$ & 1 \\
+		4 & $\downarrow\uparrow\uparrow$ & 1 \\
+		5 & $\uparrow\downarrow\downarrow$ & 1 \\
+6 & $\downarrow\uparrow\downarrow$ & 1 \\
+7 & $\downarrow\downarrow\uparrow$ & 1 \\
+8 & $\downarrow\downarrow\downarrow$ & -3 \\
+	\end{tabular}
+\end{columns}
+\begin{block}{Hamiltonian for Ising model}
+	Given a graph $G(V, E)$,
+	\begin{equation*}
+	H(\sigma) = -\sum_{(i,j) \in E(G)} \sigma_i \cdot \sigma_j
+	\end{equation*}
+\end{block}
+
+\end{frame}
+\begin{frame}
+\frametitle{Square-lattice Ising model}	
 \begin{block}{spontaneous magnetization}
 	$M = \frac{1}{N} \sum_{i=1}^N \sigma_i$: spontaneous magnetization for $N\to \infty$:
 	\begin{enumerate}
@@ -65,47 +103,46 @@ numberstyle=\tiny\color{mygray}
 		\item $T> T_c$, $M=0$, no spontaneous magnetization.
 	\end{enumerate}
 \end{block}
-Simulation
 \begin{figure}
-\includegraphics[width=0.6\textwidth]{monte-carlo-ising-6.png}
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{square-lattice.png}
+		\caption{square lattice}
+	\end{subfigure}~
+	\begin{subfigure}{0.53\textwidth}
+		\includegraphics[width=\textwidth]{monte-carlo-ising-6.png}
+		\caption{Simulation result}
+	\end{subfigure}
 \end{figure}
+
 \end{frame}
+
+
 \begin{frame}
-\frametitle{Challenges in Experiment Reproducibility}
+\frametitle{Metropolis algorithm}
+\begin{block}{Charateristics}
 \begin{itemize}
-\item No source code
-\item specific hardware requirement
-\item specific software requirement
-\item complex workflow, not clear to others
+	\item commonly used to simulate Ising model
+	\item single-spin-flip dynamics 
+	\item stochastic method for optimization
 \end{itemize}
-\vskip 0.5cm
-
-A given Python script from a Nature article gave different results on different Operating Systems [1]
-
-
-\vskip 1cm
-{\tiny [1] J.~Bhandari~Neupane, R.~P. Neupane, Y.~Luo, W.~Y. Yoshida, R.~Sun, and P.~G.
-  Williams, ``Characterization of leptazolines a--d, polar oxazolines from the
-  cyanobacterium leptolyngbya sp., reveals a glitch with the
-  “willoughby--hoye” scripts for calculating nmr chemical shifts,''
-  \emph{Organic Letters}, 2019.
- } 
- 
+\end{block}
+	\begin{algorithmic}[1]
+	\STATE random initialize $\bar{\sigma}$
+	\STATE randomly choosing a new state $\bar{\sigma}'$ by flipping one spin site
+	\STATE compute $\Delta H= H(\bar{\sigma}') - H(\bar{\sigma})$
+	\IF{$\Delta H < 0$}
+	\STATE $\bar{\sigma} \leftarrow \bar{\sigma}'$
+	\ELSE
+	\STATE with probability $\exp(-\beta \Delta H(r,s))$ 
+	such that $\bar{\sigma} \leftarrow -\bar{\sigma}'$ 
+	\ENDIF
+	\STATE repeat 2-8 until convergence
+\end{algorithmic}
 \end{frame}
 
 \begin{frame}
-\frametitle{Existing Method -- Specific Software Tools}
-
-\begin{figure}
-%\includegraphics[width=0.8\textwidth]{pic/fitlog_table.png}
-\caption{figlog package by FaskNLP Lab of FuDan University}
-\end{figure}
-Pros: running environment capture and experiment results storage
-
-Cons: bad maintainability and difficult configuration
-\end{frame}
-
-\begin{frame}
+\subsection{Community Detection}
 \frametitle{Existing Method -- Out-of-box Platforms}
 
 \begin{figure}
@@ -152,7 +189,7 @@ Advantages:
 	\item Unlimited usage and rich computing resource
 \end{itemize}
 \end{frame}
-\section{Infrastructure}
+\section{Stochastic Ising Block Model}
 \frame{\tableofcontents[currentsection]}
 \begin{frame}
 \frametitle{What is DevOps}
