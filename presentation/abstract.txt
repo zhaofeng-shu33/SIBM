@@ -1,0 +1,8 @@
+Title: Ising model and its application in community detection
+Speaker: Feng Zhao
+Abstract: Statistical physics have close relation with information theory, both of which are based on probability theory.
+There are a lot of works which uses the concept from statistical physics to solve problems in information theory and vice versa.
+In this talk, I will introduce Ising model, a concept from statistical physics and its application in
+community detection, a topic of general interest in information theory society. Using Ising model we study the phase transition phenonmenon
+in community detection and propose an approximate estimator to achieve
+the exact recovery of community labels.
