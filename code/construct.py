@@ -37,15 +37,15 @@ def SDP_side_info():
     for i in range(n):
         for j in range(i+1, n + 1):
             B[i, j] = B[j, i]
-    print(np.linalg.eig(B)[0])
+    print(np.linalg.eig(B[1:,1:])[0])
     c = n / 2 - beta * np.log(n)
     L3 = np.array([[n2 *(D1 + D2), -n2 * D1, n2 * D2], [-D1, D1 + c, c],[D2, c, D2 + c]])
-    print(np.linalg.eig(L3)[0])
+    #print(np.linalg.eig(L3)[0])
     a2 = -(D1 + D2 + 2 * c + n / 2 * (D1 + D2))
     a3 = (1 + n) * (D1 * D2 + D1 * c + D2 * c)
-    print(np.roots([1, a2, a3]))
-    print(d  - a + D1)
-    print(d  - a + D2)
+    #print(np.roots([1, a2, a3]))
+    #print(d  - a + D1)
+    # print(d  - a + D2)
 
 def Eig_verification(k=3):
     n = 10

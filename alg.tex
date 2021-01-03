@@ -287,25 +287,34 @@
 	$$C=\begin{bmatrix} d & \text{ } &  a & \vrule & \text{ } & \text{ }  & \text{ } \\
 \text{ } & \ddots & \text{ } & \vrule & \text{ }&  b & \text{ } \\
 a & \text{ } & d & \vrule & \text{ } & \text{ } & \text{ } \\ \hline
- \text{ } & \text{ }  & \text{ } & \vrule & d & \text{ } & a \\
+ \text{ } & \text{ }  & \text{ } & \vrule & c & \text{ } & a \\
  \text{ }& b & \text{ }  & \vrule & \text{ } & \ddots & \text{ } \\
-\text{ } & \text{ } & \text{ }& \vrule & a & \text{ } & d \\
-\end{bmatrix}$$,
-then the characteristic polynomial function is $(\lambda - d + a)^{2n-2} (\lambda - d + a - na - nb)
- (\lambda - d + a - na + nb)$. $d + (n-1)a+ nb$ corresponds to the all-one eigenvector while 
+\text{ } & \text{ } & \text{ }& \vrule & a & \text{ } & c \\
+\end{bmatrix}$$
+then the characteristic polynomial function is
+$$
+p(\lambda) = 
+(\lambda - d + a)^{n-1} (\lambda - c + a)^{n-1}
+[(\lambda - d - (n-1)a)
+ (\lambda - c - (n-1)a)
+- n^2b^2]
+$$
+ 
+ A special case is $d=c$, then $d + (n-1)a+ nb$ corresponds to the all-one eigenvector while 
  $d +(n-1)a -nb$ corresponds to the eigenvector $g=(1,\dots, 1, -1, \dots, -1)$.
 \end{lemma}
 \begin{proof}
-Let $d' = d-a, e$ is the all-one vector, then the matrix $\lambda I_{2n} - C$ can be written in block form:
+Let $d' = d-a, c'=c-a, e$ is the all-one vector,
+then the matrix $\lambda I_{2n} - C$ can be written in block form:
 $$
 \lambda I_{2n} - C = \begin{bmatrix}
 (\lambda -d') I_n - a ee^T & -b ee^T \\
--bee^T & (\lambda -d') I_n - a ee^T
+-bee^T & (\lambda -c') I_n - a ee^T
 \end{bmatrix}
 $$
 Using Woodbury matrix inverse we can compute
 $$
-[(\lambda -d') I_n - a ee^T]^{-1} = (\lambda - d')^{-1} [I_n - \frac{a}{na - \lambda + d'} ee^T]
+[(\lambda -c') I_n - a ee^T]^{-1} = (\lambda - c')^{-1} [I_n - \frac{a}{na - \lambda + c'} ee^T]
 $$
 Using the block matrix formula for determinate, i.e.
 $$
@@ -316,18 +325,18 @@ C & D
 $$
 we further have
 $$
-|\lambda I_{2n} - C| = |(\lambda -d') I_n - a ee^T| |(\lambda - d')I_n + \kappa ee^T|
+|\lambda I_{2n} - C| = |(\lambda -c') I_n - a ee^T| |(\lambda - d')I_n + \kappa ee^T|
 $$
 where
 \begin{align*}
-\kappa &= -a - \frac{b^2}{\lambda - d'} e^T (I_n - \frac{a}{na-\lambda + d'}ee^T)e \\
-&= -a  - \frac{b^2 n}{\lambda - na - d'}
+\kappa &= -a - \frac{b^2}{\lambda - c'} e^T (I_n - \frac{a}{na-\lambda + c'}ee^T)e \\
+&= -a  - \frac{b^2 n}{\lambda - na - c'}
 \end{align*}
-Further for matrix of the form $(x-y)I_n + yee^T$, its determant can be computed explictly
+Further for matrix of the form $(x-y)I_n + yee^T$, its determinant can be computed explicitly
 as $|(x-y)I_n + yee^T|=(x-y)^{n-1}(x+(n-1)y)$ (See Example 1.5.9 of \cite{ad_li}.
 Therefore, we can finally get the characteristic function:
 $$
-|\lambda I_{2n} - C| = (\lambda -d')^{2n-2} [(\lambda - d' - na)^2-n^2b^2]
+|\lambda I_{2n} - C| = (\lambda -d')^{n-1}(\lambda -d')^{n-1}  [(\lambda - d' - na)(\lambda - c' - na)-n^2b^2]
 $$
 \end{proof}
 \begin{lemma}\label{lem:Cabd2}
