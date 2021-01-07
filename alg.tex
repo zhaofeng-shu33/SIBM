@@ -738,7 +738,7 @@ P(||\Gamma_1 || + ||\Gamma_2|| \geq (a-b) \log n, ||\Gamma_2||
 Now we estimate $P(\Gamma_{11} \geq (a-b)\log n -c\sqrt{\log n})$, for the others are symmetric.
 By some algebra we can get
 $P(\Gamma_{11} \geq (a-b)\log n -c\sqrt{\log n}) = P(\sum_{i=1}^{n/2} z_i - x_i \geq -c\sqrt{\log n})$
-where $z_i \sim Bern(\frac{\alpha \log n}{n})$ and $x_i \sim Bern(\frac{\beta \log n}{n})$.
+where $z_i \sim Bern(\frac{\beta \log n}{n})$ and $x_i \sim Bern(\frac{\alpha \log n}{n})$.
 This limit can be estimated as $(1+o(1))n^{-\frac{(\sqrt{\alpha}-\sqrt{\beta})^2}{2}}$.
 Therefore, $P(\lambda_{\max}(\Gamma) \geq (a-b)\log n)\leq n^{-r} + (1+o(1))n^{1-\frac{(\sqrt{\alpha}-\sqrt{\beta})^2}{2}} = o(1)$
 if $\sqrt{\alpha} - \sqrt{\beta} > \sqrt{2}$ is satisfied.
