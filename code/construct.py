@@ -7,6 +7,36 @@ from multiprocessing import Process
 from sbm import sbm_graph
 from sdp import sdp2
 from sibm_experiment import exact_compare_k
+from sdp import construct_B
+
+def SDP_random_matrix():
+    n = 500
+    n2 = int(n / 2)
+    a = 11.66
+    b = 4
+    p0 = 0.4
+    p1 = 0.7
+    gamma = 5.0 # 5.0
+    m = int(gamma * np.log(n))
+    gamma = m / n * 1.0
+    h_vector = np.zeros([n])
+
+    tmp_1 = np.random.binomial(m, p0, size=n2)
+    tmp_1 = tmp_1 * np.log(p0 / p1) + (m - tmp_1) * np.log((1 - p0)/ (1 - p1))
+    h_vector[:n2] = tmp_1 / np.log (a / b)
+    tmp_1 = np.random.binomial(m, p1, size=n2)
+    tmp_1 = tmp_1 * np.log(p0 / p1) + (m - tmp_1) * np.log((1 - p0)/ (1 - p1))
+    h_vector[n2:] = tmp_1 / np.log (a / b)
+
+    G = sbm_graph(n, 2, a, b)
+    B_matrix = construct_B(G)
+    g = np.ones([n])
+    g[n2:] = -1.0
+    tmp_m = np.kron(h_vector, g) + np.kron(B_matrix @ g, g)
+    block_matrix = np.diag(np.diag(tmp_m.reshape([n, n]))) - B_matrix
+    values, _ = np.linalg.eig(block_matrix)
+    print(np.min(values))
+    return np.min(values) > 0
 
 def SDP_side_info():
     n = 128
@@ -39,13 +69,15 @@ def SDP_side_info():
             B[i, j] = B[j, i]
     print(np.linalg.eig(B[1:,1:])[0])
     c = n / 2 - beta * np.log(n)
-    L3 = np.array([[n2 *(D1 + D2), -n2 * D1, n2 * D2], [-D1, D1 + c, c],[D2, c, D2 + c]])
+    # L3 = np.array([[n2 *(D1 + D2), -n2 * D1, n2 * D2], [-D1, D1 + c, c],[D2, c, D2 + c]])
     #print(np.linalg.eig(L3)[0])
-    a2 = -(D1 + D2 + 2 * c + n / 2 * (D1 + D2))
-    a3 = (1 + n) * (D1 * D2 + D1 * c + D2 * c)
-    #print(np.roots([1, a2, a3]))
-    #print(d  - a + D1)
-    # print(d  - a + D2)
+    d_prime = D1 + d - a
+    c_prime = D2 + d - a
+    a2 = -(d_prime + c_prime + n * a)
+    a3 = d_prime * c_prime + n2 * a * (d_prime + c_prime) + n2 ** 2 * (a ** 2 - b ** 2)
+    print(np.roots([1, a2, a3]))
+    print(d + D1 - a)
+    print(d + D2 - a)
 
 def Eig_verification(k=3):
     n = 10
@@ -103,7 +135,7 @@ if __name__ == '__main__':
     parser.add_argument('--kappa', type=float, default=1)
     parser.add_argument('--thread_num', type=int, default=1)
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
-    parser.add_argument('--action', choices=['eig', 'side', 'sdp'], default='side')
+    parser.add_argument('--action', choices=['eig', 'side', 'sdp', 'random'], default='side')
     args = parser.parse_args()
     if args.action == 'side':
         SDP_side_info()
@@ -111,3 +143,5 @@ if __name__ == '__main__':
         Eig_verification(args.k)
     if args.action == 'sdp':
         print(get_acc(args.repeat, args.n, args.a, args.b, args.kappa, args.thread_num))
+    if args.action == 'random':
+        SDP_random_matrix()
