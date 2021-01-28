@@ -34,6 +34,85 @@ def project_cone(Y):
     vals = (vals + np.abs(-vals)) / 2
     return vectors @ np.diag(vals) @ vectors.T
 
+def construct_h(data, p0, p1):
+    '''p0, p1, vectors with length |\mathcal{X}|
+    '''
+    n, m = data.shape
+    h = np.zeros([n])
+    for i in range(n):
+        for j in range(m):
+            index = data[i, j]
+            h[i] += np.log(p0[index] / p1[index])
+    return h
+def construct_B_tilde(B, data, p0, p1, a_b_ratio):
+    h = construct_h(data, p0, p1)
+    h /= np.log(a_b_ratio)
+    n = B.shape[0]
+    B_tilde = np.zeros([n + 1, n + 1])
+    B_tilde[1:, 1:] = B
+    B_tilde[0, 1:] = h
+    B_tilde[1:, 0] = h
+    return B_tilde
+
+def admm_inner(B, b, rho = 0.1, max_iter = 1000, tol=1e-4):
+    '''b: 2n vector
+    '''
+    n = B.shape[0]
+    X = np.zeros([n, n])
+    U = np.zeros([n, n])
+    Z = np.zeros([n, n])
+    for _ in range(max_iter):
+        X_new = Z - U + B / rho
+        X = project_A(X_new, b, n)
+        Z = project_cone(X + U)
+        delta_U = X - Z
+        if np.linalg.norm(delta_U, ord='fro') < tol:
+            break
+        U = U + delta_U
+    return X
+
+def project_A(X0, b, n):
+  return X0 - Acs(Pinv(Ac(X0, n) - b, n), n)
+
+
+def Acs(z, n):
+  mu = z[:n]
+  nu = z[n:]
+  Z = np.zeros([n, n])
+  np.fill_diagonal(Z, nu)
+  
+  for i in range(n):
+      for j in range(i + 1, n):
+        Z[i, j] = mu[i] + mu[j]
+        Z[j, i] = Z[i, j]
+  return Z
+
+
+def Pinv(z, n):
+  mu = z[:n]
+  nu = z[n:]
+  
+  return np.concatenate(((1. / (2 * (n - 2))) * (mu - np.ones(n) * np.sum(mu)/ (2 * n - 2)), nu), axis=None)
+
+
+def Ac(X, n):
+  return np.concatenate((2 * (X - np.diag(np.diag(X))) @ np.ones([n]), np.diag(X)), axis=None)
+
+
+def sdp2_si(G, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 1000, tol=1e-4):
+    '''only for two communties, with side information
+       data: n times m n-array
+       rho: ADMM penalty parameter
+    '''
+    B = construct_B(G, 1.0)
+    B_tilde = construct_B_tilde(B, data, p0, p1, a_b_ratio)
+    n = len(G.nodes)
+    b = np.zeros([2 * n + 2])
+    b[n + 1:] = 1
+    X = admm_inner(B_tilde, b, rho, max_iter, tol)
+    labels = X[0, 1:] < 0
+    return labels.astype(np.int)
+
 def sdp2(G, kappa=1.0, rho = 0.1, max_iter = 1000, tol=1e-4):
     '''only for two communties
     rho: ADMM penalty parameter

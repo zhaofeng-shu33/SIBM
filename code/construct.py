@@ -1,5 +1,7 @@
 import argparse
 import numpy as np
+from scipy.optimize import minimize, Bounds
+from matplotlib import pyplot as plt
 
 from multiprocessing import Queue
 from multiprocessing import Process
@@ -9,6 +11,74 @@ from sdp import sdp2
 from sibm_experiment import exact_compare_k
 from sdp import construct_B
 
+def g(a, b, e):
+    return a + b - np.sqrt(e ** 2 + 4 * a * b) + e * np.log((e + np.sqrt(e ** 2 + 4 * a * b))/ (2 * b))
+
+def target_function(x, c1, c2, p0, p1, gamma):
+    return np.power(c1, 1 - x) * np.power(c2, x) + np.power(c2, 1 - x) * np.power(c1, x) + \
+        gamma * np.log(np.power(p0, 1 - x) * np.power(p1, x) + np.power(1 - p0, 1 - x) * np.power(1 - p1, x))
+
+def sample_ab_abbe_recover_or_not(p0, p1, gamma, num=100):    
+    b_list = np.linspace(1, 10, num=num)
+    b_min, b_max = b_list[0], b_list[num - 1]
+    a_list = np.linspace(1, 20, num=num)
+    a_min, a_max = a_list[0], a_list[num - 1]
+    Z = np.zeros([num, num], dtype=bool)
+    for i, b in enumerate(b_list):
+        for j, a in enumerate(a_list):
+            if a < b:
+                continue
+            if np.sqrt(a) - np.sqrt(b) > np.sqrt(2):
+                Z[j, i] = True
+            elif abbe_recover_or_not(a, b, p0, p1, gamma) >= 1:
+                Z[j, i] = True
+    plt.imshow(Z, cmap='Greys_r', origin='lower', extent=[b_min, b_max, a_min, a_max])
+    x = np.linspace(b_min, b_max)
+    y = (np.sqrt(2) + np.sqrt(x)) ** 2
+    plt.xlabel('b')
+    plt.ylabel('a')
+    plt.plot(x, y, color='blue', label='sdp only')
+    D12 = -2 * np.log(np.sqrt(p0 * p1) + np.sqrt((1 - p0) * (1 - p1)))
+    y = (np.sqrt(2 - gamma * D12) + np.sqrt(x)) ** 2
+    plt.plot(x, y, color='red', label='ours')
+    plt.colorbar()
+    _title = 'p0={0},p1={1},gamma={2}'.format(p0, p1, gamma)
+    plt.title(_title)
+    plt.legend()
+    plt.savefig('build/' + _title + '.png')
+    plt.show()
+
+def abbe_recover_or_not(a, b, p0, p1, gamma=1.0):
+    bounds = Bounds(0, 1)
+    c1 = a / 2
+    c2 = b / 2
+    res = minimize(target_function, x0=[0.3], args=(c1 / 2, c2 / 2, p0, p1, gamma), bounds=bounds)
+    x = res.x[0]
+    p_lambda = np.power(p0, 1 - x) * np.power(p1, x) / (np.power(p0, 1 - x) * np.power(p1, x) + \
+        np.power(1 - p0, 1 - x) * np.power(1 - p1, x))
+    D_KL = p_lambda * np.log(p_lambda / p0) + (1 - p_lambda) * np.log((1 - p_lambda) / (1 - p0))
+    I_plus = gamma * D_KL - np.power(c1, 1 - x) * np.power(c2, x) - np.power(c2, 1 - x) * np.power(c1, x)
+    I_plus += c1 + c2 + x * (np.power(c1, 1 - x) * np.power(c2, x) - \
+        np.power(c2, 1 - x) * np.power(c1, x)) * np.log(c2 / c1)
+    return I_plus
+
+def verify_improvement():
+    b = 4 * np.random.random() + np.random.random()
+    a = (np.sqrt(2) + np.random.random() + np.sqrt(b)) ** 2
+    p0 = np.random.random() # 0.4
+    p1 = np.random.random() #0.7
+    gamma = 1.0 # 5.0
+    D2 = p1 * np.log(p1 / p0) + (1 - p1) * np.log( (1 - p1) / (1 - p0))
+    D1 = p0 * np.log(p0 / p1) + (1 - p0) * np.log( (1 - p0) / (1 - p1))
+    z = np.linspace(0.01, 0.99)
+    epsilon = gamma / np.log(a / b) * ((D2 - D1) / 2 + z * np.log(p0 / p1) + (1 - z) * np.log((1 - p0) / (1 - p1)))
+    y = gamma * (z * np.log(z / p0) + (1 - z) * np.log((1 - z) / (1 - p0))) + 0.5 * g(a, b, 2 * epsilon)
+    # D12 = -1 * np.log(np.sqrt(p0 * p1) + np.sqrt((1 - p0) * (1 - p1)))
+    hat_y = y - 0.5 * (np.sqrt(a) - np.sqrt(b)) ** 2  #- D12
+    print(a, b, p0, p1, np.min(hat_y))
+    # plt.plot(z, hat_y)
+    # plt.show()
+
 def SDP_random_matrix():
     n = 500
     n2 = int(n / 2)
@@ -16,9 +86,9 @@ def SDP_random_matrix():
     b = 4
     p0 = 0.4
     p1 = 0.7
-    gamma = 5.0 # 5.0
+    gamma = 6.0 # 5.0
     m = int(gamma * np.log(n))
-    gamma = m / n * 1.0
+    # gamma = m / np.log(n) * 1.0
     h_vector = np.zeros([n])
 
     tmp_1 = np.random.binomial(m, p0, size=n2)
@@ -35,7 +105,10 @@ def SDP_random_matrix():
     tmp_m = np.kron(h_vector, g) + np.kron(B_matrix @ g, g)
     block_matrix = np.diag(np.diag(tmp_m.reshape([n, n]))) - B_matrix
     values, _ = np.linalg.eig(block_matrix)
-    print(np.min(values))
+    tmp_2 = np.diag(np.kron(B_matrix @ g, g).reshape([n, n]))
+    values_2, _ = np.linalg.eig(np.diag(tmp_2) - B_matrix)
+    print(np.min(values), np.min(values_2))
+    print(np.all(h_vector * g > 0))
     return np.min(values) > 0
 
 def SDP_side_info():
@@ -133,9 +206,13 @@ if __name__ == '__main__':
     parser.add_argument('--a', type=float, default=16)
     parser.add_argument('--b', type=float, default=4)
     parser.add_argument('--kappa', type=float, default=1)
+    parser.add_argument('--p0', type=float, default=0.5)
+    parser.add_argument('--p1', type=float, default=0.1)
+    parser.add_argument('--gamma', type=float, default=1.0)
+
     parser.add_argument('--thread_num', type=int, default=1)
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
-    parser.add_argument('--action', choices=['eig', 'side', 'sdp', 'random'], default='side')
+    parser.add_argument('--action', choices=['eig', 'side', 'sdp', 'random', 'improve', 'abbe_recover', 'abbe_recover_repeat'], default='side')
     args = parser.parse_args()
     if args.action == 'side':
         SDP_side_info()
@@ -145,3 +222,10 @@ if __name__ == '__main__':
         print(get_acc(args.repeat, args.n, args.a, args.b, args.kappa, args.thread_num))
     if args.action == 'random':
         SDP_random_matrix()
+    if args.action == 'improve':
+        verify_improvement()
+    if args.action == 'abbe_recover':
+        print(abbe_recover_or_not(args.a, args.b, 0.9, 0.1))
+        # compare with 1
+    if args.action == 'abbe_recover_repeat':
+        sample_ab_abbe_recover_or_not(args.p0, args.p1, args.gamma)

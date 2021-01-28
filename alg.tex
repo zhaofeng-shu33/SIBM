@@ -521,7 +521,7 @@ Abbe's formulation in \cite{abbe2015exact}.
 To solve $\max Tr(BX)$ s.t. $X_{ii} = 1$ and $X \succeq 0$.
 We use ADMM, that is, we solve
 \begin{align*}
-\min & - \langle B, X\rangle + \delta_{Z \succeq 0} + \delta_{L(X) = b}\\
+\min & - \langle B, X\rangle + \delta_{Z \succeq 0} + \delta_{L(X) = \mathbbm{1}_n}\\
 s.t.& X=Z
 \end{align*}
 $L$ is a mapping from $\mathbb{R}^{n \times n} \to \mathbb{R}^n$ such that $[L(X)]_i =  \langle X,F_i \rangle $.
@@ -529,11 +529,45 @@ $F_i$ is a matrix with element $(i,i)$ equal to 1 and 0 elsewhere.
 The projection $\Pi_{A}(Y)$ simply modifies the diagonal elements of $Y$ to $1$.
 The scaled form of ADMM \cite{boyd2011distributed} is given by
 \begin{align}
-X^{k+1} = \Pi_A(Z^k - U^k + \frac{1}{\rho}B) \\
+X^{k+1} = \Pi_A(Z^k - U^k + \frac{1}{\rho}B)\label{eq:admm} \\
 Z^{k+1} = \Pi_{S_+^n}(X^{k+1} + U^{k}) \\
 U^{k+1} = U^k + (X^{k+1} - Z^{k+1}) 
 \end{align}
-\subsection{Therotical Guarantee}
+\subsection{ADMM scheme for SDP of SBM with side information}
+Given matrix $\widetilde{B}$ and a mapping $L$ and vector $b$. The primal
+problem is
+\begin{align*}
+\min & - \langle \widetilde{B}, X\rangle + \delta_{Z \succeq 0} + \delta_{L(X) = b}\\
+s.t.& X=Z
+\end{align*}
+$L$ is a mapping from $\mathbb{R}^{n \times n} \to \mathbb{R}^{2n}$.
+More precisely, for $i=1,\dots,n$, we  take
+$[L(X)]_i = \langle X,H_i \rangle$ and $[L(X)]_{i+n} = \langle X,F_i \rangle$. Here,
+$H_i$ is a symmetric matrix with 1 in the off-diagonal elements of the
+$i$-th column and row, and 0 everywhere else.  $F_i$ is a matrix with
+element $(i,i)$ equal to 1 and 0 everywhere else.Finally, $b_i = 0$ for $i=1,\dots,n$ and $b_i = 1$ otherwise. 
+
+The only real work in deriving ADMM updates is to find the projection operator $\Pi_{A}$ for $ A := \{X: L(X) = b\}$.
+We can treat $L$ as a $2n \times n^2$ matrix and $L^*$ the transpose of $L$. 
+For any $Y$, this projection is given~by 
+\begin{align}\label{eq:proj:L:Y}
+\Pi_{A}(Y) := Y - L^* (L L^*)^{-1}[ L(Y) - b] .
+\end{align}
+Note that $\langle H_i,F_j \rangle = 0$
+for all $i,j = 1, \dots, n$.
+Hence, $L L^*$ is $2n\times 2n$ block diagonal with two blocks $(\langle H_i,H_j \rangle) = 2[(n-2) I_n + J_n]$ and 
+$(\langle F_i,F_j \rangle) = I_n$. It follows that
+\begin{align*}
+(LL^*)^{-1} = \diag\Big(\frac{1}{2(n-2)} 
+\big[ I_n - \frac{J_n}{2n-2} \big],\; I_n \Big) \ . 
+\end{align*}
+We also have $L^*(\mu,\nu) = \sum_i \mu_i H_i + \sum_i \nu_i F_i =
+\sum_i \mu_i H_i + \diag(\nu)$, which gives a complete
+recipe to compute $\Pi_{A}(Y)$.
+
+The algorithm has the same form as in \eqref{eq:admm}.
+
+\subsection{Theoretical Guarantee}
 We have already know that for $\kappa = \frac{\alpha \log n}{\beta n}$, the problem to maximize
 \begin{equation}
 \sum_{(i,j)\in E(G)} \sigma_i \sigma_j - \kappa \sum_{(i,j) \not\in E(G)} \sigma_i \sigma_j
