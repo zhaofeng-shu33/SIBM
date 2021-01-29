@@ -115,6 +115,7 @@ def convert_to_label_list(n, partition):
             cat[j] = label_index
         label_index += 1
     return cat
+
 def acc_task(alg, params, num_of_times, qu):
     acc = 0
     n, k, a, b, binary = params

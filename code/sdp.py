@@ -44,6 +44,7 @@ def construct_h(data, p0, p1):
             index = data[i, j]
             h[i] += np.log(p0[index] / p1[index])
     return h
+
 def construct_B_tilde(B, data, p0, p1, a_b_ratio):
     h = construct_h(data, p0, p1)
     h /= np.log(a_b_ratio)
@@ -110,7 +111,7 @@ def sdp2_si(G, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 1000, tol=1e-4):
     b = np.zeros([2 * n + 2])
     b[n + 1:] = 1
     X = admm_inner(B_tilde, b, rho, max_iter, tol)
-    labels = X[0, 1:] < 0
+    labels = X[0, 1:] > 0
     return labels.astype(np.int)
 
 def sdp2(G, kappa=1.0, rho = 0.1, max_iter = 1000, tol=1e-4):
@@ -155,3 +156,4 @@ def get_labels(cluster_matrix):
                labels[j] = label_index
        label_index = label_index + 1    
     return labels
+
