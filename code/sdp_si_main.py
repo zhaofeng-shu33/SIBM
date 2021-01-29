@@ -128,6 +128,8 @@ if __name__ == '__main__':
     repeat = args.repeat
     multi_thread = args.multi_thread
     if args.action == 'single':
+        a = a[0]
+        b = b[0]
         acc = get_acc((n, m, a, b, p0, p1), repeat, multi_thread)
         print(acc)
     elif args.action == 'range':
