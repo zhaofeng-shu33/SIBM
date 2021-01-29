@@ -88,11 +88,9 @@ def Acs(z, n):
         Z[j, i] = Z[i, j]
   return Z
 
-
 def Pinv(z, n):
   mu = z[:n]
   nu = z[n:]
-  
   return np.concatenate(((1. / (2 * (n - 2))) * (mu - np.ones(n) * np.sum(mu)/ (2 * n - 2)), nu), axis=None)
 
 
