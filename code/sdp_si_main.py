@@ -71,7 +71,7 @@ def recovery_matrix_simulation(n, m, p0, p1, a_range=[2, 25], b_range=[2, 10], s
             if counter % 10 == 0:
                 logging.info('finished %.2f' % (100 * counter / total_points) + '%')
             counter += 1
-            if a < b:
+            if a <= b:
                 continue
             acc = get_acc((n, m, a, b, p0, p1), repeat, multi_thread)
             Z[j, i] = acc
