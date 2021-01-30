@@ -108,7 +108,11 @@ def sdp2_si(G, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 1000, tol=1e-4):
     n = len(G.nodes)
     b = np.zeros([2 * n + 2])
     b[n + 1:] = 1
-    X = admm_inner(B_tilde, b, rho, max_iter, tol)
+    try:
+        from sdp_admm_py import sdp1_admm_si_py
+        X = sdp1_admm_si_py(B_tilde, rho, max_iter, tol, report_interval=20000)
+    except ImportError:
+        X = admm_inner(B_tilde, b, rho, max_iter, tol)
     labels = X[0, 1:] > 0
     return labels.astype(np.int)
 

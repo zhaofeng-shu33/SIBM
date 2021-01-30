@@ -52,7 +52,7 @@ def acc_task(params, num_of_times, qu):
         a_b_ratio = a / b
         data = generate_data(gt, n, m, p0, p1)
         result_label = sdp2_si(graph, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 1000, tol=1e-4)
-        current_acc = compare(gt, result_label)
+        current_acc = int(compare(gt, result_label))
         acc += current_acc
     qu.put(acc)
 
@@ -68,8 +68,7 @@ def recovery_matrix_simulation(n, m, p0, p1, a_range=[2, 25], b_range=[2, 10], s
     total_points = a_num * b_num
     for i, b in enumerate(b_list):
         for j, a in enumerate(a_list):
-            if counter % 10 == 0:
-                logging.info('finished %.2f' % (100 * counter / total_points) + '%')
+            logging.info('finished %.2f' % (100 * counter / total_points) + '%')
             counter += 1
             if a <= b:
                 continue
@@ -100,7 +99,7 @@ def simulation_plot(filename, n, m, p0, p1):
     y = (np.sqrt(2 - gamma * D12) + np.sqrt(x)) ** 2
     plt.plot(x, y, color='red', label='ours')
     plt.colorbar()
-    _title = 'p0={0},p1={1},n={2}, m={3}'.format(p0, p1, n, m)
+    _title = 'p0={0}, p1={1}, n={2}, m={3}'.format(p0, p1, n, m)
     plt.title(_title)
     plt.legend()
     plt.savefig('build/' + _title + '.png')
@@ -113,8 +112,8 @@ if __name__ == '__main__':
     parser.add_argument('--action', choices=['single', 'range', 'plot'], default='single')
     parser.add_argument('--n', type=int, default=300)
     parser.add_argument('--m', type=int, default=10)
-    parser.add_argument('--a', type=float, default=16.0, nargs='+')
-    parser.add_argument('--b', type=float, default=4.0, nargs='+')
+    parser.add_argument('--a', type=float, default=[16.0], nargs='+')
+    parser.add_argument('--b', type=float, default=[4.0], nargs='+')
     parser.add_argument('--p0', type=float, default=[0.8, 0.2], nargs='+')
     parser.add_argument('--p1', type=float, default=[0.2, 0.8], nargs='+')
     args = parser.parse_args()
