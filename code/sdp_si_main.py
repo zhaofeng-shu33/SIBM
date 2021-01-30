@@ -4,7 +4,10 @@ import os
 import pickle
 from multiprocessing import Process, Queue
 
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+except:
+    pass
 import numpy as np
 
 from sbm import sbm_graph, get_ground_truth, compare, set_up_log
