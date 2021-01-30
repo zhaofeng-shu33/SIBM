@@ -75,6 +75,8 @@ def recovery_matrix_simulation(n, m, p0, p1, a_range=[2, 25], b_range=[2, 10], s
             acc = get_acc((n, m, a, b, p0, p1), repeat, multi_thread)
             Z[j, i] = acc
     prefix = 'p0p1-ab-{0}-{1}-{2}-{3}'.format(a_start, a_end, b_start, b_end)
+    if os.environ.get('SLURM_ARRAY_TASK_ID'):
+        prefix = 'slurm-{0}-'.format(os.environ['SLURM_ARRAY_TASK_ID']) + prefix
     phase_transition_interval(prefix, a_list, b_list, Z)
 
 def simulation_plot(filename, n, m, p0, p1):
