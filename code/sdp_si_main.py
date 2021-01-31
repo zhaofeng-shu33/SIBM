@@ -82,12 +82,30 @@ def recovery_matrix_simulation(n, m, p0, p1, a_range=[2, 25], b_range=[2, 10], s
         prefix = 'slurm-{0}-'.format(os.environ['SLURM_ARRAY_TASK_ID']) + prefix
     phase_transition_interval(prefix, a_list, b_list, Z)
 
-def simulation_plot(filename, n, m, p0, p1):
-    with open(filename, 'rb') as f:
+def get_filelist(filename):
+    filename_list = []
+    for i in os.listdir('build'):
+        if i.find(filename) >= 0:
+            filename_list.append(i)
+    return filename_list
+
+def get_a_b_Z_data(filename):
+    file_list = get_filelist(filename)
+    num_file = len(file_list)
+    with open('build/' + file_list[0], 'rb') as f:
         dic = pickle.load(f)
     a_list = dic['a']
     b_list = dic['b']
     Z = dic['acc_list']
+    for _filename in file_list[1:]:
+        with open('build/' + _filename, 'rb') as f:
+            dic = pickle.load(f)
+        Z += dic['acc_list']
+    Z /= num_file
+    return (a_list, b_list, Z)
+
+def simulation_plot(filename, n, m, p0, p1):
+    a_list, b_list, Z = get_a_b_Z_data(filename)
     b_num = len(b_list)
     b_min, b_max = b_list[0], b_list[b_num - 1]
     a_num = len(a_list)
@@ -99,7 +117,10 @@ def simulation_plot(filename, n, m, p0, p1):
     plt.xlabel('b')
     plt.ylabel('a')
     plt.plot(x, y, color='blue', label='sdp only')
-    D12 = -2 * np.log(np.sqrt(p0 * p1) + np.sqrt((1 - p0) * (1 - p1)))
+    D12 = 0
+    for i in range(len(p0)):
+        D12 += np.sqrt(p0[i] * p1[i])
+    D12 = -2 * np.log(D12)
     gamma = m / np.log(n)
     y = (np.sqrt(2 - gamma * D12) + np.sqrt(x)) ** 2
     plt.plot(x, y, color='red', label='ours')
@@ -121,6 +142,7 @@ if __name__ == '__main__':
     parser.add_argument('--b', type=float, default=[4.0], nargs='+')
     parser.add_argument('--p0', type=float, default=[0.8, 0.2], nargs='+')
     parser.add_argument('--p1', type=float, default=[0.2, 0.8], nargs='+')
+    parser.add_argument('--filename', help='data file used for plot purpose')
     args = parser.parse_args()
     set_up_log()
     n = args.n
@@ -141,3 +163,5 @@ if __name__ == '__main__':
         b_range = [b[0], b[1]]
         step = a[2]
         recovery_matrix_simulation(n, m, p0, p1, a_range, b_range, step, repeat=repeat, multi_thread=multi_thread)
+    else:
+        simulation_plot(args.filename, n, m, p0, p1)
