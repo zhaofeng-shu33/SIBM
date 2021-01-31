@@ -54,7 +54,7 @@ def acc_task(params, num_of_times, qu):
         gt = get_ground_truth(graph)
         a_b_ratio = a / b
         data = generate_data(gt, n, m, p0, p1)
-        result_label = sdp2_si(graph, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 1000, tol=1e-4)
+        result_label = sdp2_si(graph, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 5000, tol=1e-4)
         current_acc = int(compare(gt, result_label))
         acc += current_acc
     qu.put(acc)
