@@ -1,10 +1,12 @@
-\documentclass{ctexart}
+\documentclass{article}
+\usepackage{xeCJK}
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{bbm}
+\usepackage{graphicx}
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
 \newtheorem{remark}{Remark}
@@ -534,6 +536,18 @@ Z^{k+1} = \Pi_{S_+^n}(X^{k+1} + U^{k}) \\
 U^{k+1} = U^k + (X^{k+1} - Z^{k+1}) 
 \end{align}
 \subsection{ADMM scheme for SDP of SBM with side information}
+\begin{align}
+\max\, Tr(\tilde{B}V)  &\notag\\
+s.t.\, V_{ii} &= 1, \notag\\
+V &\succeq 0, \notag\\
+\sum_{j=1,j\neq i}^{n+1} (V_{ij} + V_{ji})& = 0,~\forall i\in\{1,\ldots,n\}. \label{eq:sdp}
+\end{align}
+
+\begin{theorem}\label{thm:sdp}
+	If $\gamma D_{1/2}(p_0||p_1)  + (\sqrt{a} - \sqrt{b})^2 > 2$, then with high probability, the optimal solution
+	$V^*$ to \eqref{eq:sdp} is unique and given by $(1,y^*)(1,y^*)^T$, where $y^*$ is the true labeling of the nodes.
+\end{theorem}
+
 Given matrix $\widetilde{B}$ and a mapping $L$ and vector $b$. The primal
 problem is
 \begin{align*}
@@ -566,6 +580,17 @@ We also have $L^*(\mu,\nu) = \sum_i \mu_i H_i + \sum_i \nu_i F_i =
 recipe to compute $\Pi_{A}(Y)$.
 
 The algorithm has the same form as in \eqref{eq:admm}.
+
+Experiment result
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{sdp_si.eps}
+	\caption{This plot shows that the empirical probability of successful recovery of the SDP algorithm 
+	for the SBM with side information. We fix $n=300$ and the number of trials to be 20. Then
+	at each trial and for fixed $a$ and $b$, we check how many times each method succeeds. Dividing
+	by the number of trials, we obtain the empirical probability of success with respect to
+	the exact recovery metric. In blue, we plot the curve corresponding to the threshold $\sqrt{a}-\sqrt{b}=\sqrt{2}$ while in red we draw the curve corresponding to the threshold $\gamma D_{1/2}(p_0||p_1)  + (\sqrt{a} - \sqrt{b})^2 > 2$.}
+\end{figure}
 
 \subsection{Theoretical Guarantee}
 We have already know that for $\kappa = \frac{\alpha \log n}{\beta n}$, the problem to maximize

@@ -95,6 +95,7 @@ def get_a_b_Z_data(filename):
     with open('build/' + file_list[0], 'rb') as f:
         dic = pickle.load(f)
     a_list = dic['a']
+    a_list = a_list[:-4]
     b_list = dic['b']
     Z = dic['acc_list']
     for _filename in file_list[1:]:
@@ -102,6 +103,7 @@ def get_a_b_Z_data(filename):
             dic = pickle.load(f)
         Z += dic['acc_list']
     Z /= num_file
+    Z = Z[:-4,:]
     return (a_list, b_list, Z)
 
 def simulation_plot(filename, n, m, p0, p1):
@@ -111,24 +113,25 @@ def simulation_plot(filename, n, m, p0, p1):
     a_num = len(a_list)
     a_min, a_max = a_list[0], a_list[a_num - 1]
 
-    plt.imshow(Z, cmap='Greys_r', origin='lower', extent=[b_min, b_max, a_min, a_max])
+    plt.imshow(Z, cmap='Greys_r', origin='lower', aspect=0.4, extent=[b_min, b_max, a_min, a_max])
     x = np.linspace(b_min, b_max)
     y = (np.sqrt(2) + np.sqrt(x)) ** 2
     plt.xlabel('b')
     plt.ylabel('a')
-    plt.plot(x, y, color='blue', label='sdp only')
+    plt.plot(x, y, color='blue', label='sbm only')
     D12 = 0
     for i in range(len(p0)):
         D12 += np.sqrt(p0[i] * p1[i])
     D12 = -2 * np.log(D12)
     gamma = m / np.log(n)
     y = (np.sqrt(2 - gamma * D12) + np.sqrt(x)) ** 2
-    plt.plot(x, y, color='red', label='ours')
+    plt.plot(x, y, color='red', label='with side info')
     plt.colorbar()
     _title = 'p0={0}, p1={1}, n={2}, m={3}'.format(p0, p1, n, m)
-    plt.title(_title)
+    # plt.title(_title)
     plt.legend()
-    plt.savefig('build/' + _title + '.png')
+    
+    plt.savefig('build/' + _title + '.eps')
     plt.show()
 
 if __name__ == '__main__':
