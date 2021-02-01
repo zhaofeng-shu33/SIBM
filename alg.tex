@@ -13,6 +13,7 @@
 \DeclareMathOperator{\SIBM}{SIBM}
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Bern}{Bern}
 \DeclareMathOperator{\dist}{dist}
 \newcommand{\A}{\frac{a \log(n)}{n}}
 \newcommand{\B}{\frac{b \log(n)}{n}}
@@ -586,7 +587,7 @@ Experiment result
 	\centering
 	\includegraphics[width=0.6\textwidth]{sdp_si.eps}
 	\caption{This plot shows that the empirical probability of successful recovery of the SDP algorithm 
-	for the SBM with side information. We fix $n=300$ and the number of trials to be 20. Then
+	for the SBM with side information. We fix $n=300$ and the number of trials to be 20. The number of samples is chosen as $m=10$ for $\Bern(0.2)$ versus $\Bern(0.8)$. Then
 	at each trial and for fixed $a$ and $b$, we check how many times each method succeeds. Dividing
 	by the number of trials, we obtain the empirical probability of success with respect to
 	the exact recovery metric. In blue, we plot the curve corresponding to the threshold $\sqrt{a}-\sqrt{b}=\sqrt{2}$ while in red we draw the curve corresponding to the threshold $\gamma D_{1/2}(p_0||p_1)  + (\sqrt{a} - \sqrt{b})^2 > 2$.}
