@@ -13,6 +13,7 @@ import numpy as np
 from sbm import sbm_graph, get_ground_truth, compare, set_up_log
 from sbm import phase_transition_interval
 from sdp import sdp2_si
+from construct import bisection_a
 
 def generate_data(ground_truth, n, m, p0, p1):
     # n, m = data.shape
@@ -126,6 +127,10 @@ def simulation_plot(filename, n, m, p0, p1):
     gamma = m / np.log(n)
     y = (np.sqrt(2 - gamma * D12) + np.sqrt(x)) ** 2
     plt.plot(x, y, color='red', label='with side info')
+    abbe_a_list = []
+    for b in x:
+        abbe_a_list.append(bisection_a(b, p0[0], p1[1], gamma))
+    plt.plot(x, abbe_a_list, color='green', label='$I_+=1$ (abbe)')
     plt.colorbar()
     _title = 'p0={0}, p1={1}, n={2}, m={3}'.format(p0, p1, n, m)
     # plt.title(_title)

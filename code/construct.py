@@ -62,6 +62,20 @@ def abbe_recover_or_not(a, b, p0, p1, gamma=1.0):
         np.power(c2, 1 - x) * np.power(c1, x)) * np.log(c2 / c1)
     return I_plus
 
+def bisection_a(b, p0, p1, gamma, tol=1e-2):
+    a_left = b + tol
+    a_right = (np.sqrt(b) + np.sqrt(2)) ** 2
+    is_continue = True
+    while is_continue:
+        a_middle = (a_left + a_right) / 2
+        if abbe_recover_or_not(a_middle, b, p0, p1, gamma) > 1:
+            a_right = a_middle
+        else:
+            a_left = a_middle
+        if np.abs(a_right - a_right) < tol:
+            is_continue = False
+    return a_middle
+
 def verify_improvement():
     b = 4 * np.random.random() + np.random.random()
     a = (np.sqrt(2) + np.random.random() + np.sqrt(b)) ** 2
