@@ -72,7 +72,7 @@ def bisection_a(b, p0, p1, gamma, tol=1e-2):
             a_right = a_middle
         else:
             a_left = a_middle
-        if np.abs(a_right - a_right) < tol:
+        if np.abs(a_right - a_left) < tol:
             is_continue = False
     return a_middle
 

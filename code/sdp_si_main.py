@@ -107,7 +107,7 @@ def get_a_b_Z_data(filename):
     Z = Z[:-4,:]
     return (a_list, b_list, Z)
 
-def simulation_plot(filename, n, m, p0, p1):
+def simulation_plot(filename, n, m, p0, p1, abbe_result=False):
     a_list, b_list, Z = get_a_b_Z_data(filename)
     b_num = len(b_list)
     b_min, b_max = b_list[0], b_list[b_num - 1]
@@ -127,10 +127,11 @@ def simulation_plot(filename, n, m, p0, p1):
     gamma = m / np.log(n)
     y = (np.sqrt(2 - gamma * D12) + np.sqrt(x)) ** 2
     plt.plot(x, y, color='red', label='with side info')
-    abbe_a_list = []
-    for b in x:
-        abbe_a_list.append(bisection_a(b, p0[0], p1[1], gamma))
-    plt.plot(x, abbe_a_list, color='green', label='$I_+=1$ (abbe)')
+    if abbe_result:
+        abbe_a_list = []
+        for b in x:
+            abbe_a_list.append(bisection_a(b, p0[0], p1[0], gamma))
+        plt.plot(x, abbe_a_list, color='green', label='$I_+=1$ (abbe)')
     plt.colorbar()
     _title = 'p0={0}, p1={1}, n={2}, m={3}'.format(p0, p1, n, m)
     # plt.title(_title)
