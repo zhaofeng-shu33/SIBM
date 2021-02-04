@@ -50,7 +50,7 @@ def construct_B_tilde(B, data, p0, p1, a_b_ratio):
     h /= np.log(a_b_ratio)
     n = B.shape[0]
     B_tilde = np.zeros([n + 1, n + 1])
-    B_tilde[1:, 1:] = B
+    B_tilde[1:, 1:] = B / 2
     B_tilde[0, 1:] = h
     B_tilde[1:, 0] = h
     return B_tilde

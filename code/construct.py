@@ -18,34 +18,34 @@ def target_function(x, c1, c2, p0, p1, gamma):
     return np.power(c1, 1 - x) * np.power(c2, x) + np.power(c2, 1 - x) * np.power(c1, x) + \
         gamma * np.log(np.power(p0, 1 - x) * np.power(p1, x) + np.power(1 - p0, 1 - x) * np.power(1 - p1, x))
 
-def sample_ab_abbe_recover_or_not(p0, p1, gamma, num=100):    
-    b_list = np.linspace(1, 10, num=num)
+def sample_ab_abbe_recover_or_not(p0, p1, gamma, num=100, draw_eps=False):    
+    b_list = np.linspace(0.1, 10, num=num)
     b_min, b_max = b_list[0], b_list[num - 1]
-    a_list = np.linspace(1, 20, num=num)
+    a_list = np.linspace(0.1, 20, num=num)
     a_min, a_max = a_list[0], a_list[num - 1]
-    Z = np.zeros([num, num], dtype=bool)
-    for i, b in enumerate(b_list):
-        for j, a in enumerate(a_list):
-            if a < b:
-                continue
-            if np.sqrt(a) - np.sqrt(b) > np.sqrt(2):
-                Z[j, i] = True
-            elif abbe_recover_or_not(a, b, p0, p1, gamma) >= 1:
-                Z[j, i] = True
-    plt.imshow(Z, cmap='Greys_r', origin='lower', extent=[b_min, b_max, a_min, a_max])
+
+    # plt.imshow(Z, cmap='Greys_r', origin='lower', extent=[b_min, b_max, a_min, a_max])
     x = np.linspace(b_min, b_max)
     y = (np.sqrt(2) + np.sqrt(x)) ** 2
     plt.xlabel('b')
     plt.ylabel('a')
-    plt.plot(x, y, color='blue', label='sdp only')
+    plt.plot(x, y, color='blue', label='SBM only', linewidth=3)
     D12 = -2 * np.log(np.sqrt(p0 * p1) + np.sqrt((1 - p0) * (1 - p1)))
     y = (np.sqrt(2 - gamma * D12) + np.sqrt(x)) ** 2
-    plt.plot(x, y, color='red', label='ours')
-    plt.colorbar()
-    _title = 'p0={0},p1={1},gamma={2}'.format(p0, p1, gamma)
-    plt.title(_title)
+    plt.plot(x, y, color='red', label='SBMSI with equal community size', linewidth=3)
+    abbe_a_list = []
+    for b in x:
+        abbe_a_list.append(bisection_a(b, p0, p1, gamma))
+    plt.plot(x, abbe_a_list, color='green', label='SBMSI with equal community probability', linewidth=3)
+    if draw_eps:
+        _title = 'comparison'
+        suffix = '.eps'
+    else:
+        _title = 'p0={0},p1={1},gamma={2}'.format(p0, p1, gamma)
+        suffix = '.png'
+        plt.title(_title)
     plt.legend()
-    plt.savefig('build/' + _title + '.png')
+    plt.savefig('build/' + _title + suffix)
     plt.show()
 
 def abbe_recover_or_not(a, b, p0, p1, gamma=1.0):
@@ -223,7 +223,7 @@ if __name__ == '__main__':
     parser.add_argument('--p0', type=float, default=0.5)
     parser.add_argument('--p1', type=float, default=0.1)
     parser.add_argument('--gamma', type=float, default=1.0)
-
+    parser.add_argument('--eps', type=bool, const=True, nargs='?', default=False)
     parser.add_argument('--thread_num', type=int, default=1)
     parser.add_argument('--repeat', type=int, default=1, help='number of times to generate the SBM graph')
     parser.add_argument('--action', choices=['eig', 'side', 'sdp', 'random', 'improve', 'abbe_recover', 'abbe_recover_repeat'], default='side')
@@ -242,4 +242,4 @@ if __name__ == '__main__':
         print(abbe_recover_or_not(args.a, args.b, 0.9, 0.1))
         # compare with 1
     if args.action == 'abbe_recover_repeat':
-        sample_ab_abbe_recover_or_not(args.p0, args.p1, args.gamma)
+        sample_ab_abbe_recover_or_not(args.p0, args.p1, args.gamma, draw_eps=args.eps)
