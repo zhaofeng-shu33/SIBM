@@ -96,7 +96,6 @@ def get_a_b_Z_data(filename):
     with open('build/' + file_list[0], 'rb') as f:
         dic = pickle.load(f)
     a_list = dic['a']
-    a_list = a_list[:-4]
     b_list = dic['b']
     Z = dic['acc_list']
     for _filename in file_list[1:]:
@@ -104,7 +103,6 @@ def get_a_b_Z_data(filename):
             dic = pickle.load(f)
         Z += dic['acc_list']
     Z /= num_file
-    Z = Z[:-4,:]
     return (a_list, b_list, Z)
 
 def simulation_plot(filename, n, m, p0, p1, abbe_result=False):
