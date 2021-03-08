@@ -583,6 +583,7 @@ recipe to compute $\Pi_{A}(Y)$.
 The algorithm has the same form as in \eqref{eq:admm}.
 
 Experiment result
+
 \begin{figure}
 	\centering
 	\includegraphics[width=0.6\textwidth]{sdp_si.eps}
@@ -592,11 +593,9 @@ Experiment result
 	by the number of trials, we obtain the empirical probability of success with respect to
 	the exact recovery metric. In blue, we plot the curve corresponding to the threshold $\sqrt{a}-\sqrt{b}=\sqrt{2}$ while in red we draw the curve corresponding to the threshold $\gamma D_{1/2}(p_0||p_1)  + (\sqrt{a} - \sqrt{b})^2 > 2$.}
 \end{figure}
- We also plot the result of Theorem 4 in \cite{abbe17sideinfo} using green line. It can be seen that our red line
-is strictly over the green line, which illustrates the difference between controlling the error probability of
-at least two mislabeling nodes (ours) and that of one mislabeling node (Abbe).
+
 \subsection{Theoretical Guarantee}
-We have already know that for $\kappa = \frac{\alpha \log n}{\beta n}$, the problem to maximize
+We have already known that for $\kappa = \frac{\alpha \log n}{\beta n}$, the problem to maximize
 \begin{equation}
 \sum_{(i,j)\in E(G)} \sigma_i \sigma_j - \kappa \sum_{(i,j) \not\in E(G)} \sigma_i \sigma_j
 \end{equation}
