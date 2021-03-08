@@ -18,7 +18,7 @@ def plot_g_function(a, b, k, end_point=None, fig_format='svg'):
     beta_star = np.log((a + b - k - np.sqrt((a + b - k) ** 2 - 4 * a * b)) / (2 * b))
     beta_2 = np.log((a + b - k + np.sqrt((a + b - k) ** 2 - 4 * a * b)) / (2 * b))
     if end_point is None:
-        end_point = beta_2 * 1.2
+        end_point = beta_2 * 1.1
     x = np.linspace(0, end_point)
     fig, ax = plt.subplots()
 
@@ -35,12 +35,12 @@ def plot_g_function(a, b, k, end_point=None, fig_format='svg'):
     #         label='$\\beta=\\bar{\\beta}$', linestyle='--')
     # draw the x-axis
     ax.plot([0, x2[50]], [0, 0], linestyle='--', color='black')
-    ax.text(beta_star, 0, '$\\beta^*$', fontsize=16)
-    plt.xlabel('$\\beta$', fontsize=12)
+    ax.text(beta_star, 0, '$\\beta^*$', fontsize=20)
+    plt.xlabel('$\\beta$', fontsize=16)
     plt.xlim(0, end_point + 0.05)
     plt.legend()
     plt.tight_layout()
-    plt.savefig('build/g-{0}-{1}-{2}.{3}'.format(int(a), int(b), k, fig_format))
+    plt.savefig('build/g-{0}-{1}-{2}.{3}'.format(int(a), int(b), k, fig_format), transparent=True)
     plt.show()
 
 def plot_alg_fix_b(alg_list, date):
