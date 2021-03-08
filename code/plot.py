@@ -24,15 +24,15 @@ def plot_g_function(a, b, k, end_point=None, fig_format='svg'):
 
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)    
-    ax.plot(x, g(x), label='$g(\\beta)$', color='red', linewidth=2)
+    # ax.plot(x, g(x), label='$g(\\beta)$', color='red', linewidth=2)
     x2 = np.zeros([51])
     x2[:50] = np.linspace(0, beta_bar, num=50)
-    y2 = g(x2) + 0.02
+    y2 = g(x2) 
     x2[50] = end_point
     y2[50] = g(beta_bar)
-    ax.plot(x2, y2, label='$\\tilde{g}(\\beta)$', color='green', linewidth=2)
-    ax.plot([beta_bar, beta_bar], [-0.1 + g(beta_bar), g(x2[50]) - 0.1],
-             label='$\\beta=\\bar{\\beta}$', linestyle='--')
+    ax.plot(x2, y2, label='$g(\\beta)$', color='green', linewidth=2)
+    #ax.plot([beta_bar, beta_bar], [ g(beta_bar), g(x2[50]) ],
+    #         label='$\\beta=\\bar{\\beta}$', linestyle='--')
     # draw the x-axis
     ax.plot([0, x2[50]], [0, 0], linestyle='--', color='black')
     ax.text(beta_star, 0, '$\\beta^*$', fontsize=16)
