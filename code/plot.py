@@ -197,7 +197,7 @@ def draw_phase_transation(file_name):
                 continue
             matrix[i, j] = acc_list[counter]
             counter += 1
-    plt.imshow(matrix, cmap='Greys_r', origin='lower', extent=[b_min, b_max, a_min, a_max])
+    plt.imshow(matrix, cmap='Greys_r', origin='lower', aspect=0.4, extent=[b_min, b_max, a_min, a_max])
     x = np.linspace(b_min, b_max)
     y = (np.sqrt(2) + np.sqrt(x)) ** 2
     plt.xlabel('b')
