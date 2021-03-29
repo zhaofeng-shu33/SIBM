@@ -36,7 +36,7 @@ def sbm_graph(n, k, a, b):
     _p = np.log(n) * a / n
     _q = np.log(n) * b / n
     if _p > 1 or _q > 1:
-        raise ValueError('')
+        raise ValueError('%f (probability) larger than 1' % _p)
     p = np.diag(np.ones(k) * (_p - _q)) + _q * np.ones([k, k])
     return nx.generators.community.stochastic_block_model(sizes, p)
 

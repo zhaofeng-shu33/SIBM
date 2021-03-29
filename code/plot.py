@@ -91,10 +91,10 @@ def draw_beta_phase_trans(date, pic_format='eps', theoretical=False):
         data = pickle.load(f)
         if data['n'] > largest_n:
             largest_n = data['n']
-        if data['m'] == 1:
-            label_str = 'a = %.0f, b=%.0f, n=%d, k=%d' % (data['a'], data['b'], data['n'], data['k'])
-        else:
+        if data.get('m') and data['m'] > 1:
             label_str = 'a = %.0f, b=%.0f, n=%d, k=%d, m=%d' % (data['a'], data['b'], data['n'], data['k'], data['m'])
+        else:
+            label_str = 'a = %.0f, b=%.0f, n=%d, k=%d' % (data['a'], data['b'], data['n'], data['k'])
 
         beta_list = data['beta_list']
         acc_list = data['acc_list']
