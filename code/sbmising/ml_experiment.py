@@ -52,7 +52,7 @@ def estimator_once(n, k, a, b, repeat):
     square_error = 0
     for _ in range(repeat):
         G = sbm_graph(n, 2, a, b)
-        labels = SIBM(G, k=2, max_iter=n)
+        labels = SIBM(G, k=2, max_iter=n, beta=np.log(a / b) / 2, gamma = 2 * b)
         labels_true = get_ground_truth(G)
         square_error += 1 - int(compare(labels, labels_true))
     square_error /= repeat
