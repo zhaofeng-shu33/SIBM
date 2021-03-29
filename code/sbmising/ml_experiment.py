@@ -1,8 +1,8 @@
-'''
-   parameter estimation validation for SSBM(n, k, p, q)
-   with p = a log(n)/ n, q = b log(n) / n
-   LOGLEVEL=ERROR python3 estimator_experiment.py --action compute --repeat 1000 --thread_num 20
-'''
+"""
+estimation error of maximum likelihood estimator for SSBM(n, 2, p, q)
+with p = a log(n)/ n, q = b log(n) / n
+"""
+
 import os
 import pickle
 import logging
@@ -14,7 +14,7 @@ from multiprocessing import Process
 import numpy as np
 import matplotlib.pyplot as plt
 
-from sbmsdp import sbm2, sdp2
+from sbmising import SIBM, sbm_graph
 from utility import set_up_log, save_data_to_pickle, get_ground_truth, compare
 
 def load_data_from_pickle(file_name_prefix, date):
@@ -51,10 +51,10 @@ def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False):
 def estimator_once(n, k, a, b, repeat):
     square_error = 0
     for _ in range(repeat):
-        G = sbm2(n, a, b)
-        labels = sdp2(G)
+        G = sbm_graph(n, 2, a, b)
+        labels = SIBM(G, k=2, max_iter=n)
         labels_true = get_ground_truth(G)
-        square_error += int(compare(labels, labels_true))
+        square_error += 1 - int(compare(labels, labels_true))
     square_error /= repeat
     logging.info('n: {0}, k: {1}, a: {2}, b: {3}, error: {4}'.format(n, k, a, b, square_error))
     return square_error
@@ -98,11 +98,12 @@ if __name__ == '__main__':
     parser.add_argument('--action', choices=['plot',
         'compute'], default='compute')
     parser.add_argument('--repeat', type=int, default=1000, help='number of times to generate the SBM graph')
+    parser.add_argument('--n_list', type=int, default=[100, 200, 300], nargs='+')
     parser.add_argument('--thread_num', type=int, default=1)
     parser.add_argument('--theoretical', type=bool, default=False, const=True, nargs='?')
     parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
-    n_list = [100, 200, 300]
+    n_list = args.n_list
     a_b_k_list = [(16, 4, 2)]
     repeat = args.repeat
     thread_num = args.thread_num
