@@ -110,12 +110,14 @@ if __name__ == '__main__':
         'compute'], default='compute')
     parser.add_argument('--repeat', type=int, default=1000, help='number of times to generate the SBM graph')
     parser.add_argument('--n_list', type=int, default=[100, 200, 300], nargs='+')
+    parser.add_argument('--a', type=float, default=16.0)
+    parser.add_argument('--b', type=float, default=4.0)
     parser.add_argument('--thread_num', type=int, default=1)
     parser.add_argument('--theoretical', type=bool, default=False, const=True, nargs='?')
     parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
     n_list = args.n_list
-    a_b_k_list = [(12.6, 4, 2)]
+    a_b_k_list = [(args.a, args.b, 2)]
     repeat = args.repeat
     thread_num = args.thread_num
     if args.action == 'compute':
