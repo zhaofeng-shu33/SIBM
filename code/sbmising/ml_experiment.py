@@ -52,7 +52,7 @@ def estimator_once(n, k, a, b, repeat):
     square_error = 0
     for _ in range(repeat):
         G = sbm_graph(n, 2, a, b)
-        labels = SIBM(G, k=2, max_iter=n, beta=np.log(a / b) / 2, gamma = 3 * b)
+        labels = SIBM(G, k=2, max_iter=n, beta=np.log(a / b) / 2, gamma=2 * b)
         labels_true = get_ground_truth(G)
         square_error += 1 - int(compare(labels, labels_true))
     square_error /= repeat
@@ -61,8 +61,19 @@ def estimator_once(n, k, a, b, repeat):
 
 def estimator_multiple(n_list, k, a, b, repeat, thread_num, qu):
     square_error_list = []
+    try:
+        from sbmising import task_cpp_wrapper
+        has_acceleration = True
+    except:
+        has_acceleration = False
     for n in n_list:
-        square_error = estimator_once(n, k, a, b, repeat)
+        if has_acceleration:
+            beta = np.log(a / b) / 2
+            alpha = 2 * b * beta
+            square_error = 1 - task_cpp_wrapper(repeat, n, k, a, b, alpha, beta, 1, 1, 100)
+            logging.info('n: {0}, k: {1}, a: {2}, b: {3}, error: {4}'.format(n, k, a, b, square_error))
+        else:
+            square_error = estimator_once(n, k, a, b, repeat)
         square_error_list.append(square_error)
     qu.put(square_error_list)
 
@@ -104,7 +115,7 @@ if __name__ == '__main__':
     parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
     n_list = args.n_list
-    a_b_k_list = [(16, 4, 2)]
+    a_b_k_list = [(12.6, 4, 2)]
     repeat = args.repeat
     thread_num = args.thread_num
     if args.action == 'compute':
