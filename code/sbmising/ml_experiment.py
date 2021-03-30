@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from sbmising import SIBM, sbm_graph
 from utility import set_up_log, save_data_to_pickle, get_ground_truth, compare
 
+SIBM_REPEAT = 1
 def load_data_from_pickle(file_name_prefix, date):
     # save the data in pickle format
     file_name = file_name_prefix + '-' + date + '.pickle'
@@ -70,7 +71,7 @@ def estimator_multiple(n_list, k, a, b, repeat, thread_num, qu):
         if has_acceleration:
             beta = np.log(a / b) / 2
             alpha = 2 * b * beta
-            square_error = 1 - task_cpp_wrapper(repeat, n, k, a, b, alpha, beta, 1, 1, 100)
+            square_error = 1 - task_cpp_wrapper(repeat, n, k, a, b, alpha, beta, SIBM_REPEAT, 1, 100)
             logging.info('n: {0}, k: {1}, a: {2}, b: {3}, error: {4}'.format(n, k, a, b, square_error))
         else:
             square_error = estimator_once(n, k, a, b, repeat)
@@ -109,6 +110,7 @@ if __name__ == '__main__':
     parser.add_argument('--action', choices=['plot',
         'compute'], default='compute')
     parser.add_argument('--repeat', type=int, default=1000, help='number of times to generate the SBM graph')
+    parser.add_argument('--sibm_repeat', type=int, default=1, help='works only for c binding')
     parser.add_argument('--n_list', type=int, default=[100, 200, 300], nargs='+')
     parser.add_argument('--a', type=float, default=16.0)
     parser.add_argument('--b', type=float, default=4.0)
@@ -119,6 +121,7 @@ if __name__ == '__main__':
     n_list = args.n_list
     a_b_k_list = [(args.a, args.b, 2)]
     repeat = args.repeat
+    SIBM_REPEAT = args.sibm_repeat
     thread_num = args.thread_num
     if args.action == 'compute':
         compute(n_list, a_b_k_list, repeat, thread_num)
