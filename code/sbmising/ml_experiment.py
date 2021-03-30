@@ -112,5 +112,6 @@ if __name__ == '__main__':
     else:
         dic = load_data_from_pickle('estimator', args.date)
         error_double_list = dic['error_list']
+        n_list = dic['n_list']
         plot_result(a_b_k_list, n_list, error_double_list, args.theoretical)
     
