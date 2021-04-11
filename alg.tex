@@ -286,38 +286,49 @@
 	the performance.
 	\section{SDP Algorithms Proofs}
 \begin{lemma}\label{lem:Cabd}
-	Suppose $C$ is a following symmetric matrix with dim = $2n$.
-	$$C=\begin{bmatrix} d & \text{ } &  a & \vrule & \text{ } & \text{ }  & \text{ } \\
-\text{ } & \ddots & \text{ } & \vrule & \text{ }&  b & \text{ } \\
-a & \text{ } & d & \vrule & \text{ } & \text{ } & \text{ } \\ \hline
- \text{ } & \text{ }  & \text{ } & \vrule & c & \text{ } & a \\
- \text{ }& b & \text{ }  & \vrule & \text{ } & \ddots & \text{ } \\
-\text{ } & \text{ } & \text{ }& \vrule & a & \text{ } & c \\
-\end{bmatrix}$$
+	Let $e_n$ be the all-one vector with length $n$.
+	Suppose $C$ is a following symmetric matrix.
+	$$
+	C= \begin{bmatrix}
+C_1 & C_2 \\
+C_2^T & C_3 \\
+\end{bmatrix},	
+C_1=
+\begin{bmatrix} d & \text{ } &  a \\
+\text{ } & \ddots & \text{ } \\
+a & \text{ } & d 
+\end{bmatrix},
+C_3=
+\begin{bmatrix} c & \text{ } &  a \\
+\text{ } & \ddots & \text{ } \\
+a & \text{ } & c
+\end{bmatrix}
+$$
+and $C_2 = b e_n e_m^T$, $\dim(C_1) = n \times n, \dim(C_3) = m \times m$.
 then the characteristic polynomial function is
 $$
 p(\lambda) = 
-(\lambda - d + a)^{n-1} (\lambda - c + a)^{n-1}
+(\lambda - d + a)^{n-1} (\lambda - c + a)^{m-1}
 [(\lambda - d - (n-1)a)
- (\lambda - c - (n-1)a)
-- n^2b^2]
+ (\lambda - c - (m-1)a)
+- nmb^2]
 $$
  
- A special case is $d=c$, then $d + (n-1)a+ nb$ corresponds to the all-one eigenvector while 
+ A special case is $d=c,m=n$, then $d + (n-1)a+ nb$ corresponds to the all-one eigenvector while 
  $d +(n-1)a -nb$ corresponds to the eigenvector $g=(1,\dots, 1, -1, \dots, -1)$.
 \end{lemma}
 \begin{proof}
-Let $d' = d-a, c'=c-a, e$ is the all-one vector,
-then the matrix $\lambda I_{2n} - C$ can be written in block form:
+Let $d' = d-a, c'=c-a$,
+then the matrix $\lambda I_{n+m} - C$ can be written in block form:
 $$
-\lambda I_{2n} - C = \begin{bmatrix}
-(\lambda -d') I_n - a ee^T & -b ee^T \\
--bee^T & (\lambda -c') I_n - a ee^T
+\lambda I_{n+m} - C = \begin{bmatrix}
+(\lambda -d') I_n - a e_ne_n^T & -b e_ne_m^T \\
+-be_me_n^T & (\lambda -c') I_m - a e_me_m^T
 \end{bmatrix}
 $$
 Using Woodbury matrix inverse we can compute
 $$
-[(\lambda -c') I_n - a ee^T]^{-1} = (\lambda - c')^{-1} [I_n - \frac{a}{na - \lambda + c'} ee^T]
+[(\lambda -c') I_m - a e_me_m^T]^{-1} = (\lambda - c')^{-1} [I_m - \frac{a}{ma - \lambda + c'} e_me_m^T]
 $$
 Using the block matrix formula for determinate, i.e.
 $$
@@ -328,19 +339,19 @@ C & D
 $$
 we further have
 $$
-|\lambda I_{2n} - C| = |(\lambda -c') I_n - a ee^T| |(\lambda - d')I_n + \kappa ee^T|
+|\lambda I_{n+m} - C| = |(\lambda -c') I_m - a e_me_m^T| |(\lambda - d')I_n + \kappa e_ne_n^T|
 $$
 where
 \begin{align*}
-\kappa &= -a - \frac{b^2}{\lambda - c'} e^T (I_n - \frac{a}{na-\lambda + c'}ee^T)e \\
-&= -a  - \frac{b^2 n}{\lambda - na - c'}
+\kappa &= -a - \frac{b^2}{\lambda - c'} e_m^T (I_m - \frac{a}{ma-\lambda + c'}e_me_m^T)e_m \\
+&= -a  - \frac{b^2 m}{\lambda - ma - c'}
 \end{align*}
 Further for matrix of the form $(x-y)I_n + yee^T$, its determinant can be computed explicitly
 as $|(x-y)I_n + yee^T|=(x-y)^{n-1}(x+(n-1)y)$ (See Example 1.5.9 of \cite{ad_li}.)
 Or equivalently, $|zI_n + yee^T|=z^{n-1}(z+ny)$.
 Therefore, we can finally get the characteristic function:
 $$
-|\lambda I_{2n} - C| = (\lambda -c')^{n-1}(\lambda -d')^{n-1}  [(\lambda - d' - na)(\lambda - c' - na)-n^2b^2]
+|\lambda I_{n+m} - C| = (\lambda -c')^{m-1}(\lambda -d')^{n-1}  [(\lambda - d' - na)(\lambda - c' - ma)-nmb^2]
 $$
 \end{proof}
 \begin{lemma}\label{lem:Cabd2}
