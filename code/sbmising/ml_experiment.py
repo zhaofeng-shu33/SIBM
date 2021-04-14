@@ -71,7 +71,7 @@ def estimator_multiple(n_list, k, a, b, repeat, thread_num, qu):
         if has_acceleration:
             beta = np.log(a / b) / 2
             alpha = 2 * b * beta
-            square_error = 1 - task_cpp_wrapper(repeat, n, k, a, b, alpha, beta, SIBM_REPEAT, 1, 100)
+            square_error = 1 - task_cpp_wrapper(repeat, n, k, a, b, alpha, beta, SIBM_REPEAT, 1, n)
             logging.info('n: {0}, k: {1}, a: {2}, b: {3}, error: {4}'.format(n, k, a, b, square_error))
         else:
             square_error = estimator_once(n, k, a, b, repeat)

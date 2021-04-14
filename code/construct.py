@@ -239,7 +239,7 @@ if __name__ == '__main__':
     if args.action == 'improve':
         verify_improvement()
     if args.action == 'abbe_recover':
-        print(abbe_recover_or_not(args.a, args.b, 0.9, 0.1))
+        print(abbe_recover_or_not(args.a, args.b, args.p0, args.p1, args.gamma))
         # compare with 1
     if args.action == 'abbe_recover_repeat':
         sample_ab_abbe_recover_or_not(args.p0, args.p1, args.gamma, draw_eps=args.eps)

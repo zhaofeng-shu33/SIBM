@@ -73,29 +73,31 @@ def admm_inner(B, b, rho = 0.1, max_iter = 1000, tol=1e-4):
     return X
 
 def project_A(X0, b, n):
-  return X0 - Acs(Pinv(Ac(X0, n) - b, n), n)
+    return X0 - Acs(Pinv(Ac(X0, n) - b, n), n)
 
 
 def Acs(z, n):
-  mu = z[:n]
-  nu = z[n:]
-  Z = np.zeros([n, n])
-  np.fill_diagonal(Z, nu)
+    mu = z[:n]
+    nu = z[n:]
+    Z = np.zeros([n, n])
+    np.fill_diagonal(Z, nu)
   
-  for i in range(n):
-      for j in range(i + 1, n):
-        Z[i, j] = mu[i] + mu[j]
-        Z[j, i] = Z[i, j]
-  return Z
+    for i in range(1, n):
+        for j in range(i + 1, n):
+            Z[i, j] = mu[i] + mu[j]
+            Z[j, i] = Z[i, j]
+    Z[0, 1:] = mu[0]
+    Z[1:, 0] = mu[0]
+    return Z
 
 def Pinv(z, n):
-  mu = z[:n]
-  nu = z[n:]
-  return np.concatenate(((1. / (2 * (n - 2))) * (mu - np.ones(n) * np.sum(mu)/ (2 * n - 2)), nu), axis=None)
+    mu = z[1:n]
+    nu = z[n:]
+    return np.concatenate(([z[0] / (2 * n - 2)], (1. / (2 * (n - 3))) * (mu - np.ones(n - 1) * np.sum(mu)/ (2 * n - 4)), nu), axis=None)
 
 
 def Ac(X, n):
-  return np.concatenate((2 * (X - np.diag(np.diag(X))) @ np.ones([n]), np.diag(X)), axis=None)
+    return np.concatenate(([2 * np.sum(X[0, 1:])], 2 * (X[1:, 1:] - np.diag(np.diag(X[1:, 1:]))) @ np.ones([n - 1]), np.diag(X)), axis=None)
 
 
 def sdp2_si(G, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 1000, tol=1e-4):
@@ -107,6 +109,8 @@ def sdp2_si(G, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 1000, tol=1e-4):
     B_tilde = construct_B_tilde(B, data, p0, p1, a_b_ratio)
     n = len(G.nodes)
     b = np.zeros([2 * n + 2])
+    b[:n + 1] = -2
+    b[0] = 0
     b[n + 1:] = 1
     try:
         from sdp_admm_py import sdp1_admm_si_py
