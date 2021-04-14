@@ -1,5 +1,6 @@
 // rewrite sdp_admm using eigen api
 #include <Eigen/Dense>
+#include <Eigen/Eigenvalues>
 #include <map>
 using namespace Eigen;
 typedef std::map<std::string, double> List;
@@ -16,6 +17,11 @@ struct SDPResult {
     MatrixXd X;
     VectorXd delta;
     int T_term;
+    SDPResult(MatrixXd _X, VectorXd _delta, int _T_term) {
+        X = _X;
+        delta = _delta;
+        T_term = _T_term;
+    }
 };
 
 // [[Rcpp::export]]
@@ -108,21 +114,23 @@ SDPResult sdp1_admm(MatrixXd As, int K, List opts) {
 // }
 
 MatrixXd projToSDC(MatrixXd M) {
-  int n = M.n_rows;
+  int n = M.rows();;
 
   
   VectorXd eigval;
   MatrixXd eigvec;
+  EigenSolver<MatrixXd> es;
+  es.compute(M, true);
+  eigval = es.eigenvalues();
+  eigvec = es.eigenvectors();
   
-  arma::eig_sym(eigval, eigvec, M);
-  
-  for (int i=0; i < eigval.n_elem; i++){
+  for (int i=0; i < eigval.size(); i++){
     if ( eigval(i) < 0 ){ 
       eigval(i) = 0;
     }
   }
   
-  M = eigvec * arma::diagmat(eigval) * eigvec.t();
+  M = eigvec * eigval.asDiagonal() * eigvec.transpose();
   // VectorXd x = arma::eig_sym(M);
   // std::cout << x(3);
   return M;
@@ -132,18 +140,18 @@ MatrixXd projToSDC(MatrixXd M) {
 MatrixXd projAXB(MatrixXd X0, double alpha, int n) {
 //   VectorXd b (2*n);
 //   b.ones();
-  VectorXd b = arma::ones(2*n);
-
-  b(arma::span(0,n-1)) = 2*(alpha-1)*arma::ones(n);
+  VectorXd b = VectorXd::Ones(2*n);
+    
+  b.head(n) = 2*(alpha-1) * VectorXd::Ones(n);
   return X0 - Acs( Pinv( Ac(X0, n)-b,n ), n);
 }
 
 MatrixXd projA(MatrixXd X0, int n) {
 //   VectorXd b (2*n);
 //   b.ones();
-  VectorXd b = arma::ones(2*n);
+  VectorXd b = VectorXd::Ones(2*n);
 
-  b(arma::span(0,n-1)) = 0 * arma::ones(n);
+  b.head(n) = VectorXd::Zero(n);
   return X0 - Acs( Pinv( Ac(X0, n)-b,n ), n);
 }
 
@@ -170,12 +178,15 @@ MatrixXd Acs(VectorXd z, int n) {
 VectorXd Pinv(VectorXd z, int n) {
   VectorXd mu = z.head(n);
   VectorXd nu = z.tail(n);
-  
-  return arma::join_vert( (1./(2*(n-2)))*(mu - arma::ones(n)*arma::sum(mu)/(2*n-2)), nu);
+  VectorXd vec_joined(2 * n);
+  vec_joined << (1./(2*(n-2)))*(mu - VectorXd::Ones(n) * mu.sum()/(2*n-2)), nu;
+  return vec_joined;
 }
 
 
 MatrixXd Ac( MatrixXd X, int n) {
-  return arma::join_vert( 2*(X - X.asDiagonal()) * VectorXf::Ones(n), arma::diagvec(X) );
+  VectorXd vec_joined(2 * n);
+  vec_joined << 2 * (X - X.diagonal()) * VectorXf::Ones(n), X.asDiagonal();
+  return vec_joined;
 }
 
