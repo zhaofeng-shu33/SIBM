@@ -32,7 +32,7 @@ def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False):
             linewidth = 1
             error_list_t = []
             for n in n_list:
-                error_list_t.append(np.power(n, 1 - (np.sqrt(a) - np.sqrt(b)) ** 2 / 2))
+                error_list_t.append(np.power(n, 2 - (np.sqrt(a) - np.sqrt(b)) ** 2))
             plt.plot(n_list, error_list_t, label='ML error', linewidth=linewidth, color=color_list[i], linestyle='dashed')
         else:
             linewidth = 4
