@@ -161,7 +161,7 @@ VectorXd Pinv(const VectorXd& z, int n) {
 
 MatrixXd Ac(const MatrixXd& X, int n) {
   VectorXd vec_joined(2 * n);
-  vec_joined << 2 * (X - X.diagonal()) * VectorXd::Ones(n), X.asDiagonal();
+  vec_joined << 2 * (X * VectorXd::Ones(n) - X.diagonal()), X.diagonal();
   return vec_joined;
 }
 
