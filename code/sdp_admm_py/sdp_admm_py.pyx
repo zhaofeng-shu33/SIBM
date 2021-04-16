@@ -24,8 +24,8 @@ def sdp1_admm_py(pyMat, K, rho=0.1, T=10000, tol=1e-5, report_interval=100):
         for j in range(n_cols):
             py_result_mat[i, j] = _m_r[0](i, j)
     del param_list
-    del result_list
     del _m_r
+    del result_list
 
     return py_result_mat
 
