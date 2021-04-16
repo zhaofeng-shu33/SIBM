@@ -6,12 +6,12 @@ using namespace Eigen;
 typedef std::map<std::string, double> List;
 // [[Rcpp::depends(RcppArmadillo)]]
 
-MatrixXd Ac(MatrixXd X, int n);
-MatrixXd Acs(VectorXd z, int n);
-VectorXd Pinv(VectorXd z, int n);
-MatrixXd projAXB(MatrixXd X0, double alpha, int n);
-MatrixXd projA(MatrixXd X0, int n);
-MatrixXd projToSDC(MatrixXd M);
+MatrixXd Ac(const MatrixXd& X, int n);
+MatrixXd Acs(const VectorXd& z, int n);
+VectorXd Pinv(const VectorXd& z, int n);
+MatrixXd projAXB(const MatrixXd& X0, double alpha, int n);
+MatrixXd projA(const MatrixXd& X0, int n);
+MatrixXd projToSDC(const MatrixXd& M);
 
 struct SDPResult {
     MatrixXd X;
@@ -35,32 +35,32 @@ SDPResult sdp1_admm(MatrixXd As, int K, List opts) {
   int    n = As.rows();
   VectorXd delta = VectorXd::Zero(T);
   
-  MatrixXd As_rescaled = (1./rho) * As,
-            U = MatrixXd::Zero(n,n),
-            V = MatrixXd::Zero(n,n),
-            X = MatrixXd::Zero(n,n),
-            Xold = MatrixXd::Zero(n,n),
-            Y = MatrixXd::Zero(n,n),
-            Z = MatrixXd::Zero(n,n);
+  MatrixXd As_rescaled = (1. / rho) * As,
+            U = MatrixXd::Zero(n, n),
+            V = MatrixXd::Zero(n, n),
+            X = MatrixXd::Zero(n, n),
+            Xold = MatrixXd::Zero(n, n),
+            Y = MatrixXd::Zero(n, n),
+            Z = MatrixXd::Zero(n, n);
   
-  double alpha = (n*1.)/K;
+  double alpha = (n * 1.) / K;
   
 
   int t = 0;
   bool CONVERGED = false;
-  while (!CONVERGED && t<T) {
+  while (!CONVERGED && t < T) {
     Xold = X;
-    X = projAXB( 0.5*(Z-U+Y-V+As_rescaled), alpha, n);
-    Z = (X+U).cwiseMax(MatrixXd::Zero(n,n));
-    Y = projToSDC(X+V);
-    U = U+X-Z;
-    V = V+X-Y;
+    X = projAXB( 0.5 * (Z - U + Y - V + As_rescaled), alpha, n);
+    Z = (X + U).cwiseMax(MatrixXd::Zero(n, n));
+    Y = projToSDC(X + V);
+    U = U + X - Z;
+    V = V + X - Y;
    
     delta(t) = (X - Xold).norm(); // Fronebius norm
     CONVERGED = delta(t) < tol;
     
-    if ((t+1) % report_interval == 0) {
-      printf("%4d | %15e\n", t+1, delta(t));
+    if ((t + 1) % report_interval == 0) {
+      printf("%4d | %15e\n", t + 1, delta(t));
     }
     
     t++;
@@ -113,7 +113,7 @@ SDPResult sdp1_admm(MatrixXd As, int K, List opts) {
 //   );
 // }
 
-MatrixXd projToSDC(MatrixXd M) {
+MatrixXd projToSDC(const MatrixXd& M) {
   int n = M.rows();;
 
   
@@ -130,14 +130,13 @@ MatrixXd projToSDC(MatrixXd M) {
     }
   }
   
-  M = eigvec * eigval.asDiagonal() * eigvec.transpose();
+  return eigvec * eigval.asDiagonal() * eigvec.transpose();
   // VectorXd x = arma::eig_sym(M);
   // std::cout << x(3);
-  return M;
 }
 
 
-MatrixXd projAXB(MatrixXd X0, double alpha, int n) {
+MatrixXd projAXB(const MatrixXd& X0, double alpha, int n) {
 //   VectorXd b (2*n);
 //   b.ones();
   VectorXd b = VectorXd::Ones(2*n);
@@ -146,7 +145,7 @@ MatrixXd projAXB(MatrixXd X0, double alpha, int n) {
   return X0 - Acs( Pinv( Ac(X0, n)-b,n ), n);
 }
 
-MatrixXd projA(MatrixXd X0, int n) {
+MatrixXd projA(const MatrixXd& X0, int n) {
 //   VectorXd b (2*n);
 //   b.ones();
   VectorXd b = VectorXd::Ones(2*n);
@@ -155,7 +154,7 @@ MatrixXd projA(MatrixXd X0, int n) {
   return X0 - Acs( Pinv( Ac(X0, n)-b,n ), n);
 }
 
-MatrixXd Acs(VectorXd z, int n) {
+MatrixXd Acs(const VectorXd& z, int n) {
   VectorXd mu = z.head(n);
   VectorXd nu = z.tail(n);
   MatrixXd Z(n,n);
@@ -175,7 +174,7 @@ MatrixXd Acs(VectorXd z, int n) {
 }
 
 
-VectorXd Pinv(VectorXd z, int n) {
+VectorXd Pinv(const VectorXd& z, int n) {
   VectorXd mu = z.head(n);
   VectorXd nu = z.tail(n);
   VectorXd vec_joined(2 * n);
@@ -184,7 +183,7 @@ VectorXd Pinv(VectorXd z, int n) {
 }
 
 
-MatrixXd Ac( MatrixXd X, int n) {
+MatrixXd Ac(const MatrixXd& X, int n) {
   VectorXd vec_joined(2 * n);
   vec_joined << 2 * (X - X.diagonal()) * VectorXd::Ones(n), X.asDiagonal();
   return vec_joined;
