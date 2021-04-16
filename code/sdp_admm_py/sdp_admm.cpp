@@ -35,7 +35,7 @@ SDPResult sdp1_admm(MatrixXd As, int K, List opts) {
   int    n = As.rows();
   VectorXd delta = VectorXd::Zero(T);
   
-  MatrixXd As_rescaled = (1./rho) * As, 
+  MatrixXd As_rescaled = (1./rho) * As,
             U = MatrixXd::Zero(n,n),
             V = MatrixXd::Zero(n,n),
             X = MatrixXd::Zero(n,n),
@@ -186,7 +186,7 @@ VectorXd Pinv(VectorXd z, int n) {
 
 MatrixXd Ac( MatrixXd X, int n) {
   VectorXd vec_joined(2 * n);
-  vec_joined << 2 * (X - X.diagonal()) * VectorXf::Ones(n), X.asDiagonal();
+  vec_joined << 2 * (X - X.diagonal()) * VectorXd::Ones(n), X.asDiagonal();
   return vec_joined;
 }
 
