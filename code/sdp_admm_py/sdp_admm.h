@@ -7,7 +7,7 @@ using namespace Eigen;
 typedef std::map<std::string, double> List;
 // [[Rcpp::depends(RcppArmadillo)]]
 
-MatrixXd Ac(const MatrixXd& X, int n);
+VectorXd Ac(const MatrixXd& X, int n);
 MatrixXd Acs(const VectorXd& z, int n);
 VectorXd Pinv(const VectorXd& z, int n);
 MatrixXd projAXB(const MatrixXd& X0, double alpha, int n);

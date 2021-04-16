@@ -115,10 +115,10 @@ MatrixXd projToSDC(const MatrixXd& M) {
 MatrixXd projAXB(const MatrixXd& X0, double alpha, int n) {
 //   VectorXd b (2*n);
 //   b.ones();
-  VectorXd b = VectorXd::Ones(2*n);
+  VectorXd b = VectorXd::Ones(2 * n);
     
-  b.head(n) = 2*(alpha-1) * VectorXd::Ones(n);
-  return X0 - Acs( Pinv( Ac(X0, n)-b,n ), n);
+  b.head(n) = 2 * (alpha - 1) * VectorXd::Ones(n);
+  return X0 - Acs( Pinv( Ac(X0, n) - b, n ), n);
 }
 
 MatrixXd projA(const MatrixXd& X0, int n) {
@@ -159,7 +159,7 @@ VectorXd Pinv(const VectorXd& z, int n) {
 }
 
 
-MatrixXd Ac(const MatrixXd& X, int n) {
+VectorXd Ac(const MatrixXd& X, int n) {
   VectorXd vec_joined(2 * n);
   vec_joined << 2 * (X * VectorXd::Ones(n) - X.diagonal()), X.diagonal();
   return vec_joined;
