@@ -2,7 +2,7 @@ from libcpp.map cimport map
 from libcpp.string cimport string
 
 cdef extern from "sdp_admm.h":
-    cdef cppclass SDPResult:
+    cdef struct SDPResult:
         pass
 
 cdef extern from "Eigen/Dense" namespace "Eigen":

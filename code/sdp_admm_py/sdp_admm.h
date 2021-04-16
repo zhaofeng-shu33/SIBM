@@ -23,5 +23,6 @@ struct SDPResult {
         delta = _delta;
         T_term = _T_term;
     }
+    SDPResult() {}
 };
 SDPResult sdp1_admm(const MatrixXd& As, int K, List opts);

@@ -5,7 +5,7 @@ import numpy as np
 
 def sdp1_admm_py(pyMat, K, rho=0.1, T=10000, tol=1e-5, report_interval=100):
     cdef List* param_list
-    cdef SDPResult* result_list
+    cdef SDPResult result_list
 
     
     param_list = new List()
@@ -17,15 +17,14 @@ def sdp1_admm_py(pyMat, K, rho=0.1, T=10000, tol=1e-5, report_interval=100):
     for i in range(n_rows):
         for j in range(n_cols):
             set_value(_m_r[0], i, j, pyMat[i, j])
-    result_list[0] = sdp1_admm(_m_r[0], K, param_list[0])
-    get_mat(_m_r[0], result_list[0])
+    result_list = sdp1_admm(_m_r[0], K, param_list[0])
+    get_mat(_m_r[0], result_list)
     py_result_mat = np.zeros([n_rows, n_cols])
     for i in range(n_rows):
         for j in range(n_cols):
             py_result_mat[i, j] = _m_r[0](i, j)
     del param_list
     del _m_r
-    del result_list
 
     return py_result_mat
 
