@@ -1,32 +1,8 @@
-// rewrite sdp_admm using eigen api
-#include <Eigen/Dense>
-#include <Eigen/Eigenvalues>
-#include <map>
-using namespace Eigen;
-typedef std::map<std::string, double> List;
-// [[Rcpp::depends(RcppArmadillo)]]
-
-MatrixXd Ac(const MatrixXd& X, int n);
-MatrixXd Acs(const VectorXd& z, int n);
-VectorXd Pinv(const VectorXd& z, int n);
-MatrixXd projAXB(const MatrixXd& X0, double alpha, int n);
-MatrixXd projA(const MatrixXd& X0, int n);
-MatrixXd projToSDC(const MatrixXd& M);
-
-struct SDPResult {
-    MatrixXd X;
-    VectorXd delta;
-    int T_term;
-    SDPResult(MatrixXd _X, VectorXd _delta, int _T_term) {
-        X = _X;
-        delta = _delta;
-        T_term = _T_term;
-    }
-};
+#include "sdp_admm.h"
 
 // [[Rcpp::export]]
-SDPResult sdp1_admm(MatrixXd As, int K, List opts) {
-  
+SDPResult sdp1_admm(const MatrixXd& As, int K, List opts) {
+
   double rho = (opts.count("rho") ?  opts["rho"] : .1);
   int    T   = (opts.count("T") ?  int(opts["T"]) : 10000);
   double tol = (opts.count("tol") ?  opts["tol"] : 1e-5);
@@ -56,7 +32,7 @@ SDPResult sdp1_admm(MatrixXd As, int K, List opts) {
     U = U + X - Z;
     V = V + X - Y;
    
-    delta(t) = (X - Xold).norm(); // Fronebius norm
+    delta(t) = (X - Xold).norm(); // Frobenius norm
     CONVERGED = delta(t) < tol;
     
     if ((t + 1) % report_interval == 0) {
@@ -69,49 +45,49 @@ SDPResult sdp1_admm(MatrixXd As, int K, List opts) {
   return SDPResult(X, delta, t);
 
 }
-// List sdp1_admm_si(MatrixXd As, List opts) {
+SDPResult sdp1_admm_si(const MatrixXd& As, List opts) {
   
-//   double rho = (opts.containsElementNamed("rho") ?  opts["rho"] : .1);
-//   int    T   = (opts.containsElementNamed("T") ?  opts["T"] : 10000);
-//   double tol = (opts.containsElementNamed("tol") ?  opts["tol"] : 1e-5);
-//   int report_interval = (opts.containsElementNamed("report_interval") ?  opts["report_interval"] : 100);
+  double rho = (opts.count("rho") ?  opts["rho"] : .1);
+  int    T   = (opts.count("T") ?  int(opts["T"]) : 10000);
+  double tol = (opts.count("tol") ?  opts["tol"] : 1e-5);
+  int report_interval = (opts.count("report_interval") ?  int(opts["report_interval"]) : 100);
   
-//   int    n = As.n_rows;
-//   VectorXd delta = arma::zeros(T);
+  int    n = As.rows();
+  VectorXd delta = VectorXd::Zero(T);
   
-//   MatrixXd As_rescaled = (1./rho)*As, 
-//             U = arma::zeros(n,n),
-//             X = arma::zeros(n,n),
-//             Xold = arma::zeros(n,n),
-//             Z = arma::zeros(n,n);
+  MatrixXd As_rescaled = (1. / rho) * As,
+            U = MatrixXd::Zero(n, n),
+            V = MatrixXd::Zero(n, n),
+            X = MatrixXd::Zero(n, n),
+            Xold = MatrixXd::Zero(n, n),
+            Y = MatrixXd::Zero(n, n),
+            Z = MatrixXd::Zero(n, n);
   
-  
+  double alpha = (n * 1.) / 2;
   
 
-//   int t = 0;
-//   bool CONVERGED = false;
-//   while (!CONVERGED && t<T) {
-//     Xold = X;
-//     X = projA( 0.5*(Z-U+As_rescaled), n);
-//     Z = projToSDC(X+U);
-//     U = U+X-Z;
+  int t = 0;
+  bool CONVERGED = false;
+  while (!CONVERGED && t < T) {
+    Xold = X;
+    X = projAXB( 0.5 * (Z - U + Y - V + As_rescaled), alpha, n);
+    Z = (X + U).cwiseMax(MatrixXd::Zero(n, n));
+    Y = projToSDC(X + V);
+    U = U + X - Z;
+    V = V + X - Y;
    
-//     delta(t) = norm(X-Xold, "F");
-//     CONVERGED = delta(t) < tol;
+    delta(t) = (X - Xold).norm(); // Frobenius norm
+    CONVERGED = delta(t) < tol;
     
-//     if ((t+1) % report_interval == 0) {
-//       Rprintf("%4d | %15e\n", t+1, delta(t));  
-//     }
+    if ((t + 1) % report_interval == 0) {
+      printf("%4d | %15e\n", t + 1, delta(t));
+    }
     
-//     t++;
-//   }
+    t++;
+  }
   
-//   return List::create(
-//       _["X"]=X,
-//       _["delta"]=delta,
-//       _["T_term"]=t
-//   );
-// }
+  return SDPResult(X, delta, t);
+}
 
 MatrixXd projToSDC(const MatrixXd& M) {
   int n = M.rows();;
