@@ -3,8 +3,6 @@
 #include "sdp_admm.h"
 using namespace Eigen;
 
-Rcpp::List sdp1_admm(arma::mat As, int K, Rcpp::List opts);
-Rcpp::List sdp1_admm_si(arma::mat As, Rcpp::List opts);
 
 void set_value(MatrixXd & arr, int x, int y, double value) {
     arr(x, y) = value;
