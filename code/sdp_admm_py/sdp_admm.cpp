@@ -1,5 +1,5 @@
 #include "sdp_admm.h"
-
+#include <iostream>
 // [[Rcpp::export]]
 SDPResult sdp1_admm(const MatrixXd& As, int K, List opts) {
 

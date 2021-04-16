@@ -8,8 +8,9 @@ else: # debian buster
     root_dir = '/usr/include/'
 extensions = [
     Extension("sdp_admm_py", ["sdp_admm_py.pyx", "sdp_admm.cpp"],
-        include_dirs=[root_dir + 'eigen3'],
-    )]
+              include_dirs=[root_dir + 'eigen3']
+            )
+    ]
 setup(
     name='sdp_admm_py',
     ext_modules=cythonize(extensions),
