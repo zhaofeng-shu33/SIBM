@@ -61,9 +61,7 @@ SDPResult sdp_admm_sbm_2(const MatrixXd& As, List opts) {
             U = MatrixXd::Zero(n, n),
             X = MatrixXd::Zero(n, n),
             Z = MatrixXd::Zero(n, n);
-  
-  double alpha = (n * 1.) / 2;
-  
+    
 
   int t = 0;
   bool CONVERGED = false;
@@ -90,9 +88,6 @@ SDPResult sdp_admm_sbm_2(const MatrixXd& As, List opts) {
 }
 
 MatrixXd projToSDC(const MatrixXd& M) {
-  int n = M.rows();;
-
-  
   VectorXd eigval;
   MatrixXd eigvec;
   SelfAdjointEigenSolver<MatrixXd> es; // for symmetric matrix
@@ -107,8 +102,6 @@ MatrixXd projToSDC(const MatrixXd& M) {
   }
   
   return eigvec * eigval.asDiagonal() * eigvec.transpose();
-  // VectorXd x = arma::eig_sym(M);
-  // std::cout << x(3);
 }
 
 
