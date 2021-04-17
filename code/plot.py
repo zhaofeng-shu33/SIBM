@@ -179,7 +179,7 @@ def _animation_metropolis_inner(G, labels, n_index):
     ag.layout()
     ag.draw('build/am/%03d.png' % (n_index))
 
-def draw_phase_transation(file_name):
+def draw_phase_transation(file_name, date, pic_format):
     with open(os.path.join('build', file_name), 'rb') as f:
         data = pickle.load(f)
     a_list = data['a']
@@ -204,6 +204,8 @@ def draw_phase_transation(file_name):
     plt.ylabel('a')
     plt.plot(x, y, color='red')
     plt.colorbar()
+    fig_name = 'phase_trans-' + date + '.' + pic_format
+    plt.savefig(os.path.join('build', fig_name), transparent=True)    
     plt.show()
 
 if __name__ == '__main__':
@@ -222,7 +224,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.action == 'phase_transition':
         file_name = args.method + '-transition-%s.pickle' % args.date
-        draw_phase_transation(file_name)
+        draw_phase_transation(file_name, args.date, args.format)
     elif args.action == 'beta_transition':
         draw_beta_phase_trans(args.date, args.format, args.theoretical)
     elif args.action == 'plot_g_function':
