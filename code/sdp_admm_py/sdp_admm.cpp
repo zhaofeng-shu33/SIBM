@@ -60,7 +60,6 @@ SDPResult sdp_admm_sbm_2(const MatrixXd& As, List opts) {
   MatrixXd As_rescaled = (1. / rho) * As,
             U = MatrixXd::Zero(n, n),
             X = MatrixXd::Zero(n, n),
-            Xold = MatrixXd::Zero(n, n),
             Z = MatrixXd::Zero(n, n);
   
   double alpha = (n * 1.) / 2;
@@ -68,14 +67,17 @@ SDPResult sdp_admm_sbm_2(const MatrixXd& As, List opts) {
 
   int t = 0;
   bool CONVERGED = false;
-  while (!CONVERGED && t < T) {
-    Xold = X;
-    X = projA( 0.5 * (Z - U + As_rescaled), n);
+  while (t < T) {
+    X = Z - U + As_rescaled;
+    X.diagonal() = VectorXd::Ones(n);
     Z = projToSDC(X + U);
+    delta(t) = (X - Z).norm(); // Frobenius norm
+    CONVERGED = delta(t) < tol;
+    if (CONVERGED) {
+      break;
+    }
     U = U + X - Z;
    
-    delta(t) = (X - Xold).norm(); // Frobenius norm
-    CONVERGED = delta(t) < tol;
     
     if ((t + 1) % report_interval == 0) {
       printf("%4d | %15e\n", t + 1, delta(t));

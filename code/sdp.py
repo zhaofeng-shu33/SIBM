@@ -134,9 +134,8 @@ def sdp2(G, kappa=1.0, rho = 0.1, max_iter = 1000, tol=1e-4):
         U = np.zeros([n, n])
         Z = np.zeros([n, n])
         for _ in range(max_iter):
-            X_new = Z - U + B / rho
-            np.fill_diagonal(X_new, 1)
-            X = X_new
+            X = Z - U + B / rho
+            np.fill_diagonal(X, 1)
             Z = project_cone(X + U)
             delta_U = X - Z
             if np.linalg.norm(delta_U, ord='fro') < tol:
