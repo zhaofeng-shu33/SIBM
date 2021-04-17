@@ -45,7 +45,9 @@ SDPResult sdp1_admm(const MatrixXd& As, int K, List opts) {
   return SDPResult(X, delta, t);
 
 }
-SDPResult sdp1_admm_si(const MatrixXd& As, List opts) {
+
+// can be used to solve SBM with two community
+SDPResult sdp_admm_sbm_2(const MatrixXd& As, List opts) {
   
   double rho = (opts.count("rho") ?  opts["rho"] : .1);
   int    T   = (opts.count("T") ?  int(opts["T"]) : 10000);
@@ -57,10 +59,8 @@ SDPResult sdp1_admm_si(const MatrixXd& As, List opts) {
   
   MatrixXd As_rescaled = (1. / rho) * As,
             U = MatrixXd::Zero(n, n),
-            V = MatrixXd::Zero(n, n),
             X = MatrixXd::Zero(n, n),
             Xold = MatrixXd::Zero(n, n),
-            Y = MatrixXd::Zero(n, n),
             Z = MatrixXd::Zero(n, n);
   
   double alpha = (n * 1.) / 2;
@@ -70,11 +70,9 @@ SDPResult sdp1_admm_si(const MatrixXd& As, List opts) {
   bool CONVERGED = false;
   while (!CONVERGED && t < T) {
     Xold = X;
-    X = projAXB( 0.5 * (Z - U + Y - V + As_rescaled), alpha, n);
-    Z = (X + U).cwiseMax(MatrixXd::Zero(n, n));
-    Y = projToSDC(X + V);
+    X = projA( 0.5 * (Z - U + As_rescaled), n);
+    Z = projToSDC(X + U);
     U = U + X - Z;
-    V = V + X - Y;
    
     delta(t) = (X - Xold).norm(); // Frobenius norm
     CONVERGED = delta(t) < tol;

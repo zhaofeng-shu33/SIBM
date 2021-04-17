@@ -26,3 +26,4 @@ struct SDPResult {
     SDPResult() {}
 };
 SDPResult sdp1_admm(const MatrixXd& As, int K, List opts);
+SDPResult sdp_admm_sbm_2(const MatrixXd& As, List opts);

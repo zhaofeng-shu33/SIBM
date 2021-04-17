@@ -125,19 +125,23 @@ def sdp2(G, kappa=1.0, rho = 0.1, max_iter = 1000, tol=1e-4):
     rho: ADMM penalty parameter
     '''
     B = construct_B(G, kappa)
-    n = len(G.nodes)
-    X = np.zeros([n, n])
-    U = np.zeros([n, n])
-    Z = np.zeros([n, n])
-    for _ in range(max_iter):
-        X_new = Z - U + B / rho
-        np.fill_diagonal(X_new, 1)
-        X = X_new
-        Z = project_cone(X + U)
-        delta_U = X - Z
-        if np.linalg.norm(delta_U, ord='fro') < tol:
-            break
-        U = U + delta_U
+    try:
+        from sdp_admm_py import sdp_admm_sbm_2_py
+        X = sdp_admm_sbm_2_py(B, rho, max_iter, tol, report_interval=20000)
+    except:
+        n = len(G.nodes)
+        X = np.zeros([n, n])
+        U = np.zeros([n, n])
+        Z = np.zeros([n, n])
+        for _ in range(max_iter):
+            X_new = Z - U + B / rho
+            np.fill_diagonal(X_new, 1)
+            X = X_new
+            Z = project_cone(X + U)
+            delta_U = X - Z
+            if np.linalg.norm(delta_U, ord='fro') < tol:
+                break
+            U = U + delta_U
     return get_labels_sdp2(X)
 
 def get_labels_sdp2(cluster_matrix):
