@@ -1,3 +1,4 @@
 *.so
 sibm_c.cpp
-
+sdp_admm_py.cpp
+sdp_admm_py.egg-info
