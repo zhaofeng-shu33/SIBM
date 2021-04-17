@@ -96,7 +96,7 @@ MatrixXd projToSDC(const MatrixXd& M) {
   VectorXd eigval;
   MatrixXd eigvec;
   SelfAdjointEigenSolver<MatrixXd> es; // for symmetric matrix
-  es.compute(M, true);
+  es.compute(M, ComputeEigenvectors);
   eigval = es.eigenvalues();
   eigvec = es.eigenvectors();
   
