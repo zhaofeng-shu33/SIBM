@@ -114,10 +114,10 @@ def sdp2_si(G, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 1000, tol=1e-4):
     b[:n + 1] = -2
     b[0] = 0
     b[n + 1:] = 1
-    try:
-        from sdp_admm_py import sdp1_admm_si_py
-        X = sdp1_admm_si_py(B_tilde, rho, max_iter, tol, report_interval=20000)
-    except ImportError:
+    if os.environ.get('DISABLE_EIGEN') is None:
+        from sdp_admm_py import sdp_admm_sbm_2_py
+        X = sdp_admm_sbm_2_py(B_tilde, rho, max_iter, tol, report_interval=20000)
+    else:
         X = admm_inner(B_tilde, b, rho, max_iter, tol)
     labels = X[0, 1:] > 0
     return labels.astype(np.int)
