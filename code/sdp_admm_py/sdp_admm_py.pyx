@@ -1,6 +1,6 @@
 # distutils: language = c++
 from sdp_admm cimport List, MatrixXd, SDPResult
-from sdp_admm cimport set_value, sdp1_admm, sdp_admm_sbm_2, get_mat, set_list_value
+from sdp_admm cimport set_value, sdp1_admm, sdp_admm_sbm_2, sdp_admm_sbm_si_2, get_mat, set_list_value
 import numpy as np
 
 def sdp1_admm_py(pyMat, K, rho=0.1, T=10000, tol=1e-5, report_interval=100):
@@ -8,6 +8,9 @@ def sdp1_admm_py(pyMat, K, rho=0.1, T=10000, tol=1e-5, report_interval=100):
 
 def sdp_admm_sbm_2_py(pyMat, rho=0.1, T=10000, tol=1e-5, report_interval=100):
     return _admm_py(pyMat, rho=rho, T=T, tol=tol, report_interval=report_interval, method='sdp_admm_sbm_2')
+
+def sdp_admm_sbm_si_2_py(pyMat, rho=0.1, T=10000, tol=1e-5, report_interval=100):
+    return _admm_py(pyMat, rho=rho, T=T, tol=tol, report_interval=report_interval, method='sdp_admm_sbm_si_2')
 
 def _admm_py(pyMat, K=2, rho=0.1, T=10000, tol=1e-5, report_interval=100, method='sdp1_admm'):
     cdef List* param_list
@@ -27,6 +30,8 @@ def _admm_py(pyMat, K=2, rho=0.1, T=10000, tol=1e-5, report_interval=100, method
         result_list = sdp1_admm(_m_r[0], K, param_list[0])
     elif method == 'sdp_admm_sbm_2':
         result_list = sdp_admm_sbm_2(_m_r[0], param_list[0])
+    elif method == 'sdp_admm_sbm_si_2':
+        result_list = sdp_admm_sbm_si_2(_m_r[0], param_list[0])
     else:
         raise ValueError("unknown method " + method)
     get_mat(_m_r[0], result_list)

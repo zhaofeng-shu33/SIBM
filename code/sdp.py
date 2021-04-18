@@ -57,7 +57,8 @@ def construct_B_tilde(B, data, p0, p1, a_b_ratio):
     return B_tilde
 
 def admm_inner(B, b, rho = 0.1, max_iter = 1000, tol=1e-4):
-    '''b: 2n vector
+    '''this routine is only used to solve sbm with side info
+    b: 2n vector
     '''
     n = B.shape[0]
     X = np.zeros([n, n])
