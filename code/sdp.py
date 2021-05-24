@@ -6,7 +6,7 @@ try:
 except ImportError:
     pass
 try:
-    from cvxopt import matrix, solvers
+    from cvxopt import matrix, spmatrix, solvers
     solvers.options['show_progress'] = False
 except ImportError:
     pass
@@ -16,9 +16,7 @@ def solve_sdp_cvx(G):
     n = B.shape[0]
     h = [matrix(-B)]
     c  = matrix(1.0, (n, 1))
-    g_matrix = matrix(0.0, (n * n, n))
-    for i in range(n):
-        g_matrix[n * i + i, i] = -1
+    g_matrix = spmatrix(-1, [n * i + i for i in range(n)], range(n), size=(n * n, n))
     sol = solvers.sdp(c, Gs=[g_matrix], hs=h)
     return get_labels_sdp2(np.array(sol['zs'][0]))
 
