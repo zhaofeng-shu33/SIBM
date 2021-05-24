@@ -113,7 +113,7 @@ def solve_sdp_si_cvx(G, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 100, tol=
         i = _i - n - 1
         for j in range(1, n + 1):
             g_matrix[(n + 1) * i + j, _i] = -1
-            g_matrix[(n + 1) * j + i, i] = -1
+            g_matrix[(n + 1) * j + i, _i] = -1
     solvers.options['abstol'] = tol
     solvers.options['maxiters'] = max_iter
     sol = solvers.sdp(c, Gs=[g_matrix], hs=h)
