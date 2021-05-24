@@ -553,8 +553,7 @@ U^{k+1} = U^k + (X^{k+1} - Z^{k+1})
 		\max_V\, Tr(\tilde{B}V)  &\notag\\
 s.t.\, V_{ii} &= 1, \notag\\
 V &\succeq 0, \notag\\
-\sum_{j=2}^{n+1} (V_{1j} + V_{j1})& = 0,\notag\\
-\sum_{j=2}^{n+1} (V_{ij} + V_{ji})& = 0,~\forall i\in\{2,\ldots,n+1\}. \label{eq:sdp}
+\sum_{j=2}^{n+1} (V_{ij} + V_{ji})& = 0,~\forall i\in\{1,\ldots,n+1\}. \label{eq:sdp}
 \end{align}
 
 \begin{theorem}\label{thm:sdp}
