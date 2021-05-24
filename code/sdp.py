@@ -100,6 +100,27 @@ def Ac(X, n):
     return np.concatenate(([2 * np.sum(X[0, 1:])], 2 * (X[1:, 1:] - np.diag(np.diag(X[1:, 1:]))) @ np.ones([n - 1]), np.diag(X)), axis=None)
 
 
+def solve_sdp_si_cvx(G, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 100, tol=1e-5):
+    B = construct_B(G, 1.0)
+    B_tilde = construct_B_tilde(B, data, p0, p1, a_b_ratio)
+    n = B.shape[0]
+    h = [matrix(-B_tilde)]
+    c  = matrix(np.hstack((np.ones(n + 1), np.zeros(n + 1))))
+    g_matrix = matrix(0.0, ((n + 1) ** 2, 2 * n + 2))
+    for i in range(n + 1):
+        g_matrix[(n + 1) * i + i, i] = -1
+    for _i in range(n + 1, 2 * n + 2):
+        i = _i - n - 1
+        for j in range(1, n + 1):
+            g_matrix[(n + 1) * i + j, _i] = -1
+            g_matrix[(n + 1) * j + i, i] = -1
+    solvers.options['abstol'] = tol
+    solvers.options['maxiters'] = max_iter
+    sol = solvers.sdp(c, Gs=[g_matrix], hs=h)
+    X = np.array(sol['zs'][0])
+    labels = X[0, 1:] > 0
+    return labels.astype(np.int)
+
 def sdp2_si(G, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 1000, tol=1e-4):
     '''only for two communties, with side information
        data: n times m n-array
