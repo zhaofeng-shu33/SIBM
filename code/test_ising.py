@@ -5,7 +5,7 @@ import networkx as nx
 
 from sbm import sbm_graph
 from ising import SIBM
-from sdp import sdp2, solve_sdp_cvx
+from sdp import sdp2, solve_sdp_cvx, solve_sdp_ip
 from sbm import get_ground_truth, compare
 from sibm_experiment import majority_voting, exact_compare_k, majority_voting_k
 from sklearn.utils._testing import assert_array_equal
@@ -70,7 +70,12 @@ class TestSDP(unittest.TestCase):
         G = sbm_graph(100, 2, 16, 4)
         results = solve_sdp_cvx(G)
         labels_true = get_ground_truth(G)
-        self.assertAlmostEqual(compare(results, labels_true), 1.0)        
+        self.assertAlmostEqual(compare(results, labels_true), 1.0)
+    def test_sdp2_self_imp(self):
+        G = sbm_graph(100, 2, 16, 4)
+        results = solve_sdp_ip(G)
+        labels_true = get_ground_truth(G)
+        self.assertAlmostEqual(compare(results, labels_true), 1.0)
 
 def sample_graph():
     # see Network_Community_Structure.svg for an illustration

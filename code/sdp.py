@@ -10,6 +10,7 @@ try:
     solvers.options['show_progress'] = False
 except ImportError:
     pass
+from sdp_ip import sdp_ip_pd
 
 def solve_sdp_cvx(G):
     B = construct_B(G)
@@ -19,6 +20,11 @@ def solve_sdp_cvx(G):
     g_matrix = spmatrix(-1, [n * i + i for i in range(n)], range(n), size=(n * n, n))
     sol = solvers.sdp(c, Gs=[g_matrix], hs=h)
     return get_labels_sdp2(np.array(sol['zs'][0]))
+
+def solve_sdp_ip(G):
+    B = construct_B(G)
+    X, _ = sdp_ip_pd(-B, max_iter=100, eps=1e-5)
+    return get_labels_sdp2(X)
 
 def construct_B(G, kappa=1):
     n = len(G.nodes)
