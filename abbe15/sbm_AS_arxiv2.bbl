@@ -1,0 +1,329 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{RDRI{\etalchar{+}}14}
+
+\bibitem[ABBS14a]{abbs}
+E.~Abbe, A.~S. Bandeira, A.~Bracher, and A.~Singer, \emph{Decoding binary node
+  labels from censored edge measurements: Phase transition and efficient
+  recovery}, {IEEE} {T}ransactions on {N}etwork {S}cience and {E}ngineering
+  \textbf{1} (2014), no.~1.
+
+\bibitem[ABBS14b]{abbs-isit}
+E.~Abbe, A.S. Bandeira, A.~Bracher, and A.~Singer, \emph{Linear inverse
+  problems on {E}rd\"os-{R}\'enyi graphs: Information-theoretic limits and
+  efficient recovery}, Information Theory (ISIT), 2014 IEEE International
+  Symposium on, June 2014, pp.~1251--1255.
+
+\bibitem[ABFX08]{mixed-core}
+E.~M. Airoldi, D.~M. Blei, S.~E. Fienberg, and E.~P. Xing, \emph{Mixed
+  membership stochastic blockmodels}, J. Mach. Learn. Res. \textbf{9} (2008),
+  1981--2014.
+
+\bibitem[ABH14]{abh}
+E.~Abbe, A.~S. Bandeira, and G.~Hall, \emph{Exact recovery in the stochastic
+  block model}, Available at ArXiv:1405.3267. (2014).
+
+\bibitem[AK94]{alon-k}
+N.~Alon and N.~Kahale, \emph{A spectral technique for coloring random
+  3-colorable graphs}, SIAM Journal on Computing, 1994, pp.~346--355.
+
+\bibitem[AL14]{levina}
+A.~Amini and E.~Levina, \emph{{On semidefinite relaxations for the block
+  model}}, arXiv:1406.5647 (2014).
+
+\bibitem[AM]{abbetoc}
+E.~Abbe and A.~Montanari, \emph{Conditional random fields, planted constraint
+  satisfaction and entropy concentration}, To appear in the journal {\it Theory
+  of Computing}, available at arXiv:1305.4274v2.
+
+\bibitem[AM13]{random}
+\bysame, \emph{Conditional random fields, planted constraint satisfaction and
+  entropy concentration}, Proc.\ of RANDOM (Berkeley), August 2013,
+  pp.~332--346.
+
+\bibitem[ANP05]{AchlioetalNature}
+D.~Achlioptas, A.~Naor, and Y.~Peres, \emph{{Rigorous Location of Phase
+  Transitions in Hard Optimization Problems}}, Nature \textbf{435} (2005),
+  759--764.
+
+\bibitem[AS66]{ali}
+S.~M. Ali and S.~D. Silvey, \emph{{A General Class of Coefficients of
+  Divergence of One Distribution from Another}}, Journal of the Royal
+  Statistical Society. Series B (Methodological) \textbf{28} (1966), no.~1,
+  131--142.
+
+\bibitem[BC09]{bickel}
+P.~J. Bickel and A.~Chen, \emph{A nonparametric view of network models and
+  newman–girvan and other modularities}, Proceedings of the National Academy of
+  Sciences (2009).
+
+\bibitem[BCLS87]{bui}
+T.N. Bui, S.~Chaudhuri, F.T. Leighton, and M.~Sipser, \emph{Graph bisection
+  algorithms with good average case behavior}, Combinatorica \textbf{7} (1987),
+  no.~2, 171--191 (English).
+
+\bibitem[BH14]{new-xu}
+J.~Xu B.~Hajek, Y.~Wu, \emph{Achieving exact cluster recovery threshold via
+  semidefinite programming}, arXiv:1412.6156 (2014).
+
+\bibitem[Bop87]{boppana}
+R.B. Boppana, \emph{Eigenvalues and graph bisection: An average-case analysis},
+  In 28th Annual Symposium on Foundations of Computer Science (1987), 280--285.
+
+\bibitem[BS04]{bollobas-cut}
+B.~Bollob\'{a}s and A.~D. Scott, \emph{Max cut for random graphs with a planted
+  partition}, Comb. Probab. Comput. \textbf{13} (2004), no.~4-5, 451--474.
+
+\bibitem[CG14]{Chen_Goldsmith_ISIT2014}
+Y.~Chen and A.~J. Goldsmith, \emph{Information recovery from pairwise
+  measurements}, In Proc.\ ISIT, Honolulu. (2014).
+
+\bibitem[CHG]{Chen_Huang_Guibas_Graphics}
+Y.~Chen, Q.-X. Huang, and L.~Guibas, \emph{Near-optimal joint object matching
+  via convex relaxation}, Available Online: arXiv:1402.1473 [cs.LG].
+
+\bibitem[CI01]{carson}
+T.~Carson and R.~Impagliazzo, \emph{Hill-climbing finds random planted
+  bisections}, Proc. 12th Symposium on Discrete Algorithms (SODA 01), ACM
+  press, 2001, 2001, pp.~903--909.
+
+\bibitem[CK99]{condon}
+A.~Condon and R.~M. Karp, \emph{Algorithms for graph partitioning on the
+  planted partition model}, Lecture Notes in Computer Science \textbf{1671}
+  (1999), 221--232.
+
+\bibitem[Co10]{coja-sbm}
+A.~Coja-oghlan, \emph{Graph partitioning via adaptive spectral techniques},
+  Comb. Probab. Comput. \textbf{19} (2010), no.~2, 227--284.
+
+\bibitem[CRV15]{new-vu}
+P.~Chin, A.~Rao, and V.~Vu, \emph{Stochastic block model and community
+  detection in the sparse graphs: A spectral algorithm with optimal rate of
+  recovery}, arXiv:1501.05021 (2015).
+
+\bibitem[Csi63]{csiszar-f}
+I.~Csisz\'ar, \emph{Eine informationstheoretische ungleichung und ihre
+  anwendung auf den beweis der ergodizitat von markoffschen ketten}, Magyar.
+  Tud. Akad. Mat. Kutat\'o Int. K\"ozl \textbf{8} (1963), 85--108.
+
+\bibitem[CSX12]{sbm-algos}
+Y.~Chen, S.~Sanghavi, and H.~Xu, \emph{{Clustering Sparse Graphs}},
+  arXiv:1210.3335 (2012).
+
+\bibitem[CWA12]{choi}
+D.~S. Choi, P.~J. Wolfe, and E.~M. Airoldi, \emph{Stochastic blockmodels with a
+  growing number of classes}, Biometrika (2012).
+
+\bibitem[CY06]{ppi2}
+J.~Chen and B.~Yuan, \emph{Detecting functional modules in the yeast
+  protein–protein interaction network}, Bioinformatics \textbf{22} (2006),
+  no.~18, 2283--2290.
+
+\bibitem[DF89]{dyer}
+M.E. Dyer and A.M. Frieze, \emph{The solution of some random {NP}-hard problems
+  in polynomial expected time}, Journal of Algorithms \textbf{10} (1989),
+  no.~4, 451 -- 489.
+
+\bibitem[DKMZ11]{decelle}
+A.~Decelle, F.~Krzakala, C.~Moore, and L.~Zdeborov\'a, \emph{Asymptotic
+  analysis of the stochastic block model for modular networks and its
+  algorithmic applications}, Phys. Rev. E \textbf{84} (2011), 066106.
+
+\bibitem[EKPS00]{evans}
+W.~Evans, C.~Kenyon, Y.~Peres, and L.~J. Schulman, \emph{{Broadcasting on trees
+  and the Ising model}}, Ann. Appl. Probab. \textbf{10} (2000), 410--433.
+
+\bibitem[FMW85]{sbm3}
+S.~E. Fienberg, M.~M. Meyer, and S.~S. Wasserman, \emph{Statistical analysis of
+  multiple sociometric relations}, Journal of The American Statistical
+  Association (1985), 51--67.
+
+\bibitem[GB13]{prem}
+P.~K. Gopalan and D.~M. Blei, \emph{Efficient discovery of overlapping
+  communities in massive networks}, Proceedings of the National Academy of
+  Sciences (2013).
+
+\bibitem[GN02]{newman-girvan}
+M.~Girvan and M.~E.~J. Newman, \emph{Community structure in social and
+  biological networks}, Proceedings of the National Academy of Sciences
+  \textbf{99} (2002), no.~12, 7821--7826.
+
+\bibitem[GRSY14]{rough}
+A.~Globerson, T.~Roughgarden, D.~Sontag, and C.~Yildirim, \emph{Tight error
+  bounds for structured prediction}, CoRR \textbf{abs/1409.5834} (2014).
+
+\bibitem[GV14]{sbm-groth}
+O.~{Gu{\'e}don} and R.~{Vershynin}, \emph{{Community detection in sparse
+  networks via Grothendieck's inequality}}, ArXiv:1411.4686 (2014).
+
+\bibitem[HG13]{Huang_Guibas_Graphics}
+Q.-X. Huang and L.~Guibas, \emph{Consistent shape maps via semidefinite
+  programming}, Computer Graphics Forum \textbf{32} (2013), no.~5, 177--186.
+
+\bibitem[HLL83]{holland}
+P.~W. Holland, K.~Laskey, and S.~Leinhardt, \emph{{Stochastic blockmodels:
+  First steps}}, Social Networks \textbf{5} (1983), no.~2, 109--137.
+
+\bibitem[HLM12]{label_marc}
+S.~Heimlicher, M.~Lelarge, and L.~Massouli\'e, \emph{Community detection in the
+  labelled stochastic block model}, arXiv:1209.2910 (2012).
+
+\bibitem[JS98]{jerrum}
+Mark Jerrum and Gregory~B. Sorkin, \emph{The metropolis algorithm for graph
+  bisection}, Discrete Applied Mathematics \textbf{82} (1998), no.~1–3, 155 --
+  175.
+
+\bibitem[JTZ04]{gene-survey}
+D.~Jiang, C.~Tang, and A.~Zhang, \emph{Cluster analysis for gene expression
+  data: a survey}, Knowledge and Data Engineering, IEEE Transactions on
+  \textbf{16} (2004), no.~11, 1370--1386.
+
+\bibitem[KN11]{newman2}
+B.~Karrer and M.~E.~J. Newman, \emph{Stochastic blockmodels and community
+  structure in networks}, Phys. Rev. E \textbf{83} (2011), 016107.
+
+\bibitem[LLDM08]{sparse-network1}
+J.~Leskovec, K.~J. Lang, A.~Dasgupta, and M.~W. Mahoney, \emph{Statistical
+  properties of community structure in large social and information networks},
+  Proceedings of the 17th international conference on World Wide Web (New York,
+  NY, USA), WWW '08, ACM, 2008, pp.~695--704.
+
+\bibitem[LSY03]{amazon}
+G.~Linden, B.~Smith, and J.~York, \emph{Amazon.com recommendations:
+  Item-to-item collaborative filtering}, IEEE Internet Computing \textbf{7}
+  (2003), no.~1, 76--80.
+
+\bibitem[Mas14]{massoulie-STOC}
+L.~Massouli{\'e}, \emph{{Community detection thresholds and the weak Ramanujan
+  property}}, {STOC 2014: 46th Annual Symposium on the Theory of Computing}
+  (New York, United States), June 2014, pp.~1--10.
+
+\bibitem[MNSa]{mossel2}
+E.~Mossel, J.~Neeman, and A.~Sly, \emph{Belief propagation, robust
+  reconstruction, and optimal recovery of block models}, Arxiv:arXiv:1309.1380.
+
+\bibitem[MNSb]{mossel-consist}
+\bysame, \emph{Consistency thresholds for binary symmetric block models},
+  Arxiv:arXiv:1407.1591. To appear in STOC15.
+
+\bibitem[MNS12]{mossel-sbm}
+\bysame, \emph{{Stochastic Block Models and Reconstruction}}, arXiv:1202.1499
+  [math.PR].
+
+\bibitem[MNS14]{Mossel_SBM2}
+E.~Mossel, J.~Neeman, and A.~Sly, \emph{A proof of the block model threshold
+  conjecture}, Available online at arXiv:1311.4115 [math.PR] (2014).
+
+\bibitem[Mor63]{morimoto}
+T.~Morimoto, \emph{Markov processes and the $h$-theorem}, Journal of the
+  Physical Society of Japan \textbf{18} (1963), no.~3, 328--331.
+
+\bibitem[MPN{\etalchar{+}}99]{marcotte}
+E.M. Marcotte, M.~Pellegrini, H.-L. Ng, D.W. Rice, T.O. Yeates, and
+  D.~Eisenberg, \emph{Detecting protein function and protein-protein
+  interactions from genome sequences}, Science \textbf{285} (1999), no.~5428,
+  751--753.
+
+\bibitem[New10]{newman-book}
+M.~Newman, \emph{{Networks: an introduction}}, Oxford University Press, Oxford,
+  2010.
+
+\bibitem[NWS]{social1}
+M.~E.~J. Newman, D.~J. Watts, and S.~H. Strogatz, \emph{Random graph models of
+  social networks}, Proc. Natl. Acad. Sci. USA \textbf{99}, 2566--2572.
+
+\bibitem[PSD00]{genetics}
+J.~K. Pritchard, M.~Stephens, and P.~Donnelly, \emph{{Inference of Population
+  Structure Using Multilocus Genotype Data}}, Genetics \textbf{155} (2000),
+  no.~2, 945--959.
+
+\bibitem[RCY11]{rohe}
+K.~Rohe, S.~Chatterjee, and B.~Yu, \emph{Spectral clustering and the
+  high-dimensional stochastic blockmodel}, The Annals of Statistics \textbf{39}
+  (2011), no.~4, 1878--1915.
+
+\bibitem[RDRI{\etalchar{+}}14]{asa}
+C.~Rudin, D.~Dunson, H.~Ji R.~Irizarry, E.~Laber, J.~Leek, T.~McCormick,
+  S.~Rose, C.~Schafer, M.~van~der Laan, L.~Wasserman, and L.~Xue,
+  \emph{Discovery with data: Leveraging statistics with computer science to
+  transform science and society}, American Statistical Association (2014).
+
+\bibitem[RS13]{max-igal}
+M.~Raginsky and I.~Sason, \emph{Concentration of measure inequalities in
+  information theory, communications, and coding}, Foundations and Trends® in
+  Communications and Information Theory \textbf{10} (2013), no.~1-2, 1--246.
+
+\bibitem[SA11]{arora-overlap}
+S.~Sachdeva G.~Schoenebeck S.~Arora, R.~Ge, \emph{{Finding Overlapping
+  Communities in Social Networks: Toward a Rigorous Approach}}, arXiv:1112.1831
+  (2011).
+
+\bibitem[Sha48]{shannon48}
+C.~E. Shannon, \emph{A mathematical theory of communication}, The Bell System
+  Technical Journal \textbf{27} (1948), 379--423.
+
+\bibitem[SHB07]{image2}
+M.~Sonka, V.~Hlavac, and R.~Boyle, \emph{Image processing, analysis, and
+  machine vision}, Thomson-Engineering, 2007.
+
+\bibitem[SKLZ15]{florent_CBM}
+A.~Saade, F.~Krzakala, M.~Lelarge, and L.~Zdeborov\'a, \emph{Spectral detection
+  in the censored block model}, arXiv:1502.00163 (2015).
+
+\bibitem[SM97]{image1}
+J.~Shi and J.~Malik, \emph{Normalized cuts and image segmentation}, IEEE
+  Transactions on Pattern Analysis and Machine Intelligence \textbf{22} (1997),
+  888--905.
+
+\bibitem[SN97]{snij}
+T.~A.~B. Snijders and K.~Nowicki, \emph{{Estimation and Prediction for
+  Stochastic Blockmodels for Graphs with Latent Block Structure}}, Journal of
+  Classification \textbf{14} (1997), no.~1, 75--100.
+
+\bibitem[SPT{\etalchar{+}}01]{tumor}
+T.~Sorlie, C.M. Perou, R.~Tibshirani, T.~Aas, S.~Geisler, H.~Johnsen,
+  T.~Hastie, Mi.B. Eisen, M.~van~de Rijn, S.S. Jeffrey, T.~Thorsen, H.~Quist,
+  J.C. Matese, P.O. Brown, D.~Botstein, P.E. Lonning, and A.~Borresen-Dale,
+  \emph{Gene expression patterns of breast carcinomas distinguish tumor
+  subclasses with clinical implications}, no.~19, 10869--10874.
+
+\bibitem[Str01]{sparse-network2}
+S.~H. Strogatz, \emph{{Exploring complex networks}}, Nature \textbf{410}
+  (2001), no.~6825, 268--276.
+
+\bibitem[Ver86]{verdu-hell}
+S.~Verd\'u, \emph{Asymptotic error probability of binary hypothesis testing for
+  poisson point-process observations (corresp.)}, Information Theory, IEEE
+  Transactions on \textbf{32} (1986), no.~1, 113--115.
+
+\bibitem[WBB76]{sbm1}
+H.~C. White, S.~A. Boorman, and R.~L. Breiger, \emph{Social structure from
+  multiple networks}, American Journal of Sociology \textbf{81} (1976),
+  730--780.
+
+\bibitem[WW87]{sbm4}
+Y.~J. Wang and G.~Y. Wong, \emph{{Stochastic blockmodels for directed graphs}},
+  Journal of the American Statistical Association (1987), 8--19.
+
+\bibitem[XLM14]{jiaming}
+J.~Xu, M.~Lelarge, and L.~Massoulie, \emph{Edge label inference in generalized
+  stochastic block models: from spectral theory to impossibility results}, to
+  appear in Proceedings of COLT 2014 (2014).
+
+\bibitem[XWZ{\etalchar{+}}14]{xu-rec}
+J.~Xu, R.~Wu, K.~Zhu, B.~Hajek, R.~Srikant, and L.~Ying, \emph{Jointly
+  clustering rows and columns of binary matrices: Algorithms and trade-offs},
+  SIGMETRICS Perform. Eval. Rev. \textbf{42} (2014), no.~1, 29--41.
+
+\bibitem[YC14]{chen-xu}
+J.~Xu Y.~Chen, \emph{Statistical-computational tradeoffs in planted problems
+  and submatrix localization with a growing number of clusters and
+  submatrices}, arXiv:1402.1267 (2014).
+
+\end{thebibliography}
