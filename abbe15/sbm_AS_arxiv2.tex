@@ -1219,7 +1219,7 @@ where $(PQ)_i$ denotes the $i$-th row of the matrix $PQ$. In particular, exact r
 Note that second item in the theorem implies that {\tt Degree-profiling} solves exact recovery efficiently whenever the parameters $p$ and $Q$ allow for exact recovery to be solvable. In addition, it gives an operational meaning to a new divergence function, analog to operational meaning given to the KL-divergence in the channel coding theorem (see Section \ref{it-inter}).
 
 \begin{remark}\label{qzero}
-f $Q_{ij}=0$ for some $i$ and $j$ then the results above still hold, except that if for all $i$ and $j$ in different subsets of the partition,
+If $Q_{ij}=0$ for some $i$ and $j$ then the results above still hold, except that if for all $i$ and $j$ in different subsets of the partition,
 \begin{align}
 \dd ((PQ)_i , (PQ)_j) \geq 1, \label{d1}
 \end{align}
@@ -1447,7 +1447,7 @@ With probability $1-O(1/n)$, no vertex in the graph has degree greater than $c_3
 \end{proof}
 
 \noindent
-{\bf Claim 2 (converse).} Let $G \sim \gs(n,p,Q)$ and $A_1,\dots,A_t$ a partition of $[k]$. If there exist $r,s \in [t]$, $s\neq t$, $i \in A_r$, and $j \in A_s$ such that 
+{\bf Claim 2 (converse).} Let $G \sim \gs(n,p,Q)$ and $A_1,\dots,A_t$ a partition of $[k]$. If there exist $r,s \in [t]$, $s\neq r$, $i \in A_r$, and $j \in A_s$ such that 
 \begin{align}
 \dd ((PQ)_i , (PQ)_j) < 1, 
 \end{align}
@@ -1484,7 +1484,7 @@ We would like to thank Bell Labs for supporting part of this research, as well a
 %\newpage
 
 \bibliographystyle{amsalpha}
-\bibliography{gen2}
+\bibliography{sbm_AS_arxiv2}
 
 
 
