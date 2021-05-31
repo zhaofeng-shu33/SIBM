@@ -21,12 +21,14 @@ class TestSIBM_C(unittest.TestCase):
         repeat = 2
         inner_repeat = 4
         n = 500
+        m = 2
+        k = 2
         a = 16
         b = 4
         alpha = 8
         beta = 0.4
         _N = 40
-        acc = task_cpp_wrapper(repeat, n, a, b, alpha, beta, inner_repeat, _N)
+        acc = task_cpp_wrapper(repeat, n, k, a, b, alpha, beta, inner_repeat, m, _N)
         self.assertAlmostEqual(acc, 1.0)
 
 class TestSIBMExperiment(unittest.TestCase):

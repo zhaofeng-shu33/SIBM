@@ -28,6 +28,7 @@ def set_up_log():
         rootLogger.setLevel(logging.INFO)
 
 def sbm_graph(n, k, a, b):
+    # shuffled version to generate sbm graph
     if n % k != 0:
         raise ValueError('n %k != 0')
     elif a <= b:
@@ -37,8 +38,19 @@ def sbm_graph(n, k, a, b):
     _q = np.log(n) * b / n
     if _p > 1 or _q > 1:
         raise ValueError('%f (probability) larger than 1' % _p)
-    p = np.diag(np.ones(k) * (_p - _q)) + _q * np.ones([k, k])
-    return nx.generators.community.stochastic_block_model(sizes, p)
+    G = nx.Graph()
+    labels = [i % k for i in range(n)]
+    np.random.shuffle(labels)
+    for i in range(n):
+        G.add_node(i, block=labels[i])
+    for i in range(n):
+        for j in range(i+1, n):
+            u = np.random.uniform()
+            if labels[i] == labels[j] and u <= _p:
+                G.add_edge(i, j)
+            elif labels[i] != labels[j] and u <= _q:
+                G.add_edge(i, j)
+    return G
 
 def draw_metropolis():
     ''' demo for Metropolis sampling, run this function with
