@@ -85,10 +85,10 @@ def verify_improvement():
     D2 = p1 * np.log(p1 / p0) + (1 - p1) * np.log( (1 - p1) / (1 - p0))
     D1 = p0 * np.log(p0 / p1) + (1 - p0) * np.log( (1 - p0) / (1 - p1))
     z = np.linspace(0.01, 0.99)
-    epsilon = gamma / np.log(a / b) * ((D2 - D1) / 2 + z * np.log(p0 / p1) + (1 - z) * np.log((1 - p0) / (1 - p1)))
+    epsilon = gamma / np.log(a / b) * (z * np.log(p0 / p1) + (1 - z) * np.log((1 - p0) / (1 - p1)))
     y = gamma * (z * np.log(z / p0) + (1 - z) * np.log((1 - z) / (1 - p0))) + 0.5 * g(a, b, 2 * epsilon)
-    # D12 = -1 * np.log(np.sqrt(p0 * p1) + np.sqrt((1 - p0) * (1 - p1)))
-    hat_y = y - 0.5 * (np.sqrt(a) - np.sqrt(b)) ** 2  #- D12
+    D12 = -1 * np.log(np.sqrt(p0 * p1) + np.sqrt((1 - p0) * (1 - p1)))
+    hat_y = y - 0.5 * (np.sqrt(a) - np.sqrt(b)) ** 2  - D12
     print(a, b, p0, p1, np.min(hat_y))
     # plt.plot(z, hat_y)
     # plt.show()
