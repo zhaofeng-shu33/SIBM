@@ -1,4 +1,4 @@
-\documentclass[EJP]{ejpecp}
+\documentclass[EJP,final]{ejpecp}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                                               %%
@@ -29,6 +29,7 @@
 \usepackage{etoolbox}
 \usepackage{ifthen}
 \usepackage[boxed]{algorithm2e}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                                               %%
@@ -297,7 +298,7 @@ An independent work by Abbe,  Bandeira, and Hall establishes similar (slightly w
 %%                                                               %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+\hypersetup{colorlinks=true}
 \begin{document}
 
 \section{Introduction}
@@ -1450,7 +1451,7 @@ $\tau$ if (assuming $p > q$) $\tau$ gives the same label to $v$ as
 it does to most of $v$'s neighbors.
 
 \begin{lemma}\label{lem:MAP-minority}
-If there is a unique maximal $\hat \sigma$ then
+If there is a unique maximal $\hat \sigma$
 with respect to $\hat \sigma$, there cannot be both a $+$-labelled node
 with a minority and a $-$-labelled node with a minority.
 \end{lemma}
@@ -1992,7 +1993,7 @@ To formulate a correct version, we introduce the notion of a strict minority:
 Here is a corrected version of Lemma~\ref{lem:MAP-minority} (using the notation of Lemma~\ref{lem:MAP-minority}):
 
 \begin{lemma}\label{lem:MAP-minority-correct}
-    If there is a unique maximal $\hat \sigma$ then with respect to $\hat \sigma$ then there cannot
+    If there is a unique maximal $\hat \sigma$ with respect to $\hat \sigma$ then there cannot
     be both a $+$-labelled node $u$ and a $-$-labelled node $v$ such that either
     \begin{enumerate}
         \item $u$ and $v$ both have strict minorities, or
