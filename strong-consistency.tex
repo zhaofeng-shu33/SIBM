@@ -1009,7 +1009,7 @@ Note that the conditional expectation
 of the adjacency matrix given the labels is $\frac{p_n + q_n}{2} 1 1^T + \frac{p_n - q_n}{2} \sigma \sigma^T$,
 where $\sigma \in \{\pm 1\}^{2n}$ is the true vector of class labels.
 Now, let $A$ be the adjacency matrix of $G$. Then $\sigma$ is the second eigenvector of $\E [A \mid \sigma]$,
-and its eigenvalue is $\frac{p_n - q_n}{2}$. In particular, if we had access to $\E [A \mid \sigma]$ then
+and its eigenvalue is $n(p_n - q_n)$. In particular, if we had access to $\E [A \mid \sigma]$ then
 we could recover the labels exactly, simply by looking at its second eigenvector.
 Instead, we have access only to $A$. However, if $A$ and $\E[A \mid \sigma]$ are close then
 we can recover the labels by rounding the second eigenvector of $A$.
@@ -1027,7 +1027,7 @@ theory~\cite{Vu:07,Seginer:00} to bound its norm:
 \end{theorem}
 
 Assuming Theorem~\ref{thm:norm}, note that if
-$|p_n - q_n|/\sqrt{n (p_n + q_n)} \to \infty$ then $\|A - \E[A \mid \sigma]\|$ is order-wise
+$n|p_n - q_n|/\sqrt{n (p_n + q_n)} \to \infty$ then $\|A - \E[A \mid \sigma]\|$ is order-wise
 smaller than the second eigenvalue of $A$. By the Davis-Kahan theorem, it is possible to
 recover $\sigma$ up to an error of size $o(1) \|\sigma\|$. This implies that we can recover the labels
 of all but $o(n)$ vertices.
