@@ -1,0 +1,3 @@
+[submodule "literature"]
+	path = literature
+	url = git@gitee.com:freewind201301/literature.git
