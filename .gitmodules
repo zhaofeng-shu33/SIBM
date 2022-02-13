@@ -1,3 +1,6 @@
 [submodule "literature"]
 	path = literature
 	url = git@gitee.com:freewind201301/literature.git
+[submodule "MDPI_template"]
+	path = MDPI_template
+	url = https://github.com/zhaofeng-shu33/MDPI_template.git
