@@ -4,3 +4,6 @@
 [submodule "MDPI_template"]
 	path = MDPI_template
 	url = https://github.com/zhaofeng-shu33/MDPI_template.git
+[submodule "large_deviation_theory"]
+	path = large_deviation_theory
+	url = https://github.com/zhaofeng-shu33/large_deviation_theory.git
