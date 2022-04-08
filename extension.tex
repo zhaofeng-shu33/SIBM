@@ -534,7 +534,7 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 \end{proof}
 \begin{lemma}\label{lem:minus}
 	For SSBM$(n,k,p,q)$, suppose the ground truth label is $X$ while $\bar{\sigma}$ differs from $X$ in $|\cI|$ coordinate.
-	Let $I_{ij} = |\{r\in [n] | X_r = w^i, \sigma_r = w^j \}$ for $i\neq j$ and $I_{ii} = 0$. We further denote the row sum as $I_i = \sum_{j=0}^{k-1} I_{ij}$ and
+	Let $I_{ij} = |\{r\in [n] | X_r = w^i, \sigma_r = w^j \}|$ for $i\neq j$ and $I_{ii} = 0$. We further denote the row sum as $I_i = \sum_{j=0}^{k-1} I_{ij}$ and
 	the column sum as $I'_i = \sum_{j=0}^{k-1} I_{ji}$.
 	Then
 	\begin{equation}\label{eq:general_expansion}
@@ -543,8 +543,8 @@ The case $\alpha > b \beta$ can be proved in the same way as above by applying L
 	where 
 	\begin{align}
 	N_{\bar{\sigma}} &= \frac{1}{2}\sum_{i=0}^{k-1} (I_i - I_i')^2 \label{eq:N_w} \\
-	B_{\bar{\sigma}} & \sim \textrm{Bernoulli}(\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
-	A_{\bar{\sigma}} & \sim \textrm{Bernoulli}(\frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
+	B_{\bar{\sigma}} & \sim \textrm{Binomial}(\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji}) , q)\\
+	A_{\bar{\sigma}} & \sim \textrm{Binomial}(\frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij}), p) \label{eq:A_w}
 	\end{align}
 \end{lemma}
 \begin{proof}
@@ -774,7 +774,7 @@ Following the main idea in Section \ref{sect:why}, we consider an enhanced concl
 	\Big(1-\frac{a\log n}{n}+\frac{a\log n}{n} e^{-s} \Big)^{|A_{\bar{\sigma}}|}  \\
 	& = \exp(\frac{\log n}{n}\left(|B_{\bar{\sigma}}|(be^s - b) + |A_{\bar{\sigma}}|(ae^{-s}-a) + |B_{\bar{\sigma}}|O(\frac{\log n}{n}) \right))
 	\end{align*}
-	Using the conclusion that $|B_{\bar{\sigma}}|=\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji})$ and
+	Use the conclusion that $|B_{\bar{\sigma}}|=\frac{n}{k}|\cI| + \frac{1}{2}\sum_{i=0}^{k-1}  (-2 I'_i I_i  + I'^2_i - \sum_{j=0}^{k-1} I^2_{ji})$ and
 	$|A_{\bar{\sigma}}| = \frac{n}{k}|\cI| - \frac{1}{2}\sum_{i=0}^{k-1}  (I^2_i + \sum_{j=0}^{k-1} I^2_{ij})$.
 	By estimating the order of residual term, $|A_{\bar{\sigma}}| = \frac{n}{k}|\cI| + O(|\cI|^2)$,
 	 $|B_{\bar{\sigma}}| = \frac{n}{k}|\cI| + O(|\cI|^2)$.
