@@ -7,3 +7,9 @@
 [submodule "large_deviation_theory"]
 	path = large_deviation_theory
 	url = https://github.com/zhaofeng-shu33/large_deviation_theory.git
+[submodule "sbm_side_info_error_rate"]
+	path = sbm_side_info_error_rate
+	url = git@github.com:zhaofeng-shu33/sbm_side_info_error_rate.git
+[submodule "sbm_side_info"]
+	path = sbm_side_info
+	url = git@github.com:zhaofeng-shu33/sbm_side_info.git
