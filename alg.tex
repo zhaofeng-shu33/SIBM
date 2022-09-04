@@ -1,5 +1,4 @@
-\documentclass{article}
-\usepackage{xeCJK}
+\documentclass{ctexart}
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algorithmic}
@@ -12,6 +11,7 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{remark}{Remark}
 \DeclareMathOperator{\SIBM}{SIBM}
+\DeclareMathOperator{\SSBM}{SSBM}
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Bern}{Bern}
@@ -852,6 +852,35 @@ y_{kk'}(i) + z_{kk'}(j) & \textrm{ where } i \in C_k, j \in C_{k'}
 \end{cases}
 \end{equation}
 The intermediate parameter $y,z,\alpha,r_i$ can be defined properly.
+
+\section{ML equivalent to min-cut}
+In this section, we show that in $\SSBM(n,2,p,q)$,
+ML is equivalent to solving the problem of minimum 2-cut,
+.
+Our starting point is the log likelihood function:
+$$
+L=\prod_{(i,j) \in E} p^{\delta(\sigma_i, \sigma_j)}q^{1-\delta(\sigma_i, \sigma_j)}
+\prod_{(i,j)\not\in E} (1-p)^{\delta(\sigma_i, \sigma_j)}(1-q)^{1-\delta(\sigma_i, \sigma_j)}
+$$
+where $\sigma_i \in \{0,1\}$ and $\delta$ is the indicator function.
+$\max \log L$ is equivalent to (neglecting some constant term for the given graph $G$)
+$$
+\max_{\sigma}
+\log\frac{p}{q}\sum_{(i,j) \in E} \delta(\sigma_i, \sigma_j)
++\log \frac{1-p}{1-q}\sum_{(i,j)\not\in E} \delta(\sigma_i, \sigma_j)
+$$
+Using the fact that
+$\sum_{(i,j) \in E}\delta(\sigma_i, \sigma_j)
++\sum_{(i,j)\not\in E} \delta(\sigma_i, \sigma_j)=\frac{n}{2}(\frac{n}{2}-1)$
+we obtain
+\begin{equation}\label{eq:sigma_tmp_max}
+	\max_{\sigma} \log \frac{p(1-q)}{q(1-p)} \sum_{(i,j) \in E}\delta(\sigma_i, \sigma_j)
+\end{equation}
+Since $\log \frac{p(1-q)}{q(1-p)}>0$,
+\eqref{eq:sigma_tmp_max} is equivalent to minimum 2-cut problem
+\begin{equation}\label{eq:minimum_k_cut}
+	\min \sum_{ \{i,j\} \in E} (1-\delta(x_i, x_j))
+\end{equation}
 
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
