@@ -16,6 +16,7 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Bern}{Bern}
 \DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\E}{\mathbb{E}}
 \newcommand{\A}{\frac{a \log(n)}{n}}
 \newcommand{\B}{\frac{b \log(n)}{n}}
 \title{Exact recovery of Stochastic Block Model with Ising sampling}
@@ -634,9 +635,15 @@ to \eqref{eq:semiD} is the ground truth vector $g$.
 \begin{theorem}
 If $\kappa > \frac{b\log n}{n}$ and $\sqrt{a} - \sqrt{b} > \sqrt{2}$, then with high probability \eqref{eq:semiD} has a unique solution $g$.
 \end{theorem}
-The proof is similar with that of Abbe's paper. We choose the conjugate vector $Y=\diag(Bgg^T)$ and show that 
-we need to guarantee:  $Y \succeq B$ and $\lambda_2(Y-B)>0$.
+The proof is similar with that of Abbe's paper \cite{abbe2015exact}.
+We choose the conjugate vector $Y=\diag(Bgg^T)$ and show that 
+ $Y \succeq B$ and $\lambda_2(Y-B)>0$.
 $g$ is the eigenvector for $Y-B$, with the corresponding eigenvalue equal to zero.
+Below we decompose $Y-B=C-\Gamma$.
+$C$ is a deterministic matrix
+such that $\E[C]=\E[Y-B]$.
+$\Gamma = Y-B-C$ satisfying $\E[\Gamma]=0$.
+
 The modification of $\alpha_{ij}^+, \alpha_{ij}^-$ is as follows:
 \begin{align}
 \alpha^+_{ij}=\begin{cases} 1 & \text{wp }\A \\ -\kappa & \text{wp } 1-\A \end{cases}\\
@@ -821,14 +828,17 @@ This limit can be estimated as $(1+o(1))n^{-\frac{(\sqrt{\alpha}-\sqrt{\beta})^2
 Therefore, $P(\lambda_{\max}(\Gamma) \geq (a-b)\log n)\leq n^{-r} + (1+o(1))n^{1-\frac{(\sqrt{\alpha}-\sqrt{\beta})^2}{2}} = o(1)$
 if $\sqrt{\alpha} - \sqrt{\beta} > \sqrt{2}$ is satisfied.
 \section{SBM with multiple equal-sized clusters}
-Using the notation of \cite{hajek2016achieving}, we consider the SDP relation for SBM with multiple equal-sized clusters
+Using the notation of \cite{Hajek16}, we consider the SDP relation for SBM with multiple equal-sized clusters
 \begin{align}
-\max & <A,Z> \notag \\
+\max & \langle A,Z \rangle \notag \\
 s.t. & Z \succeq 0, \notag\\
 &Z_{ii} = 1,  && i \in [n] \notag\\
 &Z_{ij} \geq 0, && i,j \in [n] \notag\\
 &Z \mathbf{1} = K\mathbf{1} \label{eq:AZ}
 \end{align}
+where $K$ is the cluster size, $K=\frac{n}{k}$.
+This method is called SDP-1 in \cite{amini2018semidefinite}.
+
 Its dual problem can be written as:
 \begin{align}
 \min & \sum_{i=1}^n d_i + K \sum_{i=1}^n \lambda_i\notag \\
@@ -881,7 +891,48 @@ Since $\log \frac{p(1-q)}{q(1-p)}>0$,
 \begin{equation}\label{eq:minimum_k_cut}
 	\min \sum_{ \{i,j\} \in E} (1-\delta(x_i, x_j))
 \end{equation}
-
+\section{side information for SBM with k clusters}
+There are $k$ labels: $\{1,2,\dots, k\}$.
+Suppose each label $i$ corresponds to a distribution $P_i$.
+The exact recovery condition: $I_+>1$.
+where $I_+ = \min_{1\leq i < j \leq k} I_{ij}$.
+$I_{ij}$ is defined in the following lemma
+\begin{lemma}\label{lem:I_plus_expression}
+	\begin{align}\label{equation:I+}
+		I_{ij} &=\frac{\lambda^* }{k} (a^{1-\lambda^* }b^{\lambda^* } -
+		b^{1-\lambda^* }a^{\lambda^* })\log\frac{b}{a}+\frac{a+b}{k}\notag \\
+		&-\frac{1}{k}(a^{1-\lambda^*}b^{\lambda^*} +
+		b^{1-\lambda^* }a^{\lambda^* })+\gamma D(P_{\lambda^* }||P_i) 
+		\end{align}
+		其中
+		\begin{equation}\label{eq:lambda}
+		\lambda^* = \arg\min_{\lambda} \left[a^{1-\lambda}b^{\lambda} +
+		b^{1-\lambda}a^{\lambda} + k\gamma \log
+		\left(\sum_{x\in \mathcal{X}}P^{1-\lambda}_i(x) P^{\lambda}_j(x)
+		\right)
+		\right]
+	\end{equation}
+	而 $P_{\lambda}$ 定义为
+	\begin{equation}\label{eq:P_lambda_0_1}
+		P_{\lambda}(x) = \frac{P_i^{1-\lambda}(x) P_j^{\lambda} (x)}
+		{\sum_{x \in \mathcal{X}}P_i^{1-\lambda}(x) P_j^{\lambda} (x)}        
+	\end{equation}
+	
+	\end{lemma}
+	\begin{proof}
+		We only need to let $c=\frac{a}{k}, d=\frac{b}{k}$ and
+		compute the Chernoff Information between
+		$\textrm{Pois}(c,d)\times \underbrace{P_i \times \dots \times P_i}_{\gamma}$
+    and $\textrm{Pois}(d, c)\times \underbrace{P_j \times \dots \times P_j}_{\gamma}$.
+	\end{proof}
+	Below we give equivalent definition of $I_{ij}$.
+	\begin{align}
+		I_{ij} &=\min_{P_{\widetilde{Y}}}
+		\gamma D(P_{\widetilde{Y}}|| P_i)
+		+ \frac{1}{k} g(a,b, k\epsilon),
+		\text{ 其中}\nonumber\\
+		\epsilon &= \gamma \frac{D(P_{\widetilde{Y}} || P_j) - D(P_{\widetilde{Y}} || P_i) }{\log \frac{a}{b}}
+   	\end{align}
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}

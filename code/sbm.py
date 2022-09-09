@@ -147,7 +147,7 @@ def acc_task(alg, params, num_of_times, qu):
             results = sdp(graph, k)
         elif alg == 'sdp2':
             results = sdp2(graph)
-        elif alg == 'sdp_ip':
+        elif alg == 'sdp_ip': # interior point implementation
             results = solve_sdp_cvx(graph)
         elif alg == 'metropolis':
             if logging.getLogger().level == logging.DEBUG:
