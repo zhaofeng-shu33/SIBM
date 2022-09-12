@@ -633,13 +633,39 @@ s.t. & X_{ii} = 1 \notag \\
 By following the same procedure in Abbe's paper \cite{abbe2015exact}, we can get the sufficient condition that the optimal solution
 to \eqref{eq:semiD} is the ground truth vector $g$.
 \begin{theorem}
-If $\kappa > \frac{b\log n}{n}$ and $\sqrt{a} - \sqrt{b} > \sqrt{2}$, then with high probability \eqref{eq:semiD} has a unique solution $g$.
+If $\kappa > 0$ is a constant irrelevant with $n$, and $\sqrt{a} - \sqrt{b} > \sqrt{2}$, then for large enough $n$,
+with high probability \eqref{eq:semiD} has a unique solution $g$.
 \end{theorem}
 The proof is similar with that of Abbe's paper \cite{abbe2015exact}.
 We choose the conjugate vector $Y=\diag(Bgg^T)$ and show that 
  $Y \succeq B$ and $\lambda_2(Y-B)>0$.
 $g$ is the eigenvector for $Y-B$, with the corresponding eigenvalue equal to zero.
-Below we decompose $Y-B=C-\Gamma$.
+
+We only need to show that $(g^{\perp})^T (Y-B)g^{\perp} >0$
+for any vector $g^{\perp}$ perpendicular to $g$.
+
+Using the following fact
+\begin{align}
+B &= (1+\kappa) A - \kappa(J_n - I_n) \\
+\E[A] &= \frac{p-q}{2}gg^T + \frac{p+q}{2}J_n - pI_n
+\end{align}
+Then
+\begin{align}
+	(g^{\perp})^T(Y-B)g^{\perp} &= 
+	(g^{\perp})^T\diag((1+\kappa)Agg^T) g^{\perp} 
+	-(1+\kappa)(g^{\perp})^T(A-\E[A])g^{\perp}\notag\\
+	&+p +(\kappa -(1+\kappa)\frac{p+q}{2})(g^{\perp})^TJ_ng^{\perp}
+\end{align}
+Since $\kappa -(1+\kappa)\frac{p+q}{2}$ for large $n$,
+and there exists a constant $c>0$ such that with high
+probability $\lambda_{\max}(A-\mathbb{E}[A]) \leq c\sqrt{\log n}$.
+Then our task reduces to control
+\begin{equation*}
+	\min_{i} \{(Ag)_i g_i\} - c \sqrt{\log n} > 0
+\end{equation*}
+which is our familiar probability formulation.
+
+Another proof is to decompose $Y-B=C-\Gamma$.
 $C$ is a deterministic matrix
 such that $\E[C]=\E[Y-B]$.
 $\Gamma = Y-B-C$ satisfying $\E[\Gamma]=0$.
@@ -933,6 +959,28 @@ $I_{ij}$ is defined in the following lemma
 		\text{ 其中}\nonumber\\
 		\epsilon &= \gamma \frac{D(P_{\widetilde{Y}} || P_j) - D(P_{\widetilde{Y}} || P_i) }{\log \frac{a}{b}}
    	\end{align}
+\section{SBM, k communities, with side information}
+Primal problem:
+\begin{align}
+\max & \langle \widetilde{B},X \rangle \notag \\
+s.t. & X \succeq 0, \notag\\
+&X_{ii} = 1,  && i \in [n] \notag\\
+&X_{ij} \geq 0, && i,j \in [n] \notag\\
+&X \mathbf{1} = (\frac{n}{k}+1)\mathbf{1} \label{eq:AZ_ext}
+\end{align}
+The matrix $X$ is of size $(n+k) \times (n+k)$.
+Suppose $\xi_i \in \{0,1\}^n $ is the true label vector for the i-th community.
+and $\eta_i \in \{0,1\}^k$ is the indicator vector for the i-th community.
+$|\xi_i|=n/k$ while $|\eta_i|=1$. Then we construct $g_i=(\eta_i, \xi_i)
+\in \{0,1\}^{n+k}$.
+The ground truth $X^*=\sum_{i=1}^k g_i$.
+The matrix $\widetilde{B}$ is constructed as
+\begin{equation}\label{eq:B_lambda_def}
+	\widetilde{B} = \begin{pmatrix} 0 & h^T  \\ h  & 2A \end{pmatrix}.
+\end{equation}
+$h$ is an $n\times k$ matrix, with entry $h_{ir} = \frac{1}{\log(a/b)}
+\sum_{j=1}^m \log P_r(y^i_{j})$.
+
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
 \end{document}
