@@ -142,7 +142,7 @@ def sdp2_si(G, data, p0, p1, a_b_ratio, rho = 0.1, max_iter = 1000, tol=1e-4):
     return labels.astype(np.int)
  
 def sdp2(G, kappa=1.0, rho = 0.1, max_iter = 1000, tol=1e-4):
-    '''only for two communties
+    '''only for two communities
     rho: ADMM penalty parameter
     '''
     B = construct_B(G, kappa)

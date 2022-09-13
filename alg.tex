@@ -546,11 +546,20 @@ $F_i$ is a matrix with element $(i,i)$ equal to 1 and 0 elsewhere.
 The projection $\Pi_{A}(Y)$ simply modifies the diagonal elements of $Y$ to $1$.
 The scaled form of ADMM \cite{boyd2011distributed} is given by
 \begin{align}
-X^{k+1} = \Pi_A(Z^k - U^k + \frac{1}{\rho}B)\label{eq:admm} \\
-Z^{k+1} = \Pi_{S_+^n}(X^{k+1} + U^{k}) \\
-U^{k+1} = U^k + (X^{k+1} - Z^{k+1}) 
+X^{k+1} &= \Pi_A(Z^k - U^k + \frac{1}{\rho}B)\label{eq:admm} \\
+Z^{k+1} &= \Pi_{S_+^n}(X^{k+1} + U^{k}) \\
+U^{k+1} &= U^k + (X^{k+1} - Z^{k+1}) 
 \end{align}
 $\rho$ is the penalty parameter.
+
+It can further be simplified in the following:
+\begin{align}
+	Z^{k+1} &= \Pi_{S_+^n}(I_n + \diag\{u^k\} + \frac{1}{\rho} B
+	+ Z^k - \diag\{Z^k\}) \\
+	u^{k+1} &= u^k + (\mathbf{1}_n - \diag\{Z^{k+1}\}) 
+	\end{align}
+where $u^k$ is the n-dimensional vector.
+Both $\diag\{u^k\}$ and $\diag\{Z^k\}$ are diagonal matrices.
 
 \subsection{ADMM scheme for SDP of SBM with side information}
 \begin{align}
