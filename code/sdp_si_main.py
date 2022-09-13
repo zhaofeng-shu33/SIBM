@@ -15,6 +15,10 @@ from sbm import phase_transition_interval
 from sdp import sdp2_si, solve_sdp_si_cvx
 from construct import bisection_a
 
+data_dir = 'build'
+if not os.path.exists('build'):
+    data_dir = 'data'
+
 def generate_data(ground_truth, n, m, p0, p1):
     # n, m = data.shape
     data = np.zeros([n, m], dtype=int)
@@ -88,7 +92,7 @@ def recovery_matrix_simulation(n, m, p0, p1, a_range=[2, 25], b_range=[2, 10], s
 
 def get_filelist(filename):
     filename_list = []
-    for i in os.listdir('build'):
+    for i in os.listdir(data_dir):
         if i.find(filename) >= 0:
             filename_list.append(i)
     return filename_list
@@ -96,13 +100,13 @@ def get_filelist(filename):
 def get_a_b_Z_data(filename):
     file_list = get_filelist(filename)
     num_file = len(file_list)
-    with open('build/' + file_list[0], 'rb') as f:
+    with open(data_dir + '/' + file_list[0], 'rb') as f:
         dic = pickle.load(f)
     a_list = dic['a']
     b_list = dic['b']
     Z = dic['acc_list']
     for _filename in file_list[1:]:
-        with open('build/' + _filename, 'rb') as f:
+        with open(data_dir + '/' + _filename, 'rb') as f:
             dic = pickle.load(f)
         Z += dic['acc_list']
     Z /= num_file
@@ -138,7 +142,7 @@ def simulation_plot(filename, n, m, p0, p1, abbe_result=False):
     # plt.title(_title)
     plt.legend()
     
-    plt.savefig('build/' + _title + '.eps')
+    plt.savefig(data_dir + '/' + _title + '.eps')
     plt.show()
 
 if __name__ == '__main__':
@@ -152,9 +156,10 @@ if __name__ == '__main__':
     parser.add_argument('--b', type=float, default=[4.0], nargs='+')
     parser.add_argument('--p0', type=float, default=[0.8, 0.2], nargs='+')
     parser.add_argument('--p1', type=float, default=[0.2, 0.8], nargs='+')
-    parser.add_argument('--filename', help='data file used for plot purpose')
+    parser.add_argument('--filename', help='data file used for plot purpose, for example "2.0-25.0-2.0-10.0"')
     args = parser.parse_args()
-    set_up_log()
+    if args.action != 'plot':
+        set_up_log()
     n = args.n
     m = args.m
     a = args.a

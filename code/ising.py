@@ -4,7 +4,7 @@ to get a sample from Ising distribution
 import random
 
 import numpy as np
-from networkx import nx
+import networkx as nx
 
 def estimate_a_b(graph, k=2):
     '''for multiple communities
