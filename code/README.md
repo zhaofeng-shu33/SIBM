@@ -25,3 +25,8 @@ python3 estimator_experiment --action compute
 ```
 python3 --n 9000 --repeat 2100 --inner_repeat 6000 --a 16 --b 4 --k 2 --m 1
 ```
+
+### SBMSI
+```
+python3 sdp_si_main.py --action plot --filename 2.0-25.0-2.0-10.0
+```

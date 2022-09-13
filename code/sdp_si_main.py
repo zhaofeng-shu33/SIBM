@@ -112,7 +112,7 @@ def get_a_b_Z_data(filename):
     Z /= num_file
     return (a_list, b_list, Z)
 
-def simulation_plot(filename, n, m, p0, p1, abbe_result=False):
+def simulation_plot(filename, n, m, p0, p1, abbe_result=False, chinese=False):
     a_list, b_list, Z = get_a_b_Z_data(filename)
     b_num = len(b_list)
     b_min, b_max = b_list[0], b_list[b_num - 1]
@@ -124,14 +124,21 @@ def simulation_plot(filename, n, m, p0, p1, abbe_result=False):
     y = (np.sqrt(2) + np.sqrt(x)) ** 2
     plt.xlabel('b')
     plt.ylabel('a')
-    plt.plot(x, y, color='blue', label='sbm only')
+    _label_text = 'sbm only'
+    if chinese:
+        plt.rcParams['font.sans-serif']=['SimHei']
+        _label_text = '仅 SBM'
+    plt.plot(x, y, color='blue', label=_label_text)
     D12 = 0
     for i in range(len(p0)):
         D12 += np.sqrt(p0[i] * p1[i])
     D12 = -2 * np.log(D12)
     gamma = m / np.log(n)
     y = (np.sqrt(2 - gamma * D12) + np.sqrt(x)) ** 2
-    plt.plot(x, y, color='red', label='with side info')
+    _label_text = 'with side info'
+    if chinese:
+        _label_text = '带有额外信息'
+    plt.plot(x, y, color='red', label=_label_text)
     if abbe_result:
         abbe_a_list = []
         for b in x:
@@ -142,7 +149,7 @@ def simulation_plot(filename, n, m, p0, p1, abbe_result=False):
     # plt.title(_title)
     plt.legend()
     
-    plt.savefig(data_dir + '/' + _title + '.eps')
+    plt.savefig(data_dir + '/' + _title + '.pdf')
     plt.show()
 
 if __name__ == '__main__':
@@ -156,6 +163,7 @@ if __name__ == '__main__':
     parser.add_argument('--b', type=float, default=[4.0], nargs='+')
     parser.add_argument('--p0', type=float, default=[0.8, 0.2], nargs='+')
     parser.add_argument('--p1', type=float, default=[0.2, 0.8], nargs='+')
+    parser.add_argument('--chinese', type=bool, const=True, nargs='?', default=False)
     parser.add_argument('--filename', help='data file used for plot purpose, for example "2.0-25.0-2.0-10.0"')
     args = parser.parse_args()
     if args.action != 'plot':
@@ -179,4 +187,4 @@ if __name__ == '__main__':
         step = a[2]
         recovery_matrix_simulation(n, m, p0, p1, a_range, b_range, step, repeat=repeat, multi_thread=multi_thread)
     else:
-        simulation_plot(args.filename, n, m, p0, p1)
+        simulation_plot(args.filename, n, m, p0, p1, chinese=args.chinese)

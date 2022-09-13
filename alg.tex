@@ -550,6 +550,8 @@ X^{k+1} = \Pi_A(Z^k - U^k + \frac{1}{\rho}B)\label{eq:admm} \\
 Z^{k+1} = \Pi_{S_+^n}(X^{k+1} + U^{k}) \\
 U^{k+1} = U^k + (X^{k+1} - Z^{k+1}) 
 \end{align}
+$\rho$ is the penalty parameter.
+
 \subsection{ADMM scheme for SDP of SBM with side information}
 \begin{align}
 		\max_V\, Tr(\tilde{B}V)  &\notag\\
@@ -613,7 +615,10 @@ Experiment result
 \end{figure}
 
 \subsection{Theoretical Guarantee}
-We have already known that for $\kappa = \frac{\alpha \log n}{\beta n}$, the problem to maximize
+We have already known that for $\kappa = \frac{\alpha \log n}{\beta n}$.
+Actually we can relax $\kappa$ to a positive constant value.
+Then the problem is to maximize
+the following expression
 \begin{equation}
 \sum_{(i,j)\in E(G)} \sigma_i \sigma_j - \kappa \sum_{(i,j) \not\in E(G)} \sigma_i \sigma_j
 \end{equation}
