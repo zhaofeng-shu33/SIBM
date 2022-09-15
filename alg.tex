@@ -561,6 +561,11 @@ It can further be simplified in the following:
 where $u^k$ is the n-dimensional vector.
 Both $\diag\{u^k\}$ and $\diag\{Z^k\}$ are diagonal matrices.
 
+Notice that starting from $u^0=0, Z^0=0$, the first iteration
+computes the spectral decomposition of $\frac{1}{\rho}B + I_n$.
+It is equivalent to decompose $B$, which is related with
+the spectral clustering approach for SBM.
+
 \subsection{ADMM scheme for SDP of SBM with side information}
 \begin{align}
 		\max_V\, Tr(\tilde{B}V)  &\notag\\
@@ -987,7 +992,7 @@ Suppose $\xi_i \in \{0,1\}^n $ is the true label vector for the i-th community.
 and $\eta_i \in \{0,1\}^k$ is the indicator vector for the i-th community.
 $|\xi_i|=n/k$ while $|\eta_i|=1$. Then we construct $g_i=(\eta_i, \xi_i)
 \in \{0,1\}^{n+k}$.
-The ground truth $X^*=\sum_{i=1}^k g_i$.
+The ground truth $X^*=\sum_{i=1}^k g_i g_i^T$.
 The matrix $\widetilde{B}$ is constructed as
 \begin{equation}\label{eq:B_lambda_def}
 	\widetilde{B} = \begin{pmatrix} 0 & h^T  \\ h  & 2A \end{pmatrix}.
