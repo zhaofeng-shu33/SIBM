@@ -520,7 +520,7 @@ $I_+ = I_1$.
 	Consider the dual problem of \eqref{eq:sdp}
 	\begin{align}
 		\min_{a, a_1, \dots, a_{n}}\, &a+\sum_{i=1}^{n} a_i \nonumber\\\label{eq:dual}
-		s.t. &\, \diag\{a, a_1, \dots, a_{n+1}\} + \Xi - \widetilde{B} \succeq 0, 
+		s.t. &\, \diag\{a, a_1, \dots, a_{n}\} + \Xi - \widetilde{B} \succeq 0, 
 	\end{align}
 	where the $(n+1)\times (n+1)$ symmetric matrix $\Xi$ is defined as 
 	\begin{equation}
@@ -534,43 +534,47 @@ $I_+ = I_1$.
 	the optimality and uniqueness of the solution $(1,g)(1,g)^T$ to \eqref{eq:sdp} is guaranteed by the following conditions: 
 	\begin{enumerate}
 		\item[(a)] $(1,g)(1,g)^T$ is a feasible solution to the primal problem \eqref{eq:matrix_mle}.
-		\item[(b)] There exists a feasible solution $(a_1,\ldots,a_{n+1},$ $\lambda_1,\ldots,\lambda_{n+1})$ to \eqref{eq:dual}, such that $\sum_{i=1}^{n+1} a_i=Tr((1,g)(1,g)^T\widetilde{B})$.
-		\item[(c)] $(\diag\{a_1, \dots, a_{n+1}\} + \Xi - \widetilde{B})(1,g)=0$.
-		\item[(d)] The second smallest eigenvalue of $\diag\{a_1, \dots, a_{n+1}\} + \Xi - \widetilde{B}$ is greater than $0$. 
+		\item[(b)] There exists a feasible solution $(a, a_1, \dots, a_{n},$ $\lambda_1,\ldots,\lambda_{n+1})$ to \eqref{eq:dual},
+		such that $a+\sum_{i=1}^{n} a_i=Tr((1,g)(1,g)^T\widetilde{B})$.
+		\item[(c)] $(\diag\{a, a_1, \dots, a_{n}\} + \Xi - \widetilde{B})(1,g)=0$.
+		\item[(d)] The second smallest eigenvalue of $\diag\{a,a_1, \dots, a_{n}\} + \Xi - \widetilde{B}$ is greater than $0$. 
 	\end{enumerate}
-	Condition (a) holds by definition. It suffices to choose $(a_1,\ldots,a_{n+1},\lambda_1,\ldots,\lambda_{n+1})$ that satisfies conditions (b), (c) and (d).
+	Condition (a) holds by definition. It suffices to choose
+	$(a, a_1, \dots, a_{n},\lambda_1,\ldots,\lambda_{n+1})$ that satisfies conditions (b), (c) and (d).
     From condition (c) we have that
 	\begin{align}
 		a &= h^T g \nonumber\\
 		a_{i} & = (h_i - d^Tg - b )g_i + \frac{1}{2}\diag\{Bgg^T\}_i, i = 1, \dots, n
 	\end{align}
 
-	Let $\mu=\frac{1}{n}\mathbbm{1}_n^T h$ and $\lambda = -\mu/n$. Specify $(a_1,\ldots,a_{n+1},$ $\lambda_1,\ldots,\lambda_{n+1})$ as follows
-	$$
-    b =\mu+\lambda, \text{ and }
-     d= \lambda (g+ \mathbbm{I}_n)
-    $$
 	
-	It can be verified that $\sum_{i=1}^{n+1} a_i = 2h^Tg +\frac{1}{2} g^T B g$, and hence condition (b) holds.
+	It can be verified that $a+\sum_{i=1}^{n} a_i = 2h^Tg +\frac{1}{2} g^T B g$, and hence condition (b) holds.
+	
+	
 	Hence it suffices to prove that
 	\begin{align}
-		&\diag(\{a_1, \dots, a_{n+1}\}) + \Xi - \widetilde{B} \nonumber\\
-		=& \begin{pmatrix} h^T g & -h^T +(\mu + \lambda)\mathbbm{1}_n^T \\
-			-h+(\mu + \lambda )\mathbbm{1}_n & \Xi_n \end{pmatrix}
+		&\diag(\{a, a_1, \dots, a_{n}\}) + \Xi - \widetilde{B} \nonumber\\
+		=& \begin{pmatrix} h^T g & -h^T + b\mathbbm{1}_n^T \\
+			-h+b\mathbbm{1}_n & \Xi_n \end{pmatrix}
 		\succeq 0, 
 	\end{align}
 	where
-	\begin{align}\label{eq:Xi_n}
-		\Xi_n =&\diag(hg^T + Agg^T -\lambda \mathbbm{1}_ng^T)  \nonumber\\
-		&+ (\frac{1}{2} +2\lambda) J_n  - A + 2\lambda \Xi',
+	\begin{align}\label{eq:Xi_n_pre}
+		\Xi_n =&\diag(hg^T + \frac{1}{2}Bgg^T -(d^Tg + b)\mathbbm{1}_ng^T)  \nonumber\\
+		& -\frac{1}{2}B + \mathbbm{1}_n d^T + d \mathbbm{1}_n^T,
 	\end{align}
-	$\mathbbm{1}_n$ is the all 1's vector, $J_n$ is the all 1's matrix, and $I_n$ is the identity matrix. The matrix $A=(B+J_n-I_n)/2$ is the adjacency matrix of the graph.
-	The matrix $\Xi'$ is given by $\Xi'_{ij}=g_i + g_j$.
-	
+	We introduce the following notation: $\mathbbm{1}_n$ is the all 1's vector, $J_n$ is the all 1's matrix, and $I_n$ is the identity matrix.
+
+	Using the relationship, $B=2A+I_n-J_n$,
+	where $A$ is the adjacency matrix of the graph, we obtain
+	\begin{align}\label{eq:Xi_n_pre_1}
+		\Xi_n =&\diag(hg^T + Agg^T -(d^Tg + b)\mathbbm{1}_ng^T)  \nonumber\\
+		& -A + \frac{1}{2}J_n + \mathbbm{1}_n d^T + d \mathbbm{1}_n^T,
+	\end{align}
 	In the following we show that $\Xi_n$ is positive definite. Then according to condition (c) and the
 	Cauchy's Interlacing Theorem \cite{hwang}, condition (d) holds.
 	Then, the proof is done.
-	
+
 	We show that $x^T \Xi_n x>0$ for any vector $x \in \mathbb{R}^n$ satisfying $\norm{x}=1$. Decompose $x$ as $x=\frac{\beta}{\sqrt{n}} g
 	+ \sqrt{1-\beta^2} g^{\perp}$, where $g^Tg^{\perp}=0, \beta \in [0,1]$, and $\norm{g^{\perp}}=1$. Then, we have that 
 	\begin{align}
@@ -583,29 +587,36 @@ $I_+ = I_1$.
 	In the next we derive lower bounds to the three terms in the right hand side of \eqref{eq:xax}.
 	For the first term, we have that
 	\begin{align*}
-		g^T \Xi_n g = g^T(h -\lambda \mathbbm{1}_n)   = g^T h
+		g^T \Xi_n g =  g^T h
 	\end{align*}
 	Since $\mathbb{E}[g^T h]$ is a positive number of order $O(n\log n)$ ,
 	by Sanov's theorem or Chernoff bound, the probability 
 	$P(g^T h < 0)$ decreases exponentially in $n$. Hence, with high probability, the first term $g^T \Xi_n g$ is positive.
 	
 	For the second term, let $\tilde{h}=\Xi_n g
-	=(n-1)\lambda\mathbbm{1}_n+h$, then
+	=h-b\mathbbm{1}_n$, then
 	$g^T \Xi_n g^{\perp} = \tilde{h}^T g^{\perp} \geq -\norm{\tilde{h}-\frac{1}{n}(\tilde{h}^Tg)g}$, where the  norm $\norm{\tilde{h}-\frac{1}{n}(\tilde{h}^Tg)g}$ satisfies
 	\begin{align*}
 		\norm{\tilde{h}-\frac{1}{n}(\tilde{h}^Tg)g}^2
 		=\norm{\tilde{h}}^2 - \frac{1}{n}(\tilde{h}^Tg)^2.
 	\end{align*}
 	Let $\hat{g}_1 = \frac{1}{2}(g + \mathbbm{1}_n)$ and $\hat{g}_2 = \frac{1}{2}(-g +\mathbbm{1}_n)$.
-	Using the fact that $\tilde{h}^T\mathbbm{1}_n=\mu$, we have 
+	Using $\tilde{h}^T g = 2(\tilde{h}^T\hat{g}_1)^2 
+	+ 2(\tilde{h}^T\hat{g}_2)^2 - [\tilde{h}^T(\hat{g}_1 + \hat{g}_2)]^2$
+	, we have 
 	\begin{align*} 
 		&\frac{\norm{\tilde{h}}^2}{n} - (\frac{1}{n}\tilde{h}^Tg)^2\\
 		&=\frac{\norm{\tilde{h}}^2}{n} - 2\frac{(\tilde{h}^T \hat{g}_1)^2}{n^2} - 2\frac{(\tilde{h}^T \hat{g}_2)^2}{n^2} + \frac{(\tilde{h}^T\mathbbm{1}_n)^2}{n^2} \\
-		&=2\frac{ \sum_{i<j,i,j\in S_1} (\tilde{h}_i - \tilde{h}_j)^2 + \sum_{i<j,i,j\in S_2} (\tilde{h}_i - \tilde{h}_j)^2 }{n^2}+ \frac{\mu^2}{n^2}\\
-		& = I_1 + I_2 + \frac{\mu^2}{n^2}.
+		&=2\frac{ \sum_{i<j,i,j\in S_1} (\tilde{h}_i - \tilde{h}_j)^2 + \sum_{i<j,i,j\in S_2} (\tilde{h}_i - \tilde{h}_j)^2 }{n^2}+ \frac{(\tilde{h}^T\mathbbm{1}_n)^2}{n^2}\\
+		& = I_1 + I_2 + \frac{(\tilde{h}^T\mathbbm{1}_n)^2}{n^2}.
 	\end{align*}
 	where $I_j=\frac{\sum_{i\in S_j} h_i^2}{n} - 2\frac{(h^T \hat{g}_j)^2}{n^2}$ for $j\in\{1,2\}$,  and $S_1$ and $S_2$ denotes the sets of nodes with label $1$ and
-	$-1$, respectively. Denote $\mathbb{E}[h_i]=m D_j, \Var[h_i]=m \bar{D}_j, \mathbb{E}[h_i^2]=\Var[h_i]+\mathbb{E}^2[h_i]=m \bar{D}_j+m^2 D^2_j, \Var[h_i^2] \leq m^4 \bar{C}_j$ for $i\in S_j$ and $j\in\{1,2\}$. Then
+	$-1$, respectively.
+
+	We choose $b$ such that
+	\textcolor{red}{$\tilde{h}^T\mathbbm{1}_n = h^T \mathbbm{1}_n -nb = 0$}.
+
+	Denote $\mathbb{E}[h_i]=m D_j, \Var[h_i]=m \bar{D}_j, \mathbb{E}[h_i^2]=\Var[h_i]+\mathbb{E}^2[h_i]=m \bar{D}_j+m^2 D^2_j, \Var[h_i^2] \leq m^4 \bar{C}_j$ for $i\in S_j$ and $j\in\{1,2\}$. Then
 	$D_j, C_j,j\in\{1,2\}$ are constants.
 	Using Chebyshev's inequality, we have that
 	\begin{align*}
@@ -623,25 +634,38 @@ $I_+ = I_1$.
 	\frac{1}{\sqrt{n}} g^T \Xi_n g^{\perp} \geq -\sqrt{\frac{\norm{\tilde{h}}^2}{n} - (\frac{1}{n}\tilde{h}^Tg)^2} = O(\sqrt{\log n})
 	$$
  
- 
-	
-	
-	
-	
-	
-	
-	For the last term $(g^{\perp})^T \Xi_n g^{\perp}$, by \eqref{eq:Xi_n} and the fact that $(g^{\perp})^Tg=0$, we have that
+	For the last term $(g^{\perp})^T \Xi_n g^{\perp}$, by \eqref{eq:Xi_n_pre_1} and the fact that $(g^{\perp})^Tg=0$, we have that
 	\begin{align*}
 		&(g^{\perp})^T \Xi_n g^{\perp} \\
-		=& (g^{\perp})^T \diag( -\lambda \mathbbm{1}_ng^T+hg^T + Agg^T) g^{\perp} + p \\
-		&+ \frac{1}{2}(1-p-q+2\lambda)(g^{\perp})^TJ_n g^{\perp}
-		-(g^{\perp})^T(A-\mathbb{E}[A])g^{\perp},
+		=& (g^{\perp})^T \diag( -(d^T g+b) \mathbbm{1}_ng^T+hg^T + Agg^T) g^{\perp} + p \\
+		&+ \frac{1}{2}(1-p-q)(g^{\perp})^TJ_n g^{\perp} + 2(g^{\perp} \mathbbm{1}_n)(d^Tg^{\perp})\\
+		&-(g^{\perp})^T(A-\mathbb{E}[A])g^{\perp},
 	\end{align*}
 	where we use the fact that $\mathbb{E}[A] = \frac{p-q}{2}gg^T + \frac{p+q}{2}J_n - pI_n$. Note that $p,q,$ and $\lambda$ are $o(1)$ terms and that $(g^{\perp})^TJ_n g^{\perp}\ge 0$. 
+	
+	To make both the coefficients of
+	$\mathbbm{1}_ng^T$ and $(g^{\perp})^TJ_n g^{\perp}$ vanish,
+	we choose $d=\lambda_1 \mathbbm{1}_n + \lambda_2 g$.
+	Then \textcolor{red}{$n\lambda_2+b=0$}
+	and
+	\textcolor{red}{$\frac{1}{2}(1-p-q)+2\lambda_1=0$}.
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	By Theorem 5.2 of \cite{lei2015consistency},
 	with probability $1-n^{-r}$, $\lambda_{\max}(A-\mathbb{E}[A]) \leq c\sqrt{\log n}$ for some positive constant $r$ and $c$. Hence, we have that
 	\begin{align}\label{eq:lastterm}
-		(g^{\perp})^T \Xi_n g^{\perp} \geq \min_i\{(-\lambda + h_i) g_i+\lambda + g_i (Ag)_i \} - c \sqrt{\log n}
+		(g^{\perp})^T \Xi_n g^{\perp} \geq \min_i\{h_i g_i+ g_i (Ag)_i \} - c \sqrt{\log n}
 	\end{align}
 	% The error probability is then bounded by
 	% \begin{align*}
@@ -649,7 +673,7 @@ $I_+ = I_1$.
 	% \end{align*}
 	We now show that with high probability,
 	\begin{align}\label{eq:nodei}
-		(-\lambda + h_i) g_i+\lambda + g_i (Ag)_i  - c \sqrt{\log n}\ge 0
+		 h_i  g_i  + g_i (Ag)_i  - c \sqrt{\log n}\ge 0
 	\end{align}
 	for $i\in\{1,\ldots,n\}$. For $g_i=1$,
 	the term $g_i(Ag)_i$ can be written as 
