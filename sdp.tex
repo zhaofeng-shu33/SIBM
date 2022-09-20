@@ -482,11 +482,12 @@ $I_+ = I_1$.
 		\max_{v}\, & h^T v + \frac{1}{4}v^T B v \notag \\
 		s.t.\, & \mathbbm{1}_n^T v = 0 \text{ and } v_i \in \{\pm 1 \} \label{eq:matrix_mle}
 	\end{align}
-	where $h$ is an n-dimensional vector with entry $h_i = \frac{1}{\log \frac{p(1-q)}{q(1-p)}}\sum_{j=1}^m \log \frac{P_0(x^i_{j})}{P_1(x^i_{j})}$ for $i\in\{1,\ldots,n\}$ and the $n\times n $ matrix $B$ is defined as
+	where $h$ is an n-dimensional vector with entry $h_i = \frac{1}{\log \frac{p(1-q)}{q(1-p)}}\sum_{j=1}^m \log \frac{P_0(x^i_{j})}{P_1(x^i_{j})}$ for $i\in\{1,\ldots,n\}$ and
+	for $\kappa>0$ the $n\times n $ matrix $B$ is defined as
 	\begin{equation}
 		B_{ij} = \begin{cases}
 			1, & \text{if $i$ is connected to $j$}, \\
-			-1,& \text{otherwise.}
+			-\kappa, & \text{otherwise.}
 		\end{cases}
 	\end{equation}  
 	for $i,j\in\{1,\ldots,n\}$.
@@ -565,11 +566,11 @@ $I_+ = I_1$.
 	\end{align}
 	We introduce the following notation: $\mathbbm{1}_n$ is the all 1's vector, $J_n$ is the all 1's matrix, and $I_n$ is the identity matrix.
 
-	Using the relationship, $B=2A+I_n-J_n$,
+	Using the relationship, $B=(1+\kappa) A -\kappa(J_n-I_n)$,
 	where $A$ is the adjacency matrix of the graph, we obtain
 	\begin{align}\label{eq:Xi_n_pre_1}
-		\Xi_n =&\diag(hg^T + Agg^T -(d^Tg + b)\mathbbm{1}_ng^T)  \nonumber\\
-		& -A + \frac{1}{2}J_n + \mathbbm{1}_n d^T + d \mathbbm{1}_n^T,
+		\Xi_n =&\diag(hg^T + \frac{\kappa+1}{2}Agg^T -(d^Tg + b)\mathbbm{1}_ng^T)  \nonumber\\
+		& -\frac{\kappa+1}{2}A + \frac{\kappa}{2}J_n + \mathbbm{1}_n d^T + d \mathbbm{1}_n^T,
 	\end{align}
 	In the following we show that $\Xi_n$ is positive definite. Then according to condition (c) and the
 	Cauchy's Interlacing Theorem \cite{hwang}, condition (d) holds.
@@ -637,9 +638,11 @@ $I_+ = I_1$.
 	For the last term $(g^{\perp})^T \Xi_n g^{\perp}$, by \eqref{eq:Xi_n_pre_1} and the fact that $(g^{\perp})^Tg=0$, we have that
 	\begin{align*}
 		&(g^{\perp})^T \Xi_n g^{\perp} \\
-		=& (g^{\perp})^T \diag( -(d^T g+b) \mathbbm{1}_ng^T+hg^T + Agg^T) g^{\perp} + p \\
-		&+ \frac{1}{2}(1-p-q)(g^{\perp})^TJ_n g^{\perp} + 2(g^{\perp} \mathbbm{1}_n)(d^Tg^{\perp})\\
-		&-(g^{\perp})^T(A-\mathbb{E}[A])g^{\perp},
+		=& (g^{\perp})^T \diag( -(d^T g+b) \mathbbm{1}_ng^T+hg^T +\frac{\kappa+1}{2} Agg^T) g^{\perp} \\
+		&+ \frac{\kappa+1}{2}p 
+		+ \frac{1}{2}\left(\kappa -\frac{\kappa+1}{2}(p+q)\right)(g^{\perp})^TJ_n g^{\perp}\\
+		&+ 2(g^{\perp} \mathbbm{1}_n)(d^Tg^{\perp})
+		-\frac{\kappa+1}{2}(g^{\perp})^T(A-\mathbb{E}[A])g^{\perp},
 	\end{align*}
 	where we use the fact that $\mathbb{E}[A] = \frac{p-q}{2}gg^T + \frac{p+q}{2}J_n - pI_n$. Note that $p,q,$ and $\lambda$ are $o(1)$ terms and that $(g^{\perp})^TJ_n g^{\perp}\ge 0$. 
 	
@@ -648,7 +651,7 @@ $I_+ = I_1$.
 	we choose $d=\lambda_1 \mathbbm{1}_n + \lambda_2 g$.
 	Then \textcolor{red}{$n\lambda_2+b=0$}
 	and
-	\textcolor{red}{$\frac{1}{2}(1-p-q)+2\lambda_1=0$}.
+	\textcolor{red}{$\frac{1}{2}(\kappa-\frac{\kappa+1}{2}(p+q))+2\lambda_1=0$}.
 
 	
 	
@@ -665,7 +668,7 @@ $I_+ = I_1$.
 	By Theorem 5.2 of \cite{lei2015consistency},
 	with probability $1-n^{-r}$, $\lambda_{\max}(A-\mathbb{E}[A]) \leq c\sqrt{\log n}$ for some positive constant $r$ and $c$. Hence, we have that
 	\begin{align}\label{eq:lastterm}
-		(g^{\perp})^T \Xi_n g^{\perp} \geq \min_i\{h_i g_i+ g_i (Ag)_i \} - c \sqrt{\log n}
+		(g^{\perp})^T \Xi_n g^{\perp} \geq \min_i\{h_i g_i+ \frac{\kappa+1}{2}g_i (Ag)_i \} - c \sqrt{\log n}
 	\end{align}
 	% The error probability is then bounded by
 	% \begin{align*}
