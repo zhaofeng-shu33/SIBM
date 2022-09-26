@@ -479,7 +479,7 @@ $I_+ = I_1$.
 	\end{align}
 	It can be verified that maximizing \eqref{eq:loglh} over $Y\in\{\pm 1\}^n$ is equivalent to solving the following optimization problem
 	\begin{align}
-		\max_{v}\, & h^T v + \frac{1}{4}v^T B v \notag \\
+		\max_{v}\, & h^T v + \frac{1}{2}v^T B v \notag \\
 		s.t.\, & \mathbbm{1}_n^T v = 0 \text{ and } v_i \in \{\pm 1 \} \label{eq:matrix_mle}
 	\end{align}
 	where $h$ is an n-dimensional vector with entry $h_i = \frac{1}{\log \frac{p(1-q)}{q(1-p)}}\sum_{j=1}^m \log \frac{P_0(x^i_{j})}{P_1(x^i_{j})}$ for $i\in\{1,\ldots,n\}$ and
@@ -497,7 +497,7 @@ $I_+ = I_1$.
 	Let $v^*$ be the optimal solution to \eqref{eq:matrix_mle} and $V^*=(1,v^*)(1,v^*)^T$, where $(1,v^*)$ is a $(n+1)$-dimensional  vector obtained by concatenating $1$ and $v^*$.
 	Then, the optimal value of \eqref{eq:matrix_mle} equals $\frac{1}{2}Tr(\widetilde{B}V^*)$, where
 	\begin{equation}\label{eq:B_lambda_def}
-		\widetilde{B} = \begin{pmatrix} 0 & h^T  \\ h  & \frac{1}{2}B \end{pmatrix}.
+		\widetilde{B} = \begin{pmatrix} 0 & h^T  \\ h  & B \end{pmatrix}.
 	\end{equation}
 	We wish to show that $V^*$ is the unique optimal solution to the following problem.
 	\begin{align}
@@ -545,11 +545,12 @@ $I_+ = I_1$.
     From condition (c) we have that
 	\begin{align}
 		a &= h^T g \nonumber\\
-		a_{i} & = (h_i - d^Tg - b )g_i + \frac{1}{2}\diag\{Bgg^T\}_i, i = 1, \dots, n
+		a_{i} & = (h_i - d^Tg - b )g_i + \diag\{Bgg^T\}_i, i = 1, \dots, n
 	\end{align}
 
 	
-	It can be verified that $a+\sum_{i=1}^{n} a_i = 2h^Tg +\frac{1}{2} g^T B g$, and hence condition (b) holds.
+	It can be verified that $a+\sum_{i=1}^{n} a_i = 2h^Tg + g^T B g$,
+	and hence condition (b) holds.
 	
 	
 	Hence it suffices to prove that
@@ -561,16 +562,16 @@ $I_+ = I_1$.
 	\end{align}
 	where
 	\begin{align}\label{eq:Xi_n_pre}
-		\Xi_n =&\diag(hg^T + \frac{1}{2}Bgg^T -(d^Tg + b)\mathbbm{1}_ng^T)  \nonumber\\
-		& -\frac{1}{2}B + \mathbbm{1}_n d^T + d \mathbbm{1}_n^T,
+		\Xi_n =&\diag(hg^T + Bgg^T -(d^Tg + b)\mathbbm{1}_ng^T)  \nonumber\\
+		& -B + \mathbbm{1}_n d^T + d \mathbbm{1}_n^T,
 	\end{align}
 	We introduce the following notation: $\mathbbm{1}_n$ is the all 1's vector, $J_n$ is the all 1's matrix, and $I_n$ is the identity matrix.
 
 	Using the relationship, $B=(1+\kappa) A -\kappa(J_n-I_n)$,
 	where $A$ is the adjacency matrix of the graph, we obtain
 	\begin{align}\label{eq:Xi_n_pre_1}
-		\Xi_n =&\diag(hg^T + \frac{\kappa+1}{2}Agg^T -(d^Tg + b)\mathbbm{1}_ng^T)  \nonumber\\
-		& -\frac{\kappa+1}{2}A + \frac{\kappa}{2}J_n + \mathbbm{1}_n d^T + d \mathbbm{1}_n^T,
+		\Xi_n =&\diag(hg^T + (\kappa+1)Agg^T -(d^Tg + b)\mathbbm{1}_ng^T)  \nonumber\\
+		& -(\kappa+1)A + \kappa J_n + \mathbbm{1}_n d^T + d \mathbbm{1}_n^T,
 	\end{align}
 	In the following we show that $\Xi_n$ is positive definite. Then according to condition (c) and the
 	Cauchy's Interlacing Theorem \cite{hwang}, condition (d) holds.
@@ -638,11 +639,11 @@ $I_+ = I_1$.
 	For the last term $(g^{\perp})^T \Xi_n g^{\perp}$, by \eqref{eq:Xi_n_pre_1} and the fact that $(g^{\perp})^Tg=0$, we have that
 	\begin{align*}
 		&(g^{\perp})^T \Xi_n g^{\perp} \\
-		=& (g^{\perp})^T \diag( -(d^T g+b) \mathbbm{1}_ng^T+hg^T +\frac{\kappa+1}{2} Agg^T) g^{\perp} \\
-		&+ \frac{\kappa+1}{2}p 
-		+ \frac{1}{2}\left(\kappa -\frac{\kappa+1}{2}(p+q)\right)(g^{\perp})^TJ_n g^{\perp}\\
+		=& (g^{\perp})^T \diag( -(d^T g+b) \mathbbm{1}_ng^T+hg^T +(\kappa+1) Agg^T) g^{\perp} \\
+		&+ (\kappa+1)p 
+		+ \left(\kappa -\frac{\kappa+1}{2}(p+q)\right)(g^{\perp})^TJ_n g^{\perp}\\
 		&+ 2(g^{\perp} \mathbbm{1}_n)(d^Tg^{\perp})
-		-\frac{\kappa+1}{2}(g^{\perp})^T(A-\mathbb{E}[A])g^{\perp},
+		-(\kappa+1)(g^{\perp})^T(A-\mathbb{E}[A])g^{\perp},
 	\end{align*}
 	where we use the fact that $\mathbb{E}[A] = \frac{p-q}{2}gg^T + \frac{p+q}{2}J_n - pI_n$. Note that $p,q,$ and $\lambda$ are $o(1)$ terms and that $(g^{\perp})^TJ_n g^{\perp}\ge 0$. 
 	
@@ -651,7 +652,7 @@ $I_+ = I_1$.
 	we choose $d=\lambda_1 \mathbbm{1}_n + \lambda_2 g$.
 	Then \textcolor{red}{$n\lambda_2+b=0$}
 	and
-	\textcolor{red}{$\frac{1}{2}(\kappa-\frac{\kappa+1}{2}(p+q))+2\lambda_1=0$}.
+	\textcolor{red}{$\kappa-\frac{\kappa+1}{2}(p+q)+2\lambda_1=0$}.
 
 	
 	
@@ -668,17 +669,32 @@ $I_+ = I_1$.
 	By Theorem 5.2 of \cite{lei2015consistency},
 	with probability $1-n^{-r}$, $\lambda_{\max}(A-\mathbb{E}[A]) \leq c\sqrt{\log n}$ for some positive constant $r$ and $c$. Hence, we have that
 	\begin{align}\label{eq:lastterm}
-		(g^{\perp})^T \Xi_n g^{\perp} \geq \min_i\{h_i g_i+ \frac{\kappa+1}{2}g_i (Ag)_i \} - c \sqrt{\log n}
+		(g^{\perp})^T \Xi_n g^{\perp} \geq \min_i\{h_i g_i+ (\kappa+1)g_i (Ag)_i \} - c \sqrt{\log n}
 	\end{align}
 	% The error probability is then bounded by
 	% \begin{align*}
 	% P(\Xi_{ii} \leq c\sqrt{\log n}, \forall 1\leq i \leq n)
 	% \end{align*}
-	We now show that with high probability,
+	Below we show that with probability $1-n^{-I(\kappa)+o(1)}$,
+	the following inequality holds
 	\begin{align}\label{eq:nodei}
 		 h_i  g_i  + g_i (Ag)_i  - c \sqrt{\log n}\ge 0
 	\end{align}
-	for $i\in\{1,\ldots,n\}$. For $g_i=1$,
+	for $i\in\{1,\ldots,n\}$.
+	where $I(\kappa)$ is defined for $\kappa>0$ in a similar way to $I_1$ 
+	\begin{align}
+		I(\kappa)=\min_{P_{\widetilde{X}_1}} \gamma D(P_{\widetilde{X}_1}|| P_0)+ \frac{1}{2} g(a,b, 2\epsilon),\text{ where}\nonumber\\
+		\epsilon = \frac{\gamma}{\kappa+1} \frac{D(P_{\widetilde{X}_1} || P_1) - D(P_{\widetilde{X}_1} || P_0) }{\log a /b}\label{eq:Ikappa}
+	\end{align}
+	Then we show that $I(\kappa)$ is a decreasing function about $\kappa$
+	and the smallest error is achieved when $\kappa \to 0^+$.
+	For ML estimator, $\kappa = -\log\frac{1-p}{1-q} / \log\frac{p}{q} \sim \frac{a-b}{\log a/b}\frac{\log n}{n}$,
+	which satisfied $\kappa\to 0$ as $n\to 0$.
+	This coincidence demonstrates the optimality
+	of ML estimator and we can use it to construct the SDP algorithm to achieve the optimal
+	threshold.
+
+	For $g_i=1$,
 	the term $g_i(Ag)_i$ can be written as 
 	$Z_1-Z_2$, where $Z_1\sim \Binom(\frac{n}{2}-1,\frac{a\log n}{n})$
 	and $Z_2\sim \Binom(\frac{n}{2},\frac{b\log n}{n})$ 
