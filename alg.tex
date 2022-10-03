@@ -532,7 +532,13 @@ $$
 \end{proof}
 \section{SDP for two community}
 \subsection{ADMM scheme}
-Let $B_{ij} = 1$ if $(i,j) \in E(G)$ and $B_{ij} = -\kappa$ if $(i,j) \not \in E(G)$.
+Let the matrix $B$ be defined as follows:
+\begin{equation}\label{eq:B_matrix}
+	B_{ij} = \begin{cases} 1 & \textrm{ if } (i,j) \in E(G) \\
+		-\kappa & \textrm{ if } (i,j) \not \in E(G)
+	\end{cases}
+\end{equation}
+
 We require $0<\kappa \leq 1$. When $\kappa = 1$, the matrix $B$ is the same with
 Abbe's formulation in \cite{abbe2015exact}.
 To solve $\max Tr(BX)$ s.t. $X_{ii} = 1$ and $X \succeq 0$.
@@ -643,7 +649,8 @@ as
 s.t. & \sigma_i \in \{\pm 1\} \notag
 \end{align}
 We can use semi-definite relaxation to solve this integer programming problems.
-That is, we consider
+Let the matrix $B$ be defined as in \eqref{eq:B_matrix}.
+Then we consider
 \begin{align}
 \max \,& Tr(BX) \label{eq:semiD}\\
 s.t. & X_{ii} = 1 \notag \\
@@ -985,20 +992,21 @@ Primal problem:
 s.t. & X \succeq 0, \notag\\
 &X_{ii} = 1,  && i \in [n] \notag\\
 &X_{ij} \geq 0, && i,j \in [n] \notag\\
-&X \mathbf{1} = (\frac{n}{k}+1)\mathbf{1} \label{eq:AZ_ext}
+&\sum_{j=k+1}^{n+k} (X_{ij} + X_{ji})  = \frac{n}{k}&& \textrm{ for } i \in [n+k]\label{eq:AZ_ext}
 \end{align}
 The matrix $X$ is of size $(n+k) \times (n+k)$.
 Suppose $\xi_i \in \{0,1\}^n $ is the true label vector for the $i$-th community.
 and $\eta_i \in \{0,1\}^k$ is the indicator vector for the $i$-th community.
-$|\xi_i|=n/k$ while $|\eta_i|=1$. Then we construct $g_i=(\eta_i, \xi_i)
+$|\xi_i|=n$ while $|\eta_i|=k$. Then we construct $g_i=(\eta_i, \xi_i)
 \in \{0,1\}^{n+k}$.
 The ground truth $X^*=\sum_{i=1}^k g_i g_i^T$.
 The matrix $\widetilde{B}$ is constructed as
 \begin{equation}\label{eq:B_lambda_def}
-	\widetilde{B} = \begin{pmatrix} 0 & h^T  \\ h  & 2A \end{pmatrix}.
+	\widetilde{B} = \begin{pmatrix} 0 & h^T  \\ h  & B \end{pmatrix}.
 \end{equation}
 $h$ is an $n\times k$ matrix, with entry $h_{ir} = \frac{1}{\log(a/b)}
-\sum_{j=1}^m \log P_r(y^i_{j})$.
+\sum_{j=1}^m \log P_r(y^i_{j})$,
+and the matrix $B$ is defined in \eqref{eq:B_matrix}.
 
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
