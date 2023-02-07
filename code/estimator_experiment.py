@@ -12,6 +12,7 @@ from multiprocessing import Queue
 from multiprocessing import Process
 
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 
 from ising import estimate_a_b
@@ -25,7 +26,7 @@ def load_data_from_pickle(file_name_prefix, date):
     with open(os.path.join('build', file_name), 'rb') as f:
         return pickle.load(f)
 
-def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False):
+def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False, chinese=False):
     color_list = ['r', 'b', 'g']
     for i in range(len(a_b_k_list)):
         a, b, k = a_b_k_list[i]
@@ -43,10 +44,15 @@ def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False):
     plt.legend()
     plt.yscale('log')
     plt.xscale('log')
-    plt.xlabel('n', size='large')
-    plt.ylabel('square error', size='large')
+    if chinese:
+        matplotlib.rcParams['font.sans-serif'].insert(0, 'Songti SC')
+        plt.xlabel('节点数 n', size='large')
+        plt.ylabel('均方差', size='large')
+    else:
+        plt.xlabel('n', size='large')
+        plt.ylabel('square error', size='large')
     date = datetime.now().strftime('%Y-%m-%d')
-    fig_name = 'estimator-error-' + date + '.eps'
+    fig_name = 'estimator-error-' + date + '.pdf'
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
 
@@ -101,6 +107,7 @@ if __name__ == '__main__':
     parser.add_argument('--repeat', type=int, default=1000, help='number of times to generate the SBM graph')
     parser.add_argument('--thread_num', type=int, default=1)
     parser.add_argument('--theoretical', type=bool, default=False, const=True, nargs='?')
+    parser.add_argument('--chinese', type=bool, default=False, const=True, nargs='?')
     parser.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
     n_list = [100, 200, 300, 400, 500, 1000, 2000, 3000, 4000, 5000, 10000]
@@ -112,5 +119,5 @@ if __name__ == '__main__':
     else:
         dic = load_data_from_pickle('estimator', args.date)
         error_double_list = dic['error_list']
-        plot_result(a_b_k_list, n_list, error_double_list, args.theoretical)
+        plot_result(a_b_k_list, n_list, error_double_list, args.theoretical, args.chinese)
     
