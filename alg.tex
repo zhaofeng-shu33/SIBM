@@ -532,7 +532,13 @@ $$
 \end{proof}
 \section{SDP for two community}
 \subsection{ADMM scheme}
-Let $B_{ij} = 1$ if $(i,j) \in E(G)$ and $B_{ij} = -\kappa$ if $(i,j) \not \in E(G)$.
+Let the matrix $B$ be defined as follows:
+\begin{equation}\label{eq:B_matrix}
+	B_{ij} = \begin{cases} 1 & \textrm{ if } (i,j) \in E(G) \\
+		-\kappa & \textrm{ if } (i,j) \not \in E(G)
+	\end{cases}
+\end{equation}
+
 We require $0<\kappa \leq 1$. When $\kappa = 1$, the matrix $B$ is the same with
 Abbe's formulation in \cite{abbe2015exact}.
 To solve $\max Tr(BX)$ s.t. $X_{ii} = 1$ and $X \succeq 0$.
@@ -643,7 +649,8 @@ as
 s.t. & \sigma_i \in \{\pm 1\} \notag
 \end{align}
 We can use semi-definite relaxation to solve this integer programming problems.
-That is, we consider
+Let the matrix $B$ be defined as in \eqref{eq:B_matrix}.
+Then we consider
 \begin{align}
 \max \,& Tr(BX) \label{eq:semiD}\\
 s.t. & X_{ii} = 1 \notag \\
@@ -675,7 +682,7 @@ Then
 	-(1+\kappa)(g^{\perp})^T(A-\E[A])g^{\perp}\notag\\
 	&+p +(\kappa -(1+\kappa)\frac{p+q}{2})(g^{\perp})^TJ_ng^{\perp}
 \end{align}
-Since $\kappa -(1+\kappa)\frac{p+q}{2}$ for large $n$,
+Since $\kappa -(1+\kappa)\frac{p+q}{2}>0$ for large $n$,
 and there exists a constant $c>0$ such that with high
 probability $\lambda_{\max}(A-\mathbb{E}[A]) \leq c\sqrt{\log n}$.
 Then our task reduces to control
@@ -985,20 +992,122 @@ Primal problem:
 s.t. & X \succeq 0, \notag\\
 &X_{ii} = 1,  && i \in [n] \notag\\
 &X_{ij} \geq 0, && i,j \in [n] \notag\\
-&X \mathbf{1} = (\frac{n}{k}+1)\mathbf{1} \label{eq:AZ_ext}
+&\sum_{j=k+1}^{n+k} (X_{ij} + X_{ji})  = \frac{n}{k}&& \textrm{ for } i \in [n+k]\label{eq:AZ_ext}
 \end{align}
 The matrix $X$ is of size $(n+k) \times (n+k)$.
-Suppose $\xi_i \in \{0,1\}^n $ is the true label vector for the i-th community.
-and $\eta_i \in \{0,1\}^k$ is the indicator vector for the i-th community.
-$|\xi_i|=n/k$ while $|\eta_i|=1$. Then we construct $g_i=(\eta_i, \xi_i)
+Suppose $\xi_i \in \{0,1\}^n $ is the true label vector for the $i$-th community.
+and $\eta_i \in \{0,1\}^k$ is the indicator vector for the $i$-th community.
+$|\xi_i|=n$ while $|\eta_i|=k$. Then we construct $g_i=(\eta_i, \xi_i)
 \in \{0,1\}^{n+k}$.
 The ground truth $X^*=\sum_{i=1}^k g_i g_i^T$.
 The matrix $\widetilde{B}$ is constructed as
 \begin{equation}\label{eq:B_lambda_def}
-	\widetilde{B} = \begin{pmatrix} 0 & h^T  \\ h  & 2A \end{pmatrix}.
+	\widetilde{B} = \begin{pmatrix} 0 & h^T  \\ h  & A \end{pmatrix}.
 \end{equation}
 $h$ is an $n\times k$ matrix, with entry $h_{ir} = \frac{1}{\log(a/b)}
 \sum_{j=1}^m \log P_r(y^i_{j})$.
+% and the matrix $B$ is defined in \eqref{eq:B_matrix}.
+
+
+Let $S_1, \dots, S_k$ represent the community belonging set.
+Then $[n]=\cup_{i=1}^k S_i$.
+
+To simplify our analysis, we first consider $k=2$ and assume $S_1=\{1,2,\dots, n/2\}$ 
+and $S_2=\{\frac{n}{2}+1, \dots, n\}$.
+
+The following $(n+2)\times (n+2)$ matrix has two eigenvectors
+$(1,0,\mathbf{1}_{n/2},0_{n/2})$,
+$(0,1,0_{n/2},\mathbf{1}_{n/2})$
+with eigenvalue 0.
+\begin{align*}
+	&\diag\{d_1^*, d_2^*, d_1, \dots, d_n\}
+	-\begin{pmatrix}
+		0 & b &  0_{n/2} & b'_1 \mathbf{1}_{n/2} \\
+		b & 0 & b'_2 \mathbf{1}_{n/2} & 0_{n/2} \\
+		0_{n/2} & b'_2 \mathbf{1}_{n/2} & 0 & B_{S_1 \times S_2} \\
+		b'_1 \mathbf{1}_{n/2} & 0_{n/2}& B_{S_1 \times S_2} & 0
+	\end{pmatrix} \\
+	&- \begin{pmatrix}
+		0 & h^T \\
+		h & A 
+	\end{pmatrix}
+	+ \begin{pmatrix}
+		0 & 0 & b_1  \mathbf{1}^T_{n} \\
+		0& 0 & b_2 \mathbf{1}^T_{n} \\
+		b_1 \mathbf{1}_{n} & b_2 \mathbf{1}_{n}  & \lambda \mathbf{1}^T_{n} + \mathbf{1}_{n} \lambda^T
+	\end{pmatrix}
+\end{align*}
+For $i\in [n/2]$, we have
+\begin{align*}
+	d_i &= \sum_{j=1}^{n/2} a_{ij}
+	- \frac{n}{2} \lambda_i - \sum_{i=1}^{n/2} \lambda_i + h_{i1} - b_1 \\
+	\frac{n}{2} \lambda_i &= \sum_{j=n/2 + 1}^{n} (B_{ij} + a_{ij} - \lambda_j) + b'_2 + h_{i2} - b_2
+\end{align*}
+
+For $n/2+1 \leq i \leq n$, we have
+\begin{align*}
+	d_i &= \sum_{j=n/2+1}^{n} a_{ij}
+	- \frac{n}{2} \lambda_i - \sum_{i=n/2+1}^{n} \lambda_i + h_{i2} - b_2 \\
+	\frac{n}{2} \lambda_i &= \sum_{j=1}^{n/2} (B_{ij} + a_{ij} - \lambda_j) + b'_1 + h_{i1} - b_1
+\end{align*}
+
+We make the following transformation:
+\begin{equation*}
+	\lambda_i = \begin{cases}
+		\lambda'_i + \frac{h_{i2}}{n/2} & 1\leq i \leq n/2 \\
+		\lambda'_i + \frac{h_{i1}}{n/2} & n/2+1 \leq i \leq n 
+	\end{cases}
+\end{equation*}
+Then the above four equations are transformed to:
+
+
+for $i\in [n/2]$,
+\begin{align}
+	d_i &= \sum_{j=1}^{n/2} a_{ij}
+	- \frac{n}{2} \lambda'_i - \sum_{i=1}^{n/2} \lambda'_i + (h_{i1}- h_{i2}) - b_1 - \frac{1}{n/2}\sum_{i=1}^{n/2}h_{i2}
+	\label{eq:lambda_prime_S_1}\\
+	\frac{n}{2} \lambda'_i &= \sum_{j=n/2 + 1}^{n} (B_{ij} + a_{ij} - \lambda'_j) + b'_2 - b_2- \frac{1}{n/2}\sum_{i=n/2+1}^{n}h_{i1}
+	\notag
+\end{align}
+
+for $n/2+1 \leq i \leq n$,
+\begin{align}
+	d_i &= \sum_{j=n/2+1}^{n} a_{ij}
+	- \frac{n}{2} \lambda'_i - \sum_{i=n/2+1}^{n} \lambda'_i + (h_{i2} - h_{i1}) - b_2 -\frac{1}{n/2}\sum_{i=n/2+1}^{n}h_{i1}
+	\label{eq:lambda_prime_S_2}\\
+	\frac{n}{2} \lambda'_i &= \sum_{j=1}^{n/2} (B_{ij} + a_{ij} - \lambda'_j) + b'_1  - b_1- \frac{1}{n/2}\sum_{i=1}^{n/2}h_{i2}
+	\notag
+\end{align}
+
+We also have the following four relationships:
+\begin{align*}
+d^*_1 - \sum_{i=1}^{n/2} h_{i1}	+ \frac{n}{2} b_1 & = 0\\
+d^*_2 - \sum_{i=n/2+1}^{n} h_{i2} + \frac{n}{2} b_2 & = 0\\
+-b - b'_1 \frac{n}{2} -  \sum_{i=n/2+1}^{n} h_{i1} + \frac{n}{2} b_1 & = 0\\
+-b - b'_2 \frac{n}{2} -  \sum_{i=1}^{n/2} h_{i2} + \frac{n}{2} b_2 & = 0
+\end{align*}
+Therefore, we obtain:
+\begin{equation*}
+	b'_2 - b_2- \frac{1}{n/2}\sum_{i=n/2+1}^{n}h_{i1}
+	=b'_1  - b_1- \frac{1}{n/2}\sum_{i=1}^{n/2}h_{i2}
+	= \frac{-b}{n/2} - \frac{1}{n/2}
+	\left(\sum_{i=1}^{n/2} h_{i2} + \sum_{i=n/2+1}^n h_{i1} \right)
+\end{equation*}
+
+We choose $b$ to make the above term vanish.
+That is
+\begin{equation*}
+	b = -(\sum_{i \in S_1} h_{i2} + \sum_{i \in S_2}^n h_{i1} )
+\end{equation*}
+$b_1,b_2$ are chosen to make corresponding terms in \eqref{eq:lambda_prime_S_1},\eqref{eq:lambda_prime_S_2} vanish.
+\begin{align*}
+	b_1 &= - \frac{1}{n/2}\sum_{i \in S_1}h_{i2} \\
+	b_2 &= - \frac{1}{n/2}\sum_{i \in S_2}h_{i1}
+\end{align*}
+Then $b'_1=b'_2=0$.
+
+By Cauchy's interlacing theorem, we only need to show
+the matrix $S^*=\diag\{d_1,\dots, d_n\} - B -A + \lambda \mathbf{1}^T_{n} + \mathbf{1}_{n} \lambda^T$ is positive definite.
 
 \bibliographystyle{plain}
 	\bibliography{exportlist.bib}
