@@ -1,0 +1,20 @@
+\documentclass{ctexart}
+\begin{document}
+The label propagation algorithm for
+community detection has some similarity with
+Jacobi or Gauss-Seidel iteration method
+in numerical analysis.
+
+To simplify the discussion, we consider an undirected unweighted graph, whose Laplacian matrix $L$ is a
+diagonal dominant matrix. The graph has two balanced underlying community structure,
+and the label of each node belongs to $\{\pm\}$.
+We can decompose $L=D+(L-D)$.
+And use $x^{n+1} = \mathrm{sgn}(D^{-1}(D-L)x^n)$ to update the label.
+e consider 
+Initially $x^0$ is initialized randomly. The $\mathrm{sgn}$
+function is modified in such a way that $\mathrm{sgn}(0)$ is randomly
+assigned to $+1$ or $-1$. This scheme is similar to Jacobi iteration method,
+which is easy to parallelize. On the other hand, we can use the newly obtained $x^{n+1}[1:k]$
+to update $x^{n+1}[k+1]$, which is similar to Gauss-Seidel method, limited to sequence usage.
+
+\end{document}
