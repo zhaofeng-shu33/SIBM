@@ -12,7 +12,6 @@ from multiprocessing import Queue
 from multiprocessing import Process
 
 import numpy as np
-import matplotlib
 import matplotlib.pyplot as plt
 
 from ising import estimate_a_b
@@ -45,9 +44,8 @@ def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False, chines
     plt.yscale('log')
     plt.xscale('log')
     if chinese:
-        matplotlib.rcParams['font.sans-serif'].insert(0, 'Songti SC')
-        plt.xlabel('节点数 n', size='large')
-        plt.ylabel('均方差', size='large')
+        plt.xlabel('节点数 n', size='large', fontname='Songti SC')
+        plt.ylabel('均方差', size='large', fontname='Songti SC')
     else:
         plt.xlabel('n', size='large')
         plt.ylabel('square error', size='large')
