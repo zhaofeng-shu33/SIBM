@@ -15,9 +15,9 @@ from sbm import phase_transition_interval
 from sdp import sdp2_si, solve_sdp_si_cvx
 from construct import bisection_a
 
-data_dir = 'build'
+data_dir = 'data'
 if not os.path.exists('build'):
-    data_dir = 'data'
+    data_dir = 'build'
 
 def generate_data(ground_truth, n, m, p0, p1):
     # n, m = data.shape
@@ -122,8 +122,8 @@ def simulation_plot(filename, n, m, p0, p1, abbe_result=False, chinese=False):
     plt.imshow(Z, cmap='Greys_r', origin='lower', aspect=0.4, extent=[b_min, b_max, a_min, a_max])
     x = np.linspace(b_min, b_max)
     y = (np.sqrt(2) + np.sqrt(x)) ** 2
-    plt.xlabel('b')
-    plt.ylabel('a')
+    plt.xlabel('b', fontsize=16)
+    plt.ylabel('a', rotation=0, fontsize=16)   
     _label_text = 'sbm only'
     if chinese:
         plt.rcParams['font.sans-serif']=['SimHei']
@@ -137,7 +137,7 @@ def simulation_plot(filename, n, m, p0, p1, abbe_result=False, chinese=False):
     y = (np.sqrt(2 - gamma * D12) + np.sqrt(x)) ** 2
     _label_text = 'with side info'
     if chinese:
-        _label_text = '带有额外信息'
+        _label_text = '带有辅助信息'
     plt.plot(x, y, color='red', label=_label_text)
     if abbe_result:
         abbe_a_list = []
@@ -147,10 +147,11 @@ def simulation_plot(filename, n, m, p0, p1, abbe_result=False, chinese=False):
     plt.colorbar()
     _title = 'p0={0}, p1={1}, n={2}, m={3}'.format(p0, p1, n, m)
     # plt.title(_title)
-    plt.legend()
-    
-    plt.savefig(data_dir + '/' + _title + '.pdf')
-    plt.show()
+    L = plt.legend(edgecolor="black")
+    L.get_frame().set_alpha(None)
+    L.get_frame().set_facecolor((1, 1, 1, 0))    
+    plt.savefig(data_dir + '/' + _title + '.svg', transparent=True)
+    # plt.show()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

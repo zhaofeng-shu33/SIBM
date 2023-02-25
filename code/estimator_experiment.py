@@ -44,8 +44,8 @@ def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False, chines
     plt.yscale('log')
     plt.xscale('log')
     if chinese:
-        plt.xlabel('节点数 n', size='large', fontname='Songti SC')
-        plt.ylabel('均方差', size='large', fontname='Songti SC')
+        plt.xlabel('节点数 $n$', size='large', fontname='SimSun')
+        plt.ylabel('均\n方\n差', size='large', fontname='SimSun', rotation=0)
     else:
         plt.xlabel('n', size='large')
         plt.ylabel('square error', size='large')

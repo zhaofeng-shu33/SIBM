@@ -102,14 +102,17 @@ def draw_beta_phase_trans(date, pic_format='eps', theoretical=False):
             continue
         beta_star_empirical = compute_empirical_beta(acc_list, beta_list, data['k'])
         plt.plot(beta_list, acc_list, label=label_str, linewidth=line_width)
-    if theoretical:
-        plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red', label='empirical transition point')
-        draw_theoretical_beta_phase_trans(largest_n, data['k'], data['a'], data['b'], beta_list[0], beta_list[-1])
-    plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red')
+        if theoretical:
+            plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red', label='相变点')
+            draw_theoretical_beta_phase_trans(largest_n, data['k'], data['a'], data['b'], beta_list[0], beta_list[-1])
+        plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red')
 
-    plt.legend()
+    L = plt.legend(edgecolor="black")
+    plt.setp(L.texts, fontname='SimSun')
+    L.get_frame().set_alpha(None)
+    L.get_frame().set_facecolor((1, 1, 1, 0))
     plt.xlabel('$\\beta$', size='large')
-    plt.ylabel('accuracy', size='large')
+    plt.ylabel('准\n确\n率', size='large', fontname='SimSun', rotation=0)
     fig_name = 'beta_trans-' + date + '.' + pic_format
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
@@ -134,9 +137,9 @@ def draw_theoretical_beta_phase_trans(n, k, a, b, beta_s, beta_e):
             acc_list_2[i] = 1 - np.power(n, g(beta) / 2)
         else:
             acc_list_2[i] = 1 - np.power(n, g_beta_bar / 2)
-    plt.plot(beta_list_1, acc_list_1, label='accuracy upper bound', color='purple', linewidth=2)
-    plt.plot(beta_list_2, acc_list_2, label='accuracy lower bound', color='darkgreen', linewidth=2)
-    plt.plot([beta_star, beta_star], [0, 1], label='phase transition line', color='red', linewidth=2)
+    plt.plot(beta_list_1, acc_list_1, label='准确率上界', color='purple', linewidth=2)
+    plt.plot(beta_list_2, acc_list_2, label='准确率下界', color='darkgreen', linewidth=2)
+    plt.plot([beta_star, beta_star], [0, 1], label='相变分界线', color='red', linewidth=2, linestyle='dashed')
 
 def animation_metropolis(n, k, a, b):
     G = sbm_graph(n, k, a, b)
@@ -214,7 +217,7 @@ if __name__ == '__main__':
     parser.add_argument('--action', choices=['phase_transition',
         'compare', 'beta_transition', 'plot_g_function', 'animation_metropolis'], default='phase_transition')
     parser.add_argument('--method', choices=method_list, default='metropolis')
-    parser.add_argument('--format', choices=['eps', 'svg'], default='eps')
+    parser.add_argument('--format', choices=['pdf', 'svg'], default='pdf')
     parser.add_argument('--a', type=float, default=16.0)
     parser.add_argument('--b', type=float, default=4.0)
     parser.add_argument('--k', type=int, default=2)
