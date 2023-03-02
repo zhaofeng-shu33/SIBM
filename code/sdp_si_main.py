@@ -112,7 +112,7 @@ def get_a_b_Z_data(filename):
     Z /= num_file
     return (a_list, b_list, Z)
 
-def simulation_plot(filename, n, m, p0, p1, abbe_result=False, chinese=False):
+def simulation_plot(filename, n, m, p0, p1, abbe_result=False, chinese=False, format='pdf'):
     a_list, b_list, Z = get_a_b_Z_data(filename)
     b_num = len(b_list)
     b_min, b_max = b_list[0], b_list[b_num - 1]
@@ -150,7 +150,7 @@ def simulation_plot(filename, n, m, p0, p1, abbe_result=False, chinese=False):
     L = plt.legend(edgecolor="black")
     L.get_frame().set_alpha(None)
     L.get_frame().set_facecolor((1, 1, 1, 0))    
-    plt.savefig(data_dir + '/' + _title + '.svg', transparent=True)
+    plt.savefig(data_dir + '/' + _title + '.' + format, transparent=True)
     # plt.show()
 
 if __name__ == '__main__':
@@ -166,6 +166,7 @@ if __name__ == '__main__':
     parser.add_argument('--p1', type=float, default=[0.2, 0.8], nargs='+')
     parser.add_argument('--chinese', type=bool, const=True, nargs='?', default=False)
     parser.add_argument('--filename', help='data file used for plot purpose, for example "2.0-25.0-2.0-10.0"')
+    parser.add_argument('--format', choices=['pdf', 'svg'], default='pdf')
     args = parser.parse_args()
     if args.action != 'plot':
         set_up_log()
@@ -188,4 +189,4 @@ if __name__ == '__main__':
         step = a[2]
         recovery_matrix_simulation(n, m, p0, p1, a_range, b_range, step, repeat=repeat, multi_thread=multi_thread)
     else:
-        simulation_plot(args.filename, n, m, p0, p1, chinese=args.chinese)
+        simulation_plot(args.filename, n, m, p0, p1, chinese=args.chinese, format=args.format)
