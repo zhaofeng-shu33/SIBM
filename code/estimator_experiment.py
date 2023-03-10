@@ -27,6 +27,7 @@ def load_data_from_pickle(file_name_prefix, date):
 
 def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False, chinese=False):
     color_list = ['r', 'b', 'g']
+    marker_list = ['o', '+', 'x']
     for i in range(len(a_b_k_list)):
         a, b, k = a_b_k_list[i]
         if theoretical and k == 2:
@@ -36,10 +37,10 @@ def plot_result(a_b_k_list, n_list, error_double_list, theoretical=False, chines
                 error_list_t.append(4 * (a + b) / (n * np.log(n)))
             plt.plot(n_list, error_list_t, label='CR bound, k=2', linewidth=linewidth, color=color_list[i], linestyle='dashed')
         else:
-            linewidth = 4
+            linewidth = 2
         error_list = error_double_list[i]
         label_text = 'a={0},b={1},k={2}'.format(a, b, k)
-        plt.plot(n_list, error_list, label=label_text, linewidth=linewidth, color=color_list[i])
+        plt.plot(n_list, error_list, label=label_text, linewidth=linewidth, color=color_list[i], marker=marker_list[i])
     plt.legend()
     plt.yscale('log')
     plt.xscale('log')

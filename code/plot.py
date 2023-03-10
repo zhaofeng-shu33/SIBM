@@ -75,7 +75,7 @@ def compute_empirical_beta(acc_list, beta_list, k=2):
 
 def get_file_name_list(keyword_1, keyword_2):
     Ls = []
-    for i in os.listdir('build'):
+    for i in os.listdir('./'):
         if i.find(keyword_1) >= 0 and i.find(keyword_2) >= 0:
             Ls.append(i)
     return Ls
@@ -87,14 +87,14 @@ def draw_beta_phase_trans(date, pic_format='eps', theoretical=False):
     if len(file_name_list) == 1:
         line_width = 4
     for file_name in file_name_list:
-        f = open(os.path.join('build', file_name), 'rb')
+        f = open(file_name, 'rb')
         data = pickle.load(f)
         if data['n'] > largest_n:
             largest_n = data['n']
         if data.get('m') and data['m'] > 1:
-            label_str = 'a = %.0f, b=%.0f, n=%d, k=%d, m=%d' % (data['a'], data['b'], data['n'], data['k'], data['m'])
+            label_str = 'a=%.0f, b=%.0f, n=%d, k=%d, m=%d' % (data['a'], data['b'], data['n'], data['k'], data['m'])
         else:
-            label_str = 'a = %.0f, b=%.0f, n=%d, k=%d' % (data['a'], data['b'], data['n'], data['k'])
+            label_str = 'a=%.0f, b=%.0f, n=%d, k=%d' % (data['a'], data['b'], data['n'], data['k'])
 
         beta_list = data['beta_list']
         acc_list = data['acc_list']
@@ -112,7 +112,7 @@ def draw_beta_phase_trans(date, pic_format='eps', theoretical=False):
     L.get_frame().set_alpha(None)
     L.get_frame().set_facecolor((1, 1, 1, 0))
     plt.xlabel('$\\beta$', size='large')
-    plt.ylabel('准\n确\n率', size='large', fontname='SimSun', rotation=0)
+    plt.ylabel('准\n确\n率', size='large', fontname='SimSun', rotation=0, labelpad=10)
     fig_name = 'beta_trans-' + date + '.' + pic_format
     plt.savefig(os.path.join('build', fig_name), transparent=True)
     plt.show()
