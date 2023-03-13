@@ -85,7 +85,7 @@ def draw_beta_phase_trans(date, pic_format='eps', theoretical=False):
     largest_n = 0
     line_width = 1
     if len(file_name_list) == 1:
-        line_width = 4
+        line_width = 2
     for file_name in file_name_list:
         f = open(file_name, 'rb')
         data = pickle.load(f)
@@ -94,14 +94,14 @@ def draw_beta_phase_trans(date, pic_format='eps', theoretical=False):
         if data.get('m') and data['m'] > 1:
             label_str = 'a=%.0f, b=%.0f, n=%d, k=%d, m=%d' % (data['a'], data['b'], data['n'], data['k'], data['m'])
         else:
-            label_str = 'a=%.0f, b=%.0f, n=%d, k=%d' % (data['a'], data['b'], data['n'], data['k'])
+            label_str = 'a=%.0f,b=%.0f,n=%d,k=%d' % (data['a'], data['b'], data['n'], data['k'])
 
         beta_list = data['beta_list']
         acc_list = data['acc_list']
         if len(acc_list) == 1:
             continue
         beta_star_empirical = compute_empirical_beta(acc_list, beta_list, data['k'])
-        plt.plot(beta_list, acc_list, label=label_str, linewidth=line_width)
+        plt.plot(beta_list, acc_list, label=label_str, linewidth=line_width, marker='+')
         if theoretical:
             plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red', label='相变点')
             draw_theoretical_beta_phase_trans(largest_n, data['k'], data['a'], data['b'], beta_list[0], beta_list[-1])
