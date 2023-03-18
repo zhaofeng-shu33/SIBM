@@ -36,9 +36,10 @@ def estimate_a_b(graph, k=2):
 
 class SIBM:
     def __init__(self, graph, k=2, estimate_a_b_indicator=True, epsilon=0.0,
-        _alpha=None, _beta=None):
+        _gamma=None, _beta=None):
         self.G = graph
         self.k = k
+        self.n = len(self.G.nodes)
         self.epsilon = 0
         if estimate_a_b_indicator:
             try:
@@ -49,26 +50,28 @@ class SIBM:
             if square_term > 0:
                 _beta_star = np.log((a + b - k - np.sqrt(square_term))/ (2 * b))
                 self._beta = 1.2 * _beta_star
-                self._alpha_divide_beta = 13 * b
+                self._gamma = 13 * b
             else:
                 self._beta = 1.2
-                self._alpha_divide_beta = 13
+                # the following choice of parameter is to guarantee gamma > b
+                self._gamma = len(graph.edges) / (self.n * np.log(self.n))
         else:
             self._beta = 1.2
-            self._alpha_divide_beta = 13
+            self._gamma = 13
         if _beta != None:
             self._beta = _beta
-        if _alpha != None:
-            self._alpha_divide_beta = _alpha / self._beta
-        self.n = len(self.G.nodes)
+        if _gamma != None:
+            self._gamma = _gamma
+        
         # randomly initiate a configuration
+        # print(self._beta, self._gamma)
         self.sigma = [1 for i in range(self.n)]
         nodes = list(self.G)
         random.Random().shuffle(nodes)
         for node_state in range(k):
             for i in range(self.n // k):
                 self.sigma[nodes[i * k + node_state]] = node_state
-        self.mixed_param = self._alpha_divide_beta * np.log(self.n)
+        self.mixed_param = self._gamma * np.log(self.n)
         self.mixed_param /= self.n
     def _get_Js(self, sigma_i, sigma_j, w_s):
         if sigma_i == sigma_j:
@@ -117,6 +120,6 @@ class SIBM:
             self._beta *= (1 + self.epsilon)
         return self.sigma
 
-def potts_metropolis(graph, k=2, max_iter=40):
-    sibm = SIBM(graph, k)
+def potts_metropolis(graph, k=2, max_iter=40, gamma=None, beta=None):
+    sibm = SIBM(graph, k, _gamma=gamma, _beta=beta)
     return sibm.metropolis(N=max_iter)
