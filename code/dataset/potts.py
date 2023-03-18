@@ -35,8 +35,23 @@ def estimate_a_b(graph, k=2):
 
 
 class SIBM:
-    def __init__(self, graph, k=2, estimate_a_b_indicator=True, epsilon=0.0,
-        _gamma=None, _beta=None):
+    def _estimate_beta(self, repeat=40, acceptance_ratio=0.8):
+        # Johnson's empirical method
+        # - log(\chi_0) / Delta E 
+        _energy = 0
+        _average = 0
+        for _ in range(repeat):
+            r = random.randint(0, self.n - 1)
+            w_s = random.randint(1, self.k - 1)
+            delta_H = self.get_dH(r, w_s)
+            if delta_H > 0:
+                _energy += delta_H
+                _average += 1
+        _energy /= _average
+        return -1.0 * _energy / np.log(acceptance_ratio)
+
+    def __init__(self, graph, k=2, estimate_a_b_indicator=True, 
+                 epsilon=0.0, _gamma=None, _beta=None):
         self.G = graph
         self.k = k
         self.n = len(self.G.nodes)
@@ -54,7 +69,8 @@ class SIBM:
             else:
                 self._beta = 1.2
                 # the following choice of parameter is to guarantee gamma > b
-                self._gamma = len(graph.edges) / (self.n * np.log(self.n))
+                self._gamma = 13 # len(graph.edges) / (self.n * np.log(self.n))
+                # print(self._gamma, self._beta)
         else:
             self._beta = 1.2
             self._gamma = 13
@@ -62,17 +78,20 @@ class SIBM:
             self._beta = _beta
         if _gamma != None:
             self._gamma = _gamma
-        
+        self.mixed_param = self._gamma * np.log(self.n)
+        self.mixed_param /= self.n
         # randomly initiate a configuration
-        # print(self._beta, self._gamma)
         self.sigma = [1 for i in range(self.n)]
         nodes = list(self.G)
         random.Random().shuffle(nodes)
         for node_state in range(k):
             for i in range(self.n // k):
                 self.sigma[nodes[i * k + node_state]] = node_state
-        self.mixed_param = self._gamma * np.log(self.n)
-        self.mixed_param /= self.n
+
+        if self._beta < 0:
+            self._beta = self._estimate_beta()
+
+    
     def _get_Js(self, sigma_i, sigma_j, w_s):
         if sigma_i == sigma_j:
             return 1
