@@ -1,0 +1,122 @@
+'''using Metropolis algorithm
+to get a sample from Potts distribution
+'''
+import random
+
+import numpy as np
+import networkx as nx
+
+def estimate_a_b(graph, k=2):
+    '''for multiple communities
+    '''
+    n = len(graph.nodes)
+    e = len(graph.edges)
+    t = 0
+    for _, v in nx.algorithms.cluster.triangles(graph).items():
+        t += v
+    t /= 3
+    eq_1 = e / (n * np.log(n))
+    eq_2 = t / (np.log(n) ** 3)
+    # solve b first
+    coeff_3 = -1 * (k - 1)
+    coeff_2 = 6 * (k - 1) * eq_1
+    coeff_1 = -12 * (k - 1) * (eq_1 ** 2)
+    coeff_0 = 8 * k * (eq_1 ** 3) - 6 * eq_2
+    coeff = [coeff_3, coeff_2, coeff_1, coeff_0]
+    b = -1
+    for r in np.roots(coeff):
+        if abs(np.imag(r)) < 1e-10:
+            b = np.real(r)
+            break
+    a = 2 * k * eq_1 - (k - 1) * b
+    if b < 0 or b > a:
+        raise ValueError('')
+    return (a, b)
+
+
+class SIBM:
+    def __init__(self, graph, k=2, estimate_a_b_indicator=True, epsilon=0.0,
+        _alpha=None, _beta=None):
+        self.G = graph
+        self.k = k
+        self.epsilon = 0
+        if estimate_a_b_indicator:
+            try:
+                a, b = estimate_a_b(graph, k)
+            except ValueError:
+                a, b = k, k
+            square_term = (a + b - k)**2 - 4 * a * b
+            if square_term > 0:
+                _beta_star = np.log((a + b - k - np.sqrt(square_term))/ (2 * b))
+                self._beta = 1.2 * _beta_star
+                self._alpha_divide_beta = 13 * b
+            else:
+                self._beta = 1.2
+                self._alpha_divide_beta = 13
+        else:
+            self._beta = 1.2
+            self._alpha_divide_beta = 13
+        if _beta != None:
+            self._beta = _beta
+        if _alpha != None:
+            self._alpha_divide_beta = _alpha / self._beta
+        self.n = len(self.G.nodes)
+        # randomly initiate a configuration
+        self.sigma = [1 for i in range(self.n)]
+        nodes = list(self.G)
+        random.Random().shuffle(nodes)
+        for node_state in range(k):
+            for i in range(self.n // k):
+                self.sigma[nodes[i * k + node_state]] = node_state
+        self.mixed_param = self._alpha_divide_beta * np.log(self.n)
+        self.mixed_param /= self.n
+    def _get_Js(self, sigma_i, sigma_j, w_s):
+        if sigma_i == sigma_j:
+            return 1
+        elif (w_s + sigma_i) % self.k == sigma_j:
+            return -1
+        else:
+            return 0
+    def get_dH(self, trial_location, w_s):
+        _sum = 0
+        for i in range(self.n):
+            if self.G.has_edge(trial_location, i):
+                _sum += self._get_Js(self.sigma[trial_location], self.sigma[i], w_s)
+            elif trial_location != i:
+                _sum -= self.mixed_param * self._get_Js(self.sigma[trial_location], self.sigma[i], w_s)
+        return _sum
+    def _get_Hamiltonian(self):
+        H_value = 0
+        for i in range(self.n):
+            for j in range(i + 1, self.n):
+                if self.sigma[i] != self.sigma[j]:
+                    continue
+                if self.G.has_edge(i, j):
+                    H_value -= 1
+                else:
+                    H_value += self.mixed_param
+        return H_value
+    def _metropolis_single(self):
+        # randomly select one position to inspect
+        r = random.randint(0, self.n - 1)
+        # randomly select one new flipping state to inspect
+        w_s = random.randint(1, self.k - 1)
+        delta_H = self.get_dH(r, w_s)
+        if delta_H < 0:  # lower energy: flip for sure
+            self.sigma[r] = (w_s + self.sigma[r]) % self.k
+        else:  # Higher energy: flip sometimes
+            probability = np.exp(-1.0 * self._beta * delta_H)
+            if np.random.rand() < probability:
+                self.sigma[r] = (w_s + self.sigma[r]) % self.k
+
+    def metropolis(self, N=40):
+        # iterate given rounds
+        for _ in range(N):
+            for _ in range(self.n):
+                self._metropolis_single()
+            self._beta *= (1 + self.epsilon)
+        return self.sigma
+
+def potts_metropolis(graph, k=2, max_iter=40):
+    sibm = SIBM(graph, k)
+    return sibm.metropolis(N=max_iter)

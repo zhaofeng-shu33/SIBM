@@ -103,11 +103,11 @@ def draw_beta_phase_trans(date, pic_format='eps', theoretical=False):
         beta_star_empirical = compute_empirical_beta(acc_list, beta_list, data['k'])
         plt.plot(beta_list, acc_list, label=label_str, linewidth=line_width, marker='+')
         if theoretical:
-            plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red', label='相变点')
+            plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red', label='相变点', zorder=3)
             draw_theoretical_beta_phase_trans(largest_n, data['k'], data['a'], data['b'], beta_list[0], beta_list[-1])
         plt.scatter([beta_star_empirical], [1.0 / data['k']], c='red')
 
-    L = plt.legend(edgecolor="black")
+    L = plt.legend(edgecolor="black", loc='lower right')
     plt.setp(L.texts, fontname='SimSun')
     L.get_frame().set_alpha(None)
     L.get_frame().set_facecolor((1, 1, 1, 0))
