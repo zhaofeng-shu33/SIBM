@@ -41,8 +41,8 @@ class SIBM:
         _energy = 0
         _average = 0
         for _ in range(repeat):
-            r = random.randint(0, self.n - 1)
-            w_s = random.randint(1, self.k - 1)
+            r = np.random.randint(0, self.n)
+            w_s = np.random.randint(1, self.k)
             delta_H = self.get_dH(r, w_s)
             if delta_H > 0:
                 _energy += delta_H
@@ -69,21 +69,21 @@ class SIBM:
             else:
                 self._beta = 1.2
                 # the following choice of parameter is to guarantee gamma > b
-                self._gamma = 13 # len(graph.edges) / (self.n * np.log(self.n))
-                # print(self._gamma, self._beta)
+                self._gamma = 2 * len(graph.edges) / (self.n * np.log(self.n))
+                # (self._gamma, self._beta)
         else:
             self._beta = 1.2
             self._gamma = 13
         if _beta != None:
             self._beta = _beta
-        if _gamma != None:
-            self._gamma = _gamma
+        # if _gamma != None:
+        #    self._gamma = _gamma
         self.mixed_param = self._gamma * np.log(self.n)
         self.mixed_param /= self.n
         # randomly initiate a configuration
         self.sigma = [1 for i in range(self.n)]
         nodes = list(self.G)
-        random.Random().shuffle(nodes)
+        np.random.shuffle(nodes)
         for node_state in range(k):
             for i in range(self.n // k):
                 self.sigma[nodes[i * k + node_state]] = node_state
@@ -120,9 +120,9 @@ class SIBM:
         return H_value
     def _metropolis_single(self):
         # randomly select one position to inspect
-        r = random.randint(0, self.n - 1)
+        r = np.random.randint(0, self.n)
         # randomly select one new flipping state to inspect
-        w_s = random.randint(1, self.k - 1)
+        w_s = np.random.randint(1, self.k)
         delta_H = self.get_dH(r, w_s)
         if delta_H < 0:  # lower energy: flip for sure
             self.sigma[r] = (w_s + self.sigma[r]) % self.k
@@ -139,6 +139,9 @@ class SIBM:
             self._beta *= (1 + self.epsilon)
         return self.sigma
 
-def potts_metropolis(graph, k=2, max_iter=40, gamma=None, beta=None):
+def potts_metropolis(graph, k=2, max_iter=40,
+                     gamma=None, beta=None, seed=None):
+    if seed:
+        np.random.seed(seed)
     sibm = SIBM(graph, k, _gamma=gamma, _beta=beta)
     return sibm.metropolis(N=max_iter)
