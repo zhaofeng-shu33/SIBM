@@ -59,15 +59,16 @@ nmi_spectral = normalized_mutual_info_score(ground_truth_new, spectral_embedding
 nmi_sdp = normalized_mutual_info_score(ground_truth_new, labels_sdp)
 nmi_kmeans = normalized_mutual_info_score(ground_truth_new, kmeans_side_info)
 
-print('kmeans only', 'sdp only on graph data', 'spectral clustering (median) only')
-print(nmi_kmeans, nmi_sdp, nmi_spectral)
+print('kmeans only', nmi_kmeans)
+print('sdp only on graph data', nmi_sdp)
+print('spectral clustering (median) only', nmi_spectral)
 
 
 
 sc_ = cluster.SpectralClustering(2, affinity='precomputed')
 sc_.fit(adj_matrix_new)
 sc_graph_score = normalized_mutual_info_score(ground_truth_new, sc_.labels_)
-
+print("spectral clustering on graph data only", sc_graph_score)
 
 h = spectral_embedding_side_info * 2 - 1
 alpha_list_sp = [0.1, 1, 2, 5, 10, 30]
