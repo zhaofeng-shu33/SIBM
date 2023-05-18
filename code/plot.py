@@ -31,8 +31,8 @@ def plot_g_function(a, b, k, end_point=None, fig_format='svg'):
     x2[50] = end_point
     y2[50] = g(beta_bar)
     ax.plot(x2, y2, label='$\\tilde{g}(\\beta)$', color='green', linewidth=2)
-    ax.plot([beta_bar, beta_bar], [-0.1 + g(beta_bar), g(x2[50]) - 0.1],
-             label='$\\beta=\\bar{\\beta}$', linestyle='--')
+    ax.plot([beta_bar] * 10, np.linspace(-0.1 + g(beta_bar), g(x2[50]) - 0.1, 10),
+             label='$\\beta=\\bar{\\beta}$', linestyle='--', marker='x')
     # draw the x-axis
     ax.plot([0, x2[50]], [0, 0], linestyle='--', color='black')
     ax.text(beta_star, 0, '$\\beta^*$', fontsize=16)
@@ -138,7 +138,7 @@ def draw_theoretical_beta_phase_trans(n, k, a, b, beta_s, beta_e):
         else:
             acc_list_2[i] = 1 - np.power(n, g_beta_bar / 2)
     plt.plot(beta_list_1, acc_list_1, label='准确率上界', color='purple', linewidth=2)
-    plt.plot(beta_list_2, acc_list_2, label='准确率下界', color='darkgreen', linewidth=2)
+    plt.plot(beta_list_2, acc_list_2, label='准确率下界', color='darkgreen', linestyle='dashed', linewidth=2, marker='x')
     plt.plot([beta_star, beta_star], [0, 1], label='相变分界线', color='red', linewidth=2, linestyle='dashed')
 
 def animation_metropolis(n, k, a, b):

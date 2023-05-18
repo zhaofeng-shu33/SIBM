@@ -128,7 +128,7 @@ def simulation_plot(filename, n, m, p0, p1, abbe_result=False, chinese=False, fo
     if chinese:
         plt.rcParams['font.sans-serif']=['SimHei']
         _label_text = '仅 SBM'
-    plt.plot(x, y, color='blue', label=_label_text)
+    plt.plot(x, y, 'b--', label=_label_text)
     D12 = 0
     for i in range(len(p0)):
         D12 += np.sqrt(p0[i] * p1[i])
